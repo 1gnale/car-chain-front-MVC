@@ -1,0 +1,429 @@
+[
+  {
+    "id": 1,
+    "nombre": "Toyota",
+    "descripcion": "Marca japonesa",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Corolla",
+        "descripcion": "Sedán compacto",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "XEI 2.0",
+            "descripcion": "Versión intermedia",
+            "precio_mercado": 9500000,
+            "precio_mercado_gnc": 9700000
+          },
+          {
+            "id": 2,
+            "nombre": "SE-G 2.0",
+            "descripcion": "Versión full",
+            "precio_mercado": 10200000,
+            "precio_mercado_gnc": 10400000
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "Yaris",
+        "descripcion": "Hatchback pequeño",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "XS 1.5",
+            "descripcion": "Base automática",
+            "precio_mercado": 7000000,
+            "precio_mercado_gnc": 7200000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Volkswagen",
+    "descripcion": "Marca alemana",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Gol",
+        "descripcion": "Auto económico",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Trendline",
+            "descripcion": "Base",
+            "precio_mercado": 6000000,
+            "precio_mercado_gnc": 6200000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "Ford",
+    "descripcion": "Marca estadounidense",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Focus",
+        "descripcion": "Sedán compacto",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "S 2.0",
+            "descripcion": "Versión base",
+            "precio_mercado": 8500000,
+            "precio_mercado_gnc": 8700000
+          },
+          {
+            "id": 2,
+            "nombre": "SE 2.0",
+            "descripcion": "Versión intermedia",
+            "precio_mercado": 9200000,
+            "precio_mercado_gnc": 9400000
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "Fiesta",
+        "descripcion": "Hatchback urbano",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "S 1.6",
+            "descripcion": "Base manual",
+            "precio_mercado": 6800000,
+            "precio_mercado_gnc": 7000000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "Chevrolet",
+    "descripcion": "Marca estadounidense",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Onix",
+        "descripcion": "Hatchback compacto",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "LT 1.2",
+            "descripcion": "Versión intermedia",
+            "precio_mercado": 7300000,
+            "precio_mercado_gnc": 7500000
+          },
+          {
+            "id": 2,
+            "nombre": "Premier 1.0 Turbo",
+            "descripcion": "Versión top",
+            "precio_mercado": 8100000,
+            "precio_mercado_gnc": 8300000
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "Cruze",
+        "descripcion": "Sedán mediano",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "LT 1.4 Turbo",
+            "descripcion": "Equipamiento completo",
+            "precio_mercado": 11500000,
+            "precio_mercado_gnc": 11700000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "Nissan",
+    "descripcion": "Marca japonesa",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Versa",
+        "descripcion": "Sedán compacto",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Sense 1.6",
+            "descripcion": "Versión base",
+            "precio_mercado": 8200000,
+            "precio_mercado_gnc": 8400000
+          },
+          {
+            "id": 2,
+            "nombre": "Advance 1.6",
+            "descripcion": "Versión full",
+            "precio_mercado": 9100000,
+            "precio_mercado_gnc": 9300000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nombre": "Peugeot",
+    "descripcion": "Marca francesa",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "208",
+        "descripcion": "Hatchback premium",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Active 1.6",
+            "descripcion": "Versión intermedia",
+            "precio_mercado": 8800000,
+            "precio_mercado_gnc": 9000000
+          },
+          {
+            "id": 2,
+            "nombre": "GT 1.6 Turbo",
+            "descripcion": "Versión deportiva",
+            "precio_mercado": 10800000,
+            "precio_mercado_gnc": 11000000
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "2008",
+        "descripcion": "SUV compacto",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Active 1.6",
+            "descripcion": "Equipamiento estándar",
+            "precio_mercado": 12300000,
+            "precio_mercado_gnc": 12500000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nombre": "Renault",
+    "descripcion": "Marca francesa",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Logan",
+        "descripcion": "Sedán familiar",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Authentique 1.6",
+            "descripcion": "Versión base",
+            "precio_mercado": 7600000,
+            "precio_mercado_gnc": 7800000
+          },
+          {
+            "id": 2,
+            "nombre": "Privilege 1.6",
+            "descripcion": "Versión full",
+            "precio_mercado": 8400000,
+            "precio_mercado_gnc": 8600000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "nombre": "Fiat",
+    "descripcion": "Marca italiana",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Cronos",
+        "descripcion": "Sedán compacto",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Drive 1.3",
+            "descripcion": "Versión base",
+            "precio_mercado": 7400000,
+            "precio_mercado_gnc": 7600000
+          },
+          {
+            "id": 2,
+            "nombre": "Precision 1.8",
+            "descripcion": "Versión premium",
+            "precio_mercado": 8900000,
+            "precio_mercado_gnc": 9100000
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "Argo",
+        "descripcion": "Hatchback moderno",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Drive 1.3",
+            "descripcion": "Equipamiento básico",
+            "precio_mercado": 7200000,
+            "precio_mercado_gnc": 7400000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "nombre": "Honda",
+    "descripcion": "Marca japonesa",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "City",
+        "descripcion": "Sedán premium",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "LX 1.5",
+            "descripcion": "Versión intermedia",
+            "precio_mercado": 10500000,
+            "precio_mercado_gnc": 10700000
+          },
+          {
+            "id": 2,
+            "nombre": "EX 1.5",
+            "descripcion": "Versión top",
+            "precio_mercado": 11800000,
+            "precio_mercado_gnc": 12000000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "nombre": "Hyundai",
+    "descripcion": "Marca surcoreana",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Elantra",
+        "descripcion": "Sedán mediano",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "GLS 1.6",
+            "descripcion": "Versión base",
+            "precio_mercado": 9800000,
+            "precio_mercado_gnc": 10000000
+          },
+          {
+            "id": 2,
+            "nombre": "Limited 2.0",
+            "descripcion": "Versión full",
+            "precio_mercado": 12200000,
+            "precio_mercado_gnc": 12400000
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "Creta",
+        "descripcion": "SUV compacto",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "GL 1.6",
+            "descripcion": "Equipamiento estándar",
+            "precio_mercado": 13500000,
+            "precio_mercado_gnc": 13700000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "nombre": "Citroën",
+    "descripcion": "Marca francesa",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "C4 Cactus",
+        "descripcion": "Crossover innovador",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "Vti 115 Feel",
+            "descripcion": "Versión intermedia",
+            "precio_mercado": 9600000,
+            "precio_mercado_gnc": 9800000
+          },
+          {
+            "id": 2,
+            "nombre": "Vti 115 Shine",
+            "descripcion": "Versión premium",
+            "precio_mercado": 10400000,
+            "precio_mercado_gnc": 10600000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "nombre": "Kia",
+    "descripcion": "Marca surcoreana",
+    "modelos": [
+      {
+        "id": 1,
+        "nombre": "Rio",
+        "descripcion": "Hatchback urbano",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "LX 1.4",
+            "descripcion": "Versión base",
+            "precio_mercado": 7800000,
+            "precio_mercado_gnc": 8000000
+          },
+          {
+            "id": 2,
+            "nombre": "EX 1.4",
+            "descripcion": "Versión full",
+            "precio_mercado": 8600000,
+            "precio_mercado_gnc": 8800000
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "Cerato",
+        "descripcion": "Sedán deportivo",
+        "versiones": [
+          {
+            "id": 1,
+            "nombre": "LX 1.6",
+            "descripcion": "Equipamiento completo",
+            "precio_mercado": 11300000,
+            "precio_mercado_gnc": 11500000
+          }
+        ]
+      }
+    ]
+  }
+]
