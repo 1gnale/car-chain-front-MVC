@@ -7,7 +7,11 @@ import { useAppSelector } from "../../redux/reduxTypedHooks";
 import useFormValidation from "../../controllers/controllerHooks/useFormValidation";
 import "../../models/types.d.ts";
 
-const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void }) => {
+const FormDataVehicle = ({
+  handleCurrentView,
+}: {
+  handleCurrentView: () => void;
+}) => {
   const brands: Brand[] = useAppSelector((state) => state.brands.brand);
   const { errors, validateField, validateForm } = useFormValidation();
 
@@ -29,12 +33,12 @@ const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void 
   });
 
   const handleInputChange = (field: string, value: string) => {
-    setForm(prev => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value }));
     validateField(field as keyof typeof errors, value);
   };
 
   const handleCheckboxChange = (field: string, value: boolean) => {
-    setForm(prev => ({ ...prev, [field]: value }));
+    setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleStateBrand = (id: number) => {
@@ -43,39 +47,45 @@ const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void 
     setVersion(false);
     setSelectedModel(0);
     setSelectedVersion(0);
-    
+
     // Encontrar el nombre de la marca seleccionada
-    const selectedBrandName = brands.find(brand => brand.id === id)?.nombre || "";
-    setForm(prev => ({ ...prev, marca: selectedBrandName }));
-    validateField('marca', selectedBrandName);
+    const selectedBrandName =
+      brands.find((brand) => brand.id === id)?.nombre || "";
+    setForm((prev) => ({ ...prev, marca: selectedBrandName }));
+    validateField("marca", selectedBrandName);
   };
 
   const handleStateModel = (id: number) => {
     setVersion(true);
     setSelectedModel(id);
-    
+
     // Encontrar el nombre del modelo seleccionado
     const brand = brands.find((b) => b.id === selectedBrand);
-    const selectedModelName = brand?.modelos.find(model => model.id === id)?.nombre || "";
-    setForm(prev => ({ ...prev, modelo: selectedModelName }));
-    validateField('modelo', selectedModelName);
+    const selectedModelName =
+      brand?.modelos.find((model) => model.id === id)?.nombre || "";
+    setForm((prev) => ({ ...prev, modelo: selectedModelName }));
+    validateField("modelo", selectedModelName);
   };
 
   const handleStateVersion = (id: number) => {
     setSelectedVersion(id);
-    
+
     // Encontrar el nombre de la versión seleccionada
     const brand = brands.find((b) => b.id === selectedBrand);
     const model = brand?.modelos.find((m) => m.id === selectedModel);
-    const selectedVersionName = model?.versiones.find(version => version.id === id)?.nombre || "";
-    setForm(prev => ({ ...prev, version: selectedVersionName }));
-    validateField('version', selectedVersionName);
+    const selectedVersionName =
+      model?.versiones.find((version) => version.id === id)?.nombre || "";
+    setForm((prev) => ({ ...prev, version: selectedVersionName }));
+    validateField("version", selectedVersionName);
   };
 
   const handleBrand = () => {
     const result = brands.map((brand) => {
       return { id: brand.id, name: brand.nombre };
     });
+
+    console.log(result);
+
     return result;
   };
 
@@ -100,10 +110,10 @@ const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void 
 
   const handleSubmit = () => {
     if (validateForm(form)) {
-      console.log('Formulario válido:', form);
+      console.log("Formulario válido:", form);
       handleCurrentView();
     } else {
-      console.log('Formulario inválido:', errors);
+      console.log("Formulario inválido:", errors);
     }
   };
 
@@ -118,13 +128,13 @@ const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void 
                 <strong>Información del vehículo</strong>
               </h5>
             </div>
-            <Input 
-              title="Matricula" 
+            <Input
+              title="Matricula"
               place=""
               value={form.matricula}
-              onChange={(value) => handleInputChange('matricula', value)}
+              onChange={(value) => handleInputChange("matricula", value)}
               error={errors.matricula}
-              onBlur={() => validateField('matricula', form.matricula)}
+              onBlur={() => validateField("matricula", form.matricula)}
             />
             <div className="col">
               <SelectForm
@@ -134,19 +144,19 @@ const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void 
                 items={handleBrand()}
                 onChange={handleStateBrand}
                 error={errors.marca}
-                onBlur={() => validateField('marca', form.marca)}
+                onBlur={() => validateField("marca", form.marca)}
               />
             </div>
           </div>
           <div className="row " style={{ padding: "2px" }}>
             <div className="col">
-              <Input 
-                title="Chasis" 
+              <Input
+                title="Chasis"
                 place=""
                 value={form.chasis}
-                onChange={(value) => handleInputChange('chasis', value)}
+                onChange={(value) => handleInputChange("chasis", value)}
                 error={errors.chasis}
-                onBlur={() => validateField('chasis', form.chasis)}
+                onBlur={() => validateField("chasis", form.chasis)}
               />
             </div>
             <div className="col">
@@ -157,19 +167,19 @@ const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void 
                 items={handleModel()}
                 onChange={handleStateModel}
                 error={errors.modelo}
-                onBlur={() => validateField('modelo', form.modelo)}
+                onBlur={() => validateField("modelo", form.modelo)}
               />
             </div>
           </div>
           <div className="row " style={{ padding: "2px" }}>
             <div className="col">
-              <Input 
-                title="Numero de Motor" 
+              <Input
+                title="Numero de Motor"
                 place=""
                 value={form.numeroMotor}
-                onChange={(value) => handleInputChange('numeroMotor', value)}
+                onChange={(value) => handleInputChange("numeroMotor", value)}
                 error={errors.numeroMotor}
-                onBlur={() => validateField('numeroMotor', form.numeroMotor)}
+                onBlur={() => validateField("numeroMotor", form.numeroMotor)}
               />
             </div>
             <div className="col">
@@ -180,27 +190,27 @@ const FormDataVehicle = ({ handleCurrentView }: { handleCurrentView: () => void 
                 items={handleVersion()}
                 onChange={handleStateVersion}
                 error={errors.version}
-                onBlur={() => validateField('version', form.version)}
+                onBlur={() => validateField("version", form.version)}
               />
             </div>
           </div>
           <div className="row " style={{ padding: "2px" }}>
             <div className="col">
-              <CheckForm 
-                title="GNC" 
+              <CheckForm
+                title="GNC"
                 text="Activar GNC"
                 checked={form.gnc}
-                onChange={(value) => handleCheckboxChange('gnc', value)}
+                onChange={(value) => handleCheckboxChange("gnc", value)}
               />
             </div>
             <div className="col">
-              <Input 
-                title="Año" 
+              <Input
+                title="Año"
                 place="XXXX"
                 value={form.anio}
-                onChange={(value) => handleInputChange('anio', value)}
+                onChange={(value) => handleInputChange("anio", value)}
                 error={errors.anio}
-                onBlur={() => validateField('anio', form.anio)}
+                onBlur={() => validateField("anio", form.anio)}
               />
             </div>
           </div>

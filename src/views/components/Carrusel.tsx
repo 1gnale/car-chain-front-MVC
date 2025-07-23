@@ -12,7 +12,7 @@ const Carrusel = () => {
     height: "100vh",
     width: "100%",
   };
-  
+
   const captionStyle = {
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     borderRadius: "0.5rem",
@@ -47,7 +47,6 @@ const Carrusel = () => {
                 style="btn-lg"
                 text="Solicitar cotización"
                 onClick={() => {}}
-                
               />
             </div>
           </div>

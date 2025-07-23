@@ -1,0 +1,176 @@
+[
+  {
+    "descripcion": "Buenos Aires",
+    "localidades": [
+      { "descripcion": "La Plata", "codigoPostal": "1900" },
+      { "descripcion": "Mar del Plata", "codigoPostal": "7600" },
+      { "descripcion": "Bahía Blanca", "codigoPostal": "8000" }
+    ]
+  },
+  {
+    "descripcion": "CABA",
+    "localidades": [
+      {
+        "descripcion": "Ciudad Autónoma de Buenos Aires",
+        "codigoPostal": "1000"
+      }
+    ]
+  },
+  {
+    "descripcion": "Catamarca",
+    "localidades": [
+      {
+        "descripcion": "San Fernando del Valle de Catamarca",
+        "codigoPostal": "4700"
+      },
+      { "descripcion": "Belén", "codigoPostal": "4750" }
+    ]
+  },
+  {
+    "descripcion": "Chaco",
+    "localidades": [
+      { "descripcion": "Resistencia", "codigoPostal": "3500" },
+      { "descripcion": "Presidencia Roque Sáenz Peña", "codigoPostal": "3700" }
+    ]
+  },
+  {
+    "descripcion": "Chubut",
+    "localidades": [
+      { "descripcion": "Rawson", "codigoPostal": "9103" },
+      { "descripcion": "Comodoro Rivadavia", "codigoPostal": "9000" }
+    ]
+  },
+  {
+    "descripcion": "Córdoba",
+    "localidades": [
+      { "descripcion": "Córdoba Capital", "codigoPostal": "5000" },
+      { "descripcion": "Villa Carlos Paz", "codigoPostal": "5152" }
+    ]
+  },
+  {
+    "descripcion": "Corrientes",
+    "localidades": [
+      { "descripcion": "Corrientes Capital", "codigoPostal": "3400" },
+      { "descripcion": "Goya", "codigoPostal": "3450" }
+    ]
+  },
+  {
+    "descripcion": "Entre Ríos",
+    "localidades": [
+      { "descripcion": "Paraná", "codigoPostal": "3100" },
+      { "descripcion": "Concordia", "codigoPostal": "3200" }
+    ]
+  },
+  {
+    "descripcion": "Formosa",
+    "localidades": [
+      { "descripcion": "Formosa", "codigoPostal": "3600" },
+      { "descripcion": "Clorinda", "codigoPostal": "3610" }
+    ]
+  },
+  {
+    "descripcion": "Jujuy",
+    "localidades": [
+      { "descripcion": "San Salvador de Jujuy", "codigoPostal": "4600" },
+      { "descripcion": "La Quiaca", "codigoPostal": "4650" }
+    ]
+  },
+  {
+    "descripcion": "La Pampa",
+    "localidades": [
+      { "descripcion": "Santa Rosa", "codigoPostal": "6300" },
+      { "descripcion": "General Pico", "codigoPostal": "6360" }
+    ]
+  },
+  {
+    "descripcion": "La Rioja",
+    "localidades": [
+      { "descripcion": "La Rioja Capital", "codigoPostal": "5300" },
+      { "descripcion": "Chilecito", "codigoPostal": "5360" }
+    ]
+  },
+  {
+    "descripcion": "Mendoza",
+    "localidades": [
+      { "descripcion": "Mendoza Capital", "codigoPostal": "5500" },
+      { "descripcion": "San Rafael", "codigoPostal": "5600" }
+    ]
+  },
+  {
+    "descripcion": "Misiones",
+    "localidades": [
+      { "descripcion": "Posadas", "codigoPostal": "3300" },
+      { "descripcion": "Puerto Iguazú", "codigoPostal": "3370" }
+    ]
+  },
+  {
+    "descripcion": "Neuquén",
+    "localidades": [
+      { "descripcion": "Neuquén Capital", "codigoPostal": "8300" },
+      { "descripcion": "San Martín de los Andes", "codigoPostal": "8370" }
+    ]
+  },
+  {
+    "descripcion": "Río Negro",
+    "localidades": [
+      { "descripcion": "Viedma", "codigoPostal": "8500" },
+      { "descripcion": "Bariloche", "codigoPostal": "8400" }
+    ]
+  },
+  {
+    "descripcion": "Salta",
+    "localidades": [
+      { "descripcion": "Salta Capital", "codigoPostal": "4400" },
+      { "descripcion": "Orán", "codigoPostal": "4530" }
+    ]
+  },
+  {
+    "descripcion": "San Juan",
+    "localidades": [
+      { "descripcion": "San Juan Capital", "codigoPostal": "5400" },
+      { "descripcion": "Caucete", "codigoPostal": "5442" }
+    ]
+  },
+  {
+    "descripcion": "San Luis",
+    "localidades": [
+      { "descripcion": "San Luis Capital", "codigoPostal": "5700" },
+      { "descripcion": "Villa Mercedes", "codigoPostal": "5730" }
+    ]
+  },
+  {
+    "descripcion": "Santa Cruz",
+    "localidades": [
+      { "descripcion": "Río Gallegos", "codigoPostal": "9400" },
+      { "descripcion": "Caleta Olivia", "codigoPostal": "9011" }
+    ]
+  },
+  {
+    "descripcion": "Santa Fe",
+    "localidades": [
+      { "descripcion": "Santa Fe Capital", "codigoPostal": "3000" },
+      { "descripcion": "Rosario", "codigoPostal": "2000" }
+    ]
+  },
+  {
+    "descripcion": "Santiago del Estero",
+    "localidades": [
+      { "descripcion": "Santiago del Estero Capital", "codigoPostal": "4200" },
+      { "descripcion": "La Banda", "codigoPostal": "4300" }
+    ]
+  },
+  {
+    "descripcion": "Tierra del Fuego",
+    "localidades": [
+      { "descripcion": "Ushuaia", "codigoPostal": "9410" },
+      { "descripcion": "Río Grande", "codigoPostal": "9420" }
+    ]
+  },
+  {
+    "descripcion": "Tucumán",
+    "localidades": [
+      { "descripcion": "San Miguel de Tucumán", "codigoPostal": "4000" },
+      { "descripcion": "Tafí Viejo", "codigoPostal": "4103" }
+    ]
+  }
+]
