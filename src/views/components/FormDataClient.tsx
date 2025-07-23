@@ -5,18 +5,15 @@ import Input from "./GeneralComponents/Input";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
 import SelectForm from "./GeneralComponents/SelectForm.tsx";
 
-const FormDataClient = ({
-  handleCurrentView,
-}: {
-  handleCurrentView: () => void;
-}) => {
+const FormDataClient = ({ handleCurrentView }: { handleCurrentView: () => void; }) => {
   const listSex = [
     { id: 1, name: "Femenino" },
     { id: 2, name: "Masculino" },
   ];
-  const documentTypes: any = [];
+  const documentTypes: string[] = useAppSelector((state) => state.documentTypes.documentType);
 
-  console.log(documentTypes);
+  console.log("documentTypes", documentTypes)
+
   const [selectedSex, setSelectedSex] = useState(0);
   const [selectedDocumentType, setSelectedDocumentType] = useState(0);
   const { errors, validateField, validateForm } = useFormClientValidation();
@@ -58,14 +55,11 @@ const FormDataClient = ({
   };
 
   const handleDocumentType = () => {
-    const [cont, setCont] = useState(-1);
+    const result = documentTypes.map((documentTypes, idx) => {
+      return { id: idx, name: documentTypes };
+    });
 
-    // const result = documentTypes.map((documentTypes) => {
-    //   setCont(+1);
-    //   return { id: cont, name: documentTypes };
-    // });
-
-    // return result;
+    return result;
   };
 
   return (
@@ -130,7 +124,7 @@ const FormDataClient = ({
                 status={true}
                 value={selectedDocumentType}
                 title="Tipo Documento"
-                items={listSex}
+                items={handleDocumentType()}
                 onChange={handleStateDocumentType}
                 error={errors.sexo}
                 onBlur={() => validateField("tipoDocumento", formClient.sexo)}
