@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import documentTypeReducer from "./documentTypeSlice";
 import provincesReducer from "./provincesSlice";
+import coverageAllDataReducer from "./coverageAllDataSlice";
 import brandReducer from "./brandSlice";
 
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
     brands: brandReducer,
     documentTypes: documentTypeReducer,
     provinces: provincesReducer,
+    coverages: coverageAllDataReducer,
   },
 });
 

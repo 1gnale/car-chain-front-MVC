@@ -31,3 +31,42 @@ interface Localidades {
   descripcion: string;
   codigoPostal: string;
 }
+
+interface Cobertura {
+  id_cobertura: number;
+  nombre: string;
+  descripcion: string;
+  recargo_por_atraso: number;
+}
+
+interface Cobertura_Detalle {
+  cobertura: Cobertura;
+  detalle: Detalle;
+  aplica: boolean;
+}
+
+interface Detalle {
+  id_detalle: number;
+  nombre: string;
+  descripcion: string;
+  porcentaje_miles: number | null;
+  monto_fijo: number | null;
+}
+
+// Interfaces pura y exclusivamente usadas para el renderizado rapido
+interface Cobertura_AllData {
+  id_cobertura: number;
+  nombre: string;
+  descripcion: string;
+  recargo_por_atraso: number;
+  detalles: Detalle_Data[];
+}
+
+interface Detalle_AllData {
+  id_detalle: number;
+  nombre: string;
+  descripcion: string;
+  porcentaje_miles: number | null;
+  monto_fijo: number | null;
+  aplica: boolean;
+}

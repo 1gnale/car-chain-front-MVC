@@ -1,18 +1,30 @@
 import { Card, ListGroup } from "react-bootstrap";
-import { CheckSquareFill, XCircleFill } from "react-bootstrap-icons";
+import {
+  CheckSquareFill,
+  XCircleFill,
+  InfoCircle,
+} from "react-bootstrap-icons";
+import { useEffect } from "react";
 import GrayButton from "./Button.tsx";
 
 interface CoberturaCardProps {
   titulo: string;
   precio: string;
-  items: boolean[]; // true = check, false = X
+  itemsApply?: aplica[];
+  itemsDetails?: Detalle_AllData[];
   onContratar: () => void;
+}
+
+interface aplica {
+  name: string;
+  apply: boolean;
+  description: string;
 }
 
 const CoverageCard = ({
   titulo,
   precio,
-  items,
+  itemsApply,
   onContratar,
 }: CoberturaCardProps) => {
   return (
@@ -21,26 +33,26 @@ const CoverageCard = ({
         {titulo}
       </Card.Header>
       <Card.Body>
-        <Card.Title className="display-6">${precio}</Card.Title>
+        <Card.Title className="display-6">{precio}</Card.Title>
         <ListGroup variant="flush">
-          {items.map((item, index) => (
+          {itemsApply?.map((itemApply, index) => (
             <ListGroup.Item
               key={index}
-              className="d-flex justify-content-center"
+              className="d-flex justify-content-between align-items-center"
             >
-              {item ? (
+              <div className="d-flex align-items-center">
+                <InfoCircle className="me-2" style={{ cursor: "pointer" }} />
+                <span>{itemApply.name}</span>
+              </div>
+              {itemApply.apply ? (
                 <CheckSquareFill size={24} color="grey" />
               ) : (
                 <XCircleFill size={24} color="grey" />
               )}
             </ListGroup.Item>
           ))}
+          <GrayButton text="Contratar" style="" onClick={onContratar} />
         </ListGroup>
-        <GrayButton
-          text="Contratar"
-          style=""
-          onClick={onContratar}
-        ></GrayButton>
       </Card.Body>
     </Card>
   );
