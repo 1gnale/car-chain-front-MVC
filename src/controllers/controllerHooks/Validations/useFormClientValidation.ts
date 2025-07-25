@@ -44,11 +44,12 @@ const useFormValidation = (): UseFormValidationReturn => {
 
   // Patrones de validación
   const patterns = {
-    nombre: /^[A-Z]{2}$/,
-    apellido: /^[A-Z]{2}$/,
+    nombre: /^[A-Z]{2,100}$/,
+    apellido: /^[A-Z]{2,100}$/,
     documento: /^[A-Z0-9]{5,11}$/,
-    telefono: /^\d{5}$/,
-    domicilio: /^[A-Z]{5}$/,
+    telefono: /^\d{5,20}$/,
+    domicilio: /^[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.\s]{5,100}$/,
+    fechaNacimiento: /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
   };
 
   // VER PARA VALIDAR FECHA
@@ -125,7 +126,7 @@ const useFormValidation = (): UseFormValidationReturn => {
 
       case "provincia":
         if (!value || value === "") {
-          newErrors.provincia = "El tipo de provincia es requerido";
+          newErrors.provincia = "La provincia es requerido";
         } else {
           delete newErrors.provincia;
         }
@@ -133,17 +134,9 @@ const useFormValidation = (): UseFormValidationReturn => {
 
       case "localidad":
         if (!value || value === "") {
-          newErrors.localidad = "El tipo de localidad es requerido";
+          newErrors.localidad = "La localidad es requerido";
         } else {
           delete newErrors.localidad;
-        }
-        break;
-
-      case "domicilio":
-        if (!value || value === "") {
-          newErrors.domicilio = "El tipo de domicilio es requerido";
-        } else {
-          delete newErrors.domicilio;
         }
         break;
 
@@ -152,18 +145,27 @@ const useFormValidation = (): UseFormValidationReturn => {
         if (!domicilioValue.trim()) {
           newErrors.domicilio = "El domicilio es requerido";
         } else if (!patterns.domicilio.test(domicilioValue.toUpperCase())) {
-          newErrors.domicilio = "El domicilio debe ser mayor a 5 caracteres";
+          newErrors.domicilio =
+            "El domicilio debe contar con una calle y numero";
         } else {
           delete newErrors.domicilio;
         }
         break;
 
       case "fechaNacimiento":
-        if (typeof value === "string") {
+        const nas = value as string;
+        if (!nas.trim()) {
+          newErrors.fechaNacimiento = "La fecha de nacimiento es requerido";
+        } else if (!patterns.fechaNacimiento.test(nas)) {
+          newErrors.fechaNacimiento =
+            "La decha de nacimiento debe venir en un formato MM/DD/YYYY";
+        } else if (typeof value === "string") {
           const fechaNacimiento = new Date(value);
 
           if (isNaN(fechaNacimiento.getTime())) {
             newErrors.fechaNacimiento = "La fecha no es válida";
+          } else if (fechaNacimiento.getFullYear() < 1900) {
+            newErrors.fechaNacimiento = "El año no es válida";
           } else {
             const hoy = new Date();
             const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
@@ -175,15 +177,16 @@ const useFormValidation = (): UseFormValidationReturn => {
             const edadReal = yaCumplio ? edad : edad - 1;
 
             if (edadReal < 18) {
-              newErrors.fechaNacimiento = "Debes tener al menos 18 años";
+              newErrors.fechaNacimiento =
+                "El dueño del vehiculo debe tener al menos 18 años";
             } else {
               delete newErrors.fechaNacimiento;
             }
           }
         } else {
-          newErrors.fechaNacimiento =
-            "La fecha debe ser una cadena de texto válida";
+          delete newErrors.fechaNacimiento;
         }
+
         break;
 
       default:
@@ -250,8 +253,8 @@ const useFormValidation = (): UseFormValidationReturn => {
     // Validar domicilio
     if (!formData.domicilio.trim()) {
       newErrors.domicilio = "El domicilio es requerido";
-    } else if (!patterns.telefono.test(formData.domicilio.toUpperCase())) {
-      newErrors.domicilio = "El domicilio debe ser mayor a 5 caracteres";
+    } else if (!patterns.domicilio.test(formData.domicilio.toUpperCase())) {
+      newErrors.domicilio = "El domicilio debe tener al menos 5 caracteres";
     }
 
     // Validar fecha nacimiento

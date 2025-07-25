@@ -1,16 +1,17 @@
 import { useState } from "react";
+import { useMemo } from "react";
 import Input from "./GeneralComponents/Input";
 import CheckForm from "./GeneralComponents/CheckForm";
 import SelectForm from "./GeneralComponents/SelectForm";
 import GrayButton from "./GeneralComponents/Button";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
-import useFormValidation from "../../controllers/controllerHooks/useFormValidation";
+import useFormValidation from "../../controllers/controllerHooks/Validations/useFormValidation.ts";
 import "../../models/types.d.ts";
 
 const FormDataVehicle = ({
   handleCurrentView,
 }: {
-  handleCurrentView: () => void;
+  handleCurrentView: (pass: boolean) => void;
 }) => {
   const brands: Brand[] = useAppSelector((state) => state.brands.brand);
   const { errors, validateField, validateForm } = useFormValidation();
@@ -32,6 +33,7 @@ const FormDataVehicle = ({
     anio: "",
   });
 
+  // HANDLE STATES
   const handleInputChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     validateField(field as keyof typeof errors, value);
@@ -47,7 +49,6 @@ const FormDataVehicle = ({
     setVersion(false);
     setSelectedModel(0);
     setSelectedVersion(0);
-
     // Encontrar el nombre de la marca seleccionada
     const selectedBrandName =
       brands.find((brand) => brand.id === id)?.nombre || "";
@@ -78,22 +79,25 @@ const FormDataVehicle = ({
     setForm((prev) => ({ ...prev, version: selectedVersionName }));
     validateField("version", selectedVersionName);
   };
-
-  const handleBrand = () => {
+  // HANDLES
+  const handleBrand = useMemo(() => {
     const result = brands.map((brand) => {
       return { id: brand.id, name: brand.nombre };
     });
-
-    console.log(result);
-
     return result;
-  };
+  }, [brands]);
 
   const handleModel = () => {
     if (selectedBrand === null) return [];
     const brand = brands.find((b) => b.id === selectedBrand);
     if (!brand) return [];
-    return brand.modelos.map((model) => ({ id: model.id, name: model.nombre }));
+
+    console.log("2");
+
+    return brand.modelos.map((model) => ({
+      id: model.id,
+      name: model.nombre,
+    }));
   };
 
   const handleVersion = () => {
@@ -102,6 +106,7 @@ const FormDataVehicle = ({
     if (!brand) return [];
     const model = brand.modelos.find((m) => m.id === selectedModel);
     if (!model) return [];
+    console.log("3");
     return model.versiones.map((version) => ({
       id: version.id,
       name: version.nombre,
@@ -111,7 +116,7 @@ const FormDataVehicle = ({
   const handleSubmit = () => {
     if (validateForm(form)) {
       console.log("Formulario válido:", form);
-      handleCurrentView();
+      handleCurrentView(true);
     } else {
       console.log("Formulario inválido:", errors);
     }
@@ -141,7 +146,7 @@ const FormDataVehicle = ({
                 status={true}
                 value={selectedBrand}
                 title="Marca"
-                items={handleBrand()}
+                items={handleBrand}
                 onChange={handleStateBrand}
                 error={errors.marca}
                 onBlur={() => validateField("marca", form.marca)}

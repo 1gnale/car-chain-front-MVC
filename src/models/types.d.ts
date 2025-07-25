@@ -19,3 +19,15 @@ interface Version {
   precio_mercado: number;
   precio_mercado_gnc: number;
 }
+
+interface Provincias {
+  id: number;
+  descripcion: string;
+  localidades: Localidades[];
+}
+
+interface Localidades {
+  id: number;
+  descripcion: string;
+  codigoPostal: string;
+}

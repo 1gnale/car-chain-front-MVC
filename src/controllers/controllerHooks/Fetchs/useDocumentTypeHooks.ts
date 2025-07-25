@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import fetchDocumentType from "../../models/fetchDocumentType";
-import { setDocumentTypes } from "../../redux/documentTypeSlice";
-import jsonDocType from "../../models/mock/DocumentTypeInfoMock.json";
-import { DocumentTypeRepository } from "../../models/repositories/documentTypeRepository";
+import fetchDocumentType from "../../../models/fetchDocumentType";
+import { setDocumentTypes } from "../../../redux/documentTypeSlice";
+import jsonDocType from "../../../models/mock/DocumentTypeInfoMock.json";
+import { DocumentTypeRepository } from "../../../models/repositories/documentTypeRepository";
 
 const useDocumentTypes = () => {
   const dispatch = useDispatch();

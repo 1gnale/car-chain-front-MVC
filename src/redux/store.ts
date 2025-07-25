@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import documentTypeReducer from "./documentTypeSlice";
+import provincesReducer from "./provincesSlice";
 import brandReducer from "./brandSlice";
+
 export const store = configureStore({
   reducer: {
     brands: brandReducer,
     documentTypes: documentTypeReducer,
+    provinces: provincesReducer,
   },
 });
 
