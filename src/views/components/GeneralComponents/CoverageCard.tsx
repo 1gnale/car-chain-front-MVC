@@ -4,8 +4,8 @@ import {
   XCircleFill,
   InfoCircle,
 } from "react-bootstrap-icons";
-import { useEffect } from "react";
 import GrayButton from "./Button.tsx";
+import type { Detalle_AllData } from "../../../models/types";
 
 interface CoberturaCardProps {
   titulo: string;
@@ -20,6 +20,9 @@ interface aplica {
   apply: boolean;
   description: string;
 }
+const generateAlert = (details: string) => {
+  alert(details);
+};
 
 const CoverageCard = ({
   titulo,
@@ -30,7 +33,7 @@ const CoverageCard = ({
   return (
     <Card className="text-center h-100 card border-dark mb-3">
       <Card.Header className="card text-white bg-secondary mb-3">
-        {titulo}
+        <strong>{titulo}</strong>
       </Card.Header>
       <Card.Body>
         <Card.Title className="display-6">{precio}</Card.Title>
@@ -41,7 +44,11 @@ const CoverageCard = ({
               className="d-flex justify-content-between align-items-center"
             >
               <div className="d-flex align-items-center">
-                <InfoCircle className="me-2" style={{ cursor: "pointer" }} />
+                <InfoCircle
+                  className="me-2"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => generateAlert(itemApply.description)}
+                />
                 <span>{itemApply.name}</span>
               </div>
               {itemApply.apply ? (

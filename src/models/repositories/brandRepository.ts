@@ -1,3 +1,4 @@
+import type { Brand } from "../types";
 import type IBrandRepository from "./IBrandRepository.ts";
 
 export class BrandRepository implements IBrandRepository {

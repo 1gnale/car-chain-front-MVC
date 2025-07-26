@@ -3,7 +3,12 @@ import CoverageCard from "./GeneralComponents/CoverageCard.tsx";
 import "../../models/types.d.ts";
 import GrayButton from "./GeneralComponents/Button";
 import { ExclamationCircleFill } from "react-bootstrap-icons";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import type {
+  allConfigs,
+  Cobertura_AllData,
+  Detalle_AllData,
+} from "../../models/types.d.ts";
 
 const FormDataCoverages = ({
   handleCurrentView,
@@ -14,7 +19,17 @@ const FormDataCoverages = ({
     (state) => state.coverages.coverage
   );
 
-  console.log("COBERS" + coverages);
+  const allConfig: allConfigs = useAppSelector(
+    (state) => state.allConfigs.allConfig
+  );
+
+  useEffect(() => {
+    // Código que se ejecuta cuando se monta el componente o cambia alguna dependencia
+    console.log("useEffect ejecutado");
+    allConfig.config_antiguedad?.map((config) =>
+      console.log("configs: " + config.nombre)
+    );
+  }, []);
 
   const handleAppliedDetails = (details: Detalle_AllData[]) => {
     const result = details.map((detail) => {

@@ -22,8 +22,8 @@ interface Version {
 
 interface Provincias {
   id: number;
-  descripcion: string;
-  localidades: Localidades[];
+  descripcion?: string;
+  localidades?: Localidades[];
 }
 
 interface Localidades {
@@ -53,6 +53,54 @@ interface Detalle {
   monto_fijo: number | null;
 }
 
+interface ConfigEdad {
+  id: number;
+  nombre: string;
+  minima: number;
+  maxima: number;
+  descuento: number;
+  ganancia: number;
+  recargo: number;
+  activo: boolean;
+}
+
+interface ConfigAntiguedad {
+  id: number;
+  nombre: string;
+  minima: number;
+  maxima: number;
+  descuento: number;
+  ganancia: number;
+  recargo: number;
+  activo: boolean;
+}
+
+export interface ConfigLocalidad {
+  id: number;
+  nombre: string;
+  descuento: number;
+  ganancia: number;
+  recargo: number;
+  activo: boolean;
+  localidad?: Localidades;
+}
+
+interface Cotizacion {
+  id_cotizacion: number;
+  fecha_creacion: string;
+  fecha_vencimiento: string;
+  config_edad: ConfigEdad;
+  config_antiguedad: ConfigAntiguedad;
+  config_localidad: ConfigLocalidad;
+  lineas: LineaCotizacion[];
+}
+
+interface LINEA_COTIZACION {
+  monto: number;
+  cotizacion: Cotizacion;
+  cobertura: Cobertura;
+}
+
 // Interfaces pura y exclusivamente usadas para el renderizado rapido
 interface Cobertura_AllData {
   id_cobertura: number;
@@ -69,4 +117,10 @@ interface Detalle_AllData {
   porcentaje_miles: number | null;
   monto_fijo: number | null;
   aplica: boolean;
+}
+
+interface allConfigs {
+  config_antiguedad?: ConfigAntiguedad[];
+  config_edad?: ConfigEdad[];
+  config_localidad?: ConfigLocalidad[];
 }

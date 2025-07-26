@@ -19,7 +19,7 @@
         "descripcion": "Servicio de grúa y auxilio mecánico",
         "porcentaje_miles": null,
         "monto_fijo": 1000,
-        "aplica": false
+        "aplica": true
       },
       {
         "id_detalle": 103,
@@ -67,7 +67,7 @@
         "descripcion": "Cubre daños ocasionados a terceros",
         "porcentaje_miles": 2.5,
         "monto_fijo": null,
-        "aplica": false
+        "aplica": true
       },
       {
         "id_detalle": 102,
@@ -147,7 +147,7 @@
         "descripcion": "Reposición de cristales rotos",
         "porcentaje_miles": null,
         "monto_fijo": 1500,
-        "aplica": false
+        "aplica": true
       },
       {
         "id_detalle": 105,
@@ -155,7 +155,7 @@
         "descripcion": "Cubre daños en la carrocería por granizo",
         "porcentaje_miles": 3.0,
         "monto_fijo": null,
-        "aplica": false
+        "aplica": true
       },
       {
         "id_detalle": 106,
