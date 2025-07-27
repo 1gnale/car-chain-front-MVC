@@ -1,11 +1,12 @@
-import "../../models/types.d.ts";
-import { useMemo } from "react";
-import { useState } from "react";
+/*import "../../models/types.d.ts";
+import { useState, useEffect, useMemo } from "react";
 import useFormClientValidation from "../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
+import { useLocalStorage } from "../../controllers/controllerHooks/Fetchs/useLocalStorage.ts";
 import Input from "./GeneralComponents/Input";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
 import SelectForm from "./GeneralComponents/SelectForm.tsx";
 import GrayButton from "./GeneralComponents/Button.tsx";
+import type { Provincias } from "../../models/types.d.ts";
 
 const FormDataClient = ({
   handleCurrentView,
@@ -32,24 +33,65 @@ const FormDataClient = ({
   const [selectedDocumentType, setSelectedDocumentType] = useState(0);
   const { errors, validateField, validateForm } = useFormClientValidation();
 
+  const [formClientStorage, setFormClientStorage] = useLocalStorage(
+    "formClient",
+    {}
+  );
+
   const [formClient, setFormClient] = useState({
     nombre: "",
     apellido: "",
     tipoDocumento: "",
     documento: "",
+    documentoId: 0,
     fechaNacimiento: "",
     telefono: "",
     sexo: "",
+    sexoId: 0,
     provincia: "",
+    provinciaId: 0,
     localidad: "",
+    localidadId: 0,
     domicilio: "",
   });
+
+  function parseFormClient(json: any): any {
+    return {
+      nombre: json.nombre || "",
+      apellido: json.apellido || "",
+      tipoDocumento: json.tipoDocumento || "",
+      tipoDocumentoId: Number(json.sexoId) || 0,
+      documento: json.documento || "",
+      fechaNacimiento: json.fechaNacimiento || "",
+      telefono: json.telefono || "",
+      sexo: json.sexo || "",
+      sexoId: Number(json.sexoId) || 0,
+      provincia: json.provincia || "",
+      localidad: json.localidad || "",
+      domicilio: json.domicilio || "",
+      provinciaId: Number(json.provinciaId) || 0,
+      localidadId: Number(json.localidadId) || 0,
+    };
+  }
+  useEffect(() => {
+    // localStorage.removeItem("formClient");
+    const client = localStorage.getItem("formClient");
+    if (client !== null) {
+      const clientStorage = JSON.parse(client);
+      const formClientResult = parseFormClient(clientStorage);
+      setLocality(true);
+      setFormClient(formClientResult);
+      setSelectedProvinces(formClientResult.provinciaId);
+      setSelectedLocality(formClientResult.localidadId);
+      setSelectedSex(formClientResult.sexoId);
+      setSelectedDocumentType(formClientResult.tipoDocumentoId);
+    }
+  }, []);
 
   // HANDLE STATE
   const handleStateDocumentType = (id: number) => {
     setSelectedDocumentType(id);
     // Encontrar el nombre del tipo documento
-    //  seleccionada
     const selectedDocumentType = documentTypes[id] || "";
     setFormClient((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
     validateField("tipoDocumento", selectedDocumentType);
@@ -61,6 +103,7 @@ const FormDataClient = ({
     // Encontrar el nombre del sexo seleccionada
     const selectedSexName = listSex.find((sex) => sex.id === id)?.name || "";
     setFormClient((prev) => ({ ...prev, sexo: selectedSexName }));
+    setFormClient((prev) => ({ ...prev, sexoId: id }));
     validateField("sexo", selectedSexName);
   };
 
@@ -73,6 +116,7 @@ const FormDataClient = ({
     const selectedProvinceName =
       provinces.find((province) => province.id === id)?.descripcion || "";
     setFormClient((prev) => ({ ...prev, provincia: selectedProvinceName }));
+    setFormClient((prev) => ({ ...prev, provinciaId: id }));
     validateField("provincia", selectedProvinceName);
   };
 
@@ -83,9 +127,10 @@ const FormDataClient = ({
     const province = provinces.find((p) => p.id === selectedProvince);
 
     const selectedLocalityName =
-      province?.localidades.find((localidad) => localidad.id === id)
+      province?.localidades?.find((localidad) => localidad.id === id)
         ?.descripcion || "";
     setFormClient((prev) => ({ ...prev, localidad: selectedLocalityName }));
+    setFormClient((prev) => ({ ...prev, localidadId: id }));
     validateField("localidad", selectedLocalityName);
   };
 
@@ -98,6 +143,11 @@ const FormDataClient = ({
   const handleSubmit = () => {
     if (validateForm(formClient)) {
       console.log("Formulario válido:", formClient);
+      try {
+        localStorage.setItem("formClient", JSON.stringify(formClient));
+      } catch (error) {
+        console.log("ERROR");
+      }
       handleCurrentView(true);
     } else {
       console.log("Formulario inválido:", errors);
@@ -117,7 +167,7 @@ const FormDataClient = ({
 
   const handleProvinces = useMemo(() => {
     const result = provinces.map((provinces) => {
-      return { id: provinces.id, name: provinces.descripcion };
+      return { id: provinces.id, name: provinces.descripcion! };
     });
     return result;
   }, [provinces]);
@@ -127,7 +177,7 @@ const FormDataClient = ({
     const province = provinces.find((p) => p.id === selectedProvince);
     if (!province) return [];
 
-    return province.localidades.map((localidad) => ({
+    return province?.localidades?.map((localidad) => ({
       id: localidad.id,
       name: localidad.descripcion,
     }));
@@ -285,3 +335,4 @@ const FormDataClient = ({
 };
 
 export default FormDataClient;
+*/
