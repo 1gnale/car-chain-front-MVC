@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "nombre": "Toyota",
+    "descripcion": "Marca japonesa"
+  },
+  {
+    "id": 2,
+    "nombre": "Volkswagen",
+    "descripcion": "Marca alemana"
+  },
+  {
+    "id": 3,
+    "nombre": "Ford",
+    "descripcion": "Marca estadounidense"
+  },
+  {
+    "id": 4,
+    "nombre": "Chevrolet",
+    "descripcion": "Marca estadounidense"
+  },
+  {
+    "id": 5,
+    "nombre": "Nissan",
+    "descripcion": "Marca japonesa"
+  },
+  {
+    "id": 6,
+    "nombre": "Peugeot",
+    "descripcion": "Marca francesa"
+  },
+  {
+    "id": 7,
+    "nombre": "Renault",
+    "descripcion": "Marca francesa"
+  },
+  {
+    "id": 8,
+    "nombre": "Fiat",
+    "descripcion": "Marca italiana"
+  },
+  {
+    "id": 9,
+    "nombre": "Honda",
+    "descripcion": "Marca japonesa"
+  },
+  {
+    "id": 10,
+    "nombre": "Hyundai",
+    "descripcion": "Marca surcoreana"
+  },
+  {
+    "id": 11,
+    "nombre": "Citroën",
+    "descripcion": "Marca francesa"
+  },
+  {
+    "id": 12,
+    "nombre": "Kia",
+    "descripcion": "Marca surcoreana"
+  }
+]

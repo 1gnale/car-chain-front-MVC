@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMemo } from "react";
 import Input from "./GeneralComponents/Input";
 import CheckForm from "./GeneralComponents/CheckForm";
@@ -13,27 +13,113 @@ const FormDataVehicle = ({
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) => {
-  const brands: Brand[] = useAppSelector((state) => state.brands.brand);
+  // States MODELO DATOS
+  const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
+  const models: Modelo[] = useAppSelector((state) => state.modelos.modelo);
+  const versions: Version[] = useAppSelector(
+    (state) => state.versiones.version
+  );
+
+  // State de validacion de datos
   const { errors, validateField, validateForm } = useFormValidation();
 
+  // Statates de Selects
   const [model, setModel] = useState<boolean>(false);
   const [version, setVersion] = useState<boolean>(false);
   const [selectedBrand, setSelectedBrand] = useState(0);
   const [selectedModel, setSelectedModel] = useState(0);
   const [selectedVersion, setSelectedVersion] = useState(0);
 
-  const [form, setForm] = useState({
+  // State formulario
+  const [formVehicle, setForm] = useState({
     matricula: "",
     marca: "",
+    marcaId: 0,
     chasis: "",
     modelo: "",
+    modeloId: 0,
     numeroMotor: "",
     version: "",
+    versionId: 0,
     gnc: false,
     anio: "",
   });
+  // UseEffect
+  useEffect(() => {
+    // localStorage.removeItem("formVehicle");
+    const vehicle = localStorage.getItem("formVehicle");
+    if (vehicle !== null) {
+      const vehicleStorage = JSON.parse(vehicle);
+      const formVehicleResult = parseFormVehicle(vehicleStorage);
+      setModel(true);
+      setVersion(true);
+      setForm(formVehicleResult);
+      setSelectedBrand(formVehicleResult.marcaId);
+      setSelectedModel(formVehicleResult.modeloId);
+      setSelectedVersion(formVehicleResult.versionId);
+    }
+  }, []);
+  function parseFormVehicle(json: any): any {
+    return {
+      matricula: json.matricula || "",
+      marca: json.marca || "",
+      marcaId: Number(json.marcaId) || 0,
+      chasis: json.chasis || "",
+      modelo: json.modelo || "",
+      modeloId: Number(json.modeloId) || 0,
+      numeroMotor: json.numeroMotor || "",
+      version: json.version || "",
+      versionId: Number(json.versionId) || 0,
+      gnc: json.gnc || false,
+      anio: json.anio || "",
+    };
+  }
 
-  // HANDLE STATES
+  // Handles
+  const handleBrand = useMemo(() => {
+    const result = brands.map((brand) => {
+      return { id: brand.id, name: brand.nombre ?? "" };
+    });
+    return result;
+  }, [brands]);
+
+  const handleModel = () => {
+    const modelosFiltrados = models.filter(
+      (modelo) => modelo.marca.id === selectedBrand
+    );
+
+    return modelosFiltrados.map((model) => ({
+      id: model.id,
+      name: model.nombre ?? "",
+    }));
+  };
+
+  const handleVersion = () => {
+    const versionesFiltrados = versions.filter(
+      (version) => version.modelo.id === selectedModel
+    );
+
+    return versionesFiltrados.map((version) => ({
+      id: version.id,
+      name: version.nombre ?? "",
+    }));
+  };
+
+  const handleSubmit = () => {
+    if (validateForm(formVehicle)) {
+      console.log("Formulario válido:", formVehicle);
+      try {
+        localStorage.setItem("formVehicle", JSON.stringify(formVehicle));
+      } catch (error) {
+        console.log("ERROR");
+      }
+      handleCurrentView(true);
+    } else {
+      console.log("Formulario inválido:", errors);
+    }
+  };
+
+  // HandleStates
   const handleInputChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     validateField(field as keyof typeof errors, value);
@@ -53,6 +139,7 @@ const FormDataVehicle = ({
     const selectedBrandName =
       brands.find((brand) => brand.id === id)?.nombre || "";
     setForm((prev) => ({ ...prev, marca: selectedBrandName }));
+    setForm((prev) => ({ ...prev, marcaId: id }));
     validateField("marca", selectedBrandName);
   };
 
@@ -63,65 +150,21 @@ const FormDataVehicle = ({
     // Encontrar el nombre del modelo seleccionado
     const brand = brands.find((b) => b.id === selectedBrand);
     const selectedModelName =
-      brand?.modelos.find((model) => model.id === id)?.nombre || "";
+      models.find((model) => model.id === id)?.nombre || "";
     setForm((prev) => ({ ...prev, modelo: selectedModelName }));
+    setForm((prev) => ({ ...prev, modeloId: id }));
     validateField("modelo", selectedModelName);
   };
 
   const handleStateVersion = (id: number) => {
     setSelectedVersion(id);
 
-    // Encontrar el nombre de la versión seleccionada
-    const brand = brands.find((b) => b.id === selectedBrand);
-    const model = brand?.modelos.find((m) => m.id === selectedModel);
     const selectedVersionName =
-      model?.versiones.find((version) => version.id === id)?.nombre || "";
+      versions.find((version) => version.id === id)?.nombre || "";
     setForm((prev) => ({ ...prev, version: selectedVersionName }));
+    setForm((prev) => ({ ...prev, versionId: id }));
     validateField("version", selectedVersionName);
   };
-  // HANDLES
-  const handleBrand = useMemo(() => {
-    const result = brands.map((brand) => {
-      return { id: brand.id, name: brand.nombre };
-    });
-    return result;
-  }, [brands]);
-
-  const handleModel = () => {
-    if (selectedBrand === null) return [];
-    const brand = brands.find((b) => b.id === selectedBrand);
-    if (!brand) return [];
-
-    console.log("2");
-
-    return brand.modelos.map((model) => ({
-      id: model.id,
-      name: model.nombre,
-    }));
-  };
-
-  const handleVersion = () => {
-    if (selectedModel === null) return [];
-    const brand = brands.find((b) => b.id === selectedBrand);
-    if (!brand) return [];
-    const model = brand.modelos.find((m) => m.id === selectedModel);
-    if (!model) return [];
-    console.log("3");
-    return model.versiones.map((version) => ({
-      id: version.id,
-      name: version.nombre,
-    }));
-  };
-
-  const handleSubmit = () => {
-    if (validateForm(form)) {
-      console.log("Formulario válido:", form);
-      handleCurrentView(true);
-    } else {
-      console.log("Formulario inválido:", errors);
-    }
-  };
-
   return (
     <div className="container-fluid">
       <div className="row">
@@ -136,10 +179,10 @@ const FormDataVehicle = ({
             <Input
               title="Matricula"
               place=""
-              value={form.matricula}
+              value={formVehicle.matricula}
               onChange={(value) => handleInputChange("matricula", value)}
               error={errors.matricula}
-              onBlur={() => validateField("matricula", form.matricula)}
+              onBlur={() => validateField("matricula", formVehicle.matricula)}
             />
             <div className="col">
               <SelectForm
@@ -149,7 +192,7 @@ const FormDataVehicle = ({
                 items={handleBrand}
                 onChange={handleStateBrand}
                 error={errors.marca}
-                onBlur={() => validateField("marca", form.marca)}
+                onBlur={() => validateField("marca", formVehicle.marca)}
               />
             </div>
           </div>
@@ -158,10 +201,10 @@ const FormDataVehicle = ({
               <Input
                 title="Chasis"
                 place=""
-                value={form.chasis}
+                value={formVehicle.chasis}
                 onChange={(value) => handleInputChange("chasis", value)}
                 error={errors.chasis}
-                onBlur={() => validateField("chasis", form.chasis)}
+                onBlur={() => validateField("chasis", formVehicle.chasis)}
               />
             </div>
             <div className="col">
@@ -172,7 +215,7 @@ const FormDataVehicle = ({
                 items={handleModel()}
                 onChange={handleStateModel}
                 error={errors.modelo}
-                onBlur={() => validateField("modelo", form.modelo)}
+                onBlur={() => validateField("modelo", formVehicle.modelo)}
               />
             </div>
           </div>
@@ -181,10 +224,12 @@ const FormDataVehicle = ({
               <Input
                 title="Numero de Motor"
                 place=""
-                value={form.numeroMotor}
+                value={formVehicle.numeroMotor}
                 onChange={(value) => handleInputChange("numeroMotor", value)}
                 error={errors.numeroMotor}
-                onBlur={() => validateField("numeroMotor", form.numeroMotor)}
+                onBlur={() =>
+                  validateField("numeroMotor", formVehicle.numeroMotor)
+                }
               />
             </div>
             <div className="col">
@@ -195,7 +240,7 @@ const FormDataVehicle = ({
                 items={handleVersion()}
                 onChange={handleStateVersion}
                 error={errors.version}
-                onBlur={() => validateField("version", form.version)}
+                onBlur={() => validateField("version", formVehicle.version)}
               />
             </div>
           </div>
@@ -204,7 +249,7 @@ const FormDataVehicle = ({
               <CheckForm
                 title="GNC"
                 text="Activar GNC"
-                checked={form.gnc}
+                checked={formVehicle.gnc}
                 onChange={(value) => handleCheckboxChange("gnc", value)}
               />
             </div>
@@ -212,10 +257,10 @@ const FormDataVehicle = ({
               <Input
                 title="Año"
                 place="XXXX"
-                value={form.anio}
+                value={formVehicle.anio}
                 onChange={(value) => handleInputChange("anio", value)}
                 error={errors.anio}
-                onBlur={() => validateField("anio", form.anio)}
+                onBlur={() => validateField("anio", formVehicle.anio)}
               />
             </div>
           </div>

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "nombre": "Cuando el Auto es nuevo",
+    "minima": 0,
+    "maxima": 3,
+    "descuento": 10.0,
+    "ganancia": 0.0,
+    "recargo": 0.0,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "Cuando es usado",
+    "minima": 4,
+    "maxima": 6,
+    "descuento": 0.0,
+    "ganancia": 0.0,
+    "recargo": 100.0,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "Cuando es viejo",
+    "minima": 7,
+    "maxima": 10,
+    "descuento": 0.0,
+    "ganancia": 5.0,
+    "recargo": 0.0,
+    "activo": true
+  }
+]

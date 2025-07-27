@@ -3,8 +3,8 @@ import { useState } from "react";
 import TitleSection from "../components/GeneralComponents/TitleSection";
 import BreadCrumbNav from "../components/GeneralComponents/BreadCrumbNav";
 import FormDataVehicle from "../components/FormDataVehicle";
-import FormDataClient from "../components/FormDataClient";
-import FormDataCoverages from "../components/FormDataCoverages";
+// import FormDataClient from "../components/FormDataClient";
+//import FormDataCoverages from "../components/FormDataCoverages";
 
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
@@ -21,9 +21,10 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
-    <FormDataCoverages handleCurrentView={handleCurrentView} />,
+    <h1>adsdas</h1>,
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
-    <FormDataClient handleCurrentView={handleCurrentView} />,
+    // <FormDataClient handleCurrentView={handleCurrentView} />,
+    //<FormDataCoverages handleCurrentView={handleCurrentView} />,
   ];
 
   return (

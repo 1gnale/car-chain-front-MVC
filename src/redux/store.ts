@@ -1,16 +1,29 @@
 import { configureStore } from "@reduxjs/toolkit";
-import documentTypeReducer from "./documentTypeSlice";
-import provincesReducer from "./provincesSlice";
-import coverageAllDataReducer from "./coverageAllDataSlice";
-import brandReducer from "./brandSlice";
-import allConfigsReducer from "./allConfigsSlice";
+
+import marcasReducer from "./marcaSlice";
+import modelosReducer from "./modeloSlice";
+import versionReducer from "./versionSlice";
+
+import tipoDocumentosReducer from "./tiposDocumentosSlice";
+
+import provinciasReducer from "./provinciasSlice";
+import localidadesReducer from "./localidadesSlice";
+
+import configAntiguedadReducer from "./configAntiguedadSlice";
+import configEdadReducer from "./configEdadSlice";
+import configLocalidadReducer from "./configLocalidadSlice";
+
 export const store = configureStore({
   reducer: {
-    brands: brandReducer,
-    documentTypes: documentTypeReducer,
-    provinces: provincesReducer,
-    coverages: coverageAllDataReducer,
-    allConfigs: allConfigsReducer,
+    marcas: marcasReducer,
+    modelos: modelosReducer,
+    versiones: versionReducer,
+    tipoDocumentos: tipoDocumentosReducer,
+    provincias: provinciasReducer,
+    localidades: localidadesReducer,
+    configAntiguedades: configAntiguedadReducer,
+    configEdades: configEdadReducer,
+    configLocalidades: configLocalidadReducer,
   },
 });
 

@@ -1,0 +1,192 @@
+[
+  {
+    "id": 1,
+    "nombre": "Corolla",
+    "descripcion": "Sedán compacto",
+    "marca": {
+      "id": 1,
+      "nombre": "Toyota",
+      "descripcion": "Marca japonesa"
+    }
+  },
+  {
+    "id": 2,
+    "nombre": "Yaris",
+    "descripcion": "Hatchback pequeño",
+    "marca": {
+      "id": 1,
+      "nombre": "Toyota",
+      "descripcion": "Marca japonesa"
+    }
+  },
+  {
+    "id": 3,
+    "nombre": "Gol",
+    "descripcion": "Auto económico",
+    "marca": {
+      "id": 2,
+      "nombre": "Volkswagen",
+      "descripcion": "Marca alemana"
+    }
+  },
+  {
+    "id": 4,
+    "nombre": "Focus",
+    "descripcion": "Sedán compacto",
+    "marca": {
+      "id": 3,
+      "nombre": "Ford",
+      "descripcion": "Marca estadounidense"
+    }
+  },
+  {
+    "id": 5,
+    "nombre": "Fiesta",
+    "descripcion": "Hatchback urbano",
+    "marca": {
+      "id": 3,
+      "nombre": "Ford",
+      "descripcion": "Marca estadounidense"
+    }
+  },
+  {
+    "id": 6,
+    "nombre": "Onix",
+    "descripcion": "Hatchback compacto",
+    "marca": {
+      "id": 4,
+      "nombre": "Chevrolet",
+      "descripcion": "Marca estadounidense"
+    }
+  },
+  {
+    "id": 7,
+    "nombre": "Cruze",
+    "descripcion": "Sedán mediano",
+    "marca": {
+      "id": 4,
+      "nombre": "Chevrolet",
+      "descripcion": "Marca estadounidense"
+    }
+  },
+  {
+    "id": 8,
+    "nombre": "Versa",
+    "descripcion": "Sedán compacto",
+    "marca": {
+      "id": 5,
+      "nombre": "Nissan",
+      "descripcion": "Marca japonesa"
+    }
+  },
+  {
+    "id": 9,
+    "nombre": "208",
+    "descripcion": "Hatchback premium",
+    "marca": {
+      "id": 6,
+      "nombre": "Peugeot",
+      "descripcion": "Marca francesa"
+    }
+  },
+  {
+    "id": 10,
+    "nombre": "2008",
+    "descripcion": "SUV compacto",
+    "marca": {
+      "id": 6,
+      "nombre": "Peugeot",
+      "descripcion": "Marca francesa"
+    }
+  },
+  {
+    "id": 11,
+    "nombre": "Logan",
+    "descripcion": "Sedán familiar",
+    "marca": {
+      "id": 7,
+      "nombre": "Renault",
+      "descripcion": "Marca francesa"
+    }
+  },
+  {
+    "id": 12,
+    "nombre": "Cronos",
+    "descripcion": "Sedán compacto",
+    "marca": {
+      "id": 8,
+      "nombre": "Fiat",
+      "descripcion": "Marca italiana"
+    }
+  },
+  {
+    "id": 13,
+    "nombre": "Argo",
+    "descripcion": "Hatchback moderno",
+    "marca": {
+      "id": 8,
+      "nombre": "Fiat",
+      "descripcion": "Marca italiana"
+    }
+  },
+  {
+    "id": 14,
+    "nombre": "City",
+    "descripcion": "Sedán premium",
+    "marca": {
+      "id": 9,
+      "nombre": "Honda",
+      "descripcion": "Marca japonesa"
+    }
+  },
+  {
+    "id": 15,
+    "nombre": "Elantra",
+    "descripcion": "Sedán mediano",
+    "marca": {
+      "id": 10,
+      "nombre": "Hyundai",
+      "descripcion": "Marca surcoreana"
+    }
+  },
+  {
+    "id": 16,
+    "nombre": "Creta",
+    "descripcion": "SUV compacto",
+    "marca": {
+      "id": 10,
+      "nombre": "Hyundai",
+      "descripcion": "Marca surcoreana"
+    }
+  },
+  {
+    "id": 17,
+    "nombre": "C4 Cactus",
+    "descripcion": "Crossover innovador",
+    "marca": {
+      "id": 11,
+      "nombre": "Citroën",
+      "descripcion": "Marca francesa"
+    }
+  },
+  {
+    "id": 18,
+    "nombre": "Rio",
+    "descripcion": "Hatchback urbano",
+    "marca": {
+      "id": 12,
+      "nombre": "Kia",
+      "descripcion": "Marca surcoreana"
+    }
+  },
+  {
+    "id": 19,
+    "nombre": "Cerato",
+    "descripcion": "Sedán deportivo",
+    "marca": {
+      "id": 12,
+      "nombre": "Kia",
+      "descripcion": "Marca surcoreana"
+    }
+  }
+]

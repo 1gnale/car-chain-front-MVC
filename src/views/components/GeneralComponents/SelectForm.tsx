@@ -5,7 +5,7 @@ interface Option {
 
 interface SelectFormProps {
   title: string;
-  items: Option[];
+  items?: Option[];
   onChange: (id: number) => void;
   status: boolean;
   value: number;
@@ -26,7 +26,7 @@ const SelectForm = ({
     <div className="col">
       <label>{title}</label>
       <select
-        className={`form-select ${error ? 'is-invalid' : ''}`}
+        className={`form-select ${error ? "is-invalid" : ""}`}
         disabled={!status}
         required
         value={value}
@@ -36,7 +36,7 @@ const SelectForm = ({
         <option value={0} disabled>
           Elige una opción...
         </option>
-        {items.map((v: Option) => (
+        {items?.map((v: Option) => (
           <option key={v.id} value={v.id}>
             {v.name}
           </option>

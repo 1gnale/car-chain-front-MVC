@@ -1,126 +1,200 @@
-interface Brand {
+interface Provincia {
   id: number;
-  nombre: string;
-  descripcion: string;
-  modelos: Modelo[];
+  descripcion?: string;
+}
+
+interface Localidad {
+  id: number;
+  descripcion?: string;
+  codigoPostal?: string;
+  provincia?: Provincia;
+}
+
+interface Persona {
+  id: number;
+  nombres?: string;
+  apellido?: string;
+  fechaNacimiento?: Date;
+  tipoDocumento?: string;
+  domicilio?: string;
+  correo?: string;
+  telefono?: string;
+  sexo?: string;
+  contraseña?: string;
+  localidad: Localidad;
+}
+
+interface Cliente extends Persona {
+  idClient: number;
+}
+
+interface Usuario extends Persona {
+  idUsuario: number;
+  estado?: string;
+  legajo?: string;
+  tipoUsuario?: string;
+}
+
+interface Vehiculo {
+  id: number;
+  matricula?: string;
+  chasis?: string;
+  añoFabricacion?: number;
+  numeroMotor?: string;
+  gnc?: boolean;
+  version: Version;
+}
+
+interface Marca {
+  id: number;
+  nombre?: string;
+  descripcion?: string;
 }
 
 interface Modelo {
   id: number;
-  nombre: string;
-  descripcion: string;
-  versiones: Version[];
+  nombre?: string;
+  descripcion?: string;
+  marca: Marca;
 }
 
 interface Version {
   id: number;
-  nombre: string;
-  descripcion: string;
-  precio_mercado: number;
-  precio_mercado_gnc: number;
-}
-
-interface Provincias {
-  id: number;
+  nombre?: string;
   descripcion?: string;
-  localidades?: Localidades[];
+  precio_mercado: number;
+  precio_mercado_gnc?: number;
+  modelo: Modelo;
 }
 
-interface Localidades {
+interface ConfigEdad {
   id: number;
-  descripcion: string;
-  codigoPostal: string;
+  nombre?: string;
+  minima?: number;
+  maxima?: number;
+  descuento?: number;
+  ganancia?: number;
+  recargo?: number;
+  activo?: boolean;
+}
+
+interface ConfigAntiguedad {
+  id: number;
+  nombre?: string;
+  minima?: number;
+  maxima?: number;
+  descuento?: number;
+  ganancia?: number;
+  recargo?: number;
+  activo?: boolean;
+}
+
+interface ConfigLocalidad {
+  id: number;
+  nombre?: string;
+  descuento?: number;
+  ganancia?: number;
+  recargo?: number;
+  activo?: boolean;
+  localidad: Localidad;
+}
+
+interface Cotizacion {
+  fechaCreacion: Date;
+  fechaVencimiento: Date;
+  vehiculo: Vehiculo;
+  configuaracionLocalidad: ConfigLocalidad;
+  configudacionEdad: ConfigEdad;
+  configuracionAntiguedad: ConfigAntiguedad;
+}
+
+interface Linea_Cotizacion {
+  id: number;
+  monto?: number;
+  cotizacion?: Cotizacion;
+  cobertura?: Cobertura;
 }
 
 interface Cobertura {
   id_cobertura: number;
-  nombre: string;
-  descripcion: string;
-  recargo_por_atraso: number;
+  nombre?: string;
+  descripcion?: string;
+  recargoPorAtraso?: number;
 }
 
 interface Cobertura_Detalle {
+  id: number;
   cobertura: Cobertura;
   detalle: Detalle;
   aplica: boolean;
 }
 
 interface Detalle {
-  id_detalle: number;
-  nombre: string;
-  descripcion: string;
-  porcentaje_miles: number | null;
-  monto_fijo: number | null;
-}
-
-interface ConfigEdad {
   id: number;
-  nombre: string;
-  minima: number;
-  maxima: number;
-  descuento: number;
-  ganancia: number;
-  recargo: number;
-  activo: boolean;
+  nombre?: string;
+  descripcion?: string;
+  porcentaje_miles?: number;
+  monto_fijo?: number;
 }
 
-interface ConfigAntiguedad {
+interface Documentacion {
+  //NO SE QUE HACER
+}
+
+interface Pago {
   id: number;
-  nombre: string;
-  minima: number;
-  maxima: number;
-  descuento: number;
-  ganancia: number;
-  recargo: number;
-  activo: boolean;
+  total?: number;
+  fecha?: Date;
+  hora?: string;
+  poliza: Poliza;
 }
 
-export interface ConfigLocalidad {
+interface Siniesto {
   id: number;
-  nombre: string;
-  descuento: number;
-  ganancia: number;
-  recargo: number;
-  activo: boolean;
-  localidad?: Localidades;
+  fechaSiniestro?: Date;
+  horaSiniestro?: string;
+  usuario: Usuario;
+  estado?: string;
+  //fotoDenuncia?=
+  //fotoVehiculo?=
 }
 
-interface Cotizacion {
-  id_cotizacion: number;
-  fecha_creacion: string;
-  fecha_vencimiento: string;
-  config_edad: ConfigEdad;
-  config_antiguedad: ConfigAntiguedad;
-  config_localidad: ConfigLocalidad;
-  lineas: LineaCotizacion[];
+interface Revision {
+  id: number;
+  fecha?: Date;
+  hora?: string;
+  estado?: string;
+  usuario: Usuario;
+  poliza: Poliza;
 }
 
-interface LINEA_COTIZACION {
-  monto: number;
-  cotizacion: Cotizacion;
-  cobertura: Cobertura;
+interface PeriodoPago {
+  id: number;
+  nombre?: string;
+  cantidadMesas?: number;
+  descuento?: number;
+  activo?: boolean;
 }
 
-// Interfaces pura y exclusivamente usadas para el renderizado rapido
-interface Cobertura_AllData {
-  id_cobertura: number;
-  nombre: string;
-  descripcion: string;
-  recargo_por_atraso: number;
-  detalles: Detalle_Data[];
+interface TipoContratacion {
+  id: number;
+  nombre?: string;
+  cantidadMeses?: number;
+  activo?: boolean;
 }
 
-interface Detalle_AllData {
-  id_detalle: number;
-  nombre: string;
-  descripcion: string;
-  porcentaje_miles: number | null;
-  monto_fijo: number | null;
-  aplica: boolean;
-}
-
-interface allConfigs {
-  config_antiguedad?: ConfigAntiguedad[];
-  config_edad?: ConfigEdad[];
-  config_localidad?: ConfigLocalidad[];
+interface Poliza {
+  numero_poliza: number;
+  precioPolziaActual?: number;
+  montoAsegurado?: number;
+  fechaContratacion?: Date;
+  horaContratacion?: string;
+  fechaVencimiento?: Date;
+  fechaCancelacion?: Date;
+  renovacionAutomatica?: boolean;
+  usuario: Usuario;
+  documentacion: Documentacion;
+  lineaContizacion: Linea_Cotizacion;
+  periodoPago: PeriodoPago;
+  tipoContratacion: TipoContratacion;
 }

@@ -5,7 +5,6 @@ import {
   InfoCircle,
 } from "react-bootstrap-icons";
 import GrayButton from "./Button.tsx";
-import type { Detalle_AllData } from "../../../models/types";
 
 interface CoberturaCardProps {
   titulo: string;

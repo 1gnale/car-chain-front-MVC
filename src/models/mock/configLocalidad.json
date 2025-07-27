@@ -1,0 +1,626 @@
+[
+  {
+    "id": 1,
+    "nombre": "La Plata",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 1,
+      "descripcion": "La Plata",
+      "codigoPostal": "1900"
+    }
+  },
+  {
+    "id": 2,
+    "nombre": "Mar del Plata",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 2,
+      "descripcion": "Mar del Plata",
+      "codigoPostal": "7600"
+    }
+  },
+  {
+    "id": 3,
+    "nombre": "Bahía Blanca",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 3,
+      "descripcion": "Bahía Blanca",
+      "codigoPostal": "8000"
+    }
+  },
+  {
+    "id": 4,
+    "nombre": "Ciudad Autónoma de Buenos Aires",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 4,
+      "descripcion": "Ciudad Autónoma de Buenos Aires",
+      "codigoPostal": "1000"
+    }
+  },
+  {
+    "id": 5,
+    "nombre": "San Fernando del Valle de Catamarca",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 5,
+      "descripcion": "San Fernando del Valle de Catamarca",
+      "codigoPostal": "4700"
+    }
+  },
+  {
+    "id": 6,
+    "nombre": "Belén",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 6,
+      "descripcion": "Belén",
+      "codigoPostal": "4750"
+    }
+  },
+  {
+    "id": 7,
+    "nombre": "Localidad 7",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 7,
+      "descripcion": "Localidad 7",
+      "codigoPostal": "1007"
+    }
+  },
+  {
+    "id": 8,
+    "nombre": "Localidad 8",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 8,
+      "descripcion": "Localidad 8",
+      "codigoPostal": "1008"
+    }
+  },
+  {
+    "id": 9,
+    "nombre": "Localidad 9",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 9,
+      "descripcion": "Localidad 9",
+      "codigoPostal": "1009"
+    }
+  },
+  {
+    "id": 10,
+    "nombre": "Localidad 10",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 10,
+      "descripcion": "Localidad 10",
+      "codigoPostal": "1010"
+    }
+  },
+  {
+    "id": 11,
+    "nombre": "Localidad 11",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 11,
+      "descripcion": "Localidad 11",
+      "codigoPostal": "1011"
+    }
+  },
+  {
+    "id": 12,
+    "nombre": "Localidad 12",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 12,
+      "descripcion": "Localidad 12",
+      "codigoPostal": "1012"
+    }
+  },
+  {
+    "id": 13,
+    "nombre": "Localidad 13",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 13,
+      "descripcion": "Localidad 13",
+      "codigoPostal": "1013"
+    }
+  },
+  {
+    "id": 14,
+    "nombre": "Localidad 14",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 14,
+      "descripcion": "Localidad 14",
+      "codigoPostal": "1014"
+    }
+  },
+  {
+    "id": 15,
+    "nombre": "Localidad 15",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 15,
+      "descripcion": "Localidad 15",
+      "codigoPostal": "1015"
+    }
+  },
+  {
+    "id": 16,
+    "nombre": "Localidad 16",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 16,
+      "descripcion": "Localidad 16",
+      "codigoPostal": "1016"
+    }
+  },
+  {
+    "id": 17,
+    "nombre": "Localidad 17",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 17,
+      "descripcion": "Localidad 17",
+      "codigoPostal": "1017"
+    }
+  },
+  {
+    "id": 18,
+    "nombre": "Localidad 18",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 18,
+      "descripcion": "Localidad 18",
+      "codigoPostal": "1018"
+    }
+  },
+  {
+    "id": 19,
+    "nombre": "Localidad 19",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 19,
+      "descripcion": "Localidad 19",
+      "codigoPostal": "1019"
+    }
+  },
+  {
+    "id": 20,
+    "nombre": "Localidad 20",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 20,
+      "descripcion": "Localidad 20",
+      "codigoPostal": "1020"
+    }
+  },
+  {
+    "id": 21,
+    "nombre": "Localidad 21",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 21,
+      "descripcion": "Localidad 21",
+      "codigoPostal": "1021"
+    }
+  },
+  {
+    "id": 22,
+    "nombre": "Localidad 22",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 22,
+      "descripcion": "Localidad 22",
+      "codigoPostal": "1022"
+    }
+  },
+  {
+    "id": 23,
+    "nombre": "Localidad 23",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 23,
+      "descripcion": "Localidad 23",
+      "codigoPostal": "1023"
+    }
+  },
+  {
+    "id": 24,
+    "nombre": "Localidad 24",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 24,
+      "descripcion": "Localidad 24",
+      "codigoPostal": "1024"
+    }
+  },
+  {
+    "id": 25,
+    "nombre": "Localidad 25",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 25,
+      "descripcion": "Localidad 25",
+      "codigoPostal": "1025"
+    }
+  },
+  {
+    "id": 26,
+    "nombre": "Localidad 26",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 26,
+      "descripcion": "Localidad 26",
+      "codigoPostal": "1026"
+    }
+  },
+  {
+    "id": 27,
+    "nombre": "Localidad 27",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 27,
+      "descripcion": "Localidad 27",
+      "codigoPostal": "1027"
+    }
+  },
+  {
+    "id": 28,
+    "nombre": "Localidad 28",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 28,
+      "descripcion": "Localidad 28",
+      "codigoPostal": "1028"
+    }
+  },
+  {
+    "id": 29,
+    "nombre": "Localidad 29",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 29,
+      "descripcion": "Localidad 29",
+      "codigoPostal": "1029"
+    }
+  },
+  {
+    "id": 30,
+    "nombre": "Localidad 30",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 30,
+      "descripcion": "Localidad 30",
+      "codigoPostal": "1030"
+    }
+  },
+  {
+    "id": 31,
+    "nombre": "Localidad 31",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 31,
+      "descripcion": "Localidad 31",
+      "codigoPostal": "1031"
+    }
+  },
+  {
+    "id": 32,
+    "nombre": "Localidad 32",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 32,
+      "descripcion": "Localidad 32",
+      "codigoPostal": "1032"
+    }
+  },
+  {
+    "id": 33,
+    "nombre": "Localidad 33",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 33,
+      "descripcion": "Localidad 33",
+      "codigoPostal": "1033"
+    }
+  },
+  {
+    "id": 34,
+    "nombre": "Localidad 34",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 34,
+      "descripcion": "Localidad 34",
+      "codigoPostal": "1034"
+    }
+  },
+  {
+    "id": 35,
+    "nombre": "Localidad 35",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 35,
+      "descripcion": "Localidad 35",
+      "codigoPostal": "1035"
+    }
+  },
+  {
+    "id": 36,
+    "nombre": "Localidad 36",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 36,
+      "descripcion": "Localidad 36",
+      "codigoPostal": "1036"
+    }
+  },
+  {
+    "id": 37,
+    "nombre": "Localidad 37",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 37,
+      "descripcion": "Localidad 37",
+      "codigoPostal": "1037"
+    }
+  },
+  {
+    "id": 38,
+    "nombre": "Localidad 38",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 38,
+      "descripcion": "Localidad 38",
+      "codigoPostal": "1038"
+    }
+  },
+  {
+    "id": 39,
+    "nombre": "Localidad 39",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 39,
+      "descripcion": "Localidad 39",
+      "codigoPostal": "1039"
+    }
+  },
+  {
+    "id": 40,
+    "nombre": "Localidad 40",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 40,
+      "descripcion": "Localidad 40",
+      "codigoPostal": "1040"
+    }
+  },
+  {
+    "id": 41,
+    "nombre": "Localidad 41",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 41,
+      "descripcion": "Localidad 41",
+      "codigoPostal": "1041"
+    }
+  },
+  {
+    "id": 42,
+    "nombre": "Localidad 42",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 42,
+      "descripcion": "Localidad 42",
+      "codigoPostal": "1042"
+    }
+  },
+  {
+    "id": 43,
+    "nombre": "Localidad 43",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 43,
+      "descripcion": "Localidad 43",
+      "codigoPostal": "1043"
+    }
+  },
+  {
+    "id": 44,
+    "nombre": "Localidad 44",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 44,
+      "descripcion": "Localidad 44",
+      "codigoPostal": "1044"
+    }
+  },
+  {
+    "id": 45,
+    "nombre": "Localidad 45",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 45,
+      "descripcion": "Localidad 45",
+      "codigoPostal": "1045"
+    }
+  },
+  {
+    "id": 46,
+    "nombre": "Localidad 46",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 46,
+      "descripcion": "Localidad 46",
+      "codigoPostal": "1046"
+    }
+  },
+  {
+    "id": 47,
+    "nombre": "Localidad 47",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 47,
+      "descripcion": "Localidad 47",
+      "codigoPostal": "1047"
+    }
+  },
+  {
+    "id": 48,
+    "nombre": "Localidad 48",
+    "descuento": 2.0,
+    "ganancia": 8.0,
+    "recargo": 1.5,
+    "activo": true,
+    "localidad": {
+      "id": 48,
+      "descripcion": "Localidad 48",
+      "codigoPostal": "1048"
+    }
+  }
+]

@@ -1,32 +1,23 @@
 import RequestUserPolicy from "../views/pages/RequestUserPolicy";
-import useBrandHook from "./controllerHooks/Fetchs/useBrandHook";
-import useProvincesHook from "./controllerHooks/Fetchs/useProvincesHook";
-import useCoverageAllDataHook from "./controllerHooks/Fetchs/useCoverageAllDataHook";
-import useDocumentTypeHook from "./controllerHooks/Fetchs/useDocumentTypeHooks";
-import useAllConfigsHook from "./controllerHooks/Fetchs/useAllConfigsHook";
+import useMarcasHook from "./controllerHooks/Fetchs/useMarcasHook";
+import useModelosHook from "./controllerHooks/Fetchs/useModelosHook";
+import useVersionesHook from "./controllerHooks/Fetchs/useVersionesHook";
 
 const ControladorSolicitarContratacionDePoliza = () => {
   // Hook que trae todas las marcas
-  const { loading, error } = useBrandHook();
+  const { loading, error } = useMarcasHook();
+  // Hook que trae todas las modelos
+  const { loading: loadingModelos, error: errorModelos } = useModelosHook();
+  // Hook que trae todas las versiones
+  const { loading: loadingVersiones, error: errorVersiones } =
+    useVersionesHook();
   // Hook que trae todos los tipos de documentos
-  const { loading: docLoading, error: docError } = useDocumentTypeHook();
-  const { loading: provincesLoading, error: provError } = useProvincesHook();
-  const { loading: configLoading, error: configError } = useAllConfigsHook();
 
-  const { loading: coveragesDataLoading, error: coveragesError } =
-    useCoverageAllDataHook();
-
-  if (
-    loading ||
-    docLoading ||
-    provincesLoading ||
-    coveragesDataLoading ||
-    configLoading
-  ) {
+  if (loading || loadingModelos || loadingVersiones) {
     return <div>Loading...</div>;
   }
 
-  if (error || docError || provError || coveragesError || configError) {
+  if (error || errorModelos || errorVersiones) {
     return <div>Error: ha ocurrido un error inesperado</div>;
   }
 
