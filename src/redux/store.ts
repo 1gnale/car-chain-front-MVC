@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+<<<<<<< HEAD
 
 import marcasReducer from "./marcaSlice";
 import modelosReducer from "./modeloSlice";
@@ -31,6 +32,20 @@ export const store = configureStore({
     coberturas: coberturasReducer,
     detalles: detallesReducer,
     coberturasDetalles: coberturasDetalleReducer,
+=======
+import documentTypeReducer from "./documentTypeSlice";
+import provincesReducer from "./provincesSlice";
+import coverageAllDataReducer from "./coverageAllDataSlice";
+import brandReducer from "./brandSlice";
+import allConfigsReducer from "./allConfigsSlice";
+export const store = configureStore({
+  reducer: {
+    brands: brandReducer,
+    documentTypes: documentTypeReducer,
+    provinces: provincesReducer,
+    coverages: coverageAllDataReducer,
+    allConfigs: allConfigsReducer,
+>>>>>>> 6dfb311c487c656e9fc313787326a431e4567f0e
   },
 });
 
