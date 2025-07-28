@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonProvincia from "../../../models/mock/provinciasMock.json";
 import { ProvinciaRepository } from "../../../models/repository/Repositorys/provinciasRepository";
-import fetchProvincias from "../../../models/fetchProvincias";
+import fetchProvincias from "../../../models/fetchs/fetchProvincias";
 import { setProvincias } from "../../../redux/provinciasSlice";
 
 const useProvinciasHook = () => {

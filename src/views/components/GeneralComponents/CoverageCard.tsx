@@ -1,4 +1,4 @@
-import { Card, ListGroup } from "react-bootstrap";
+import { Card, ListGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 import {
   CheckSquareFill,
   XCircleFill,
@@ -18,9 +18,6 @@ interface aplica {
   apply?: boolean;
   description?: string;
 }
-const generateAlert = (details: string) => {
-  alert(details);
-};
 
 const CoverageCard = ({
   titulo,
@@ -42,11 +39,19 @@ const CoverageCard = ({
               className="d-flex justify-content-between align-items-center"
             >
               <div className="d-flex align-items-center">
-                <InfoCircle
-                  className="me-2"
-                  style={{ cursor: "pointer" }}
-                  onClick={() => generateAlert(itemApply.description || "")}
-                />
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`tooltip-${index}`}>
+                      {itemApply.description || "Sin descripción"}
+                    </Tooltip>
+                  }
+                >
+                  <InfoCircle
+                    className="me-2"
+                    style={{ cursor: "pointer" }}
+                  />
+                </OverlayTrigger>
                 <span style={{ fontSize: "0.9rem" }}>{itemApply.name}</span>
               </div>
               {itemApply.apply ? (

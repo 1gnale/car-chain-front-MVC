@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonCoberturaDetalle from "../../../models/mock/coberturaDetalleMock.json";
-import fetchCoberturasDetalles from "../../../models/fetchCoberturasDetalle";
+import fetchCoberturasDetalles from "../../../models/fetchs/fetchCoberturasDetalle";
 import { CoberturasDetalleRepository } from "../../../models/repository/Repositorys/coberturasDetalleRepository";
 import { setCoberturaDetalle } from "../../../redux/coberturaDetalleSlice";
 

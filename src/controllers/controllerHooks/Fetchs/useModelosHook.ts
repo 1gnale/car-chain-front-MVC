@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonModelos from "../../../models/mock/modelosMock.json";
 import { ModeloRepository } from "../../../models/repository/Repositorys/modelosRepository";
-import fetchModelos from "../../../models/fetchModelos";
+import fetchModelos from "../../../models/fetchs/fetchModelos";
 import { setModelo } from "../../../redux/modeloSlice";
 
 const useModelosHook = () => {

@@ -52,6 +52,9 @@ const FormDataClient = ({
     domicilio: "",
   });
 
+  console.log(documentTypes);
+  console.log(formClient.tipoDocumento)
+
   // UseEffect
   useEffect(() => {
     // localStorage.removeItem("ClientData");
@@ -106,7 +109,7 @@ const FormDataClient = ({
             id: 1,
             nombres: formClient.nombre,
             apellido: formClient.apellido,
-            fechaNacimiento: new Date(formClient.fechaNacimiento),
+            fechaNacimiento: formClient.fechaNacimiento,
             tipoDocumento: formClient.tipoDocumento,
             documento: formClient.documento,
             domicilio: formClient.documento,
@@ -143,7 +146,7 @@ const FormDataClient = ({
 
   const handleDocumentType = useMemo(() => {
     const result = documentTypes.map((documentTypes, idx) => {
-      return { id: idx, name: documentTypes };
+      return { id: idx + 1, name: documentTypes };
     });
 
     return result;
@@ -156,22 +159,23 @@ const FormDataClient = ({
     return result;
   }, [provinces]);
 
-  const handleLocality = () => {
+  const handleLocality = useMemo(() => {
     const localitysFiltred = localities.filter(
       (locality) => locality.provincia?.id === selectedProvince
     );
 
-    return localitysFiltred.map((locality) => ({
+    const result = localitysFiltred.map((locality) => ({
       id: locality.id,
       name: locality.descripcion ?? "",
     }));
-  };
+    return result;
+  }, [localities, selectedProvince]);
 
   // HANDLE STATE
   const handleStateDocumentType = (id: number) => {
     setSelectedDocumentType(id);
     // Encontrar el nombre del tipo documento
-    const selectedDocumentType = documentTypes[id] || "";
+    const selectedDocumentType = documentTypes[id-1] || "";
     setFormClient((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
     validateField("tipoDocumento", selectedDocumentType);
   };
@@ -274,7 +278,7 @@ const FormDataClient = ({
             <div className="col">
               <SelectForm
                 status={true}
-                value={selectedDocumentType}
+                value={selectedDocumentType} 
                 title="Tipo Documento"
                 items={handleDocumentType}
                 onChange={handleStateDocumentType}
@@ -312,7 +316,7 @@ const FormDataClient = ({
                 status={locality}
                 value={selectedLocality}
                 title="Localidad"
-                items={handleLocality()}
+                items={handleLocality}
                 onChange={handleStateLocality}
                 error={errors.localidad}
                 onBlur={() => validateField("localidad", formClient.localidad)}
@@ -352,7 +356,7 @@ const FormDataClient = ({
               className="d-grid gap-2 d-md-flex justify-content-md-end"
               style={{ padding: "10px" }}
             >
-              <GrayButton text="Cancelar" onClick={() => {}} />
+              <GrayButton text="Cancelar" onClick={() => { }} />
               <GrayButton text="Anterior" onClick={handleBack} />
               <GrayButton text="Siguiente" onClick={handleSubmit} />
             </div>

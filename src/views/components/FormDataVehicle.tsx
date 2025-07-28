@@ -9,6 +9,17 @@ import useFormValidation from "../../controllers/controllerHooks/Validations/use
 import "../../models/types.d.ts";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 
+interface FormVehicleProps {
+  matricula: string;
+  marca: string;
+  chasis: string;
+  modelo: string;
+  numeroMotor: string;
+  version: string;
+  gnc: boolean;
+  anio: string;
+}
+
 const FormDataVehicle = ({
   handleCurrentView,
 }: {
@@ -32,7 +43,7 @@ const FormDataVehicle = ({
   const [selectedVersion, setSelectedVersion] = useState(0);
 
   // State formulario
-  const [formVehicle, setFormVehicle] = useState({
+  const [formVehicle, setFormVehicle] = useState<FormVehicleProps>({
     matricula: "",
     marca: "",
     chasis: "",
@@ -59,7 +70,7 @@ const FormDataVehicle = ({
     }
   }, []);
 
-  function parseFormVehicle(vehiculo: Vehiculo): any {
+  function parseFormVehicle(vehiculo: Vehiculo): FormVehicleProps {
     return {
       matricula: vehiculo.matricula || "",
       marca: vehiculo.version.modelo.marca.nombre || "",
@@ -80,27 +91,30 @@ const FormDataVehicle = ({
     return result;
   }, [brands]);
 
-  const handleModel = () => {
+  const handleModel = useMemo(() => {
     const modelosFiltrados = models.filter(
       (modelo) => modelo.marca.id === selectedBrand
     );
 
-    return modelosFiltrados.map((model) => ({
+    const result = modelosFiltrados.map((model) => ({
       id: model.id,
       name: model.nombre ?? "",
     }));
-  };
+    return result;
+  }, [models, selectedBrand]);
 
-  const handleVersion = () => {
+  const handleVersion = useMemo(() => {
     const versionesFiltrados = versions.filter(
       (version) => version.modelo.id === selectedModel
     );
 
-    return versionesFiltrados.map((version) => ({
+    const result = versionesFiltrados.map((version) => ({
       id: version.id,
       name: version.nombre ?? "",
     }));
-  };
+
+    return result;
+  }, [versions, selectedModel]);
 
   const handleSubmit = () => {
     console.log(formVehicle);
@@ -201,7 +215,7 @@ const FormDataVehicle = ({
               title="Matricula"
               place=""
               value={formVehicle.matricula}
-              onChange={(value) => handleInputChange("matricula", value)}
+              onChange={(value) => {handleInputChange("matricula", value)}}
               error={errors.matricula}
               onBlur={() => validateField("matricula", formVehicle.matricula)}
             />
@@ -233,7 +247,7 @@ const FormDataVehicle = ({
                 status={model}
                 value={selectedModel}
                 title="Modelo"
-                items={handleModel()}
+                items={handleModel}
                 onChange={handleStateModel}
                 error={errors.modelo}
                 onBlur={() => validateField("modelo", formVehicle.modelo)}
@@ -258,7 +272,7 @@ const FormDataVehicle = ({
                 status={version}
                 value={selectedVersion}
                 title="Versiones"
-                items={handleVersion()}
+                items={handleVersion}
                 onChange={handleStateVersion}
                 error={errors.version}
                 onBlur={() => validateField("version", formVehicle.version)}
@@ -292,7 +306,7 @@ const FormDataVehicle = ({
               className="d-grid gap-2 d-md-flex justify-content-md-end"
               style={{ padding: "10px" }}
             >
-              <GrayButton text="Cancelar" style="me-md-2" onClick={() => {}} />
+              <GrayButton text="Cancelar" style="me-md-2" onClick={() => { }} />
               <GrayButton text="Siguiente" onClick={handleSubmit} />
             </div>
           </div>

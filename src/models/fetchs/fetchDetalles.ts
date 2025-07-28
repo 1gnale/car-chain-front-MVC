@@ -1,4 +1,4 @@
-import type IDetallesRepository from "./repository/Irepositorys/IDetallesRepository";
+import type IDetallesRepository from "../repository/Irepositorys/IDetallesRepository";
 
 const fetchDetalles = async (
   detalleRepo: IDetallesRepository

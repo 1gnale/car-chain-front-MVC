@@ -1,4 +1,4 @@
-import type ILocalidadRepository from "./repository/Irepositorys/ILocalidadRepository";
+import type ILocalidadRepository from "../repository/Irepositorys/ILocalidadRepository";
 
 const fetchLocalidades = async (
   localidadesRepo: ILocalidadRepository
