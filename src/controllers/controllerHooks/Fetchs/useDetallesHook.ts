@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonDetalles from "../../../models/mock/detallesMock.json";
 import { DetallesRepository } from "../../../models/repository/Repositorys/DetallesRepository";
-import fetchDetalles from "../../../models/fetchDetalles";
+import fetchDetalles from "../../../models/fetchs/fetchDetalles";
 import { setDetalles } from "../../../redux/detallesSlice";
 
 const useDetallesHook = () => {

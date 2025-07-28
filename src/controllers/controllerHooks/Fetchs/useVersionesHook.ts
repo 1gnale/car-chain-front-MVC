@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonVersion from "../../../models/mock/versionesMock.json";
 import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository";
-import fetchVersiones from "../../../models/fetchVersiones";
+import fetchVersiones from "../../../models/fetchs/fetchVersiones";
 import { setVersion } from "../../../redux/versionSlice";
 
 const useVersionesHook = () => {

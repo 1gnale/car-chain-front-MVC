@@ -1,4 +1,4 @@
-import type IModelosRepository from "./repository/Irepositorys/IModelosRepository";
+import type IModelosRepository from "../repository/Irepositorys/IModelosRepository";
 
 const fetchModelos = async (
   modeloRepo: IModelosRepository

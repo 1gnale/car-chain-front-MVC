@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setTipoDocumento } from "../../../redux/tiposDocumentosSlice";
 import jsonDocType from "../../../models/mock/tiposDeDocumentoMock.json";
 import { tiposDocumentoRepository } from "../../../models/repository/Repositorys/tiposDocumentoRepository";
-import fetchTiposDocumento from "../../../models/fetchTiposDocumento";
+import fetchTiposDocumento from "../../../models/fetchs/fetchTiposDocumento";
 
 const useTiposDocumentos = () => {
   const dispatch = useDispatch();

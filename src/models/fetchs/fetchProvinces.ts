@@ -1,4 +1,4 @@
-import type IProvincesRepository from "./repositories/IProvincesRepository.ts";
+import type IProvincesRepository from "../repositories/IProvincesRepository.ts";
 
 const fetchProvinces = async (
   provincesRepo: IProvincesRepository

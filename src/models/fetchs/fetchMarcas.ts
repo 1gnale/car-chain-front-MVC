@@ -1,4 +1,4 @@
-import type IMarcaRepository from "./repository/Irepositorys/IMarcaRepository.ts";
+import type IMarcaRepository from "../repository/Irepositorys/IMarcaRepository.ts";
 
 const fetchMarcas = async (marcaRepo: IMarcaRepository): Promise<Marca[]> => {
   try {

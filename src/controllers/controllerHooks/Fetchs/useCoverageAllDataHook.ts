@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setCoveragesAllData } from "../../../redux/coverageAllDataSlice";
 import jsonCoverageAllData from "../../../models/mock/CoverageDataMock.json";
 import { CoverageAllDataRepository } from "../../../models/repositories/CoverageAllDataRepository";
-import fetchCoverageAllData from "../../../models/fetchCoverageAllData";
+import fetchCoverageAllData from "../../../models/fetchs/fetchCoverageAllData";
 
 const useCoverageAllDataHook = () => {
   const dispatch = useDispatch();

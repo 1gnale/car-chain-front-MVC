@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonConfigEdad from "../../../models/mock/configEdad.json";
 import { ConfigEdadRepository } from "../../../models/repository/Repositorys/configEdadRepository";
-import fetchConfigEdades from "../../../models/fetchConfigEdades";
+import fetchConfigEdades from "../../../models/fetchs/fetchConfigEdades";
 import { setcConfigEdad } from "../../../redux/configEdadSlice";
 
 const useEdadHook = () => {

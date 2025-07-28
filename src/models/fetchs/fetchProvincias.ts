@@ -1,4 +1,4 @@
-import type IProvinciaRepository from "./repository/Irepositorys/IProvinciasRepository";
+import type IProvinciaRepository from "../repository/Irepositorys/IProvinciasRepository";
 
 const fetchProvincias = async (
   provincesRepo: IProvinciaRepository

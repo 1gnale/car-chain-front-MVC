@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import fetchAllConfigs from "../../../models/fetchAllConfigs";
+import fetchAllConfigs from "../../../models/fetchs/fetchAllConfigs";
 import { setAllConfigs } from "../../../redux/allConfigsSlice";
 import jsonConfigs from "../../../models/mock/ConfigurationsDataMock.json";
 import { allConfigsRepository } from "../../../models/repositories/allConfigsRepository";

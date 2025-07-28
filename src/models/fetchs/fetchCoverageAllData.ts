@@ -1,5 +1,5 @@
-import type ICoverageAllDataRepository from "./repositories/ICoverageAllDataRepository";
-import type { Cobertura_AllData } from "./types";
+import type ICoverageAllDataRepository from "../repositories/ICoverageAllDataRepository";
+import type { Cobertura_AllData } from "../types";
 
 const fetchCoverageAllData = async (
   coverageAllDataRepo: ICoverageAllDataRepository

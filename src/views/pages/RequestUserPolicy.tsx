@@ -22,10 +22,10 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
-    <FormDataDocumentation handleCurrentView={handleCurrentView} />,
-    <FormDataVehicle handleCurrentView={handleCurrentView} />,
-    <FormDataClient handleCurrentView={handleCurrentView} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} />,
+    <FormDataClient handleCurrentView={handleCurrentView} />,
+    <FormDataVehicle handleCurrentView={handleCurrentView} />,
+    <FormDataDocumentation handleCurrentView={handleCurrentView} />,
   ];
 
   return (

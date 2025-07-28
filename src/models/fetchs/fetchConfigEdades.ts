@@ -1,4 +1,4 @@
-import type IConfigEdadRepository from "./repository/Irepositorys/IConfigEdadRepository";
+import type IConfigEdadRepository from "../repository/Irepositorys/IConfigEdadRepository";
 
 const fetchConfigEdades = async (
   ConfigEdadRepo: IConfigEdadRepository

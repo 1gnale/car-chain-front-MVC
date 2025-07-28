@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import jsonConfigLocalidad from "../../../models/mock/configLocalidad.json";
 import { setcConfigEdad } from "../../../redux/configEdadSlice";
 import { ConfigLocalidadesRepository } from "../../../models/repository/Repositorys/configLocalidadRepository";
-import fetchConfigLocalidades from "../../../models/fetchConfigLocalidades";
+import fetchConfigLocalidades from "../../../models/fetchs/fetchConfigLocalidades";
 
 const useLocalidadesHook = () => {
   const dispatch = useDispatch();

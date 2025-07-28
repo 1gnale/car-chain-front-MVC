@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonLocalidades from "../../../models/mock/localidadesMock.json";
 import { LocalidadRepository } from "../../../models/repository/Repositorys/localidadRepository";
-import fetchLocalidades from "../../../models/fetchLocalidades";
+import fetchLocalidades from "../../../models/fetchs/fetchLocalidades";
 import { setLocalidad } from "../../../redux/localidadesSlice";
 
 const useLocalidadesHook = () => {

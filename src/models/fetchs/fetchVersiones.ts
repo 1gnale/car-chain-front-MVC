@@ -1,4 +1,4 @@
-import type IVersionRepository from "./repository/Irepositorys/IVersionRepository";
+import type IVersionRepository from "../repository/Irepositorys/IVersionRepository";
 
 const fetchVersiones = async (
   versionRepo: IVersionRepository
