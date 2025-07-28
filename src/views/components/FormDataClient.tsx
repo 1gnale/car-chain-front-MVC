@@ -6,6 +6,7 @@ import { useAppSelector } from "../../redux/reduxTypedHooks";
 import SelectForm from "./GeneralComponents/SelectForm.tsx";
 import GrayButton from "./GeneralComponents/Button.tsx";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import type { Cliente, Localidad, Provincia, Vehiculo } from "../../models/types.d.ts";
 
 const FormDataClient = ({
   handleCurrentView,
