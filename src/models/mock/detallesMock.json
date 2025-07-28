@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nombre": "Robo parcial",
+    "descripcion": "Incluye cristales y ruedas",
+    "porcentaje_miles": 2.0,
+    "monto_fijo": 0
+  },
+  {
+    "id": 2,
+    "nombre": "Destrucción total",
+    "descripcion": "Cobertura por pérdida total",
+    "porcentaje_miles": 3,
+    "monto_fijo": 0
+  },
+  {
+    "id": 3,
+    "nombre": "Granizo",
+    "descripcion": "Daños por granizo",
+    "porcentaje_miles": 1.2,
+    "monto_fijo": 0
+  },
+  {
+    "id": 4,
+    "nombre": "Daños por incendio",
+    "descripcion": "Cubre incendio total o parcial",
+    "porcentaje_miles": 1.5,
+    "monto_fijo": 0
+  },
+  {
+    "id": 5,
+    "nombre": "Asistencia mecánica",
+    "descripcion": "Incluye grúa y auxilio mecánico",
+    "porcentaje_miles": 0,
+    "monto_fijo": 5000
+  },
+  {
+    "id": 6,
+    "nombre": "Responsable Civil hasta $23.000.000",
+    "descripcion": "cubre daños que vos (como conductor) causes a terceros hasta un límite máximo de $23.000.000.",
+    "porcentaje_miles": 0,
+    "monto_fijo": 3000
+  }
+]

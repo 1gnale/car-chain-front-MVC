@@ -1,0 +1,308 @@
+[
+  {
+    "id": 1,
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Básica",
+      "descripcion": "Cubre daños menores",
+      "recargoPorAtraso": 2.5
+    },
+    "detalle": {
+      "id": 1,
+      "nombre": "Robo parcial",
+      "descripcion": "Incluye cristales y ruedas",
+      "porcentaje_miles": 2.0,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 2,
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Básica",
+      "descripcion": "Cubre daños menores",
+      "recargoPorAtraso": 2.5
+    },
+    "detalle": {
+      "id": 2,
+      "nombre": "Destrucción total",
+      "descripcion": "Cobertura por pérdida total",
+      "porcentaje_miles": 0,
+      "monto_fijo": 15000
+    },
+    "aplica": false
+  },
+  {
+    "id": 3,
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Básica",
+      "descripcion": "Cubre daños menores",
+      "recargoPorAtraso": 2.5
+    },
+    "detalle": {
+      "id": 3,
+      "nombre": "Granizo",
+      "descripcion": "Daños por granizo",
+      "porcentaje_miles": 1.2,
+      "monto_fijo": 0
+    },
+    "aplica": false
+  },
+  {
+    "id": 4,
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Básica",
+      "descripcion": "Cubre daños menores",
+      "recargoPorAtraso": 2.5
+    },
+    "detalle": {
+      "id": 4,
+      "nombre": "Daños por incendio",
+      "descripcion": "Cubre incendio total o parcial",
+      "porcentaje_miles": 1.5,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 5,
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Básica",
+      "descripcion": "Cubre daños menores",
+      "recargoPorAtraso": 2.5
+    },
+    "detalle": {
+      "id": 5,
+      "nombre": "Asistencia mecánica",
+      "descripcion": "Incluye grúa y auxilio mecánico",
+      "porcentaje_miles": 0,
+      "monto_fijo": 5000
+    },
+    "aplica": false
+  },
+  {
+    "id": 6,
+    "cobertura": {
+      "id_cobertura": 2,
+      "nombre": "Cobertura Total",
+      "descripcion": "Cubre todo tipo de daños",
+      "recargoPorAtraso": 5.0
+    },
+    "detalle": {
+      "id": 1,
+      "nombre": "Robo parcial",
+      "descripcion": "Incluye cristales y ruedas",
+      "porcentaje_miles": 2.0,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 7,
+    "cobertura": {
+      "id_cobertura": 2,
+      "nombre": "Cobertura Total",
+      "descripcion": "Cubre todo tipo de daños",
+      "recargoPorAtraso": 5.0
+    },
+    "detalle": {
+      "id": 2,
+      "nombre": "Destrucción total",
+      "descripcion": "Cobertura por pérdida total",
+      "porcentaje_miles": 0,
+      "monto_fijo": 15000
+    },
+    "aplica": true
+  },
+  {
+    "id": 8,
+    "cobertura": {
+      "id_cobertura": 2,
+      "nombre": "Cobertura Total",
+      "descripcion": "Cubre todo tipo de daños",
+      "recargoPorAtraso": 5.0
+    },
+    "detalle": {
+      "id": 3,
+      "nombre": "Granizo",
+      "descripcion": "Daños por granizo",
+      "porcentaje_miles": 1.2,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 9,
+    "cobertura": {
+      "id_cobertura": 2,
+      "nombre": "Cobertura Total",
+      "descripcion": "Cubre todo tipo de daños",
+      "recargoPorAtraso": 5.0
+    },
+    "detalle": {
+      "id": 4,
+      "nombre": "Daños por incendio",
+      "descripcion": "Cubre incendio total o parcial",
+      "porcentaje_miles": 1.5,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 10,
+    "cobertura": {
+      "id_cobertura": 2,
+      "nombre": "Cobertura Total",
+      "descripcion": "Cubre todo tipo de daños",
+      "recargoPorAtraso": 5.0
+    },
+    "detalle": {
+      "id": 5,
+      "nombre": "Asistencia mecánica",
+      "descripcion": "Incluye grúa y auxilio mecánico",
+      "porcentaje_miles": 0,
+      "monto_fijo": 5000
+    },
+    "aplica": true
+  },
+  {
+    "id": 11,
+    "cobertura": {
+      "id_cobertura": 3,
+      "nombre": "Cobertura Intermedia",
+      "descripcion": "Cubre daños importantes excepto destrucción total",
+      "recargoPorAtraso": 3.5
+    },
+    "detalle": {
+      "id": 1,
+      "nombre": "Robo parcial",
+      "descripcion": "Incluye cristales y ruedas",
+      "porcentaje_miles": 2.0,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 12,
+    "cobertura": {
+      "id_cobertura": 3,
+      "nombre": "Cobertura Intermedia",
+      "descripcion": "Cubre daños importantes excepto destrucción total",
+      "recargoPorAtraso": 3.5
+    },
+    "detalle": {
+      "id": 2,
+      "nombre": "Destrucción total",
+      "descripcion": "Cobertura por pérdida total",
+      "porcentaje_miles": 0,
+      "monto_fijo": 15000
+    },
+    "aplica": false
+  },
+  {
+    "id": 13,
+    "cobertura": {
+      "id_cobertura": 3,
+      "nombre": "Cobertura Intermedia",
+      "descripcion": "Cubre daños importantes excepto destrucción total",
+      "recargoPorAtraso": 3.5
+    },
+    "detalle": {
+      "id": 3,
+      "nombre": "Granizo",
+      "descripcion": "Daños por granizo",
+      "porcentaje_miles": 1.2,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 14,
+    "cobertura": {
+      "id_cobertura": 3,
+      "nombre": "Cobertura Intermedia",
+      "descripcion": "Cubre daños importantes excepto destrucción total",
+      "recargoPorAtraso": 3.5
+    },
+    "detalle": {
+      "id": 4,
+      "nombre": "Daños por incendio",
+      "descripcion": "Cubre incendio total o parcial",
+      "porcentaje_miles": 1.5,
+      "monto_fijo": 0
+    },
+    "aplica": true
+  },
+  {
+    "id": 15,
+    "cobertura": {
+      "id_cobertura": 3,
+      "nombre": "Cobertura Intermedia",
+      "descripcion": "Cubre daños importantes excepto destrucción total",
+      "recargoPorAtraso": 3.5
+    },
+    "detalle": {
+      "id": 5,
+      "nombre": "Asistencia mecánica",
+      "descripcion": "Incluye grúa y auxilio mecánico",
+      "porcentaje_miles": 0,
+      "monto_fijo": 5000
+    },
+    "aplica": true
+  },
+  {
+    "id": 16,
+    "cobertura": {
+      "id_cobertura": 3,
+      "nombre": "Cobertura Intermedia",
+      "descripcion": "Cubre daños importantes excepto destrucción total",
+      "recargoPorAtraso": 3.5
+    },
+    "detalle": {
+      "id": 6,
+      "nombre": "Responsable Civil hasta $23.000.000",
+      "descripcion": "cubre daños que vos (como conductor) causes a terceros hasta un límite máximo de $23.000.000.",
+      "porcentaje_miles": 0,
+      "monto_fijo": 6000
+    },
+    "aplica": true
+  },
+  {
+    "id": 17,
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Básica",
+      "descripcion": "Cubre daños menores",
+      "recargoPorAtraso": 2.5
+    },
+    "detalle": {
+      "id": 6,
+      "nombre": "Responsable Civil hasta $23.000.000",
+      "descripcion": "cubre daños que vos (como conductor) causes a terceros hasta un límite máximo de $23.000.000.",
+      "porcentaje_miles": 0,
+      "monto_fijo": 6000
+    },
+    "aplica": true
+  },
+  {
+    "id": 18,
+    "cobertura": {
+      "id_cobertura": 2,
+      "nombre": "Cobertura Total",
+      "descripcion": "Cubre todo tipo de daños",
+      "recargoPorAtraso": 5.0
+    },
+    "detalle": {
+      "id": 6,
+      "nombre": "Responsable Civil hasta $23.000.000",
+      "descripcion": "cubre daños que vos (como conductor) causes a terceros hasta un límite máximo de $23.000.000.",
+      "porcentaje_miles": 0,
+      "monto_fijo": 6000
+    },
+    "aplica": true
+  }
+]

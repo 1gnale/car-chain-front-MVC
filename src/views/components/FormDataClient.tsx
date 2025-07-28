@@ -1,23 +1,44 @@
 import "../../models/types.d.ts";
-import { useState } from "react";
-import useFormClientValidation from "../../controllers/controllerHooks/useFormClientValidation";
+import { useState, useEffect, useMemo } from "react";
+import useFormClientValidation from "../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
 import Input from "./GeneralComponents/Input";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
 import SelectForm from "./GeneralComponents/SelectForm.tsx";
+import GrayButton from "./GeneralComponents/Button.tsx";
+import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 
-const FormDataClient = ({ handleCurrentView }: { handleCurrentView: () => void; }) => {
+const FormDataClient = ({
+  handleCurrentView,
+}: {
+  handleCurrentView: (pass: boolean) => void;
+}) => {
+  // States MODELO DATOS
+  const documentTypes: string[] = useAppSelector(
+    (state) => state.tipoDocumentos.tipoDocumento
+  );
+  const provinces: Provincia[] = useAppSelector(
+    (state) => state.provincias.provincia
+  );
+  const localities: Localidad[] = useAppSelector(
+    (state) => state.localidades.localidad
+  );
+
   const listSex = [
     { id: 1, name: "Femenino" },
     { id: 2, name: "Masculino" },
   ];
-  const documentTypes: string[] = useAppSelector((state) => state.documentTypes.documentType);
 
-  console.log("documentTypes", documentTypes)
-
-  const [selectedSex, setSelectedSex] = useState(0);
-  const [selectedDocumentType, setSelectedDocumentType] = useState(0);
+  // State de validacion de datos
   const { errors, validateField, validateForm } = useFormClientValidation();
 
+  // Statates de Selects
+  const [locality, setLocality] = useState<boolean>(false);
+  const [selectedSex, setSelectedSex] = useState(0);
+  const [selectedProvince, setSelectedProvinces] = useState(0);
+  const [selectedLocality, setSelectedLocality] = useState(0);
+  const [selectedDocumentType, setSelectedDocumentType] = useState(0);
+
+  // State formulario
   const [formClient, setFormClient] = useState({
     nombre: "",
     apellido: "",
@@ -31,10 +52,125 @@ const FormDataClient = ({ handleCurrentView }: { handleCurrentView: () => void; 
     domicilio: "",
   });
 
+  // UseEffect
+  useEffect(() => {
+    // localStorage.removeItem("ClientData");
+    const clientStorage = useLocalStorageItem<Cliente>("ClientData");
+
+    const sexoFiltrado = listSex.find(
+      (sex) => sex.name === clientStorage?.sexo
+    );
+    const tipoDocFiltrado: number | undefined = documentTypes.findIndex(
+      (doc) => doc === clientStorage?.tipoDocumento
+    );
+    if (
+      clientStorage != null &&
+      sexoFiltrado !== undefined &&
+      tipoDocFiltrado !== undefined
+    ) {
+      setLocality(true);
+      setSelectedProvinces(clientStorage.localidad.provincia?.id || 0);
+      setSelectedLocality(clientStorage.localidad.id);
+      setSelectedSex(sexoFiltrado.id);
+      setSelectedDocumentType(tipoDocFiltrado);
+      setFormClient(parseFormClient(clientStorage));
+    }
+  }, []);
+
+  function parseFormClient(client: Cliente): any {
+    return {
+      nombre: client.nombres || "",
+      apellido: client.apellido || "",
+      tipoDocumento: client.tipoDocumento || "",
+      documento: client.documento || "",
+      fechaNacimiento: client.fechaNacimiento || "",
+      telefono: client.telefono || "",
+      sexo: client.sexo || "",
+      provincia: client.localidad.provincia?.descripcion || "",
+      localidad: client.localidad.descripcion || "",
+      domicilio: client.domicilio || "",
+    };
+  }
+
+  // HANDLEs
+  const handleSubmit = () => {
+    if (validateForm(formClient)) {
+      console.log("Formulario válido:", formClient);
+      try {
+        const localidadFiltrada: Localidad | undefined = localities.find(
+          (locality) => locality.id === selectedLocality
+        );
+        if (localidadFiltrada != undefined) {
+          const client: Cliente = {
+            idClient: 1,
+            id: 1,
+            nombres: formClient.nombre,
+            apellido: formClient.apellido,
+            fechaNacimiento: new Date(formClient.fechaNacimiento),
+            tipoDocumento: formClient.tipoDocumento,
+            documento: formClient.documento,
+            domicilio: formClient.documento,
+            correo: "",
+            telefono: formClient.telefono,
+            sexo: formClient.sexo,
+            contraseña: "",
+            localidad: localidadFiltrada,
+          };
+
+          const vehicleLocalStorage =
+            useLocalStorageItem<Vehiculo>("VehicleData");
+
+          if (vehicleLocalStorage != null) {
+            vehicleLocalStorage.cliente = client;
+            localStorage.setItem("ClientData", JSON.stringify(client));
+            localStorage.setItem(
+              "VehicleData",
+              JSON.stringify(vehicleLocalStorage)
+            );
+          }
+        }
+      } catch (error) {
+        console.log("ERROR");
+      }
+      handleCurrentView(true);
+    } else {
+      console.log("Formulario inválido:", errors);
+    }
+  };
+  const handleBack = () => {
+    handleCurrentView(false);
+  };
+
+  const handleDocumentType = useMemo(() => {
+    const result = documentTypes.map((documentTypes, idx) => {
+      return { id: idx, name: documentTypes };
+    });
+
+    return result;
+  }, [documentTypes]);
+
+  const handleProvinces = useMemo(() => {
+    const result = provinces.map((provinces) => {
+      return { id: provinces.id, name: provinces.descripcion! };
+    });
+    return result;
+  }, [provinces]);
+
+  const handleLocality = () => {
+    const localitysFiltred = localities.filter(
+      (locality) => locality.provincia?.id === selectedProvince
+    );
+
+    return localitysFiltred.map((locality) => ({
+      id: locality.id,
+      name: locality.descripcion ?? "",
+    }));
+  };
+
+  // HANDLE STATE
   const handleStateDocumentType = (id: number) => {
     setSelectedDocumentType(id);
-
-    // Encontrar el nombre de la marca seleccionada
+    // Encontrar el nombre del tipo documento
     const selectedDocumentType = documentTypes[id] || "";
     setFormClient((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
     validateField("tipoDocumento", selectedDocumentType);
@@ -46,20 +182,36 @@ const FormDataClient = ({ handleCurrentView }: { handleCurrentView: () => void; 
     // Encontrar el nombre del sexo seleccionada
     const selectedSexName = listSex.find((sex) => sex.id === id)?.name || "";
     setFormClient((prev) => ({ ...prev, sexo: selectedSexName }));
+    setFormClient((prev) => ({ ...prev, sexoId: id }));
     validateField("sexo", selectedSexName);
+  };
+
+  const handleStateProvinces = (id: number) => {
+    setSelectedProvinces(id);
+    setLocality(true);
+    setSelectedLocality(0);
+
+    // Encontrar el nombre de la provincia seleccionado
+    const selectedProvinceName =
+      provinces.find((province) => province.id === id)?.descripcion || "";
+    setFormClient((prev) => ({ ...prev, provincia: selectedProvinceName }));
+    setFormClient((prev) => ({ ...prev, provinciaId: id }));
+    validateField("provincia", selectedProvinceName);
+  };
+
+  const handleStateLocality = (id: number) => {
+    setSelectedLocality(id);
+
+    const selectedLocalityName =
+      localities?.find((localidad) => localidad.id === id)?.descripcion || "";
+    setFormClient((prev) => ({ ...prev, localidad: selectedLocalityName }));
+    setFormClient((prev) => ({ ...prev, localidadId: id }));
+    validateField("localidad", selectedLocalityName);
   };
 
   const handleInputChange = (field: string, value: string) => {
     setFormClient((prev) => ({ ...prev, [field]: value }));
     validateField(field as keyof typeof errors, value);
-  };
-
-  const handleDocumentType = () => {
-    const result = documentTypes.map((documentTypes, idx) => {
-      return { id: idx, name: documentTypes };
-    });
-
-    return result;
   };
 
   return (
@@ -124,21 +276,23 @@ const FormDataClient = ({ handleCurrentView }: { handleCurrentView: () => void; 
                 status={true}
                 value={selectedDocumentType}
                 title="Tipo Documento"
-                items={handleDocumentType()}
+                items={handleDocumentType}
                 onChange={handleStateDocumentType}
-                error={errors.sexo}
-                onBlur={() => validateField("tipoDocumento", formClient.sexo)}
+                error={errors.tipoDocumento}
+                onBlur={() =>
+                  validateField("tipoDocumento", formClient.tipoDocumento)
+                }
               />
             </div>
             <div className="col">
               <SelectForm
                 status={true}
-                value={selectedSex}
+                value={selectedProvince}
                 title="Provincia"
-                items={listSex}
-                onChange={handleStateSexo}
-                error={errors.sexo}
-                onBlur={() => validateField("sexo", formClient.sexo)}
+                items={handleProvinces}
+                onChange={handleStateProvinces}
+                error={errors.provincia}
+                onBlur={() => validateField("provincia", formClient.provincia)}
               />
             </div>
           </div>
@@ -155,24 +309,29 @@ const FormDataClient = ({ handleCurrentView }: { handleCurrentView: () => void; 
             </div>
             <div className="col">
               <SelectForm
-                status={true}
-                value={selectedSex}
+                status={locality}
+                value={selectedLocality}
                 title="Localidad"
-                items={listSex}
-                onChange={handleStateSexo}
-                error={errors.sexo}
-                onBlur={() => validateField("sexo", formClient.sexo)}
+                items={handleLocality()}
+                onChange={handleStateLocality}
+                error={errors.localidad}
+                onBlur={() => validateField("localidad", formClient.localidad)}
               />
             </div>
           </div>
           <div className="row " style={{ padding: "2px" }}>
             <div className="col">
-              <label htmlFor="exampleInputEmail1">Fecha de Nacimiento</label>
-              <input
-                type="email"
-                className="form-control"
-                aria-describedby="emailHelp"
-                placeholder="DD/MM/YYYY"
+              <Input
+                title="Fecha de nacimiento"
+                place="MM/DD/AAAA"
+                value={formClient.fechaNacimiento}
+                onChange={(value) =>
+                  handleInputChange("fechaNacimiento", value)
+                }
+                error={errors.fechaNacimiento}
+                onBlur={() =>
+                  validateField("fechaNacimiento", formClient.fechaNacimiento)
+                }
               />
             </div>
             <div className="col">
@@ -193,12 +352,9 @@ const FormDataClient = ({ handleCurrentView }: { handleCurrentView: () => void; 
               className="d-grid gap-2 d-md-flex justify-content-md-end"
               style={{ padding: "10px" }}
             >
-              <button className="btn btn-secondary me-md-2" type="button">
-                Cancelar
-              </button>
-              <button className="btn btn-secondary" type="button">
-                Siguiente
-              </button>
+              <GrayButton text="Cancelar" onClick={() => {}} />
+              <GrayButton text="Anterior" onClick={handleBack} />
+              <GrayButton text="Siguiente" onClick={handleSubmit} />
             </div>
           </div>
 

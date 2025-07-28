@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "nombre": "Adultos",
+    "minima": 25,
+    "maxima": 50,
+    "descuento": 5.0,
+    "ganancia": 10.0,
+    "recargo": 0.0,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "Jóvenes",
+    "minima": 18,
+    "maxima": 24,
+    "descuento": 2.5,
+    "ganancia": 8.0,
+    "recargo": 0.0,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "Mayores",
+    "minima": 51,
+    "maxima": 70,
+    "descuento": 7.5,
+    "ganancia": 6.0,
+    "recargo": 1.0,
+    "activo": true
+  }
+]

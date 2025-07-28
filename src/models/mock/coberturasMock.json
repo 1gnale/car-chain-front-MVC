@@ -1,0 +1,20 @@
+[
+  {
+    "id_cobertura": 1,
+    "nombre": "Cobertura Básica",
+    "descripcion": "Cubre daños menores",
+    "recargoPorAtraso": 2.5
+  },
+  {
+    "id_cobertura": 3,
+    "nombre": "Cobertura Intermedia",
+    "descripcion": "Cubre daños importantes excepto destrucción total",
+    "recargoPorAtraso": 3.5
+  },
+  {
+    "id_cobertura": 2,
+    "nombre": "Cobertura Total",
+    "descripcion": "Cubre todo tipo de daños",
+    "recargoPorAtraso": 5.0
+  }
+]
