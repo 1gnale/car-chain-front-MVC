@@ -1,9 +1,9 @@
 
-interface exampleInputEmail1 {
+interface ImgProp {
     title: string
 }
 
-export default function ImgInput(props: exampleInputEmail1) {
+export default function ImgInput(props: ImgProp) {
     const {title} = props
 return (
     <div className="col">

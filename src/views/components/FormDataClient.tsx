@@ -6,6 +6,7 @@ import { useAppSelector } from "../../redux/reduxTypedHooks";
 import SelectForm from "./GeneralComponents/SelectForm.tsx";
 import GrayButton from "./GeneralComponents/Button.tsx";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import TitleForm from "./GeneralComponents/TitleForm.tsx";
 
 const FormDataClient = ({
   handleCurrentView,
@@ -221,9 +222,7 @@ const FormDataClient = ({
         <div className="col-xl-9">
           <div className="row " style={{ padding: "2px" }}>
             <div className="row " style={{ padding: "2px" }}>
-              <h5>
-                <strong>Informacóin del cliente</strong>
-              </h5>
+            <TitleForm title="Informacion Del Cliente" />
             </div>
             <div className="col">
               {" "}

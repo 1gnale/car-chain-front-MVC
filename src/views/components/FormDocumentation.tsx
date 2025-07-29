@@ -1,6 +1,8 @@
 import GrayButton from "./GeneralComponents/Button";
 import InputFormulario from "./GeneralComponents/ImgInput";
 import ImgInput from "./GeneralComponents/ImgInput";
+import TitleForm from "./GeneralComponents/TitleForm";
+
 const FormDocumentation = ({
   handleCurrentView,
 }: {
@@ -10,9 +12,7 @@ const FormDocumentation = ({
     <div className="container-fluid">
   <div className="row justify-content-center">
     <div className="col-12 col-xl-10">
-      <h5 className="mb-3">
-        <strong>Información del vehículo</strong>
-      </h5>
+    <TitleForm title="Informacion Del Vehiculo" />
 
       <div className="row g-3">
         {/* Cada ImgInput ocupa toda la fila en xs, mitad en md, un cuarto en xl */}
