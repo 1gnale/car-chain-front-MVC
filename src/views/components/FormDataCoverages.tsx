@@ -58,12 +58,15 @@ const FormDataCoverages = ({
     activo: true,
   };
 
-  // States del modelo creados aqui
-  // //CREO Q DEBERIA BORRAR EL COTIZACION NO SIRVE XD
-  const [cotization, setCotization] = useState<Cotizacion>({});
   const [linea_cotization, setLineaCotization] = useState<Linea_Cotizacion[]>(
     []
   );
+
+  const formatDate = (date: Date): string => {
+    return (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
+      date.getDate().toString().padStart(2, '0') + '/' +
+      date.getFullYear();
+  }
 
   // UseEffect
   useEffect(() => {
@@ -72,13 +75,13 @@ const FormDataCoverages = ({
 
     const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData");
     if (vehicleLocalStorage !== null) {
-      const today = new Date();
+      const today = (new Date());
       const vencimiento = new Date(today);
       vencimiento.setDate(vencimiento.getDate() + 7);
 
       NuevaCotization.vehiculo = vehicleLocalStorage;
-      NuevaCotization.fechaCreacion = today;
-      NuevaCotization.fechaVencimiento = vencimiento;
+      NuevaCotization.fechaCreacion = formatDate(today);
+      NuevaCotization.fechaVencimiento = formatDate(vencimiento);
 
       NuevaCotization.configuaracionLocalidad = config_localidad;
       NuevaCotization.configudacionEdad = config_edad;
@@ -92,7 +95,6 @@ const FormDataCoverages = ({
         };
         NuevaLinea_cotization.push(linea);
 
-        setCotization(NuevaCotization);
         setLineaCotization(NuevaLinea_cotization);
       });
     }

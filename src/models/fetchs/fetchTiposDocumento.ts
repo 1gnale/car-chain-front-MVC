@@ -1,4 +1,4 @@
-import type ITiposDocumentoRepository from "./repository/Irepositorys/ITiposDocumentoRepository";
+import type ITiposDocumentoRepository from "../repository/Irepositorys/ITiposDocumentoRepository";
 
 const fetchTiposDocumento = async (
   tiposDocRepo: ITiposDocumentoRepository

@@ -1,4 +1,4 @@
-import type IConfigLocalidadRepository from "./repository/Irepositorys/IConfigLocalidadRepository";
+import type IConfigLocalidadRepository from "../repository/Irepositorys/IConfigLocalidadRepository";
 
 const fetchConfigLocalidades = async (
   ConfigLocalidadesRepo: IConfigLocalidadRepository

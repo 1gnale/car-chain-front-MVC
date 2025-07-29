@@ -1,4 +1,4 @@
-import type IDocumentTypeRepository from "./repositories/IDocumentTypeRepository";
+import type IDocumentTypeRepository from "../repositories/IDocumentTypeRepository";
 
 const fetchDocumentTypes = async (
   brandRepo: IDocumentTypeRepository

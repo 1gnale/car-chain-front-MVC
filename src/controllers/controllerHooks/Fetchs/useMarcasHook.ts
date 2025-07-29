@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setMarcas } from "../../../redux/marcaSlice";
 import jsonMarcas from "../../../models/mock/marcasMock.json";
 import { MarcaRepository } from "../../../models/repository/Repositorys/marcaRepository";
-import fetchMarcas from "../../../models/fetchMarcas";
+import fetchMarcas from "../../../models/fetchs/fetchMarcas";
 
 const useMarcasHook = () => {
   const dispatch = useDispatch();

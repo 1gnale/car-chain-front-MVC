@@ -1,4 +1,4 @@
-import type ICoberturasRepository from "./repository/Irepositorys/ICoberturasRepository";
+import type ICoberturasRepository from "../repository/Irepositorys/ICoberturasRepository";
 
 const fetchCoberturas = async (
   ConfigCoberturasRepo: ICoberturasRepository

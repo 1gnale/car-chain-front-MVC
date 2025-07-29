@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonCobertura from "../../../models/mock/coberturasMock.json";
 import { CoberturasRepository } from "../../../models/repository/Repositorys/coberturasRepository";
-import fetchCoberturas from "../../../models/fetchCoberturas";
+import fetchCoberturas from "../../../models/fetchs/fetchCoberturas";
 import { setCobertura } from "../../../redux/coberturaSlice";
 
 const useCoberturasHook = () => {

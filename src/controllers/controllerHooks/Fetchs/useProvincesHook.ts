@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import fetchBrands from "../../../models/fetchProvinces";
+import fetchBrands from "../../../models/fetchs/fetchProvinces";
 import { setProvinces } from "../../../redux/provincesSlice";
 import jsonProvinces from "../../../models/mock/ProvincesInfoMock.json";
 import { ProvincesRepository } from "../../../models/repositories/provincesRepository";

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import fetchBrands from "../../../models/fetchBrands";
+import fetchBrands from "../../../models/fetchs/fetchBrands";
 import { setBrands } from "../../../redux/brandSlice";
 import json from "../../../models/mock/VehiclesInfoMock.json";
 import { BrandRepository } from "../../../models/repositories/brandRepository";

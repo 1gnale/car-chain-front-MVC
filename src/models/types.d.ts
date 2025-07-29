@@ -14,7 +14,7 @@ interface Persona {
   id: number;
   nombres?: string;
   apellido?: string;
-  fechaNacimiento?: Date;
+  fechaNacimiento?: string;
   tipoDocumento?: string;
   documento?: string;
   domicilio?: string;
@@ -102,8 +102,8 @@ interface ConfigLocalidad {
 }
 
 interface Cotizacion {
-  fechaCreacion?: Date;
-  fechaVencimiento?: Date;
+  fechaCreacion?: string;
+  fechaVencimiento?: string;
   vehiculo?: Vehiculo;
   configuaracionLocalidad?: ConfigLocalidad;
   configudacionEdad?: ConfigEdad;
@@ -146,14 +146,14 @@ interface Documentacion {
 interface Pago {
   id: number;
   total?: number;
-  fecha?: Date;
+  fecha?: string;
   hora?: string;
   poliza: Poliza;
 }
 
 interface Siniesto {
   id: number;
-  fechaSiniestro?: Date;
+  fechaSiniestro?: string;
   horaSiniestro?: string;
   usuario: Usuario;
   estado?: string;
@@ -163,7 +163,7 @@ interface Siniesto {
 
 interface Revision {
   id: number;
-  fecha?: Date;
+  fecha?: string;
   hora?: string;
   estado?: string;
   usuario: Usuario;
@@ -189,10 +189,10 @@ interface Poliza {
   numero_poliza: number;
   precioPolziaActual?: number;
   montoAsegurado?: number;
-  fechaContratacion?: Date;
+  fechaContratacion?: string;
   horaContratacion?: string;
-  fechaVencimiento?: Date;
-  fechaCancelacion?: Date;
+  fechaVencimiento?: string;
+  fechaCancelacion?: string;
   renovacionAutomatica?: boolean;
   usuario: Usuario;
   documentacion: Documentacion;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonConfigAnt from "../../../models/mock/configAntiguedad.json";
 import { ConfigAntiguedadRepository } from "../../../models/repository/Repositorys/configAntiguedadRepository";
-import fetchConfigAntiguedades from "../../../models/fetchConfigAntiguedades";
+import fetchConfigAntiguedades from "../../../models/fetchs/fetchConfigAntiguedades";
 import { setConfigLocalidadd } from "../../../redux/configLocalidadSlice";
 
 const useAntiguedadHook = () => {
