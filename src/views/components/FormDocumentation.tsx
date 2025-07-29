@@ -3,6 +3,8 @@ import ImgInput from "./GeneralComponents/ImgInput";
 import { useState, useEffect } from "react";
 import useFormValidation from "../../controllers/controllerHooks/Validations/useFormDocumetsValidation";
 
+import TitleForm from "./GeneralComponents/TitleForm";
+
 const FormDocumentation = ({
   handleCurrentView,
 }: {
@@ -75,13 +77,24 @@ const FormDocumentation = ({
   };
 
   return (
-    <div className="container-fluid">
-      <div className="row justify-content-center">
-        <div className="col-12 col-xl-10">
-          <h5 className="mb-3">
-            <strong>Información del vehículo</strong>
-          </h5>
 
+  <div className="row justify-content-center">
+    <div className="col-12 col-xl-10">
+    <TitleForm title="Informacion Del Vehiculo" />
+
+      <div className="row g-3">
+        {/* Cada ImgInput ocupa toda la fila en xs, mitad en md, un cuarto en xl */}
+        <div className="col-12 col-md-6 ">
+          <ImgInput title="Foto Frontal" />
+          <ImgInput title="Foto Lateral 1" />
+          <ImgInput title="Foto Lateral 2" />
+        </div>
+        <div className="col-12 col-md-6 ">
+          <ImgInput title="Foto Trasera" />
+          <ImgInput title="Foto Techo" />
+          <ImgInput title="Cedula Verde" />
+        </div>
+      </div>
           <div className="row g-3">
             <div className="col-12 col-md-6 ">
               <ImgInput

@@ -8,6 +8,7 @@ import { useAppSelector } from "../../redux/reduxTypedHooks";
 import useFormValidation from "../../controllers/controllerHooks/Validations/useFormValidation.ts";
 import "../../models/types.d.ts";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import TitleForm from "./GeneralComponents/TitleForm.tsx";
 
 interface FormVehicleProps {
   matricula: string;
@@ -207,9 +208,7 @@ const FormDataVehicle = ({
         <div className="col-xl-9">
           <div className="row " style={{ padding: "2px" }}>
             <div className="row " style={{ padding: "2px" }}>
-              <h5>
-                <strong>Información del vehículo</strong>
-              </h5>
+            <TitleForm title="Informacion Del Vehiculo" />
             </div>
             <Input
               title="Matricula"
