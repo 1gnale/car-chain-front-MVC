@@ -77,115 +77,97 @@ const FormDocumentation = ({
   };
 
   return (
+    <div className="row justify-content-center">
+      <div className="col-12 col-xl-10">
+        <TitleForm title="Informacion Del Vehiculo" />
 
-  <div className="row justify-content-center">
-    <div className="col-12 col-xl-10">
-    <TitleForm title="Informacion Del Vehiculo" />
-
-      <div className="row g-3">
-        {/* Cada ImgInput ocupa toda la fila en xs, mitad en md, un cuarto en xl */}
-        <div className="col-12 col-md-6 ">
-          <ImgInput title="Foto Frontal" />
-          <ImgInput title="Foto Lateral 1" />
-          <ImgInput title="Foto Lateral 2" />
-        </div>
-        <div className="col-12 col-md-6 ">
-          <ImgInput title="Foto Trasera" />
-          <ImgInput title="Foto Techo" />
-          <ImgInput title="Cedula Verde" />
-        </div>
-      </div>
-          <div className="row g-3">
-            <div className="col-12 col-md-6 ">
-              <ImgInput
-                title="Foto Frontal"
-                onCharge={(file: File) => {
-                  handleFileFrontalChange(file);
-                }}
-                error={errors.fotoFrontal}
-                onBlur={() =>
-                  validateField(
-                    "fotoFrontal" as keyof typeof errors,
-                    fileFotoFrontal
-                  )
-                }
-              />
-              <ImgInput
-                title="Foto Lateral 1"
-                onCharge={(file: File) => {
-                  handleFileLateral1Change(file);
-                }}
-                error={errors.fotoLateral1}
-                onBlur={() =>
-                  validateField(
-                    "fotoLateral1" as keyof typeof errors,
-                    fileFotoLateral1
-                  )
-                }
-              />
-              <ImgInput
-                title="Foto Lateral 2"
-                onCharge={(file: File) => {
-                  handleFileLateral2Change(file);
-                }}
-                error={errors.fotoLateral2}
-                onBlur={() =>
-                  validateField(
-                    "fotoLateral2" as keyof typeof errors,
-                    fileFotoLateral2
-                  )
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 ">
-              <ImgInput
-                title="Foto Trasera"
-                onCharge={(file: File) => {
-                  handleFileTraseraChange(file);
-                }}
-                error={errors.fotoTrasera}
-                onBlur={() =>
-                  validateField(
-                    "fotoTrasera" as keyof typeof errors,
-                    fileFotoTrasera
-                  )
-                }
-              />
-
-              <ImgInput
-                title="Foto Techo"
-                onCharge={(file: File) => {
-                  handleFileTechoChange(file);
-                }}
-                error={errors.fotoTecho}
-                onBlur={() =>
-                  validateField(
-                    "fotoTecho" as keyof typeof errors,
-                    fileFotoTecho
-                  )
-                }
-              />
-              <ImgInput
-                title="Cedula Verde"
-                srcUrn={""}
-                onCharge={(file: File) => {
-                  handleFileCedulaVerdeChange(file);
-                }}
-                error={errors.cedulaVerde}
-                onBlur={() =>
-                  validateField(
-                    "cedulaVerde" as keyof typeof errors,
-                    fileCedulaVerde
-                  )
-                }
-              />
-            </div>
+        <div className="row g-3">
+          <div className="col-12 col-md-6 ">
+            <ImgInput
+              title="Foto Frontal"
+              onCharge={(file: File) => {
+                handleFileFrontalChange(file);
+              }}
+              error={errors.fotoFrontal}
+              onBlur={() =>
+                validateField(
+                  "fotoFrontal" as keyof typeof errors,
+                  fileFotoFrontal
+                )
+              }
+            />
+            <ImgInput
+              title="Foto Lateral 1"
+              onCharge={(file: File) => {
+                handleFileLateral1Change(file);
+              }}
+              error={errors.fotoLateral1}
+              onBlur={() =>
+                validateField(
+                  "fotoLateral1" as keyof typeof errors,
+                  fileFotoLateral1
+                )
+              }
+            />
+            <ImgInput
+              title="Foto Lateral 2"
+              onCharge={(file: File) => {
+                handleFileLateral2Change(file);
+              }}
+              error={errors.fotoLateral2}
+              onBlur={() =>
+                validateField(
+                  "fotoLateral2" as keyof typeof errors,
+                  fileFotoLateral2
+                )
+              }
+            />
           </div>
+          <div className="col-12 col-md-6 ">
+            <ImgInput
+              title="Foto Trasera"
+              onCharge={(file: File) => {
+                handleFileTraseraChange(file);
+              }}
+              error={errors.fotoTrasera}
+              onBlur={() =>
+                validateField(
+                  "fotoTrasera" as keyof typeof errors,
+                  fileFotoTrasera
+                )
+              }
+            />
 
-          <div className="d-flex justify-content-end gap-2 mt-4">
-            <GrayButton text="Cancelar" />
-            <GrayButton text="Siguiente" onClick={handleSubmit} />
+            <ImgInput
+              title="Foto Techo"
+              onCharge={(file: File) => {
+                handleFileTechoChange(file);
+              }}
+              error={errors.fotoTecho}
+              onBlur={() =>
+                validateField("fotoTecho" as keyof typeof errors, fileFotoTecho)
+              }
+            />
+            <ImgInput
+              title="Cedula Verde"
+              srcUrn={""}
+              onCharge={(file: File) => {
+                handleFileCedulaVerdeChange(file);
+              }}
+              error={errors.cedulaVerde}
+              onBlur={() =>
+                validateField(
+                  "cedulaVerde" as keyof typeof errors,
+                  fileCedulaVerde
+                )
+              }
+            />
           </div>
+        </div>
+
+        <div className="d-flex justify-content-end gap-2 mt-4">
+          <GrayButton text="Cancelar" />
+          <GrayButton text="Siguiente" onClick={handleSubmit} />
         </div>
       </div>
     </div>
