@@ -194,10 +194,6 @@ const FormDataConfirmation = ({
             </div>
           </div>
 
-          <div className="my-4">
-            <TitleForm title="Información Del Vehículo" />
-          </div>
-
           <div className="row g-3">
             <div className="col-md-3">
               <LabelNinfo
@@ -264,6 +260,7 @@ const FormDataConfirmation = ({
               />
             </div>
           </div>
+
           <div className="my-4">
             <TitleForm title="Documentacion" />
           </div>
@@ -314,6 +311,7 @@ const FormDataConfirmation = ({
           </div>
 
           <div className="my-4">
+
             <TitleForm title="Cobertura Contratada" />
           </div>
           <div className="row g-3">

@@ -14,7 +14,7 @@ import useConfigLocalidadHook from "./controllerHooks/Fetchs/useConfigsLocalidad
 import { useAuth0 } from "@auth0/auth0-react";
 
 const ControladorSolicitarContratacionDePoliza = () => {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
   // Hook que trae todas las marcas
   const { loading, error } = useMarcasHook();
   // Hook que trae todas las modelos
@@ -49,6 +49,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
     useConfigLocalidadHook();
 
   if (
+    isLoading ||
     loading ||
     loadingModelos ||
     loadingVersiones ||

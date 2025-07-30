@@ -73,8 +73,8 @@ const FormDataClient = ({
       tipoDocFiltrado !== undefined
     ) {
       setLocality(true);
-      setSelectedProvinces(clientStorage.localidad.provincia?.id || 0);
-      setSelectedLocality(clientStorage.localidad.id);
+      setSelectedProvinces(clientStorage.localidad?.provincia?.id || 0);
+      setSelectedLocality(clientStorage.localidad?.id || 0);
       setSelectedSex(sexoFiltrado.id);
       setSelectedDocumentType(tipoDocFiltrado);
       setFormClient(parseFormClient(clientStorage));
@@ -90,8 +90,8 @@ const FormDataClient = ({
       fechaNacimiento: client.fechaNacimiento || "",
       telefono: client.telefono || "",
       sexo: client.sexo || "",
-      provincia: client.localidad.provincia?.descripcion || "",
-      localidad: client.localidad.descripcion || "",
+      provincia: client.localidad?.provincia?.descripcion || "",
+      localidad: client.localidad?.descripcion || "",
       domicilio: client.domicilio || "",
     };
   }
