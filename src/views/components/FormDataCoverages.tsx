@@ -6,18 +6,21 @@ import { ExclamationCircleFill } from "react-bootstrap-icons";
 import { useEffect, useMemo } from "react";
 import { useState } from "react";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const FormDataCoverages = ({
   handleCurrentView,
+  Auth,
 }: {
   handleCurrentView: (pass: boolean) => void;
+  Auth: boolean;
 }) => {
   // States de la DB
   const coverages: Cobertura[] = useAppSelector(
     (state) => state.coberturas.cobertura
   );
   const details: Detalle[] = useAppSelector((state) => state.detalles.detalle);
-
+  const { loginWithRedirect } = useAuth0();
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
@@ -63,10 +66,14 @@ const FormDataCoverages = ({
   );
 
   const formatDate = (date: Date): string => {
-    return (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
-      date.getDate().toString().padStart(2, '0') + '/' +
-      date.getFullYear();
-  }
+    return (
+      (date.getMonth() + 1).toString().padStart(2, "0") +
+      "/" +
+      date.getDate().toString().padStart(2, "0") +
+      "/" +
+      date.getFullYear()
+    );
+  };
 
   // UseEffect
   useEffect(() => {
@@ -75,7 +82,7 @@ const FormDataCoverages = ({
 
     const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData");
     if (vehicleLocalStorage !== null) {
-      const today = (new Date());
+      const today = new Date();
       const vencimiento = new Date(today);
       vencimiento.setDate(vencimiento.getDate() + 7);
 
@@ -199,9 +206,18 @@ const FormDataCoverages = ({
     return result;
   };
 
-  const handleHirePolicy = () => {
-    //const policy: Poliza()= {}
-
+  const handleHirePolicy = (linea_cotization: Linea_Cotizacion) => {
+    console.log(Auth);
+    if (Auth) {
+      const policy: Poliza = {
+        numero_poliza: 1,
+        lineaContizacion: linea_cotization,
+      };
+      localStorage.setItem("PolicyData", JSON.stringify(policy));
+      handleCurrentView(true);
+    } else {
+      loginWithRedirect();
+    }
     return null;
   };
 
@@ -234,7 +250,7 @@ const FormDataCoverages = ({
                   lineaCot.cobertura?.id_cobertura
                 )}
                 onContratar={() => {
-                  console.log(lineaCot);
+                  handleHirePolicy(lineaCot);
                 }}
               />
             </div>

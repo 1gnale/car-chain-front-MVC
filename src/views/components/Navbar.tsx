@@ -1,13 +1,19 @@
 import CarChainLogo from "../assets/Carchain.png";
 import UserPicture from "./NavBar/UserPicture";
 import AuthUser from "./NavBar/AuthUser";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ isAuth }: { isAuth: boolean }) => {
+  const navigate = useNavigate();
+
+  const goHome = () => {
+    navigate("/");
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <a className="navbar-brand me-2" href="indexInicioLogueado.html">
+        <a className="navbar-brand me-2" href="/">
           <img
             src={CarChainLogo}
             height="30"

@@ -8,8 +8,10 @@ import useProvinciasHook from "./controllerHooks/Fetchs/useProvinciasHook";
 import useCoberturasDetalleHook from "./controllerHooks/Fetchs/useCoberturaDetalleHook";
 import useCoberturasHook from "./controllerHooks/Fetchs/useCoberturasHook";
 import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const ControladorSolicitarContratacionDePoliza = () => {
+  const { isAuthenticated } = useAuth0();
   // Hook que trae todas las marcas
   const { loading, error } = useMarcasHook();
   // Hook que trae todas las modelos
@@ -61,7 +63,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
     return <div>Error: ha ocurrido un error inesperado</div>;
   }
 
-  return <RequestUserPolicy isAuth={false} />;
+  return <RequestUserPolicy isAuth={isAuthenticated} />;
 };
 
 export default ControladorSolicitarContratacionDePoliza;

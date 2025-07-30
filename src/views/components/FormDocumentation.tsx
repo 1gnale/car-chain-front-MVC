@@ -67,7 +67,7 @@ const FormDocumentation = ({
       fotoTecho: fileFotoTecho,
       cedulaVerde: fileCedulaVerde,
     };
-    console.log("AAAAAAA");
+
     if (validateForm(documentation)) {
       console.log("Formulario válido:", documentation);
       handleCurrentView(true);
