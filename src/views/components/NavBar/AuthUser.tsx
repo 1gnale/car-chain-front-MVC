@@ -1,7 +1,27 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
 const AuthUser = () => {
-  const { loginWithRedirect, logout } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
+
+  const handleLogin = () => {
+    // Marcar en localStorage que es un login (no registro)
+    localStorage.setItem("auth_action", "login");
+    loginWithRedirect({
+      authorizationParams: {
+        screen_hint: "login"
+      }
+    });
+  };
+
+  const handleSignUp = () => {
+    // Marcar en localStorage que es un registro
+    localStorage.setItem("auth_action", "signup");
+    loginWithRedirect({
+      authorizationParams: {
+        screen_hint: "signup"
+      }
+    });
+  };
 
   return (
     <div className="navbar-nav ms-auto">
@@ -9,7 +29,7 @@ const AuthUser = () => {
         type="button"
         className="btn btn-link px-3 me-2"
         style={{ color: "white" }}
-        onClick={() => loginWithRedirect()}
+        onClick={handleLogin}
       >
         Iniciar Sesión
       </button>
@@ -17,7 +37,7 @@ const AuthUser = () => {
         type="button"
         className="btn btn-primary me-3"
         style={{ backgroundColor: "black", borderColor: "white" }}
-        onClick={() => logout()}
+        onClick={handleSignUp}
       >
         Registrarse
       </button>
