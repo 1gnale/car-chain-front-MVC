@@ -11,7 +11,7 @@ import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const ControladorSolicitarContratacionDePoliza = () => {
-  const { isAuthenticated } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
   // Hook que trae todas las marcas
   const { loading, error } = useMarcasHook();
   // Hook que trae todas las modelos
@@ -36,6 +36,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
   const { loading: loadingDet, error: errorDet } = useDetallesHook();
 
   if (
+    isLoading ||
     loading ||
     loadingModelos ||
     loadingVersiones ||

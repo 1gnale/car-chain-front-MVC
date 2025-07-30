@@ -1,10 +1,14 @@
+import { useEffect } from "react";
 import HomePage from "../views/pages/HomePage";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const ControladorIndex = () => {
-  // TODO - Implementar autenticación y pasar el estado isAuth a HomePage
-  const { isAuthenticated } = useAuth0();
-  // Por ahora, se pasa isAuth como false para simular un usuario no autenticado
+  const { isAuthenticated, isLoading } = useAuth0();
+
+  // Mostrar loading mientras Auth0 inicializa
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
 
   return (
     <div>
