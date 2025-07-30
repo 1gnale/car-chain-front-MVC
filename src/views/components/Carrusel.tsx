@@ -1,7 +1,7 @@
 import slice1 from "../assets/Carrusel D1.png";
 import slice2 from "../assets/Carrusel D2.png";
 import slice3 from "../assets/Carrusel D3.png";
-
+import { useNavigate } from "react-router-dom";
 import GrayButton from "./GeneralComponents/Button";
 
 const Carrusel = () => {
@@ -17,6 +17,12 @@ const Carrusel = () => {
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     borderRadius: "0.5rem",
     padding: "1rem",
+  };
+
+  const navigate = useNavigate();
+
+  const goToSolicitarCotizacion = () => {
+    navigate("/solicitar-cotizacion");
   };
 
   return (
@@ -46,7 +52,7 @@ const Carrusel = () => {
                 href="/solicitar-cotizacion"
                 style="btn-lg"
                 text="Solicitar cotización"
-                onClick={() => {}}
+                onClick={goToSolicitarCotizacion}
               />
             </div>
           </div>

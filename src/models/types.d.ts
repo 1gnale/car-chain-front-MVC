@@ -199,9 +199,9 @@ interface Poliza {
   fechaVencimiento?: string;
   fechaCancelacion?: string;
   renovacionAutomatica?: boolean;
-  usuario: Usuario;
-  documentacion: Documentacion;
+  usuario?: Usuario;
+  documentacion?: Documentacion;
   lineaContizacion: Linea_Cotizacion;
-  periodoPago: PeriodoPago;
-  tipoContratacion: TipoContratacion;
+  periodoPago?: PeriodoPago;
+  tipoContratacion?: TipoContratacion;
 }
