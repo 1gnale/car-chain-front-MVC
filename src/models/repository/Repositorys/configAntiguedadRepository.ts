@@ -1,13 +1,13 @@
 import type IConfigAntiguedadRepository from "../Irepositorys/IConfigAntiguedadRepository";
 
 export class ConfigAntiguedadRepository implements IConfigAntiguedadRepository {
-  private data: ConfigAntiguedad[] = [];
+  private data: ConfigAntiguedad = {};
 
-  constructor(data: ConfigAntiguedad[]) {
+  constructor(data: ConfigAntiguedad) {
     this.data = data;
   }
 
-  getConfigAntiguedad(): Promise<ConfigAntiguedad[]> {
+  getConfigAntiguedad(): Promise<ConfigAntiguedad> {
     return Promise.resolve(this.data);
   }
 }

@@ -25,41 +25,15 @@ const FormDataCoverages = ({
     (state) => state.coberturasDetalles.coberturaDetalle
   );
 
-  const config_antiguedad: ConfigAntiguedad = {
-    id: 1,
-    nombre: "Cuando el Auto es nuevo",
-    minima: 0,
-    maxima: 3,
-    descuento: 10.0,
-    ganancia: 0.0,
-    recargo: 0.0,
-    activo: true,
-  };
-
-  const config_localidad: ConfigLocalidad = {
-    id: 3,
-    nombre: "Bahía Blanca",
-    descuento: 2.0,
-    ganancia: 8.0,
-    recargo: 1.5,
-    activo: true,
-    localidad: {
-      id: 3,
-      descripcion: "Bahía Blanca",
-      codigoPostal: "8000",
-    },
-  };
-
-  const config_edad: ConfigEdad = {
-    id: 1,
-    nombre: "Adultos",
-    minima: 25,
-    maxima: 50,
-    descuento: 5.0,
-    ganancia: 10.0,
-    recargo: 0.0,
-    activo: true,
-  };
+  const config_antiguedad: ConfigAntiguedad = useAppSelector(
+    (state) => state.configAntiguedades.configAntiguedad
+  );
+  const config_localidad: ConfigLocalidad = useAppSelector(
+    (state) => state.configLocalidades.configLocalidad
+  );
+  const config_edad: ConfigEdad = useAppSelector(
+    (state) => state.configEdades.configEdad
+  );
 
   const [linea_cotization, setLineaCotization] = useState<Linea_Cotizacion[]>(
     []
@@ -105,8 +79,6 @@ const FormDataCoverages = ({
         setLineaCotization(NuevaLinea_cotization);
       });
     }
-    console.log("...........");
-    console.log(NuevaLinea_cotization);
   }, []);
 
   /// Handles
@@ -130,8 +102,6 @@ const FormDataCoverages = ({
         covDetail.cobertura.id_cobertura
     );
 
-    console.log("Monto vehiculo");
-    console.log(montoVehiculo);
     // Obtener el monto base a partir de los detalles
     for (const d of coberturaDetalles) {
       if (d?.detalle.porcentaje_miles != undefined) {
@@ -144,8 +114,7 @@ const FormDataCoverages = ({
         }
       }
     }
-    console.log(LineCoverage.cobertura?.nombre);
-    console.log(total);
+
     // Obtener los multiplicadores
     const uno = 1;
     const cien = 100;
@@ -161,7 +130,7 @@ const FormDataCoverages = ({
     const descuentoEdad =
       LineCoverage.cotizacion?.configudacionEdad?.descuento ?? 0;
     multiplicador *= uno - descuentoEdad / cien;
-    console.log("Multiplicador1: " + multiplicador);
+
     const gananciaLocalidad =
       LineCoverage.cotizacion?.configuaracionLocalidad?.ganancia ?? 0;
     const gananciaAntiguedad =
@@ -171,7 +140,6 @@ const FormDataCoverages = ({
     multiplicador *= uno + gananciaLocalidad / cien;
     multiplicador *= uno + gananciaAntiguedad / cien;
     multiplicador *= uno + gananciEdad / cien;
-    console.log("Multiplicador2: " + multiplicador);
 
     // Obtener todos los sumadores
     acumulador += LineCoverage.cotizacion?.configudacionEdad?.recargo ?? 0;
@@ -179,7 +147,6 @@ const FormDataCoverages = ({
       LineCoverage.cotizacion?.configuaracionLocalidad?.recargo ?? 0;
     acumulador +=
       LineCoverage.cotizacion?.configuracionAntiguedad?.recargo ?? 0;
-    console.log("Acumulador: " + LineCoverage);
     // Calcular el monto final
     const monto = Math.round(total * multiplicador + acumulador);
 
@@ -189,7 +156,6 @@ const FormDataCoverages = ({
   };
 
   const handleAppliedDetails = (id_cobertura?: number) => {
-    console.log("IDSSS: " + id_cobertura);
     const result = coverage_details
       .map((covDetail) => {
         if (id_cobertura == covDetail.cobertura.id_cobertura) {
@@ -207,7 +173,6 @@ const FormDataCoverages = ({
   };
 
   const handleHirePolicy = (linea_cotization: Linea_Cotizacion) => {
-    console.log(Auth);
     if (Auth) {
       const policy: Poliza = {
         numero_poliza: 1,

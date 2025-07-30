@@ -54,7 +54,7 @@ const FormDataClient = ({
   });
 
   console.log(documentTypes);
-  console.log(formClient.tipoDocumento)
+  console.log(formClient.tipoDocumento);
 
   // UseEffect
   useEffect(() => {
@@ -176,7 +176,7 @@ const FormDataClient = ({
   const handleStateDocumentType = (id: number) => {
     setSelectedDocumentType(id);
     // Encontrar el nombre del tipo documento
-    const selectedDocumentType = documentTypes[id-1] || "";
+    const selectedDocumentType = documentTypes[id - 1] || "";
     setFormClient((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
     validateField("tipoDocumento", selectedDocumentType);
   };
@@ -226,7 +226,7 @@ const FormDataClient = ({
         <div className="col-xl-9">
           <div className="row " style={{ padding: "2px" }}>
             <div className="row " style={{ padding: "2px" }}>
-            <TitleForm title="Informacion Del Cliente" />
+              <TitleForm title="Informacion Del Cliente" />
             </div>
             <div className="col">
               {" "}
@@ -277,7 +277,7 @@ const FormDataClient = ({
             <div className="col">
               <SelectForm
                 status={true}
-                value={selectedDocumentType} 
+                value={selectedDocumentType}
                 title="Tipo Documento"
                 items={handleDocumentType}
                 onChange={handleStateDocumentType}
@@ -355,7 +355,7 @@ const FormDataClient = ({
               className="d-grid gap-2 d-md-flex justify-content-md-end"
               style={{ padding: "10px" }}
             >
-              <GrayButton text="Cancelar" onClick={() => { }} />
+              <GrayButton text="Cancelar" onClick={() => {}} />
               <GrayButton text="Anterior" onClick={handleBack} />
               <GrayButton text="Siguiente" onClick={handleSubmit} />
             </div>

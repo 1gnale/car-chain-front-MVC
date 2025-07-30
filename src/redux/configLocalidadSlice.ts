@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  configLocalidad: [],
+  configLocalidad: {},
 };
 
 export const confiLocalidadSlice = createSlice({
@@ -12,7 +12,7 @@ export const confiLocalidadSlice = createSlice({
       state.configLocalidad = action.payload;
     },
     clearConfigLocalidad: (state) => {
-      state.configLocalidad = [];
+      state.configLocalidad = {};
     },
   },
 });

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  configEdad: [],
+  configEdad: {},
 };
 
 export const configEdadSlice = createSlice({
@@ -12,7 +12,7 @@ export const configEdadSlice = createSlice({
       state.configEdad = action.payload;
     },
     clearConfigEdad: (state) => {
-      state.configEdad = [];
+      state.configEdad = {};
     },
   },
 });

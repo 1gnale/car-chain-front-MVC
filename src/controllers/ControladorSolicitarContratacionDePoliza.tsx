@@ -8,6 +8,9 @@ import useProvinciasHook from "./controllerHooks/Fetchs/useProvinciasHook";
 import useCoberturasDetalleHook from "./controllerHooks/Fetchs/useCoberturaDetalleHook";
 import useCoberturasHook from "./controllerHooks/Fetchs/useCoberturasHook";
 import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
+import useConfigAntiguedadHook from "./controllerHooks/Fetchs/useConfigsAntiguedadHook";
+import useConfigEdadHook from "./controllerHooks/Fetchs/useConfigsEdadHook";
+import useConfigLocalidadHook from "./controllerHooks/Fetchs/useConfigsLocalidadesHook";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const ControladorSolicitarContratacionDePoliza = () => {
@@ -35,6 +38,16 @@ const ControladorSolicitarContratacionDePoliza = () => {
   // Hook que trae todas las Detalles
   const { loading: loadingDet, error: errorDet } = useDetallesHook();
 
+  // Hook que la configuracion antiguedad
+  const { loading: loadingConfAnt, error: errorConfAnt } =
+    useConfigAntiguedadHook();
+  // Hook que la configuracion edad
+  const { loading: loadingConfEdad, error: errorConfEdad } =
+    useConfigEdadHook();
+  // Hook que la configuracion localidad
+  const { loading: loadingConfigLoc, error: errorConfLocalidad } =
+    useConfigLocalidadHook();
+
   if (
     isLoading ||
     loading ||
@@ -45,7 +58,10 @@ const ControladorSolicitarContratacionDePoliza = () => {
     loadingLoc ||
     loadingCober ||
     loadingCobDet ||
-    loadingDet
+    loadingDet ||
+    loadingConfAnt ||
+    loadingConfEdad ||
+    loadingConfigLoc
   ) {
     return <div>Loading...</div>;
   }
@@ -59,7 +75,10 @@ const ControladorSolicitarContratacionDePoliza = () => {
     errorLoc ||
     errorCober ||
     errorCobDet ||
-    errorDet
+    errorDet ||
+    errorConfAnt ||
+    errorConfEdad ||
+    errorConfLocalidad
   ) {
     return <div>Error: ha ocurrido un error inesperado</div>;
   }

@@ -1,13 +1,13 @@
 interface exampleInputEmail1 {
   title: string | "";
-  srcUrn?: string | "";
+  srcUrl?: string;
   onCharge: (file: File) => void;
   onBlur?: () => void;
   error?: string;
 }
 
 export default function ImgInput(props: exampleInputEmail1) {
-  const { title, srcUrn, onCharge, onBlur, error } = props;
+  const { title, srcUrl, onCharge, onBlur, error } = props;
   return (
     <div className="col mb-2">
       <div className="mb-1">
@@ -19,7 +19,7 @@ export default function ImgInput(props: exampleInputEmail1) {
       <div className="custom-file">
         <input
           type="file"
-          src={srcUrn}
+          src={srcUrl}
           className={`form-control ${error ? "is-invalid" : ""}`}
           onBlur={onBlur}
           onChange={(e) => {
@@ -29,6 +29,16 @@ export default function ImgInput(props: exampleInputEmail1) {
           id="inputGroupFile01"
           lang="es"
         />
+        {/* Previsualización */}
+        {srcUrl && (
+          <div className="mb-2 mt-1">
+            <img
+              src={srcUrl}
+              alt="preview"
+              style={{ maxWidth: "500%", maxHeight: 100 }}
+            />
+          </div>
+        )}
         {error && <div className="invalid-feedback">{error}</div>}
       </div>
     </div>

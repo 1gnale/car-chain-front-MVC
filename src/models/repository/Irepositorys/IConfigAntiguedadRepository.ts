@@ -1,3 +1,3 @@
 export default interface IConfigAntiguedadRepository {
-  getConfigAntiguedad(): Promise<ConfigAntiguedad[]>;
+  getConfigAntiguedad(): Promise<ConfigAntiguedad>;
 }
