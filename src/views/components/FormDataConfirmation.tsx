@@ -53,28 +53,6 @@ const FormDataConfirmation = ({
             </div>
           </div>
 
-
-        <div className="row g-3">
-          <div className="col-md-3">
-            <LabelNinfo title="Matrícula: " text="SA-SA-SAA " />
-          </div>
-          <div className="col-md-3">
-            <LabelNinfo title="Chasis:" text="assass" />
-          </div>
-          <div className="col-md-3">
-            <LabelNinfo title="N-Motor:" text="12" />
-          </div>
-          <div className="col-md-3 " >
-            <LabelNinfo title="GNC:" text="Si Tiene" />
-          </div>
-          <div className="col-md-3">
-            <LabelNinfo title="Marca:" text="Ford" />
-          </div>
-          <div className="col-md-3">
-            <LabelNinfo title="Modelo:" text="Kuga" />
-
-          </div>
-
           <div className="row g-3">
             <div className="col-md-3">
               <LabelNinfo title="Matrícula: " text="SA-SA-SAA " />
@@ -83,9 +61,9 @@ const FormDataConfirmation = ({
               <LabelNinfo title="Chasis:" text="assass" />
             </div>
             <div className="col-md-3">
-              <LabelNinfo title="N° motor:" text="12" />
+              <LabelNinfo title="N-Motor:" text="12" />
             </div>
-            <div className="col-md-3 ">
+            <div className="col-md-3 " >
               <LabelNinfo title="GNC:" text="Si Tiene" />
             </div>
             <div className="col-md-3">
@@ -101,6 +79,7 @@ const FormDataConfirmation = ({
               <LabelNinfo title="Año:" text="2003" />
             </div>
           </div>
+
           <div className="my-4">
             <TitleForm title="Documentacion" />
           </div>
@@ -127,12 +106,6 @@ const FormDataConfirmation = ({
           </div>
 
           <div className="my-4">
-            <TitleForm title="Cobertura Contratada" />
-          </div>
-          <div className="row g-3">
-            <div className="col-md-3">
-              <LabelNinfo title="Nombre:" text="Terceros Completo" />
-            </div>
           </div>
 
           <div className="row g-3">
