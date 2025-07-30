@@ -5,9 +5,10 @@ interface InputProps {
   onChange?: (value: string) => void;
   error?: string;
   onBlur?: () => void;
+  disabled?: boolean;
 }
 
-const Input = ({ title, place, value, onChange, error, onBlur }: InputProps) => {
+const Input = ({ title, place, value, onChange, error, onBlur, disabled }: InputProps) => {
   return (
     <div className="col">
       <label htmlFor="exampleInputEmail1">{title}</label>
@@ -17,6 +18,7 @@ const Input = ({ title, place, value, onChange, error, onBlur }: InputProps) => 
         value={value || ''}
         onChange={(e) => onChange?.(e.target.value)}
         onBlur={onBlur}
+        disabled= {disabled}
       />
       {error && <div className="invalid-feedback">{error}</div>}
     </div>

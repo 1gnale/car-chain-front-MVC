@@ -67,7 +67,7 @@ const FormDataConfirmation = ({
             <LabelNinfo title="Chasis:" text="assass" />
           </div>
           <div className="col-md-3">
-            <LabelNinfo title="N-otor:" text="12" />
+            <LabelNinfo title="N-Motor:" text="12" />
           </div>
           <div className="col-md-3 " >
             <LabelNinfo title="GNC:" text="Si Tiene" />
