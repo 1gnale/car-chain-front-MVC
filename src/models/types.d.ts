@@ -22,7 +22,7 @@ interface Persona {
   telefono?: string;
   sexo?: string;
   contraseña?: string;
-  localidad: Localidad;
+  localidad?: Localidad;
 }
 
 interface Cliente extends Persona {

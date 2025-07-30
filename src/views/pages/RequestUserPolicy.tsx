@@ -7,7 +7,8 @@ import FormDataClient from "../components/FormDataClient";
 import FormDataCoverages from "../components/FormDataCoverages";
 import FormDataDocumentation from "../components/FormDocumentation";
 import FormDataConfirmation from "../components/FormDataConfirmation";
-
+import FormConfirmRegister from "../components/FormAccountData";
+import FormAccountData from "../components/FormAccountData";
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
 
