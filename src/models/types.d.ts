@@ -140,7 +140,12 @@ interface Detalle {
 }
 
 interface Documentacion {
-  //NO SE QUE HACER
+  fotoFrontal?: File;
+  fotoTrasera?: File;
+  fotoLateral1?: File;
+  fotoLateral2?: File;
+  fotoTecho?: File;
+  cedulaVerde?: File;
 }
 
 interface Pago {
