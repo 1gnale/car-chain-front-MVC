@@ -1,24 +1,23 @@
-
 interface InfoLabel {
-title: string;
-text: string;
+  title: string;
+  text: string | undefined;
 }
 
 function LabelNinfo(props: InfoLabel) {
-const { title, text } = props;
+  const { title, text } = props;
 
-return (
+  return (
     <div className="d-flex mb-1">
-    <div style={{ minWidth: '150px' }}>
+      <div style={{ minWidth: "150px" }}>
         <strong>
-        <label>{title}</label>
+          <label>{title}</label>
         </strong>
-    </div>
-    <div>
+      </div>
+      <div>
         <label>{text}</label>
+      </div>
     </div>
-    </div>
-);
+  );
 }
 
 export default LabelNinfo;

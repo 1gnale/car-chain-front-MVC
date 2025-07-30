@@ -1,3 +1,3 @@
 export default interface IConfigEdadRepository {
-  getConfigEdad(): Promise<ConfigEdad[]>;
+  getConfigEdad(): Promise<ConfigEdad>;
 }

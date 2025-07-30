@@ -70,7 +70,7 @@ interface Version {
 }
 
 interface ConfigEdad {
-  id: number;
+  id?: number;
   nombre?: string;
   minima?: number;
   maxima?: number;
@@ -81,7 +81,7 @@ interface ConfigEdad {
 }
 
 interface ConfigAntiguedad {
-  id: number;
+  id?: number;
   nombre?: string;
   minima?: number;
   maxima?: number;
@@ -92,13 +92,13 @@ interface ConfigAntiguedad {
 }
 
 interface ConfigLocalidad {
-  id: number;
+  id?: number;
   nombre?: string;
   descuento?: number;
   ganancia?: number;
   recargo?: number;
   activo?: boolean;
-  localidad: Localidad;
+  localidad?: Localidad;
 }
 
 interface Cotizacion {
@@ -146,6 +146,13 @@ interface Documentacion {
   fotoLateral2?: File;
   fotoTecho?: File;
   cedulaVerde?: File;
+
+  fotoFrontalString?: string;
+  fotoTraseraString?: string;
+  fotoLateral1String?: string;
+  fotoLateral2String?: string;
+  fotoTechoString?: string;
+  cedulaVerdeString?: string;
 }
 
 interface Pago {
@@ -191,7 +198,7 @@ interface TipoContratacion {
 }
 
 interface Poliza {
-  numero_poliza: number;
+  numero_poliza?: number;
   precioPolziaActual?: number;
   montoAsegurado?: number;
   fechaContratacion?: string;
@@ -201,7 +208,7 @@ interface Poliza {
   renovacionAutomatica?: boolean;
   usuario?: Usuario;
   documentacion?: Documentacion;
-  lineaContizacion: Linea_Cotizacion;
+  lineaContizacion?: Linea_Cotizacion;
   periodoPago?: PeriodoPago;
   tipoContratacion?: TipoContratacion;
 }
