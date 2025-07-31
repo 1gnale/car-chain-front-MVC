@@ -1,36 +1,45 @@
-function TableInput() {
+import { Eye } from "react-bootstrap-icons";
+
+interface tableContent {
+  titles: string[];
+  tableBody: tableBodys[];
+}
+
+interface tableBodys {
+  key: number;
+  rowContent: string[];
+}
+
+const TableButton = (tabla: tableContent) => {
   return (
-    <table className="table">
-      <thead>
+    <table className="table table-hover table-responsive table-bordered">
+      <thead className="table-dark">
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">First</th>
-          <th scope="col">Last</th>
-          <th scope="col">Handle</th>
+          {tabla.titles.map((title) => (
+            <th scope="col">{title}</th>
+          ))}
+          <th>"Boton"</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td>John</td>
-          <td>Doe</td>
-          <td>@social</td>
-        </tr>
+      <tbody className="table-Light">
+        {tabla.tableBody?.map((tbody: tableBodys) => (
+          <tr>
+            {tbody.rowContent.map((cell) => (
+              <td>{cell}</td>
+            ))}
+            <td className="text-center align-middle" style={{ width: "80px" }}>
+              <div className="d-flex justify-content-center align-items-center">
+                <Eye
+                  style={{ cursor: "pointer" }}
+                  onClick={() => console.log("Ay mi ojo xdxd!")}
+                />
+              </div>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
-}
+};
 
-export default TableInput;
+export default TableButton;

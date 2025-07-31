@@ -47,10 +47,7 @@ const CoverageCard = ({
                     </Tooltip>
                   }
                 >
-                  <InfoCircle
-                    className="me-2"
-                    style={{ cursor: "pointer" }}
-                  />
+                  <InfoCircle className="me-2" style={{ cursor: "pointer" }} />
                 </OverlayTrigger>
                 <span style={{ fontSize: "0.9rem" }}>{itemApply.name}</span>
               </div>

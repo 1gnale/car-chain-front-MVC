@@ -1,44 +1,82 @@
 [
   {
     "id": 1,
-    "nombre": "Robo parcial",
-    "descripcion": "Incluye cristales y ruedas",
-    "porcentaje_miles": 2.0,
-    "monto_fijo": 0
+    "nombre": "Responsable Civil hasta $23.000.000",
+    "descripcion": "Te cubrimos hasta 23 millones de pesos",
+    "porcentaje_miles": 1,
+    "monto_fijo": 23000000,
+    "activodetalle": true
   },
   {
     "id": 2,
-    "nombre": "Destrucción total",
-    "descripcion": "Cobertura por pérdida total",
-    "porcentaje_miles": 3,
-    "monto_fijo": 0
+    "nombre": "Pérdida Total por Incendio",
+    "descripcion": "Cobertura ante incendios totales",
+    "porcentaje_miles": 2,
+    "monto_fijo": 0,
+    "activodetalle": true
   },
   {
     "id": 3,
-    "nombre": "Granizo",
-    "descripcion": "Daños por granizo",
-    "porcentaje_miles": 1.2,
-    "monto_fijo": 0
+    "nombre": "Robo o Hurto Total",
+    "descripcion": "Te protegemos en caso de robo o hurto total",
+    "porcentaje_miles": 3,
+    "monto_fijo": 0,
+    "activodetalle": true
   },
   {
     "id": 4,
-    "nombre": "Daños por incendio",
-    "descripcion": "Cubre incendio total o parcial",
-    "porcentaje_miles": 1.5,
-    "monto_fijo": 0
+    "nombre": "Destrucción Total por Accidente",
+    "descripcion": "Cubre destrucción total por accidente",
+    "porcentaje_miles": 4,
+    "monto_fijo": 0,
+    "activodetalle": true
   },
   {
     "id": 5,
-    "nombre": "Asistencia mecánica",
-    "descripcion": "Incluye grúa y auxilio mecánico",
-    "porcentaje_miles": 0,
-    "monto_fijo": 5000
+    "nombre": "Responsabilidad Civil hacia terceros",
+    "descripcion": "Incluye responsabilidad civil",
+    "porcentaje_miles": 5,
+    "monto_fijo": 0,
+    "activodetalle": true
   },
   {
     "id": 6,
-    "nombre": "Responsable Civil hasta $23.000.000",
-    "descripcion": "cubre daños que vos (como conductor) causes a terceros hasta un límite máximo de $23.000.000.",
-    "porcentaje_miles": 0,
-    "monto_fijo": 3000
+    "nombre": "Daños Parciales por Accidente",
+    "descripcion": "Cubre daños parciales por accidente",
+    "porcentaje_miles": 6,
+    "monto_fijo": 0,
+    "activodetalle": true
+  },
+  {
+    "id": 7,
+    "nombre": "Daños Parciales por Granizo",
+    "descripcion": "Cubre daños parciales por granizo",
+    "porcentaje_miles": 7,
+    "monto_fijo": 0,
+    "activodetalle": true
+  },
+  {
+    "id": 8,
+    "nombre": "Robo o Hurto Parcial",
+    "descripcion": "Cubre robo o hurto parcial",
+    "porcentaje_miles": 8,
+    "monto_fijo": 0,
+    "activodetalle": true
+  },
+  {
+    "id": 9,
+    "nombre": "Cristales Laterales",
+    "descripcion": "Cobertura de cristales laterales",
+    "porcentaje_miles": 9,
+    "monto_fijo": 0,
+    "activodetalle": true
+  },
+  {
+    "id": 10,
+    "nombre": "Parabrisas y Luneta",
+    "descripcion": "Cobertura de parabrisas y luneta",
+    "porcentaje_miles": 10,
+    "monto_fijo": 0,
+    "activodetalle": true
   }
 ]

@@ -1,9 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import LabelNinfo from "./GeneralComponents/LabelNinfo";
 import TitleForm from "./GeneralComponents/TitleForm";
 import Table from "./GeneralComponents/Table";
+import GrayButton from "./GeneralComponents/Button.tsx";
 import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import { useAppSelector } from "../../redux/reduxTypedHooks";
+interface tableContent {
+  titles: string[];
+  tableBody: tableBodys[];
+}
+
+interface tableBodys {
+  key: number;
+  rowContent: string[];
+}
 
 const FormDataConfirmation = ({
   handleCurrentView,
@@ -11,6 +22,10 @@ const FormDataConfirmation = ({
   handleCurrentView: (pass: boolean) => void;
 }) => {
   const [policy, setPolicy] = useState<Poliza>({});
+
+  const coverage_details: Cobertura_Detalle[] = useAppSelector(
+    (state) => state.coberturasDetalles.coberturaDetalle
+  );
 
   function base64ToFile(base64: string, filename: string, type: string): File {
     const arr = base64.split(",");
@@ -86,6 +101,46 @@ const FormDataConfirmation = ({
     const objectUrl = URL.createObjectURL(file);
     return objectUrl;
   }
+
+  const handleTable = (): tableContent => {
+    const table: tableContent = {
+      titles: ["ID", "Detalle", "Descripcion", "Monto asegurado"],
+      tableBody: coverage_details
+        .filter(
+          (coverDetail) =>
+            coverDetail.cobertura.id_cobertura ===
+            policy.lineaContizacion?.cobertura?.id_cobertura
+        )
+        .map((coverDetail, idx) => ({
+          key: idx,
+          rowContent: [
+            String(coverDetail.detalle.id),
+            String(coverDetail.detalle.nombre),
+            String(coverDetail.detalle.descripcion),
+            (() => {
+              const version =
+                policy.lineaContizacion?.cotizacion?.vehiculo?.version;
+
+              if (!version) return "N/A";
+
+              // Si tiene valor
+              if (coverDetail.detalle.monto_fijo != 0) {
+                return String(coverDetail.detalle.monto_fijo);
+              }
+              // Si tiene GNC, usamos precio_mercado_gnc
+              else if (policy.lineaContizacion?.cotizacion?.vehiculo?.gnc) {
+                return String(version.precio_mercado_gnc);
+              } else {
+                return String(version.precio_mercado);
+              }
+            })(),
+          ],
+        })),
+    };
+    return table;
+  };
+  const { titles, tableBody } = handleTable();
+
   return (
     <div className="container-fluid">
       <div className="row justify-content-center">
@@ -170,7 +225,7 @@ const FormDataConfirmation = ({
                 title="Provincia:"
                 text={
                   policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
-                    ?.localidad.provincia?.descripcion
+                    ?.localidad?.provincia?.descripcion
                 }
               />
             </div>
@@ -179,7 +234,7 @@ const FormDataConfirmation = ({
                 title="Localidad:"
                 text={
                   policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
-                    ?.localidad.descripcion
+                    ?.localidad?.descripcion
                 }
               />
             </div>
@@ -311,7 +366,6 @@ const FormDataConfirmation = ({
           </div>
 
           <div className="my-4">
-
             <TitleForm title="Cobertura Contratada" />
           </div>
           <div className="row g-3">
@@ -330,8 +384,14 @@ const FormDataConfirmation = ({
                 text={String(policy.lineaContizacion?.monto)}
               />
             </div>
-
-            <Table />
+          </div>
+          <Table titles={titles} tableBody={tableBody} />
+          <div
+            className="d-grid gap-2 d-md-flex justify-content-md-end"
+            style={{ padding: "10px" }}
+          >
+            <GrayButton text="Cancelar" style="me-md-2" onClick={() => {}} />
+            <GrayButton text="Confirmar" onClick={() => {}} />
           </div>
         </div>
       </div>
