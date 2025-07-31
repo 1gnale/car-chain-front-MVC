@@ -106,11 +106,8 @@ const FormDataCoverages = ({
     for (const d of coberturaDetalles) {
       if (d?.detalle.porcentaje_miles != undefined) {
         if (d.aplica) {
-          if (d?.detalle?.monto_fijo != 0) {
-            total += d?.detalle?.monto_fijo ?? 0;
-          } else {
-            total += (montoVehiculo * d?.detalle?.porcentaje_miles) / 10000;
-          }
+          total =
+            total + (montoVehiculo * d?.detalle?.porcentaje_miles) / 10000;
         }
       }
     }
@@ -149,27 +146,29 @@ const FormDataCoverages = ({
       LineCoverage.cotizacion?.configuracionAntiguedad?.recargo ?? 0;
     // Calcular el monto final
     const monto = Math.round(total * multiplicador + acumulador);
-
+    console.log("total FINAL: " + total);
+    console.log("multiplicador: " + multiplicador);
+    console.log("acumulador: " + acumulador);
     LineCoverage.monto = monto;
 
     return monto;
   };
 
   const handleAppliedDetails = (id_cobertura?: number) => {
-    const result = coverage_details
-      .map((covDetail) => {
-        if (id_cobertura == covDetail.cobertura.id_cobertura) {
-          return {
-            name: covDetail.detalle.nombre || "",
-            apply: covDetail.aplica || false,
-            description: covDetail.detalle.descripcion || "",
-          };
-        } else {
-          return {};
-        }
-      })
-      .filter((item) => Object.keys(item).length > 0);
-    return result;
+    console.log(details);
+    return details.map((detalle) => {
+      const found = coverage_details.find(
+        (cd) =>
+          cd.cobertura.id_cobertura === id_cobertura &&
+          cd.detalle.id === detalle.id
+      );
+
+      return {
+        name: detalle.nombre || "",
+        apply: found?.aplica === true, // true si se encontró y aplica, false si no
+        description: detalle.descripcion || "",
+      };
+    });
   };
 
   const handleHirePolicy = (linea_cotization: Linea_Cotizacion) => {

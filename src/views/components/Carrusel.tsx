@@ -1,15 +1,21 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Carousel } from "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 import slice1 from "../assets/Carrusel D1.png";
 import slice2 from "../assets/Carrusel D2.png";
 import slice3 from "../assets/Carrusel D3.png";
-import { useNavigate } from "react-router-dom";
 import GrayButton from "./GeneralComponents/Button";
 
 const Carrusel = () => {
-  const slides = [slice2, slice1, slice3];
+  const slides = [slice1, slice2, slice3];
+  const navigate = useNavigate();
 
   const imgStyle: React.CSSProperties = {
-    objectFit: "cover" as React.CSSProperties["objectFit"],
-    height: "100vh",
+    objectFit: "cover",
+    height: "94vh",
     width: "100%",
   };
 
@@ -19,17 +25,28 @@ const Carrusel = () => {
     padding: "1rem",
   };
 
-  const navigate = useNavigate();
-
   const goToSolicitarCotizacion = () => {
     navigate("/solicitar-cotizacion");
   };
+
+  useEffect(() => {
+    const el = document.querySelector("#carruselCarChain");
+    if (el) {
+      new Carousel(el, {
+        interval: 4000,
+        ride: "carousel",
+        pause: false,
+      });
+    }
+  }, []);
 
   return (
     <div
       id="carruselCarChain"
       className="carousel slide carousel-fade"
       data-bs-ride="carousel"
+      data-bs-interval="4000"
+      data-bs-pause="false"
     >
       <div className="carousel-inner">
         {slides.map((img, index) => (

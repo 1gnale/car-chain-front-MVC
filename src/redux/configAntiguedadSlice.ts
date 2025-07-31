@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  configAntiguedad: [],
+  configAntiguedad: {},
 };
 
 export const configAntiguedadSlice = createSlice({
@@ -12,7 +12,7 @@ export const configAntiguedadSlice = createSlice({
       state.configAntiguedad = action.payload;
     },
     clearConfigAntiguedad: (state) => {
-      state.configAntiguedad = [];
+      state.configAntiguedad = {};
     },
   },
 });

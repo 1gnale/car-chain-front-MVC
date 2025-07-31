@@ -137,6 +137,7 @@ interface Detalle {
   descripcion?: string;
   porcentaje_miles?: number;
   monto_fijo?: number;
+  activodetalle?: boolean;
 }
 
 interface Documentacion {
@@ -146,13 +147,6 @@ interface Documentacion {
   fotoLateral2?: File;
   fotoTecho?: File;
   cedulaVerde?: File;
-
-  fotoFrontalString?: string;
-  fotoTraseraString?: string;
-  fotoLateral1String?: string;
-  fotoLateral2String?: string;
-  fotoTechoString?: string;
-  cedulaVerdeString?: string;
 }
 
 interface Pago {
