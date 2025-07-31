@@ -17,6 +17,10 @@ import coberturasReducer from "./coberturaSlice";
 import coberturasDetalleReducer from "./coberturaDetalleSlice";
 import detallesReducer from "./detallesSlice";
 
+import polizasReducer from "./policeSlice";
+
+import lineaCotizacionReducer from "./lineaCotizacionSlice";
+
 export const store = configureStore({
   reducer: {
     marcas: marcasReducer,
@@ -31,6 +35,8 @@ export const store = configureStore({
     coberturas: coberturasReducer,
     detalles: detallesReducer,
     coberturasDetalles: coberturasDetalleReducer,
+    polizas: polizasReducer,
+    lineasCotizacion: lineaCotizacionReducer,
   },
 });
 

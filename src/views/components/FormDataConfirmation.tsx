@@ -6,6 +6,7 @@ import GrayButton from "./GeneralComponents/Button.tsx";
 import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
+
 interface tableContent {
   titles: string[];
   tableBody: tableBodys[];
@@ -248,7 +249,9 @@ const FormDataConfirmation = ({
               />
             </div>
           </div>
-
+          <div className="my-4">
+            <TitleForm title="Información Del Vehiculo" />
+          </div>
           <div className="row g-3">
             <div className="col-md-3">
               <LabelNinfo
