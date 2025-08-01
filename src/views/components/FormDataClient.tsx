@@ -210,7 +210,6 @@ const FormDataClient = ({
     const selectedLocalityName =
       localities?.find((localidad) => localidad.id === id)?.descripcion || "";
     setFormClient((prev) => ({ ...prev, localidad: selectedLocalityName }));
-    setFormClient((prev) => ({ ...prev, localidadId: id }));
     validateField("localidad", selectedLocalityName);
   };
 
