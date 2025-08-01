@@ -6,6 +6,9 @@ import GrayButton from "./GeneralComponents/Button.tsx";
 import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
+import SelectForm from "./GeneralComponents/SelectForm.tsx";
+import useFormClientValidation from "../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
+
 interface tableContent {
   titles: string[];
   tableBody: tableBodys[];
@@ -26,6 +29,62 @@ const FormDataConfirmation = ({
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
+  const documentTypes: string[] = useAppSelector(
+    (state) => state.tipoDocumentos.tipoDocumento
+  );
+  const listSex = [
+    { id: 1, name: "Femenino" },
+    { id: 2, name: "Masculino" },
+    { id: 3, name: "Otros" },
+  ];
+ const { errors, validateField, validateForm } = useFormClientValidation();
+
+  const [selectedSex, setSelectedSex] = useState(0);
+  const [selectedDocumentType, setSelectedDocumentType] = useState(0);
+  const [formClient, setFormClient] = useState({
+    nombre: "",
+    apellido: "",
+    tipoDocumento: "",
+    documento: "",
+    fechaNacimiento: "",
+    telefono: "",
+    sexo: "",
+    provincia: "",
+    localidad: "",
+    domicilio: "",
+  });
+
+  console.log(documentTypes);
+  console.log(formClient.tipoDocumento);
+
+  const handleStateSexo = (id: number) => {
+    setSelectedSex(id);
+
+    useEffect(() => {
+      // localStorage.removeItem("ClientData");
+      const clientStorage = useLocalStorageItem<Cliente>("ClientData");
+
+      const sexoFiltrado = listSex.find(
+        (sex) => sex.name === clientStorage?.sexo
+      );
+      const tipoDocFiltrado: number | undefined = documentTypes.findIndex(
+        (doc) => doc === clientStorage?.tipoDocumento
+      );
+      if (
+        clientStorage != null &&
+        sexoFiltrado !== undefined &&
+        tipoDocFiltrado !== undefined
+      ) {
+        setSelectedSex(sexoFiltrado.id);
+      }
+    }, []);
+
+    // Encontrar el nombre del sexo seleccionada
+    const selectedSexName = listSex.find((sex) => sex.id === id)?.name || "";
+    setFormClient((prev) => ({ ...prev, sexo: selectedSexName }));
+    setFormClient((prev) => ({ ...prev, sexoId: id }));
+    validateField("sexo", selectedSexName);
+  };
 
   function base64ToFile(base64: string, filename: string, type: string): File {
     const arr = base64.split(",");
@@ -167,11 +226,12 @@ const FormDataConfirmation = ({
               />
             </div>
             <div className="col-md-3">
-              <LabelNinfo
-                title="Sexo:"
-                text={
-                  policy.lineaContizacion?.cotizacion?.vehiculo?.cliente?.sexo
-                }
+              <SelectForm
+                status={true}
+                value={selectedSex}
+                title="Sexo"
+                items={listSex}
+                onChange={handleStateSexo}
               />
             </div>
             <div className="col-md-3">

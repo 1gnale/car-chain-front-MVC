@@ -20,7 +20,7 @@ const SelectForm = ({
   status,
   value,
   error,
-  onBlur,
+  onBlur, 
 }: SelectFormProps) => {
   return (
     <div className="col">

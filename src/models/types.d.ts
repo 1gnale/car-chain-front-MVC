@@ -6,7 +6,7 @@ interface Provincia {
 interface Localidad {
   id: number;
   descripcion?: string;
-  codigoPostal?: string;
+  codigoPostal?: string; 
   provincia?: Provincia;
 }
 
@@ -22,7 +22,7 @@ interface Persona {
   telefono?: string;
   sexo?: string;
   contraseña?: string;
-  localidad?: Localidad;
+  localidad?: Localidad; 
 }
 
 interface Cliente extends Persona {
