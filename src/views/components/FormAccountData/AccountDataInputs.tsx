@@ -10,6 +10,7 @@ import SelectForm from "../GeneralComponents/SelectForm";
 const AccountDataInputs = ({ user }: { user: Cliente }) => {
   const [disabled, setDisabled] = useState<boolean>(true);
 
+
   const [formClient, setFormClient] = useState<Cliente>({
     idClient: 0,
     id: 0,
@@ -143,7 +144,6 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
   };
 
 
-
   const handleInputChange = (path: string, value: string) => {
     const keys = path.split(".");
     setFormClient((prev) => {
@@ -169,7 +169,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("nombres", value);
             }}
+
             value={formClient.nombres}
+
             title="Nombre/s"
             place=""
             disabled={disabled}
@@ -178,21 +180,25 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
         <div className="col-md-4">
           <Input
             onChange={(value) => {
+
               handleInputChange("apellidos", value);
             }}
             value={formClient.apellido}
+
             title="Apellido/s"
             place=""
             disabled={disabled}
           />
         </div>
         <div className="col-md-4">
+
           <SelectForm
             status={!disabled}
             value={selectedSex}
             title="Sexo"
             items={listSex}
             onChange={handleStateSexo}
+
           />
         </div>
       </div>
@@ -203,7 +209,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("tipoDocumento", value);
             }}
+
             value={formClient.tipoDocumento}
+
             title="Tipo de Documento"
             place=""
             disabled={disabled}
@@ -214,7 +222,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("documento", value);
             }}
+
             value={formClient.documento}
+
             title="Documento"
             place=""
             disabled={disabled}
@@ -225,7 +235,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("fechaNacimiento", value);
             }}
+            
             value={formClient.fechaNacimiento}
+
             title="Fecha de nacimiento"
             place=""
             disabled={disabled}
@@ -240,7 +252,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("correo", value);
             }}
+
             value={formClient.correo}
+
             title="Email"
             place=""
             disabled={disabled}
@@ -251,7 +265,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("contraseña", value);
             }}
+
             value={formClient.contraseña}
+
             title="Contraseña"
             place=""
             disabled={disabled}
@@ -262,7 +278,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("telefono", value);
             }}
+
             value={formClient.telefono}
+
             title="Telefono"
             place=""
             disabled={disabled}
@@ -273,6 +291,7 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
       <div className="row g-3 mt-2">
         <TitleForm title="Ubicacion" />
         <div className="col-md-4">
+
           <SelectForm
             status={!disabled}
             value={selectedProvince}
@@ -302,6 +321,7 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
                 formClient.localidad?.descripcion || ""
               )
             }
+
           />
         </div>
         <div className="col-md-4">
@@ -309,14 +329,18 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
             onChange={(value) => {
               handleInputChange("domicilio", value);
             }}
+
             value={formClient.domicilio}
+
             title="Domicilio"
             place=""
             disabled={disabled}
           />
           <div className="text-end mt-2">
             <GrayButton
+
               onClick={handleStateDisabled}
+
               text={disabled ? "Modificar" : "Guardar"}
             />
           </div>

@@ -1,0 +1,942 @@
+[
+  {
+    "id": 1,
+    "monto": 92718.59,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Peugeot",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "Base",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 10353290,
+          "precio_mercado_gnc": 10439339,
+          "modelo": {
+            "id": 1,
+            "nombre": "Focus",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Renault",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-1592"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 2,
+    "monto": 88635.73,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Peugeot",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "Base",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 9292907,
+          "precio_mercado_gnc": 9379493,
+          "modelo": {
+            "id": 1,
+            "nombre": "208",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Chevrolet",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-1867"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 3,
+    "monto": 151135.75,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Renault",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "Base",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 9139423,
+          "precio_mercado_gnc": 9397510,
+          "modelo": {
+            "id": 1,
+            "nombre": "Cruze",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Peugeot",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-8433"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 4,
+    "monto": 155004.91,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Renault",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "Base",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 9577102,
+          "precio_mercado_gnc": 9801946,
+          "modelo": {
+            "id": 1,
+            "nombre": "Cruze",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Chevrolet",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-2158"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 5,
+    "monto": 80946.75,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Renault",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "Full",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 7968638,
+          "precio_mercado_gnc": 8074366,
+          "modelo": {
+            "id": 1,
+            "nombre": "Focus",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Renault",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-9048"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 6,
+    "monto": 167490.45,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Chevrolet",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "SE-G",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 9179967,
+          "precio_mercado_gnc": 9237451,
+          "modelo": {
+            "id": 1,
+            "nombre": "208",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Renault",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-9933"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 7,
+    "monto": 164625.48,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Toyota",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "XEI",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 10805747,
+          "precio_mercado_gnc": 10982951,
+          "modelo": {
+            "id": 1,
+            "nombre": "Logan",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Peugeot",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-7252"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 8,
+    "monto": 164304.98,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Toyota",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "Base",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 7487293,
+          "precio_mercado_gnc": 7694029,
+          "modelo": {
+            "id": 1,
+            "nombre": "Cruze",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Toyota",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-2141"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 9,
+    "monto": 114557.83,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Toyota",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "SE-G",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 10008047,
+          "precio_mercado_gnc": 10286569,
+          "modelo": {
+            "id": 1,
+            "nombre": "Cruze",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Peugeot",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-4033"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  },
+  {
+    "id": 10,
+    "monto": 177521.17,
+    "cotizacion": {
+      "fechaCreacion": "2025-07-01",
+      "fechaVencimiento": "2025-08-01",
+      "vehiculo": {
+        "id": 1,
+        "nombre": "Peugeot",
+        "descripcion": "Marca japonesa",
+        "version": {
+          "id": 1,
+          "nombre": "Base",
+          "descripcion": "Versión intermedia",
+          "precio_mercado": 8338674,
+          "precio_mercado_gnc": 8568863,
+          "modelo": {
+            "id": 1,
+            "nombre": "Focus",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Peugeot",
+              "descripcion": "Marca japonesa"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Ejemplo",
+          "apellido": "Ejemplo",
+          "fechaNacimiento": "Ejemplo",
+          "tipoDocumento": "Ejemplo",
+          "documento": "Ejemplo",
+          "domicilio": "Ejemplo",
+          "correo": "Ejemplo",
+          "telefono": "Ejemplo",
+          "sexo": "Ejemplo",
+          "contraseña": "Ejemplo",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        },
+        "modelos": [],
+        "matricula": "MAT-4969"
+      },
+      "configuaracionLocalidad": {
+        "id": 1,
+        "nombre": "La Plata",
+        "descuento": 1,
+        "ganancia": 10,
+        "recargo": 1.5,
+        "activo": true,
+        "localidad": {
+          "id": 1,
+          "descripcion": "La Plata",
+          "codigoPostal": "1900"
+        }
+      },
+      "configudacionEdad": {
+        "id": 3,
+        "nombre": "Mayores",
+        "minima": 51,
+        "maxima": 70,
+        "descuento": 7.5,
+        "ganancia": 6,
+        "recargo": 1,
+        "activo": true
+      },
+      "configuracionAntiguedad": {
+        "id": 2,
+        "nombre": "Cuando es usado",
+        "minima": 4,
+        "maxima": 6,
+        "descuento": 0,
+        "ganancia": 0,
+        "recargo": 100,
+        "activo": true
+      }
+    },
+    "cobertura": {
+      "id_cobertura": 1,
+      "nombre": "Cobertura Total",
+      "descripcion": "Incluye daños, robo y responsabilidad civil",
+      "recargoPorAtraso": 2.5
+    }
+  }
+]

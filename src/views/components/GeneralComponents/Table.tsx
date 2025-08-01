@@ -18,7 +18,7 @@ const TableButton = (tabla: tableContent) => {
           {tabla.titles.map((title) => (
             <th scope="col">{title}</th>
           ))}
-          <th>"Boton"</th>
+          <th>Opciones</th>
         </tr>
       </thead>
       <tbody className="table-Light">

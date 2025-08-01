@@ -193,7 +193,7 @@ interface TipoContratacion {
 
 interface Poliza {
   numero_poliza?: number;
-  precioPolziaActual?: number;
+  precioPolzaActual?: number;
   montoAsegurado?: number;
   fechaContratacion?: string;
   horaContratacion?: string;
@@ -202,6 +202,7 @@ interface Poliza {
   renovacionAutomatica?: boolean;
   usuario?: Usuario;
   documentacion?: Documentacion;
+  estadoPoliza?: string;
   lineaContizacion?: Linea_Cotizacion;
   periodoPago?: PeriodoPago;
   tipoContratacion?: TipoContratacion;
