@@ -6,19 +6,6 @@ import GrayButton from "./GeneralComponents/Button.tsx";
 import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
-import { Eye, type Icon } from "react-bootstrap-icons";
-
-interface tableContent {
-  titles: string[];
-  tableBody: tableBodys[];
-  showButtom: boolean;
-  customIcons?: Icon[];
-}
-
-interface tableBodys {
-  key: number;
-  rowContent: string[];
-}
 
 const FormDataConfirmation = ({
   handleCurrentView,
