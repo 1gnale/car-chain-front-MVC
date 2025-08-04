@@ -3,7 +3,7 @@ import CoverageCard from "./GeneralComponents/CoverageCard.tsx";
 import "../../models/types.d.ts";
 import GrayButton from "./GeneralComponents/Button";
 import { ExclamationCircleFill } from "react-bootstrap-icons";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useAuth0 } from "@auth0/auth0-react";
