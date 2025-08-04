@@ -7,8 +7,6 @@ import FormDataClient from "../components/FormDataClient";
 import FormDataCoverages from "../components/FormDataCoverages";
 import FormDataDocumentation from "../components/FormDocumentation";
 import FormDataConfirmation from "../components/FormDataConfirmation";
-import FormPolizas from "../components/FormPolizas";
-import PolicyPayment from "../components/FormPolicyPayment";
 
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
@@ -26,12 +24,10 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
 
   const views = [
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
-    <FormPolizas />,
-    <PolicyPayment/>,
-    <FormDataDocumentation handleCurrentView={handleCurrentView} />,
-    <FormDataConfirmation handleCurrentView={handleCurrentView} />,
     <FormDataClient handleCurrentView={handleCurrentView} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,
+    <FormDataDocumentation handleCurrentView={handleCurrentView} />,
+    <FormDataConfirmation handleCurrentView={handleCurrentView} />,
   ];
 
   return (

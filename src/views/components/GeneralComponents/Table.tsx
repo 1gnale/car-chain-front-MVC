@@ -1,15 +1,3 @@
-import { Eye } from "react-bootstrap-icons";
-
-interface tableContent {
-  titles: string[];
-  tableBody: tableBodys[];
-}
-
-interface tableBodys {
-  key: number;
-  rowContent: string[];
-}
-
 const TableButton = (tabla: tableContent) => {
   return (
     <table className="table table-hover table-responsive table-bordered">
@@ -18,7 +6,9 @@ const TableButton = (tabla: tableContent) => {
           {tabla.titles.map((title) => (
             <th scope="col">{title}</th>
           ))}
-          <th>Opciones</th>
+          {tabla.showButtom
+            ? tabla.customIcons?.map((IconComponent) => <th></th>)
+            : ""}
         </tr>
       </thead>
       <tbody className="table-Light">
@@ -27,14 +17,22 @@ const TableButton = (tabla: tableContent) => {
             {tbody.rowContent.map((cell) => (
               <td>{cell}</td>
             ))}
-            <td className="text-center align-middle" style={{ width: "80px" }}>
-              <div className="d-flex justify-content-center align-items-center">
-                <Eye
-                  style={{ cursor: "pointer" }}
-                  onClick={() => console.log("Ay mi ojo xdxd!")}
-                />
-              </div>
-            </td>
+
+            {tabla.showButtom
+              ? tabla.customIcons?.map((IconComponent) => (
+                  <td
+                    className="text-center align-middle"
+                    style={{ width: "80px" }}
+                  >
+                    <div className="d-flex justify-content-center align-items-center">
+                      <IconComponent
+                        style={{ cursor: "pointer" }}
+                        onClick={() => console.log("Ay mi ojo xdxd!")}
+                      />
+                    </div>
+                  </td>
+                ))
+              : ""}
           </tr>
         ))}
       </tbody>

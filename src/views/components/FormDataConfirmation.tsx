@@ -6,14 +6,13 @@ import GrayButton from "./GeneralComponents/Button.tsx";
 import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
-
-import SelectForm from "./GeneralComponents/SelectForm.tsx";
-import useFormClientValidation from "../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
-
+import { Eye, type Icon } from "react-bootstrap-icons";
 
 interface tableContent {
   titles: string[];
   tableBody: tableBodys[];
+  showButtom: boolean;
+  customIcons?: Icon[];
 }
 
 interface tableBodys {
@@ -31,62 +30,6 @@ const FormDataConfirmation = ({
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
-  const documentTypes: string[] = useAppSelector(
-    (state) => state.tipoDocumentos.tipoDocumento
-  );
-  const listSex = [
-    { id: 1, name: "Femenino" },
-    { id: 2, name: "Masculino" },
-    { id: 3, name: "Otros" },
-  ];
- const { errors, validateField, validateForm } = useFormClientValidation();
-
-  const [selectedSex, setSelectedSex] = useState(0);
-  const [selectedDocumentType, setSelectedDocumentType] = useState(0);
-  const [formClient, setFormClient] = useState({
-    nombre: "",
-    apellido: "",
-    tipoDocumento: "",
-    documento: "",
-    fechaNacimiento: "",
-    telefono: "",
-    sexo: "",
-    provincia: "",
-    localidad: "",
-    domicilio: "",
-  });
-
-  console.log(documentTypes);
-  console.log(formClient.tipoDocumento);
-
-  const handleStateSexo = (id: number) => {
-    setSelectedSex(id);
-
-    useEffect(() => {
-      // localStorage.removeItem("ClientData");
-      const clientStorage = useLocalStorageItem<Cliente>("ClientData");
-
-      const sexoFiltrado = listSex.find(
-        (sex) => sex.name === clientStorage?.sexo
-      );
-      const tipoDocFiltrado: number | undefined = documentTypes.findIndex(
-        (doc) => doc === clientStorage?.tipoDocumento
-      );
-      if (
-        clientStorage != null &&
-        sexoFiltrado !== undefined &&
-        tipoDocFiltrado !== undefined
-      ) {
-        setSelectedSex(sexoFiltrado.id);
-      }
-    }, []);
-
-    // Encontrar el nombre del sexo seleccionada
-    const selectedSexName = listSex.find((sex) => sex.id === id)?.name || "";
-    setFormClient((prev) => ({ ...prev, sexo: selectedSexName }));
-    setFormClient((prev) => ({ ...prev, sexoId: id }));
-    validateField("sexo", selectedSexName);
-  };
 
   function base64ToFile(base64: string, filename: string, type: string): File {
     const arr = base64.split(",");
@@ -155,7 +98,7 @@ const FormDataConfirmation = ({
     }
   }, []);
 
-  function useObjectUrl(file?: File): string {
+  function handleObjectUrl(file?: File): string {
     if (!file) {
       return "";
     }
@@ -164,7 +107,13 @@ const FormDataConfirmation = ({
   }
 
   const handleTable = (): tableContent => {
+    const formato = new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+    });
+
     const table: tableContent = {
+      showButtom: false,
       titles: ["ID", "Detalle", "Descripcion", "Monto asegurado"],
       tableBody: coverage_details
         .filter(
@@ -186,21 +135,24 @@ const FormDataConfirmation = ({
 
               // Si tiene valor
               if (coverDetail.detalle.monto_fijo != 0) {
-                return String(coverDetail.detalle.monto_fijo);
+                return String(
+                  formato.format(coverDetail.detalle.monto_fijo ?? 0)
+                );
               }
               // Si tiene GNC, usamos precio_mercado_gnc
               else if (policy.lineaContizacion?.cotizacion?.vehiculo?.gnc) {
-                return String(version.precio_mercado_gnc);
+                return String(formato.format(version.precio_mercado_gnc ?? 0));
               } else {
-                return String(version.precio_mercado);
+                return String(formato.format(version.precio_mercado));
               }
             })(),
           ],
         })),
     };
+
     return table;
   };
-  const { titles, tableBody } = handleTable();
+  const { titles, tableBody, customIcons, showButtom } = handleTable();
 
   return (
     <div className="container-fluid">
@@ -228,12 +180,11 @@ const FormDataConfirmation = ({
               />
             </div>
             <div className="col-md-3">
-              <SelectForm
-                status={true}
-                value={selectedSex}
-                title="Sexo"
-                items={listSex}
-                onChange={handleStateSexo}
+              <LabelNinfo
+                title="Sexo:"
+                text={
+                  policy.lineaContizacion?.cotizacion?.vehiculo?.cliente?.sexo
+                }
               />
             </div>
             <div className="col-md-3">
@@ -387,42 +338,42 @@ const FormDataConfirmation = ({
           <div className="row g-3">
             <div className="col-md-2">
               <ImgConfirmation
-                src={useObjectUrl(policy.documentacion?.fotoFrontal)}
+                src={handleObjectUrl(policy.documentacion?.fotoFrontal)}
                 alt=""
                 text="Foto Frontal"
               />
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={useObjectUrl(policy.documentacion?.fotoTrasera)}
+                src={handleObjectUrl(policy.documentacion?.fotoTrasera)}
                 alt=""
                 text="Foto Trasera"
               />
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={useObjectUrl(policy.documentacion?.fotoFrontal)}
+                src={handleObjectUrl(policy.documentacion?.fotoFrontal)}
                 alt=""
                 text="Foto Lateral 1"
               />
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={useObjectUrl(policy.documentacion?.fotoLateral2)}
+                src={handleObjectUrl(policy.documentacion?.fotoLateral2)}
                 alt=""
                 text="Foto Lateral 2"
               />
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={useObjectUrl(policy.documentacion?.fotoTecho)}
+                src={handleObjectUrl(policy.documentacion?.fotoTecho)}
                 alt=""
                 text="Foto Techo"
               />
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={useObjectUrl(policy.documentacion?.cedulaVerde)}
+                src={handleObjectUrl(policy.documentacion?.cedulaVerde)}
                 alt=""
                 text="Cedula Verde"
               />
@@ -449,7 +400,12 @@ const FormDataConfirmation = ({
               />
             </div>
           </div>
-          <Table titles={titles} tableBody={tableBody} />
+          <Table
+            titles={titles}
+            tableBody={tableBody}
+            customIcons={customIcons}
+            showButtom={showButtom}
+          />
           <div
             className="d-grid gap-2 d-md-flex justify-content-md-end"
             style={{ padding: "10px" }}

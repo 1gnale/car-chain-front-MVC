@@ -1,16 +1,7 @@
 import TitleForm from "../GeneralComponents/TitleForm";
 import TableButton from "../GeneralComponents/Table";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
-
-interface tableContent {
-  titles: string[];
-  tableBody: tableBodys[];
-}
-
-interface tableBodys {
-  key: number;
-  rowContent: string[];
-}
+import { type Icon, Eye, Pencil } from "react-bootstrap-icons";
 
 const AccountPricings = () => {
   const linePricings: Linea_Cotizacion[] = useAppSelector(
@@ -21,6 +12,8 @@ const AccountPricings = () => {
 
   const handleTablePricings = (): tableContent => {
     const table: tableContent = {
+      showButtom: true,
+      customIcons: [Eye],
       titles: [
         "Matricula",
         "Fecha de creación",
@@ -43,12 +36,17 @@ const AccountPricings = () => {
     };
     return table;
   };
-  const { titles, tableBody } = handleTablePricings();
+  const { titles, tableBody, showButtom, customIcons } = handleTablePricings();
 
   return (
     <div className="col-xl-9">
       <TitleForm title="Cotizaciones" />
-      <TableButton titles={titles} tableBody={tableBody} />
+      <TableButton
+        titles={titles}
+        tableBody={tableBody}
+        showButtom={showButtom}
+        customIcons={customIcons}
+      />
     </div>
   );
 };
