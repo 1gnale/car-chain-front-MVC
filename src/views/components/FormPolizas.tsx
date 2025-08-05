@@ -6,15 +6,6 @@ import GrayButton from "./GeneralComponents/Button.tsx";
 import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
 
-interface tableContent {
-  titles: string[];
-  tableBody: tableBodys[];
-}
-
-interface tableBodys {
-  key: number;
-  rowContent: string[];
-}
 function FormPolizas() {
   const [policy, setPolicy] = useState<Poliza>({});
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
@@ -29,6 +20,7 @@ function FormPolizas() {
   }
   const handleTable = (): tableContent => {
     const table: tableContent = {
+      showButtom: false,
       titles: ["ID", "Detalle", "Descripcion", "Monto asegurado"],
       tableBody: coverage_details
         .filter(
@@ -64,7 +56,7 @@ function FormPolizas() {
     };
     return table;
   };
-  const { titles, tableBody } = handleTable();
+  const { titles, tableBody, showButtom } = handleTable();
 
   return (
     <div className="container-fluid">
@@ -283,7 +275,7 @@ function FormPolizas() {
               </div>
             </div>
           </div>
-        <Table titles={titles} tableBody={tableBody} />
+        <Table titles={titles} tableBody={tableBody} showButtom={showButtom} />
         <div
           className="d-grid gap-2 d-md-flex justify-content-md-end"
           style={{ padding: "10px" }}
