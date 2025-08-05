@@ -1,8 +1,8 @@
-import GrayButton from "./GeneralComponents/Button";
-import ImgInput from "./GeneralComponents/ImgInput";
+import GrayButton from "../GeneralComponents/Button";
+import ImgInput from "../GeneralComponents/ImgInput";
 import { useState, useEffect } from "react";
-import useFormValidation from "../../controllers/controllerHooks/Validations/useFormDocumetsValidation";
-import TitleForm from "./GeneralComponents/TitleForm";
+import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormDocumetsValidation";
+import TitleForm from "../GeneralComponents/TitleForm";
 
 const FormDocumentation = ({
   handleCurrentView,

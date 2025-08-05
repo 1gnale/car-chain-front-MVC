@@ -4,10 +4,10 @@ import { Carousel } from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-import slice1 from "../assets/Carrusel D1.png";
-import slice2 from "../assets/Carrusel D2.png";
-import slice3 from "../assets/Carrusel D3.png";
-import GrayButton from "./GeneralComponents/Button";
+import slice1 from "../../assets/Carrusel D1.png";
+import slice2 from "../../assets/Carrusel D2.png";
+import slice3 from "../../assets/Carrusel D3.png";
+import GrayButton from "../GeneralComponents/Button";
 
 const Carrusel = () => {
   const slides = [slice1, slice2, slice3];

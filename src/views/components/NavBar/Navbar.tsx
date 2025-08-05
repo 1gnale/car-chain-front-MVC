@@ -1,6 +1,6 @@
-import CarChainLogo from "../assets/Carchain.png";
-import UserPicture from "./NavBar/UserPicture";
-import AuthUser from "./NavBar/AuthUser";
+import CarChainLogo from "../../assets/Carchain.png";
+import UserPicture from "./UserPicture";
+import AuthUser from "./AuthUser";
 
 const Navbar = ({ isAuth }: { isAuth: boolean }) => {
 
