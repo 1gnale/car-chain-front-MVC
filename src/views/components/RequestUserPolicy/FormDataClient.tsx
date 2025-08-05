@@ -1,12 +1,11 @@
-import "../../models/types.d.ts";
 import { useState, useEffect, useMemo } from "react";
-import useFormClientValidation from "../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
-import Input from "./GeneralComponents/Input";
-import { useAppSelector } from "../../redux/reduxTypedHooks";
-import SelectForm from "./GeneralComponents/SelectForm.tsx";
-import GrayButton from "./GeneralComponents/Button.tsx";
-import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import TitleForm from "./GeneralComponents/TitleForm.tsx";
+import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
+import Input from "./../GeneralComponents/Input";
+import { useAppSelector } from "./../../../redux/reduxTypedHooks";
+import SelectForm from "./../GeneralComponents/SelectForm.tsx";
+import GrayButton from "./../GeneralComponents/Button.tsx";
+import useLocalStorageItem from "./../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import TitleForm from "./../GeneralComponents/TitleForm.tsx";
 
 const FormDataClient = ({
   handleCurrentView,

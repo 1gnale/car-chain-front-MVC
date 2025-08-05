@@ -1,5 +1,5 @@
-import Carrusel from "../components/Carrusel";
-import Navbar from "../components/Navbar";
+import Carrusel from "../components/Home/Carrusel";
+import Navbar from "../components/NavBar/Navbar";
 
 const HomePage = ({ isAuth }: { isAuth: boolean }) => {
   return (

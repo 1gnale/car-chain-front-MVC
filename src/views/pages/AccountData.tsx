@@ -1,9 +1,9 @@
-import GrayButton from "./GeneralComponents/Button";
-import AccountDataInputs from "./FormAccountData/AccountDataInputs";
+import GrayButton from "../components/GeneralComponents/Button";
+import AccountDataInputs from "../components/AccountData/AccountDataInputs";
 import { useState } from "react";
-import AccountPolicy from "./FormAccountData/AccountPolicy";
-import AccountPricings from "./FormAccountData/AccountPricings";
-import RedButton from "./GeneralComponents/RedButton";
+import AccountPolicy from "../components/AccountData/AccountPolicy";
+import AccountPricings from "../components/AccountData/AccountPricings";
+import RedButton from "../components/GeneralComponents/RedButton";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const AccountData = () => {
