@@ -7,6 +7,8 @@ import FormDataClient from "../components/FormDataClient";
 import FormDataCoverages from "../components/FormDataCoverages";
 import FormDataDocumentation from "../components/FormDocumentation";
 import FormDataConfirmation from "../components/FormDataConfirmation";
+import PageCasoEstudio01 from "../FuturePages/PageCasoEstudio01";
+import PageCrearUsuario from "../FuturePages/PageCasoEstudioCrearUsuario";
 
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
@@ -23,6 +25,7 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
+    <PageCrearUsuario />,
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
     <FormDataClient handleCurrentView={handleCurrentView} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,

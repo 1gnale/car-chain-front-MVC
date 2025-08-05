@@ -1,6 +1,6 @@
 interface InfoLabel {
-  title: string;
-  text: string | undefined;
+  title?: string;
+  text?: string | undefined;
 }
 
 function LabelNinfo(props: InfoLabel) {
