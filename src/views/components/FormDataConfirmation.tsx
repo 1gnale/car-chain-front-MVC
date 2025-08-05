@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import LabelNinfo from "./GeneralComponents/LabelNinfo";
 import TitleForm from "./GeneralComponents/TitleForm";
 import Table from "./GeneralComponents/Table";
@@ -18,79 +18,60 @@ const FormDataConfirmation = ({
     (state) => state.coberturasDetalles.coberturaDetalle
   );
 
-  function base64ToFile(base64: string, filename: string, type: string): File {
-    const arr = base64.split(",");
-    const mime = arr[0].match(/:(.*?);/)?.[1] || type;
-    const bstr = atob(arr[1]);
-    const u8arr = new Uint8Array(bstr.length);
+  // Estado para almacenar los paths de documentación
+  const [documentationPaths, setDocumentationPaths] = useState<any>({});
+  // Estado para almacenar las imágenes como URLs de objeto
+  const [documentationImages, setDocumentationImages] = useState<any>({});
 
-    for (let i = 0; i < bstr.length; i++) {
-      u8arr[i] = bstr.charCodeAt(i);
-    }
-
-    return new File([u8arr], filename, { type: mime });
-  }
-  function convertBase64FieldsToFile(
-    obj: any,
-    prefix = "file",
-    filetypeFallback = "application/octet-stream"
-  ): any {
-    let fileCounter = 0;
-
-    function traverseAndConvert(current: any): any {
-      if (Array.isArray(current)) {
-        return current.map(traverseAndConvert);
+  // Función para cargar imágenes desde sessionStorage
+  const loadImagesFromSession = () => {
+    const imageKeys = ['fotoFrontal', 'fotoTrasera', 'fotoLateral1', 'fotoLateral2', 'fotoTecho', 'cedulaVerde'];
+    const images: any = {};
+    
+    imageKeys.forEach(key => {
+      const imageData = sessionStorage.getItem(`image_${key}`);
+      if (imageData) {
+        images[key] = imageData;
       }
-
-      if (typeof current === "object" && current !== null) {
-        const newObj: any = {};
-        for (const key in current) {
-          const value = current[key];
-
-          // Detecta si es base64 válido de imagen/documento
-          if (
-            typeof value === "string" &&
-            value.startsWith("data:") &&
-            value.includes("base64")
-          ) {
-            const extension = value.substring(
-              value.indexOf("/") + 1,
-              value.indexOf(";")
-            );
-            const filename = `${prefix}_${fileCounter++}.${extension}`;
-            newObj[key] = base64ToFile(value, filename, filetypeFallback);
-          } else {
-            newObj[key] = traverseAndConvert(value);
-          }
-        }
-        return newObj;
-      }
-
-      return current;
-    }
-
-    return traverseAndConvert(obj);
-  }
+    });
+    
+    setDocumentationImages(images);
+  };
 
   useEffect(() => {
     const documentaciontext = localStorage.getItem("Documentation");
     const policyStorage = useLocalStorageItem<Poliza>("PolicyData");
-    if (policyStorage != null && documentaciontext != null) {
-      const documentacionJson = JSON.parse(documentaciontext);
-      const documentacionJsonFiles =
-        convertBase64FieldsToFile(documentacionJson);
-      const document = documentacionJsonFiles as Documentacion;
-      policyStorage.documentacion = document;
+    
+    if (policyStorage != null) {
+      if (documentaciontext != null) {
+        const paths = JSON.parse(documentaciontext);
+        setDocumentationPaths(paths);
+        console.log("Paths de documentación cargados:", paths);
+      }
       setPolicy(policyStorage);
     }
+
+    // Cargar las imágenes desde sessionStorage
+    loadImagesFromSession();
+
+    // Cleanup function para liberar las URLs de objeto
+    return () => {
+      Object.values(documentationImages).forEach((url: any) => {
+        if (typeof url === 'string' && url.startsWith('blob:')) {
+          URL.revokeObjectURL(url);
+        }
+      });
+    };
   }, []);
 
-  function handleObjectUrl(file?: File): string {
-    if (!file) {
-      return "";
-    }
-    const objectUrl = URL.createObjectURL(file);
-    return objectUrl;
+  // Función auxiliar para mostrar información de archivos cuando solo tenemos paths
+  function getFileDisplayName(filePath?: string): string {
+    return filePath || "No seleccionado";
+  }
+
+  // Función para obtener la URL de la imagen
+  function getImageUrl(imageKey: string): string {
+    return documentationImages[imageKey] || "";
   }
 
   const handleTable = (): tableContent => {
@@ -325,45 +306,63 @@ const FormDataConfirmation = ({
           <div className="row g-3">
             <div className="col-md-2">
               <ImgConfirmation
-                src={handleObjectUrl(policy.documentacion?.fotoFrontal)}
-                alt=""
+                src={getImageUrl('fotoFrontal')}
+                alt="Foto Frontal"
                 text="Foto Frontal"
               />
+              <small className="text-muted d-block mt-1">
+                {getFileDisplayName(documentationPaths.fotoFrontal)}
+              </small>
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={handleObjectUrl(policy.documentacion?.fotoTrasera)}
-                alt=""
+                src={getImageUrl('fotoTrasera')}
+                alt="Foto Trasera"
                 text="Foto Trasera"
               />
+              <small className="text-muted d-block mt-1">
+                {getFileDisplayName(documentationPaths.fotoTrasera)}
+              </small>
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={handleObjectUrl(policy.documentacion?.fotoFrontal)}
-                alt=""
+                src={getImageUrl('fotoLateral1')}
+                alt="Foto Lateral 1"
                 text="Foto Lateral 1"
               />
+              <small className="text-muted d-block mt-1">
+                {getFileDisplayName(documentationPaths.fotoLateral1)}
+              </small>
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={handleObjectUrl(policy.documentacion?.fotoLateral2)}
-                alt=""
+                src={getImageUrl('fotoLateral2')}
+                alt="Foto Lateral 2"
                 text="Foto Lateral 2"
               />
+              <small className="text-muted d-block mt-1">
+                {getFileDisplayName(documentationPaths.fotoLateral2)}
+              </small>
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={handleObjectUrl(policy.documentacion?.fotoTecho)}
-                alt=""
+                src={getImageUrl('fotoTecho')}
+                alt="Foto Techo"
                 text="Foto Techo"
               />
+              <small className="text-muted d-block mt-1">
+                {getFileDisplayName(documentationPaths.fotoTecho)}
+              </small>
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={handleObjectUrl(policy.documentacion?.cedulaVerde)}
-                alt=""
+                src={getImageUrl('cedulaVerde')}
+                alt="Cedula Verde"
                 text="Cedula Verde"
               />
+              <small className="text-muted d-block mt-1">
+                {getFileDisplayName(documentationPaths.cedulaVerde)}
+              </small>
             </div>
           </div>
 
