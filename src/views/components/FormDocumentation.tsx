@@ -2,10 +2,7 @@ import GrayButton from "./GeneralComponents/Button";
 import ImgInput from "./GeneralComponents/ImgInput";
 import { useState, useEffect } from "react";
 import useFormValidation from "../../controllers/controllerHooks/Validations/useFormDocumetsValidation";
-import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import useDocumentationToJsonString from "../../controllers/controllerHooks/LocalStorage/useDocumentationToJsonString.ts";
 import TitleForm from "./GeneralComponents/TitleForm";
-import getFromLocalStorage from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 
 const FormDocumentation = ({
   handleCurrentView,
@@ -20,78 +17,6 @@ const FormDocumentation = ({
   const [fileCedulaVerde, setFileCedulaVerde] = useState<File>();
 
   const { errors, validateField, validateForm } = useFormValidation();
-
-  // FUNCIONES PARA CONVERTIR TEXTO BASE6 A JSON
-  function base64ToFile(base64: string, filename: string, type: string): File {
-    const arr = base64.split(",");
-    const mime = arr[0].match(/:(.*?);/)?.[1] || type;
-    const bstr = atob(arr[1]);
-    const u8arr = new Uint8Array(bstr.length);
-
-    for (let i = 0; i < bstr.length; i++) {
-      u8arr[i] = bstr.charCodeAt(i);
-    }
-
-    return new File([u8arr], filename, { type: mime });
-  }
-
-  function convertBase64FieldsToFile(
-    obj: any,
-    prefix = "file",
-    filetypeFallback = "application/octet-stream"
-  ): any {
-    let fileCounter = 0;
-
-    function traverseAndConvert(current: any): any {
-      if (Array.isArray(current)) {
-        return current.map(traverseAndConvert);
-      }
-
-      if (typeof current === "object" && current !== null) {
-        const newObj: any = {};
-        for (const key in current) {
-          const value = current[key];
-
-          // Detecta si es base64 válido de imagen/documento
-          if (
-            typeof value === "string" &&
-            value.startsWith("data:") &&
-            value.includes("base64")
-          ) {
-            const extension = value.substring(
-              value.indexOf("/") + 1,
-              value.indexOf(";")
-            );
-            const filename = `${prefix}_${fileCounter++}.${extension}`;
-            newObj[key] = base64ToFile(value, filename, filetypeFallback);
-          } else {
-            newObj[key] = traverseAndConvert(value);
-          }
-        }
-        return newObj;
-      }
-
-      return current;
-    }
-
-    return traverseAndConvert(obj);
-  }
-
-  useEffect(() => {
-    const documentaciontext = localStorage.getItem("Documentation");
-
-    if (documentaciontext != null) {
-      const documentacionJson = JSON.parse(documentaciontext);
-      const documentacionJSONFile =
-        convertBase64FieldsToFile(documentacionJson);
-      setFileFrontal(documentacionJSONFile.fotoFrontal);
-      setFileTrasera(documentacionJSONFile.fotoTrasera);
-      setFileLateral1(documentacionJSONFile.fotoLateral1);
-      setFileLateral2(documentacionJSONFile.fotoLateral2);
-      setFileTecho(documentacionJSONFile.fotoTecho);
-      setFileCedulaVerde(documentacionJSONFile.cedulaVerde);
-    }
-  }, []);
 
   const handleFileFrontalChange = (file: File) => {
     setFileFrontal(file);
@@ -138,18 +63,40 @@ const FormDocumentation = ({
     };
 
     if (validateForm(documentation)) {
-      const jsonDocumentation = useDocumentationToJsonString(documentation);
+      // Guardamos los paths/nombres de archivo en localStorage
+      const documentationPaths = {
+        fotoFrontal: fileFotoFrontal?.name || null,
+        fotoTrasera: fileFotoTrasera?.name || null,
+        fotoLateral1: fileFotoLateral1?.name || null,
+        fotoLateral2: fileFotoLateral2?.name || null,
+        fotoTecho: fileFotoTecho?.name || null,
+        cedulaVerde: fileCedulaVerde?.name || null,
+      };
 
-      jsonDocumentation.then((resultado) => {
-        try {
-          console.log("Funco?");
-          console.log(resultado);
-          localStorage.setItem("Documentation", resultado);
-          handleCurrentView(true);
-        } catch (err) {
-          console.error("Error serializando policy:", err);
+      // Guardamos las imágenes como URLs de objeto en sessionStorage
+      const saveImageToSession = (file: File | undefined, key: string) => {
+        if (file) {
+          const objectUrl = URL.createObjectURL(file);
+          sessionStorage.setItem(`image_${key}`, objectUrl);
+        } else {
+          sessionStorage.removeItem(`image_${key}`);
         }
-      });
+      };
+
+      saveImageToSession(fileFotoFrontal, 'fotoFrontal');
+      saveImageToSession(fileFotoTrasera, 'fotoTrasera');
+      saveImageToSession(fileFotoLateral1, 'fotoLateral1');
+      saveImageToSession(fileFotoLateral2, 'fotoLateral2');
+      saveImageToSession(fileFotoTecho, 'fotoTecho');
+      saveImageToSession(fileCedulaVerde, 'cedulaVerde');
+
+      try {
+        console.log("Guardando paths de documentación:", documentationPaths);
+        localStorage.setItem("Documentation", JSON.stringify(documentationPaths));
+        handleCurrentView(true);
+      } catch (err) {
+        console.error("Error guardando paths de documentación:", err);
+      }
     } else {
       console.log("Formulario inválido:", errors);
     }
@@ -160,8 +107,6 @@ const FormDocumentation = ({
       return "";
     }
     const objectUrl = URL.createObjectURL(file);
-    console.log("PUTA NO SE Q CARAJOS ES ESE FILE");
-    console.log(objectUrl);
     return objectUrl;
   }
 
