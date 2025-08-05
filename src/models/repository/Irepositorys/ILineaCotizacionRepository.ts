@@ -1,3 +1,4 @@
 export default interface ILineaCotizacionRepository {
-  getLocalidades(): Promise<Linea_Cotizacion[]>;
+  getLineaCotizacion(): Promise<Linea_Cotizacion[]>;
+  getLineaCotizacionById(id: string): Promise<Linea_Cotizacion | null>;
 }

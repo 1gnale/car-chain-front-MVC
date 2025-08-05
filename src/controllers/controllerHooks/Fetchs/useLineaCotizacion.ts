@@ -6,15 +6,13 @@ import { LineaCotizacionRepository } from "../../../models/repository/Repository
 import fetchLinesPricings from "../../../models/fetchs/fetchLineaCotizacion";
 import { setLineaCotizacion } from "../../../redux/lineaCotizacionSlice";
 
-const useModelosHook = () => {
+const useLineaCotizacionHook = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>();
   const lineaCotizacionRepo = new LineaCotizacionRepository(
     jsonLineaCotizacion
   );
-  console.log("Aaaaaa");
-  console.log(lineaCotizacionRepo);
   useEffect(() => {
     setError(false);
     setLoading(true);
@@ -34,4 +32,4 @@ const useModelosHook = () => {
   return { loading, error };
 };
 
-export default useModelosHook;
+export default useLineaCotizacionHook;
