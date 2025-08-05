@@ -69,6 +69,7 @@ const FormDataCoverages = ({
 
       coverages.forEach((cover) => {
         const linea: Linea_Cotizacion = {
+          id: 0, //ID will be assigned by the backend
           cotizacion: NuevaCotization,
           cobertura: cover,
           monto: 0,

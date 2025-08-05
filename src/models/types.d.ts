@@ -111,7 +111,7 @@ interface Cotizacion {
 }
 
 interface Linea_Cotizacion {
-  id?: number;
+  id: number;
   monto?: number;
   cotizacion?: Cotizacion;
   cobertura?: Cobertura;

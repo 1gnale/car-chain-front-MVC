@@ -7,8 +7,6 @@ const AccountPricings = () => {
   const linePricings: Linea_Cotizacion[] = useAppSelector(
     (state) => state.lineasCotizacion.lineaCotizacion
   );
-  console.log("linePricings");
-  console.log(linePricings);
 
   const handleTablePricings = (): tableContent => {
     const table: tableContent = {
@@ -22,8 +20,8 @@ const AccountPricings = () => {
         "Version",
         "Fecha de Vencimiento",
       ],
-      tableBody: linePricings.map((line, idx) => ({
-        key: idx,
+      tableBody: linePricings.map((line) => ({
+        key: line.id,
         rowContent: [
           String(line.cotizacion?.vehiculo?.matricula),
           String(line.cotizacion?.fechaCreacion),
