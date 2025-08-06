@@ -7,6 +7,12 @@ import FormDataClient from "../components/RequestUserPolicy/FormDataClient";
 import FormDataCoverages from "../components/RequestUserPolicy/FormDataCoverages";
 import FormDataDocumentation from "../components/RequestUserPolicy/FormDocumentation";
 import FormDataConfirmation from "../components/RequestUserPolicy/FormDataConfirmation";
+import PageCasoEstudio02 from "../FuturePages/PageCasoEstudio02";
+import CrearMarca from "../FuturePages/PageCasoEstudio02CrearMarca";
+import ModificarMarca from "../FuturePages/PageCasoEstudio02ModificarMarca";
+import PageCasoEstudio03 from "../FuturePages/PageCasoEstudio03";
+import CrearModelo from "../FuturePages/PageCasoEstudio03CrearModelo";
+import ModificarModelo from "../FuturePages/PageCasoEstudio03ModificarModelo";
 
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
@@ -23,6 +29,12 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
+    <ModificarModelo />,
+    <CrearModelo />,
+    <PageCasoEstudio03 />,
+    <ModificarMarca />,
+    <CrearMarca />,
+    <PageCasoEstudio02 />,
     <FormDataClient handleCurrentView={handleCurrentView} />,
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,
