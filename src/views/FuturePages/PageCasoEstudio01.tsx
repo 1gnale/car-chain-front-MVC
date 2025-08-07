@@ -7,7 +7,7 @@ import { Search, PlusSquare } from "react-bootstrap-icons";
 const handleTable = (): tableContent => {
   const table: tableContent = {
     showButtom: false,
-    titles: ["Legajo", "Rol", "Nombre y Apellido", "Email", "Sexo", "Opciones"], //Ayuda
+    titles: ["Legajo", "Rol", "Nombre y Apellido", "Email", "Sexo", "Opciones"], 
     tableBody: [],
   };
   return table;

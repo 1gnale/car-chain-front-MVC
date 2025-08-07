@@ -7,7 +7,7 @@ import { Search, PlusSquare } from "react-bootstrap-icons";
 const handleTable = (): tableContent => {
   const table: tableContent = {
     showButtom: false,
-    titles: ["ID", "Marca", "Nombre", "Descripcion", "Opciones"], 
+    titles: ["ID", "Marca", "Modelo", "Nombre", "Precio De Mercado (GNC)", "Opciones"], 
     tableBody: [],
   };
   return table;
@@ -15,7 +15,7 @@ const handleTable = (): tableContent => {
 
 const { titles, tableBody, customIcons, showButtom } = handleTable();
 
-function PageCasoEstudio03() {
+function PageCasoEstudio04() {
   return (
     <div className="container-fluid">
       <div className="d-flex align-items-center w-100 gap-2 p-3">
@@ -41,4 +41,4 @@ function PageCasoEstudio03() {
   );
 }
 
-export default PageCasoEstudio03;
+export default PageCasoEstudio04;

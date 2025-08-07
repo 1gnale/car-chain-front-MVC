@@ -13,6 +13,10 @@ import ModificarMarca from "../FuturePages/PageCasoEstudio02ModificarMarca";
 import PageCasoEstudio03 from "../FuturePages/PageCasoEstudio03";
 import CrearModelo from "../FuturePages/PageCasoEstudio03CrearModelo";
 import ModificarModelo from "../FuturePages/PageCasoEstudio03ModificarModelo";
+import PageCasoEstudio04 from "../FuturePages/PageCasoEstudio04";
+import CrearVersion from "../FuturePages/PageCasoEstudio04CrearVersion";
+import CrearDetalleCobertura from "../FuturePages/PageCasoEstudio05CrearDetalle";
+import CrearCobertura from "../FuturePages/PageCasoEstudio06CrearCobertura";
 
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
@@ -29,6 +33,10 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
+    <CrearCobertura />,
+    <CrearDetalleCobertura />,
+    <CrearVersion />,
+    <PageCasoEstudio04 />,
     <ModificarModelo />,
     <CrearModelo />,
     <PageCasoEstudio03 />,
