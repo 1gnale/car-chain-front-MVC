@@ -23,17 +23,11 @@ const ControladorProcesandoPago = () => {
                     state: { 
                         contratoData: {
                             numero_poliza: numero_poliza,
-                            hash_transaccion: data.hash_transaccion || data.transactionHash || "0xf4d2b1a8c7e9f3d2b1a8c7e9f3d2b1a8c7e9f3d2b1a8c7e9f3d2b1a8c7e9f3d2",
-                            direccion_contrato: data.direccion_contrato || data.contractAddress || "0xa1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
-                            fecha_despliegue: new Date().toLocaleDateString('es-AR', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            }),
-                            estado: data.estado || "Activo",
-                            monto: data.monto || data.total || 25000,
+                            hash_transaccion: data.hashContrato,
+                            direccion_contrato:"0xaAe2E8b80E9eDFf62E8D1B7127249aBbed43daE0",
+                            fecha_despliegue: data.fechaContratacion,
+                            estado: "Activo",
+                            monto: data.montoAsegurado || data.total || 25000,
                             cobertura: data.cobertura || "Cobertura Total Premium",
                             cliente: {
                                 nombre: data.cliente?.nombre || data.payer_name || "Cliente",
