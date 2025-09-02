@@ -4,6 +4,9 @@ import ControladorSolicitarCotizacionDePoliza from "./controllers/ControladorSol
 import ControladorPerfil from "./controllers/ControladorPerfil.tsx";
 import ProtectedRoute from "./controllers/ProtectedRoute.tsx";
 import ControladorVerCotizacion from "./controllers/ControladorVerPoliza.tsx";
+import ControladorPruebaPago from "./controllers/ControladorPruebaPago.tsx";
+import ControladorProcesandoPago from "./controllers/ControladorProcesandoPago.tsx";
+import PagoExitoso from "./views/pages/PagoExitoso.tsx";
 
 function App() {
   return (
@@ -16,6 +19,13 @@ function App() {
           <ProtectedRoute>
             <ControladorVerCotizacion />
           </ProtectedRoute>
+        } />
+        <Route path="/procesando-pago/:numero_poliza/:pagoId/:idTipoContratacion/:idPeriodoPago" element={
+          <ControladorProcesandoPago />
+        } />
+        <Route path="/pago-exitoso" element={<PagoExitoso />} />
+        <Route path="/prueba-proceso-pago" element={
+          <ControladorPruebaPago />
         } />
         <Route path="/perfil" element={
           <ProtectedRoute>
