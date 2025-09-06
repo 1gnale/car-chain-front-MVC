@@ -4,10 +4,17 @@ import ControladorSolicitarCotizacionDePoliza from "./controllers/ControladorSol
 import ControladorPerfil from "./controllers/ControladorPerfil.tsx";
 import ProtectedRoute from "./controllers/ProtectedRoute.tsx";
 import ControladorVerCotizacion from "./controllers/ControladorVerPoliza.tsx";
+
 import ControladorMarcas from "./controllers/ControladorMarcas.tsx";
 import ControladorModelos from "./controllers/ControladorModelos.tsx";
 import ControladorVersiones from "./controllers/ControladorVersiones.tsx";
 import ModificarMarca from "./views/FuturePages/PageCasoEstudio02ModificarMarca.tsx";
+
+import ControladorPruebaPago from "./controllers/ControladorPruebaPago.tsx";
+import ControladorProcesandoPago from "./controllers/ControladorProcesandoPago.tsx";
+import PagoExitoso from "./views/pages/PagoExitoso.tsx";
+
+
 function App() {
   return (
     <div>
@@ -17,6 +24,7 @@ function App() {
           element={<ControladorSolicitarCotizacionDePoliza />}
         />
         <Route path="/" element={<ControladorIndex />} />
+
         <Route
           path="/cotizacion/:id"
           element={
@@ -65,6 +73,25 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/cotizacion/:id" element={
+          <ProtectedRoute>
+            <ControladorVerCotizacion />
+          </ProtectedRoute>
+        } />
+        <Route path="/procesando-pago/:numero_poliza/:pagoId/:idTipoContratacion/:idPeriodoPago" element={
+          <ControladorProcesandoPago />
+        } />
+        <Route path="/pago-exitoso" element={<PagoExitoso />} />
+        <Route path="/prueba-proceso-pago" element={
+          <ControladorPruebaPago />
+        } />
+        <Route path="/perfil" element={
+          <ProtectedRoute>
+            <ControladorPerfil />
+          </ProtectedRoute>
+        } />
+
       </Routes>
     </div>
   );
