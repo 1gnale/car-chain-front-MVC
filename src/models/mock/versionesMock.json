@@ -5,6 +5,7 @@
     "descripcion": "Versión intermedia",
     "precio_mercado": 9500000,
     "precio_mercado_gnc": 9700000,
+    "activo": true,
     "modelo": {
       "id": 1,
       "nombre": "Corolla",
@@ -22,6 +23,7 @@
     "descripcion": "Versión full",
     "precio_mercado": 10200000,
     "precio_mercado_gnc": 10400000,
+    "activo": false,
     "modelo": {
       "id": 1,
       "nombre": "Corolla",
@@ -39,6 +41,7 @@
     "descripcion": "Base automática",
     "precio_mercado": 7000000,
     "precio_mercado_gnc": 7200000,
+    "activo": true,
     "modelo": {
       "id": 2,
       "nombre": "Yaris",
@@ -56,6 +59,7 @@
     "descripcion": "Base",
     "precio_mercado": 6000000,
     "precio_mercado_gnc": 6200000,
+    "activo": false,
     "modelo": {
       "id": 3,
       "nombre": "Gol",
@@ -73,6 +77,7 @@
     "descripcion": "Versión base",
     "precio_mercado": 8500000,
     "precio_mercado_gnc": 8700000,
+    "activo": true,
     "modelo": {
       "id": 4,
       "nombre": "Focus",
@@ -90,6 +95,7 @@
     "descripcion": "Versión intermedia",
     "precio_mercado": 9200000,
     "precio_mercado_gnc": 9400000,
+    "activo": false,
     "modelo": {
       "id": 4,
       "nombre": "Focus",
@@ -107,6 +113,7 @@
     "descripcion": "Base manual",
     "precio_mercado": 6800000,
     "precio_mercado_gnc": 7000000,
+    "activo": true,
     "modelo": {
       "id": 5,
       "nombre": "Fiesta",
@@ -124,6 +131,7 @@
     "descripcion": "Versión intermedia",
     "precio_mercado": 7300000,
     "precio_mercado_gnc": 7500000,
+    "activo": false,
     "modelo": {
       "id": 6,
       "nombre": "Onix",
@@ -141,6 +149,7 @@
     "descripcion": "Versión top",
     "precio_mercado": 8100000,
     "precio_mercado_gnc": 8300000,
+    "activo": true,
     "modelo": {
       "id": 6,
       "nombre": "Onix",
@@ -158,6 +167,7 @@
     "descripcion": "Equipamiento completo",
     "precio_mercado": 11500000,
     "precio_mercado_gnc": 11700000,
+    "activo": false,
     "modelo": {
       "id": 7,
       "nombre": "Cruze",
@@ -175,6 +185,7 @@
     "descripcion": "Versión base",
     "precio_mercado": 8200000,
     "precio_mercado_gnc": 8400000,
+    "activo": true,
     "modelo": {
       "id": 8,
       "nombre": "Versa",
@@ -192,6 +203,7 @@
     "descripcion": "Versión full",
     "precio_mercado": 9100000,
     "precio_mercado_gnc": 9300000,
+    "activo": false,
     "modelo": {
       "id": 8,
       "nombre": "Versa",
@@ -209,6 +221,7 @@
     "descripcion": "Versión intermedia",
     "precio_mercado": 8800000,
     "precio_mercado_gnc": 9000000,
+    "activo": true,
     "modelo": {
       "id": 9,
       "nombre": "208",
@@ -226,6 +239,7 @@
     "descripcion": "Versión deportiva",
     "precio_mercado": 10800000,
     "precio_mercado_gnc": 11000000,
+    "activo": true,
     "modelo": {
       "id": 9,
       "nombre": "208",
@@ -243,6 +257,7 @@
     "descripcion": "Equipamiento estándar",
     "precio_mercado": 12300000,
     "precio_mercado_gnc": 12500000,
+    "activo": false,
     "modelo": {
       "id": 10,
       "nombre": "2008",
@@ -260,6 +275,7 @@
     "descripcion": "Versión base",
     "precio_mercado": 7600000,
     "precio_mercado_gnc": 7800000,
+    "activo": false,
     "modelo": {
       "id": 11,
       "nombre": "Logan",
@@ -277,6 +293,7 @@
     "descripcion": "Versión full",
     "precio_mercado": 8400000,
     "precio_mercado_gnc": 8600000,
+    "activo": true,
     "modelo": {
       "id": 11,
       "nombre": "Logan",
@@ -294,6 +311,7 @@
     "descripcion": "Versión base",
     "precio_mercado": 7400000,
     "precio_mercado_gnc": 7600000,
+    "activo": false,
     "modelo": {
       "id": 12,
       "nombre": "Cronos",
@@ -311,6 +329,7 @@
     "descripcion": "Versión premium",
     "precio_mercado": 8900000,
     "precio_mercado_gnc": 9100000,
+    "activo": true,
     "modelo": {
       "id": 12,
       "nombre": "Cronos",
@@ -328,6 +347,7 @@
     "descripcion": "Equipamiento básico",
     "precio_mercado": 7200000,
     "precio_mercado_gnc": 7400000,
+    "activo": false,
     "modelo": {
       "id": 13,
       "nombre": "Argo",
@@ -345,6 +365,7 @@
     "descripcion": "Versión intermedia",
     "precio_mercado": 10500000,
     "precio_mercado_gnc": 10700000,
+    "activo": true,
     "modelo": {
       "id": 14,
       "nombre": "City",
@@ -362,6 +383,7 @@
     "descripcion": "Versión top",
     "precio_mercado": 11800000,
     "precio_mercado_gnc": 12000000,
+    "activo": false,
     "modelo": {
       "id": 14,
       "nombre": "City",
@@ -379,6 +401,7 @@
     "descripcion": "Versión base",
     "precio_mercado": 9800000,
     "precio_mercado_gnc": 10000000,
+    "activo": true,
     "modelo": {
       "id": 15,
       "nombre": "Elantra",
@@ -396,6 +419,7 @@
     "descripcion": "Versión full",
     "precio_mercado": 12200000,
     "precio_mercado_gnc": 12400000,
+    "activo": false,
     "modelo": {
       "id": 15,
       "nombre": "Elantra",
@@ -413,6 +437,7 @@
     "descripcion": "Equipamiento estándar",
     "precio_mercado": 13500000,
     "precio_mercado_gnc": 13700000,
+    "activo": true,
     "modelo": {
       "id": 16,
       "nombre": "Creta",
@@ -430,6 +455,7 @@
     "descripcion": "Versión intermedia",
     "precio_mercado": 9600000,
     "precio_mercado_gnc": 9800000,
+    "activo": false,
     "modelo": {
       "id": 17,
       "nombre": "C4 Cactus",
@@ -447,6 +473,7 @@
     "descripcion": "Versión premium",
     "precio_mercado": 10400000,
     "precio_mercado_gnc": 10600000,
+    "activo": true,
     "modelo": {
       "id": 17,
       "nombre": "C4 Cactus",
@@ -464,6 +491,7 @@
     "descripcion": "Versión base",
     "precio_mercado": 7800000,
     "precio_mercado_gnc": 8000000,
+    "activo": false,
     "modelo": {
       "id": 18,
       "nombre": "Rio",
@@ -481,6 +509,7 @@
     "descripcion": "Versión full",
     "precio_mercado": 8600000,
     "precio_mercado_gnc": 8800000,
+    "activo": true,
     "modelo": {
       "id": 18,
       "nombre": "Rio",
@@ -498,6 +527,7 @@
     "descripcion": "Equipamiento completo",
     "precio_mercado": 11300000,
     "precio_mercado_gnc": 11500000,
+    "activo": false,
     "modelo": {
       "id": 19,
       "nombre": "Cerato",

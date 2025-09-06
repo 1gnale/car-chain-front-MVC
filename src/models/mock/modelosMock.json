@@ -3,6 +3,7 @@
     "id": 1,
     "nombre": "Corolla",
     "descripcion": "Sedán compacto",
+    "activo": true,
     "marca": {
       "id": 1,
       "nombre": "Toyota",
@@ -13,6 +14,7 @@
     "id": 2,
     "nombre": "Yaris",
     "descripcion": "Hatchback pequeño",
+    "activo": false,
     "marca": {
       "id": 1,
       "nombre": "Toyota",
@@ -23,6 +25,7 @@
     "id": 3,
     "nombre": "Gol",
     "descripcion": "Auto económico",
+    "activo": true,
     "marca": {
       "id": 2,
       "nombre": "Volkswagen",
@@ -33,6 +36,7 @@
     "id": 4,
     "nombre": "Focus",
     "descripcion": "Sedán compacto",
+    "activo": false,
     "marca": {
       "id": 3,
       "nombre": "Ford",
@@ -43,6 +47,7 @@
     "id": 5,
     "nombre": "Fiesta",
     "descripcion": "Hatchback urbano",
+    "activo": true,
     "marca": {
       "id": 3,
       "nombre": "Ford",
@@ -53,6 +58,7 @@
     "id": 6,
     "nombre": "Onix",
     "descripcion": "Hatchback compacto",
+    "activo": false,
     "marca": {
       "id": 4,
       "nombre": "Chevrolet",
@@ -63,6 +69,7 @@
     "id": 7,
     "nombre": "Cruze",
     "descripcion": "Sedán mediano",
+    "activo": true,
     "marca": {
       "id": 4,
       "nombre": "Chevrolet",
@@ -73,6 +80,7 @@
     "id": 8,
     "nombre": "Versa",
     "descripcion": "Sedán compacto",
+    "activo": false,
     "marca": {
       "id": 5,
       "nombre": "Nissan",
@@ -83,6 +91,7 @@
     "id": 9,
     "nombre": "208",
     "descripcion": "Hatchback premium",
+    "activo": true,
     "marca": {
       "id": 6,
       "nombre": "Peugeot",
@@ -93,6 +102,7 @@
     "id": 10,
     "nombre": "2008",
     "descripcion": "SUV compacto",
+    "activo": false,
     "marca": {
       "id": 6,
       "nombre": "Peugeot",
@@ -103,6 +113,7 @@
     "id": 11,
     "nombre": "Logan",
     "descripcion": "Sedán familiar",
+    "activo": true,
     "marca": {
       "id": 7,
       "nombre": "Renault",
@@ -113,6 +124,7 @@
     "id": 12,
     "nombre": "Cronos",
     "descripcion": "Sedán compacto",
+    "activo": false,
     "marca": {
       "id": 8,
       "nombre": "Fiat",
@@ -123,6 +135,7 @@
     "id": 13,
     "nombre": "Argo",
     "descripcion": "Hatchback moderno",
+    "activo": true,
     "marca": {
       "id": 8,
       "nombre": "Fiat",
@@ -133,6 +146,7 @@
     "id": 14,
     "nombre": "City",
     "descripcion": "Sedán premium",
+    "activo": false,
     "marca": {
       "id": 9,
       "nombre": "Honda",
@@ -143,6 +157,7 @@
     "id": 15,
     "nombre": "Elantra",
     "descripcion": "Sedán mediano",
+    "activo": true,
     "marca": {
       "id": 10,
       "nombre": "Hyundai",
@@ -153,6 +168,7 @@
     "id": 16,
     "nombre": "Creta",
     "descripcion": "SUV compacto",
+    "activo": false,
     "marca": {
       "id": 10,
       "nombre": "Hyundai",
@@ -163,6 +179,7 @@
     "id": 17,
     "nombre": "C4 Cactus",
     "descripcion": "Crossover innovador",
+    "activo": true,
     "marca": {
       "id": 11,
       "nombre": "Citroën",
@@ -173,6 +190,7 @@
     "id": 18,
     "nombre": "Rio",
     "descripcion": "Hatchback urbano",
+    "activo": false,
     "marca": {
       "id": 12,
       "nombre": "Kia",
@@ -183,6 +201,7 @@
     "id": 19,
     "nombre": "Cerato",
     "descripcion": "Sedán deportivo",
+    "activo": true,
     "marca": {
       "id": 12,
       "nombre": "Kia",

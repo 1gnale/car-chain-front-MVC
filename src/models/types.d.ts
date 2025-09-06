@@ -51,6 +51,7 @@ interface Marca {
   id: number;
   nombre?: string;
   descripcion?: string;
+  activo?: boolean;
 }
 
 interface Modelo {
@@ -58,6 +59,7 @@ interface Modelo {
   nombre?: string;
   descripcion?: string;
   marca: Marca;
+  activo?: boolean;
 }
 
 interface Version {
@@ -67,6 +69,7 @@ interface Version {
   precio_mercado: number;
   precio_mercado_gnc?: number;
   modelo: Modelo;
+  activo?: boolean;
 }
 
 interface ConfigEdad {

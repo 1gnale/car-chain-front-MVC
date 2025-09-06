@@ -2,61 +2,73 @@
   {
     "id": 1,
     "nombre": "Toyota",
-    "descripcion": "Marca japonesa"
+    "descripcion": "Marca japonesa",
+    "activo": true
   },
   {
     "id": 2,
     "nombre": "Volkswagen",
-    "descripcion": "Marca alemana"
+    "descripcion": "Marca alemana",
+    "activo": false
   },
   {
     "id": 3,
     "nombre": "Ford",
-    "descripcion": "Marca estadounidense"
+    "descripcion": "Marca estadounidense",
+    "activo": true
   },
   {
     "id": 4,
     "nombre": "Chevrolet",
-    "descripcion": "Marca estadounidense"
+    "descripcion": "Marca estadounidense",
+    "activo": false
   },
   {
     "id": 5,
     "nombre": "Nissan",
-    "descripcion": "Marca japonesa"
+    "descripcion": "Marca japonesa",
+    "activo": true
   },
   {
     "id": 6,
     "nombre": "Peugeot",
-    "descripcion": "Marca francesa"
+    "descripcion": "Marca francesa",
+    "activo": false
   },
   {
     "id": 7,
     "nombre": "Renault",
-    "descripcion": "Marca francesa"
+    "descripcion": "Marca francesa",
+    "activo": true
   },
   {
     "id": 8,
     "nombre": "Fiat",
-    "descripcion": "Marca italiana"
+    "descripcion": "Marca italiana",
+    "activo": false
   },
   {
     "id": 9,
     "nombre": "Honda",
-    "descripcion": "Marca japonesa"
+    "descripcion": "Marca japonesa",
+    "activo": true
   },
   {
     "id": 10,
     "nombre": "Hyundai",
-    "descripcion": "Marca surcoreana"
+    "descripcion": "Marca surcoreana",
+    "activo": false
   },
   {
     "id": 11,
     "nombre": "Citroën",
-    "descripcion": "Marca francesa"
+    "descripcion": "Marca francesa",
+    "activo": true
   },
   {
     "id": 12,
     "nombre": "Kia",
-    "descripcion": "Marca surcoreana"
+    "descripcion": "Marca surcoreana",
+    "activo": false
   }
 ]

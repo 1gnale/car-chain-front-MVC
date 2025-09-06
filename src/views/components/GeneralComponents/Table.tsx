@@ -1,11 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 const TableButton = (tabla: tableContent) => {
-  const navigate = useNavigate();
 
-  const handleIconClick = (id: string | number) => {
-    navigate(`/cotizacion/${id}`);
-  };
   return (
     <table className="table table-hover table-responsive table-bordered">
       <thead className="table-dark">
@@ -33,9 +29,9 @@ const TableButton = (tabla: tableContent) => {
                     style={{ width: "80px" }}
                   >
                     <div className="d-flex justify-content-center align-items-center">
-                      <IconComponent
+                      <IconComponent.customIcons
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleIconClick(tbody.key)}
+                        onClick={IconComponent.onAction ? (tbody.value ? () => IconComponent.onAction!(tbody.value):  () => IconComponent.onAction!(tbody.key)): () => {}}
                       />
                     </div>
                   </td>
