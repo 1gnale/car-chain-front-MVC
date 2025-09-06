@@ -4,18 +4,74 @@ import GrayButton from "../components/GeneralComponents/Button";
 import LabelNinfo from "../components/GeneralComponents/LabelNinfo";
 import IconButton from "../components/GeneralComponents/IconButton";
 import { Search, PlusSquare } from "react-bootstrap-icons";
-const handleTable = (): tableContent => {
-  const table: tableContent = {
-    showButtom: false,
-    titles: ["ID", "Marca", "Nombre", "Descripcion", "Opciones"], 
-    tableBody: [],
+import CheckForm from "../components/GeneralComponents/CheckForm";
+import { useAppSelector } from "../../redux/reduxTypedHooks";
+import { Pencil } from "react-bootstrap-icons";
+import { Trash } from "react-bootstrap-icons";
+import { useState } from "react";
+
+const PageCasoEstudio03 =
+  ({
+  handleCurrentView, setCurrentModel
+}: {
+  handleCurrentView: (pass: boolean) => void,
+  setCurrentModel: (modelo: Modelo ) => void,
+}) => {
+  const modelos: Modelo[] = useAppSelector((state) => state.modelos.modelo);
+  const [checkbox, setCheckbox] = useState<boolean>(false);
+  const [search, setSearch] = useState("");
+
+  // Filtrado por búsqueda y por estado (activo/inactivo)
+  const filteredModelos = modelos.filter((modelo) => {
+    const matchesSearch = modelo.nombre
+      ?.toLowerCase()
+      .includes(search.toLowerCase());
+
+    // Si checkbox está activado => mostrar solo inactivas
+    if (checkbox) {
+      return modelo && matchesSearch;
+    }
+
+    // Si checkbox no está activado => mostrar solo activas
+    return modelo.activo && matchesSearch;
+  });
+  const handleUpdateModel = (modelo: any): void => {
+    setCurrentModel(modelo)
+    handleCurrentView(true)
+    console.log(modelo)
+  }
+  const handleTable = (): tableContent => {
+    return {
+      showButtom: true,
+      customIcons: [{
+        customIcons: Pencil, onAction: handleUpdateModel
+      }, {
+        customIcons: Trash
+      }],
+      titles: ["ID", "Marca", "Nombre", "Descripcion", "Estado"],
+      tableBody: filteredModelos.map((modelo, idx) => ({
+        key: idx,
+        value: modelo,
+        rowContent: [
+          String(modelo.id) ?? "",
+          modelo.marca.nombre ?? "",
+          modelo.nombre ?? "",
+          modelo.descripcion ?? "",
+          (() =>  {
+            if (modelo.activo) {
+              return "Activo";
+            }
+            else {
+              return "Inactivo";
+            }
+          })(),
+        ],
+      })),
+    };
   };
-  return table;
-};
 
-const { titles, tableBody, customIcons, showButtom } = handleTable();
+  const { titles, tableBody, customIcons, showButtom } = handleTable();
 
-function PageCasoEstudio03() {
   return (
     <div className="container-fluid">
       <div className="d-flex align-items-center w-100 gap-2 p-3">
@@ -26,17 +82,26 @@ function PageCasoEstudio03() {
           className="form-control"
           placeholder="Buscar..."
           style={{ maxWidth: "75%" }}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <IconButton icon={PlusSquare} />
       </div>
-              <div className="d-flex  my-4" style={{ width: "-20px" }}>
-          <Table
-            titles={titles}
-            tableBody={tableBody}
-            customIcons={customIcons}
-            showButtom={showButtom}
-          />
-        </div>
+      <CheckForm
+        title="Mostrar Todos Los Modelos"
+        text=""
+        checked={checkbox}
+        onChange={() => setCheckbox(!checkbox)}
+      />
+
+      <div className="d-flex  my-4" style={{ width: "-20px" }}>
+        <Table
+          titles={titles}
+          tableBody={tableBody}
+          customIcons={customIcons}
+          showButtom={showButtom}
+        />
+      </div>
     </div>
   );
 }

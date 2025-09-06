@@ -2,16 +2,23 @@ import TitleForm from "../GeneralComponents/TitleForm";
 import TableButton from "../GeneralComponents/Table";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import { type Icon, Eye, Pencil } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 const AccountPricings = () => {
   const linePricings: Linea_Cotizacion[] = useAppSelector(
     (state) => state.lineasCotizacion.lineaCotizacion
   );
+  const navigate = useNavigate();
 
+  const handleIconClick = (id: string | number) => {
+    navigate(`/cotizacion/${id}`);
+  };
   const handleTablePricings = (): tableContent => {
     const table: tableContent = {
       showButtom: true,
-      customIcons: [Eye],
+      customIcons: [{
+        customIcons: Eye, onAction: handleIconClick
+      }],
       titles: [
         "Matricula",
         "Fecha de creación",
