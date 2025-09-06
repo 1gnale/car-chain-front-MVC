@@ -13,8 +13,6 @@ const EdadPage = () => {
     <ConfigurarLocalidad />,
   ]
 
-  
-
   return (
 
     <div className="container-fluid">
