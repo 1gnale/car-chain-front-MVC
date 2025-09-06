@@ -1,8 +1,3 @@
-interface InfoLabel {
-  title?: string;
-  text?: string | undefined;
-}
-
 function LabelNinfo(props: InfoLabel) {
   const { title, text } = props;
 

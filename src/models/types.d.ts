@@ -6,7 +6,7 @@ interface Provincia {
 interface Localidad {
   id: number;
   descripcion?: string;
-  codigoPostal?: string; 
+  codigoPostal?: string;
   provincia?: Provincia;
 }
 
@@ -22,7 +22,7 @@ interface Persona {
   telefono?: string;
   sexo?: string;
   contraseña?: string;
-  localidad?: Localidad; 
+  localidad?: Localidad;
 }
 
 interface Cliente extends Persona {
@@ -34,6 +34,7 @@ interface Usuario extends Persona {
   estado?: string;
   legajo?: string;
   tipoUsuario?: string;
+  activo?: boolean;
 }
 
 interface Vehiculo {
@@ -51,6 +52,7 @@ interface Marca {
   id: number;
   nombre?: string;
   descripcion?: string;
+  activo?: boolean;
 }
 
 interface Modelo {
@@ -58,6 +60,7 @@ interface Modelo {
   nombre?: string;
   descripcion?: string;
   marca: Marca;
+  activo?: boolean;
 }
 
 interface Version {
@@ -67,6 +70,7 @@ interface Version {
   precio_mercado: number;
   precio_mercado_gnc?: number;
   modelo: Modelo;
+  activo?: boolean;
 }
 
 interface ConfigEdad {
@@ -108,6 +112,7 @@ interface Cotizacion {
   configuaracionLocalidad?: ConfigLocalidad;
   configudacionEdad?: ConfigEdad;
   configuracionAntiguedad?: ConfigAntiguedad;
+  activo?: boolean;
 }
 
 interface Linea_Cotizacion {
@@ -115,6 +120,7 @@ interface Linea_Cotizacion {
   monto?: number;
   cotizacion?: Cotizacion;
   cobertura?: Cobertura;
+  activo?: boolean;
 }
 
 interface Cobertura {
@@ -122,6 +128,7 @@ interface Cobertura {
   nombre?: string;
   descripcion?: string;
   recargoPorAtraso?: number;
+  activo?: boolean;
 }
 
 interface Cobertura_Detalle {
@@ -129,6 +136,7 @@ interface Cobertura_Detalle {
   cobertura: Cobertura;
   detalle: Detalle;
   aplica: boolean;
+  activo?: boolean;
 }
 
 interface Detalle {
@@ -138,6 +146,7 @@ interface Detalle {
   porcentaje_miles?: number;
   monto_fijo?: number;
   activodetalle?: boolean;
+  activo?: boolean;
 }
 
 interface Documentacion {
@@ -155,6 +164,15 @@ interface Pago {
   fecha?: string;
   hora?: string;
   poliza: Poliza;
+
+  // Campos de MercadoPago
+  mp_payment_id?: string;
+  mp_status?: string;
+  mp_status_detail?: string;
+  mp_external_reference?: string;
+  mp_payment_method_id?: string;
+  mp_payment_type_id?: string;
+  mp_preference_id?: string;
 }
 
 interface Siniesto {
@@ -165,6 +183,8 @@ interface Siniesto {
   estado?: string;
   //fotoDenuncia?=
   //fotoVehiculo?=
+
+  activo?: boolean;
 }
 
 interface Revision {
@@ -174,6 +194,8 @@ interface Revision {
   estado?: string;
   usuario: Usuario;
   poliza: Poliza;
+
+  activo?: boolean;
 }
 
 interface PeriodoPago {
