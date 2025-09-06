@@ -57,7 +57,8 @@ function FormPolizas() {
     return table;
   };
   const { titles, tableBody, showButtom } = handleTable();
-
+  console.log("BODY DE LA TABLA");
+  console.log(tableBody);
   return (
     <div className="container-fluid">
       <div className="row justify-content-center">
@@ -275,16 +276,20 @@ function FormPolizas() {
               </div>
             </div>
           </div>
-        <Table titles={titles} tableBody={tableBody} showButtom={showButtom} />
-        <div
-          className="d-grid gap-2 d-md-flex justify-content-md-end"
-          style={{ padding: "10px" }}
-        >
-          <GrayButton text="Cancelar" style="me-md-2" onClick={() => {}} />
-          <GrayButton text="Confirmar" onClick={() => {}} />
+          <Table
+            titles={titles}
+            tableBody={tableBody}
+            showButtom={showButtom}
+          />
+          <div
+            className="d-grid gap-2 d-md-flex justify-content-md-end"
+            style={{ padding: "10px" }}
+          >
+            <GrayButton text="Cancelar" style="me-md-2" onClick={() => {}} />
+            <GrayButton text="Confirmar" onClick={() => {}} />
+          </div>
         </div>
       </div>
-        </div>
     </div>
   );
 }

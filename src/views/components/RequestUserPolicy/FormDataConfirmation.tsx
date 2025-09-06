@@ -25,23 +25,30 @@ const FormDataConfirmation = ({
 
   // Función para cargar imágenes desde sessionStorage
   const loadImagesFromSession = () => {
-    const imageKeys = ['fotoFrontal', 'fotoTrasera', 'fotoLateral1', 'fotoLateral2', 'fotoTecho', 'cedulaVerde'];
+    const imageKeys = [
+      "fotoFrontal",
+      "fotoTrasera",
+      "fotoLateral1",
+      "fotoLateral2",
+      "fotoTecho",
+      "cedulaVerde",
+    ];
     const images: any = {};
-    
-    imageKeys.forEach(key => {
+
+    imageKeys.forEach((key) => {
       const imageData = sessionStorage.getItem(`image_${key}`);
       if (imageData) {
         images[key] = imageData;
       }
     });
-    
+
     setDocumentationImages(images);
   };
 
   useEffect(() => {
     const documentaciontext = localStorage.getItem("Documentation");
     const policyStorage = useLocalStorageItem<Poliza>("PolicyData");
-    
+
     if (policyStorage != null) {
       if (documentaciontext != null) {
         const paths = JSON.parse(documentaciontext);
@@ -57,7 +64,7 @@ const FormDataConfirmation = ({
     // Cleanup function para liberar las URLs de objeto
     return () => {
       Object.values(documentationImages).forEach((url: any) => {
-        if (typeof url === 'string' && url.startsWith('blob:')) {
+        if (typeof url === "string" && url.startsWith("blob:")) {
           URL.revokeObjectURL(url);
         }
       });
@@ -121,7 +128,8 @@ const FormDataConfirmation = ({
     return table;
   };
   const { titles, tableBody, customIcons, showButtom } = handleTable();
-
+  console.log("BODY DE LA TABLA");
+  console.log(tableBody);
   return (
     <div className="container-fluid">
       <div className="row justify-content-center">
@@ -306,7 +314,7 @@ const FormDataConfirmation = ({
           <div className="row g-3">
             <div className="col-md-2">
               <ImgConfirmation
-                src={getImageUrl('fotoFrontal')}
+                src={getImageUrl("fotoFrontal")}
                 alt="Foto Frontal"
                 text="Foto Frontal"
               />
@@ -316,7 +324,7 @@ const FormDataConfirmation = ({
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={getImageUrl('fotoTrasera')}
+                src={getImageUrl("fotoTrasera")}
                 alt="Foto Trasera"
                 text="Foto Trasera"
               />
@@ -326,7 +334,7 @@ const FormDataConfirmation = ({
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={getImageUrl('fotoLateral1')}
+                src={getImageUrl("fotoLateral1")}
                 alt="Foto Lateral 1"
                 text="Foto Lateral 1"
               />
@@ -336,7 +344,7 @@ const FormDataConfirmation = ({
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={getImageUrl('fotoLateral2')}
+                src={getImageUrl("fotoLateral2")}
                 alt="Foto Lateral 2"
                 text="Foto Lateral 2"
               />
@@ -346,7 +354,7 @@ const FormDataConfirmation = ({
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={getImageUrl('fotoTecho')}
+                src={getImageUrl("fotoTecho")}
                 alt="Foto Techo"
                 text="Foto Techo"
               />
@@ -356,7 +364,7 @@ const FormDataConfirmation = ({
             </div>
             <div className="col-md-2">
               <ImgConfirmation
-                src={getImageUrl('cedulaVerde')}
+                src={getImageUrl("cedulaVerde")}
                 alt="Cedula Verde"
                 text="Cedula Verde"
               />

@@ -11,8 +11,11 @@ import ControladorVersiones from "./controllers/ControladorVersiones.tsx";
 import ModificarMarca from "./views/FuturePages/PageCasoEstudio02ModificarMarca.tsx";
 
 import ControladorPruebaPago from "./controllers/ControladorPruebaPago.tsx";
+import ControladorProcesandoPrimerPago from "./controllers/ControladorProcesandoPrimerPago.tsx";
 import ControladorProcesandoPago from "./controllers/ControladorProcesandoPago.tsx";
 import PagoExitoso from "./views/pages/PagoExitoso.tsx";
+import PageCasoEstudio02 from "./views/FuturePages/PageCasoEstudio02.tsx";
+import ModificarMarca from "./views/FuturePages/PageCasoEstudio02ModificarMarca.tsx";
 
 
 function App() {
@@ -34,6 +37,42 @@ function App() {
           }
         />
         <Route
+
+          path="/procesando-primerPago/:numero_poliza/:pagoId/:idTipoContratacion/:idPeriodoPago"
+          element={<ControladorProcesandoPrimerPago />}
+        />
+
+        <Route
+          path="/procesando-pago/:numero_poliza/:pagoId"
+          element={<ControladorProcesandoPago />}
+        />
+
+        <Route path="/pago-exitoso" element={<PagoExitoso />} />
+
+        <Route
+          path="/prueba-proceso-pago"
+          element={<ControladorPruebaPago />}
+        />
+
+        <Route path="/pago-exitoso" element={<PagoExitoso />} />
+
+        <Route
+          path="/perfil"
+          element={
+            <ProtectedRoute>
+              <ControladorPerfil />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/marcas"
+          element={
+            <ProtectedRoute>
+              <ModificarMarca />
+            </ProtectedRoute>
+          }
+        />
+
           path="/perfil"
           element={
             <ProtectedRoute>
@@ -91,6 +130,7 @@ function App() {
             <ControladorPerfil />
           </ProtectedRoute>
         } />
+
 
       </Routes>
     </div>

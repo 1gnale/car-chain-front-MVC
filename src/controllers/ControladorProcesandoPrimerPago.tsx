@@ -2,8 +2,9 @@ import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-const ControladorProcesandoPago = () => {
-  const { numero_poliza, pagoId } = useParams();
+const ControladorProcesandoPrimerPago = () => {
+  const { numero_poliza, pagoId, idTipoContratacion, idPeriodoPago } =
+    useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const ControladorProcesandoPago = () => {
       isFetching = true;
       try {
         const response = await fetch(
-          `http://localhost:3000/api/pago/sucessPago/${numero_poliza}/${pagoId}`,
+          `http://localhost:3000/api/pago/sucessPrimerPago/${numero_poliza}/${pagoId}/${idTipoContratacion}/${idPeriodoPago}`,
           { signal }
         );
 
@@ -78,14 +79,14 @@ const ControladorProcesandoPago = () => {
 
     // Cleanup: si el componente se desmonta o cambia alguna dep, aborta
     return () => controller.abort();
-  }, [numero_poliza, pagoId, navigate]);
+  }, [numero_poliza, pagoId, idTipoContratacion, idPeriodoPago, navigate]);
 
   return (
     <Spinner
-      title="Procesando pago..."
+      title="Desplegando contrato en la Blockchain..."
       text="Por favor, espere mientras procesamos su solicitud..."
     />
   );
 };
 
-export default ControladorProcesandoPago;
+export default ControladorProcesandoPrimerPago;

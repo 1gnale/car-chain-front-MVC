@@ -16,3 +16,8 @@ interface tableBodys {
   rowContent: string[];
     value?: any
 }
+
+interface InfoLabel {
+  title?: string;
+  text?: string | undefined;
+}
