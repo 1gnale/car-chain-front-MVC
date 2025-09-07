@@ -3,9 +3,9 @@
     "id": 1,
     "nombre": "Responsable Civil hasta $23.000.000",
     "descripcion": "Te cubrimos hasta 23 millones de pesos",
-    "porcentaje_miles": 1,
+    "porcentaje_miles": 0,
     "monto_fijo": 23000000,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "descripcion": "Cobertura ante incendios totales",
     "porcentaje_miles": 2,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "descripcion": "Te protegemos en caso de robo o hurto total",
     "porcentaje_miles": 3,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 4,
@@ -29,7 +29,7 @@
     "descripcion": "Cubre destrucción total por accidente",
     "porcentaje_miles": 4,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 5,
@@ -37,7 +37,7 @@
     "descripcion": "Incluye responsabilidad civil",
     "porcentaje_miles": 5,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 6,
@@ -45,7 +45,7 @@
     "descripcion": "Cubre daños parciales por accidente",
     "porcentaje_miles": 6,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 7,
@@ -53,7 +53,7 @@
     "descripcion": "Cubre daños parciales por granizo",
     "porcentaje_miles": 7,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 8,
@@ -61,7 +61,7 @@
     "descripcion": "Cubre robo o hurto parcial",
     "porcentaje_miles": 8,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 9,
@@ -69,7 +69,7 @@
     "descripcion": "Cobertura de cristales laterales",
     "porcentaje_miles": 9,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
   },
   {
     "id": 10,
@@ -77,6 +77,14 @@
     "descripcion": "Cobertura de parabrisas y luneta",
     "porcentaje_miles": 10,
     "monto_fijo": 0,
-    "activodetalle": true
+    "activo": true
+  },
+  {
+    "id": 11,
+    "nombre": "Parabrisas y Luneta2",
+    "descripcion": "Cobertura de parabrisas y luneta",
+    "porcentaje_miles": 10,
+    "monto_fijo": 0,
+    "activo": false
   }
 ]

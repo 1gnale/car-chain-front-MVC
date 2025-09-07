@@ -24,16 +24,8 @@ import EdadPage from "./EdadPage";
 import CrearConfiguracionEdad from "../FuturePages/PageCaso13CrearConfigEdad";
 import CrearConfiguracionLocalidad from "../FuturePages/PageCaso15CrearConfigLocalidad";
 
-const Estados = {
-  CRUD: "CRUD",
-  MODIFICAR: "MODIFICAR",
-  CREAR: "CREAR",
-} as const;
-
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
-
-  console.log(Estados.CRUD);
 
   const handleCurrentView = (pass: boolean) => {
     setCurrentView((prev) => {

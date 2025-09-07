@@ -3,7 +3,7 @@ import TableButton from "../GeneralComponents/Table";
 import { useEffect, useState } from "react";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
-import { type Icon, Eye } from "react-bootstrap-icons";
+import { Eye } from "react-bootstrap-icons";
 
 const AccountPolicy = () => {
   const polices_user: Poliza[] = useAppSelector(
@@ -15,7 +15,7 @@ const AccountPolicy = () => {
   const handleTablePolices = (): tableContent => {
     const table: tableContent = {
       showButtom: true,
-      customIcons: [Eye],
+      customIcons: [{ customIcons: Eye }],
       titles: ["N° Poliza", "Fecha Contratacion", "Hora Cotizacion", "Estado"],
       tableBody: polices_user.map((police, idx) => ({
         key: idx,
