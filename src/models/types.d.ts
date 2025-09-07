@@ -145,7 +145,6 @@ interface Detalle {
   descripcion?: string;
   porcentaje_miles?: number;
   monto_fijo?: number;
-  activodetalle?: boolean;
   activo?: boolean;
 }
 

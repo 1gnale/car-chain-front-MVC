@@ -5,7 +5,6 @@ interface tableContent {
   customIcons?: iconsAction[];
 }
 
-// TODO: EN EL FUTURO IMPLEMENTAR ESTO?
 interface iconsAction {
   customIcons?: Icon;
   onAction?: (value: any) => void;
@@ -14,7 +13,7 @@ interface iconsAction {
 interface tableBodys {
   key: number;
   rowContent: string[];
-    value?: any
+  value?: any;
 }
 
 interface InfoLabel {
