@@ -1,12 +1,12 @@
 [
   {
-    "id_cobertura": 1,
+    "id": 1,
     "nombre": "Cobertura básica",
     "descripcion": "Cubre daños menores",
-    "recargo_por_atraso": 5.0,
+    "recargoPorAtraso": 5.0,
     "detalles": [
       {
-        "id_detalle": 101,
+        "id": 101,
         "nombre": "Daños a terceros",
         "descripcion": "Cubre daños ocasionados a terceros",
         "porcentaje_miles": 2.5,
@@ -14,7 +14,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 102,
+        "id": 102,
         "nombre": "Asistencia en ruta",
         "descripcion": "Servicio de grúa y auxilio mecánico",
         "porcentaje_miles": null,
@@ -22,7 +22,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 103,
+        "id": 103,
         "nombre": "Robo parcial",
         "descripcion": "Cubre robo de partes del vehículo",
         "porcentaje_miles": 4.0,
@@ -30,7 +30,7 @@
         "aplica": false
       },
       {
-        "id_detalle": 104,
+        "id": 104,
         "nombre": "Cristales",
         "descripcion": "Reposición de cristales rotos",
         "porcentaje_miles": null,
@@ -38,7 +38,7 @@
         "aplica": false
       },
       {
-        "id_detalle": 105,
+        "id": 105,
         "nombre": "Daños por granizo",
         "descripcion": "Cubre daños en la carrocería por granizo",
         "porcentaje_miles": 3.0,
@@ -46,7 +46,7 @@
         "aplica": false
       },
       {
-        "id_detalle": 106,
+        "id": 106,
         "nombre": "Robo total",
         "descripcion": "Cubre robo total del vehículo",
         "porcentaje_miles": 10.0,
@@ -56,13 +56,13 @@
     ]
   },
   {
-    "id_cobertura": 2,
+    "id": 2,
     "nombre": "Cobertura intermedia",
     "descripcion": "Cubre daños mayores y asistencia",
-    "recargo_por_atraso": 7.5,
+    "recargoPorAtraso": 7.5,
     "detalles": [
       {
-        "id_detalle": 101,
+        "id": 101,
         "nombre": "Daños a terceros",
         "descripcion": "Cubre daños ocasionados a terceros",
         "porcentaje_miles": 2.5,
@@ -70,7 +70,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 102,
+        "id": 102,
         "nombre": "Asistencia en ruta",
         "descripcion": "Servicio de grúa y auxilio mecánico",
         "porcentaje_miles": null,
@@ -78,7 +78,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 103,
+        "id": 103,
         "nombre": "Robo parcial",
         "descripcion": "Cubre robo de partes del vehículo",
         "porcentaje_miles": 4.0,
@@ -86,7 +86,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 104,
+        "id": 104,
         "nombre": "Cristales",
         "descripcion": "Reposición de cristales rotos",
         "porcentaje_miles": null,
@@ -94,7 +94,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 105,
+        "id": 105,
         "nombre": "Daños por granizo",
         "descripcion": "Cubre daños en la carrocería por granizo",
         "porcentaje_miles": 3.0,
@@ -102,7 +102,7 @@
         "aplica": false
       },
       {
-        "id_detalle": 106,
+        "id": 106,
         "nombre": "Robo total",
         "descripcion": "Cubre robo total del vehículo",
         "porcentaje_miles": 10.0,
@@ -112,13 +112,13 @@
     ]
   },
   {
-    "id_cobertura": 3,
+    "id": 3,
     "nombre": "Cobertura premium",
     "descripcion": "Cubre todo tipo de daños, robo y asistencia",
-    "recargo_por_atraso": 10.0,
+    "recargoPorAtraso": 10.0,
     "detalles": [
       {
-        "id_detalle": 101,
+        "id": 101,
         "nombre": "Daños a terceros",
         "descripcion": "Cubre daños ocasionados a terceros",
         "porcentaje_miles": 2.5,
@@ -126,7 +126,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 102,
+        "id": 102,
         "nombre": "Asistencia en ruta",
         "descripcion": "Servicio de grúa y auxilio mecánico",
         "porcentaje_miles": null,
@@ -134,7 +134,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 103,
+        "id": 103,
         "nombre": "Robo parcial",
         "descripcion": "Cubre robo de partes del vehículo",
         "porcentaje_miles": 4.0,
@@ -142,7 +142,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 104,
+        "id": 104,
         "nombre": "Cristales",
         "descripcion": "Reposición de cristales rotos",
         "porcentaje_miles": null,
@@ -150,7 +150,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 105,
+        "id": 105,
         "nombre": "Daños por granizo",
         "descripcion": "Cubre daños en la carrocería por granizo",
         "porcentaje_miles": 3.0,
@@ -158,7 +158,7 @@
         "aplica": true
       },
       {
-        "id_detalle": 106,
+        "id": 106,
         "nombre": "Robo total",
         "descripcion": "Cubre robo total del vehículo",
         "porcentaje_miles": 10.0,

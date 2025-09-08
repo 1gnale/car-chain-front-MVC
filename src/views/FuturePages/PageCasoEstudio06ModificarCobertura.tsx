@@ -1,55 +1,167 @@
 import GrayButton from "../components/GeneralComponents/Button";
 import IconButton from "../components/GeneralComponents/IconButton";
-import { Search, PlusSquare } from "react-bootstrap-icons";
+import { Search, PlusSquare, Square, CheckSquare } from "react-bootstrap-icons";
 import Table from "../components/GeneralComponents/Table";
+import Input from "../components/GeneralComponents/Input";
+import CheckForm from "../components/GeneralComponents/CheckForm";
+import { useEffect, useState } from "react";
+import { useAppSelector } from "../../redux/reduxTypedHooks";
+import useFormValidationCoverages from "../../controllers/controllerHooks/Validations/useCoverageValidation";
 
-const handleTable = (): tableContent => {
-  const table: tableContent = {
-    showButtom: false,
-    titles: [
-      "ID",
-      "Nombre",
-      "Descripcion",
-      "Porcentaje En Miles",
-      "Monto Fijo",
-      "-",
-    ],
-    tableBody: [],
-  };
-  return table;
+const obtenerDetallesAplicados = (detalles: Cobertura_Detalle[]): Detalle[] => {
+  return detalles
+    .filter((c) => c.aplica) // me quedo solo con los que aplica = true
+    .map((c) => c.detalle); // devuelvo el detalle de esos
 };
 
-const { titles, tableBody, customIcons, showButtom } = handleTable();
+function ModificarCobertura({
+  cobertura,
+  handleCurrentView,
+}: {
+  cobertura: Cobertura;
+  handleCurrentView: (pass: boolean) => void;
+}) {
+  const coberturaDetalles: Cobertura_Detalle[] = useAppSelector(
+    (state) => state.coberturasDetalles.coberturaDetalle
+  );
 
-function ModificarCobertura() {
+  const detalles: Detalle[] = useAppSelector((state) => state.detalles.detalle);
+
+  const { errors, validateField, validateForm } = useFormValidationCoverages();
+
+  const [search, setSearch] = useState("");
+
+  const [formCoverageDetail, setFormCoverageDetail] = useState<Detalle[]>(
+    obtenerDetallesAplicados(coberturaDetalles)
+  );
+
+  const [formCoverage, setFormCoverage] = useState<Cobertura>({
+    id: cobertura.id,
+    nombre: cobertura.nombre,
+    descripcion: cobertura.descripcion,
+    recargoPorAtraso: cobertura.recargoPorAtraso,
+    activo: cobertura.activo,
+  });
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormCoverage((prev) => ({ ...prev, [field]: value }));
+    validateField(field as keyof typeof errors, value);
+  };
+
+  const filteredDetalles = detalles.filter((detalle) => {
+    const matchesSearch = detalle.nombre
+      ?.toLowerCase()
+      .includes(search.toLowerCase());
+
+    return detalle.activo && matchesSearch;
+  });
+
+  const handleCreateCoverageDetail = (detalle: any): void => {
+    setFormCoverageDetail((prev) => {
+      const exists = prev.some((d) => d.id === detalle.id);
+      return exists
+        ? prev.filter((d) => d.id !== detalle.id)
+        : [...prev, detalle];
+    });
+  };
+
+  const handleTable = (): tableContent => {
+    return {
+      showButtom: true,
+      customIcons: [
+        {
+          customIcons: Square,
+          alternateIcon: CheckSquare,
+          isActive: (detalle: Cobertura_Detalle) =>
+            formCoverageDetail.some((d) => d.id === detalle.id),
+          onAction: handleCreateCoverageDetail,
+        },
+      ],
+      titles: [
+        "ID",
+        "Nombre",
+        "Descripcion",
+        "Porcentaje En Miles",
+        "Monto Fijo",
+        "Estado",
+      ],
+      tableBody: filteredDetalles.map((detail) => ({
+        key: detail.id,
+        value: detail,
+        rowContent: [
+          String(detail.id) ?? "",
+          detail.nombre ?? "",
+          detail.descripcion ?? "",
+          String(detail.porcentaje_miles) ?? "",
+          String(detail.monto_fijo) ?? "",
+          (() => {
+            if (detail.activo) {
+              return "Activo";
+            } else {
+              return "Inactivo";
+            }
+          })(),
+        ],
+      })),
+    };
+  };
+
+  const { titles, tableBody, customIcons, showButtom } = handleTable();
+
   return (
     <div className="container-fluid w-75">
-      <div className="d-flex align-items-start mb-3">
-        <label className="me-3 pt-2" style={{ width: "100px" }}>
-          Nombre:
-        </label>
-        <input type="text" className="form-control" />
-      </div>
+      <Input
+        title="Nombre"
+        labelStyle={{ width: "100px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        place=""
+        value={formCoverage.nombre}
+        onChange={(value) => handleInputChange("nombre", value)}
+        error={errors.nombre}
+        onBlur={() => validateField("nombre", String(formCoverage.nombre!))}
+      />
 
-      <div className="d-flex align-items-start mb-3">
-        <label className="me-3 pt-2" style={{ width: "100px" }}>
-          Descripción:
-        </label>
-        <textarea className="form-control" rows={4} />
-      </div>
-
-      <div className="d-flex align-items-start mb-3">
-        <label className="me-3 pt-2" style={{ width: "110px" }}>
-          Recargo Por Atraso:
-        </label>
-        <input
-          type="text"
-          value={"%"}
-          className="form-control ms-2"
-          style={{ width: "200px" }}
-        />
-      </div>
-
+      <Input
+        title="Descripcion"
+        labelStyle={{ width: "100px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        as="textarea"
+        rows={5}
+        place=""
+        value={formCoverage.descripcion}
+        onChange={(value) => handleInputChange("descripcion", value)}
+        error={errors.descripcion}
+        onBlur={() =>
+          validateField("descripcion", String(formCoverage.descripcion!))
+        }
+      />
+      <Input
+        title="Recargo Por Atraso:"
+        labelStyle={{ width: "100px" }}
+        inputStyle={{ width: "200px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        place=""
+        value={String(formCoverage.recargoPorAtraso)}
+        onChange={(value) => handleInputChange("recargoPorAtraso", value)}
+        error={errors.recargoPorAtras}
+        onBlur={() =>
+          validateField(
+            "recargoPorAtras",
+            String(formCoverage.recargoPorAtraso!)
+          )
+        }
+      />
+      <CheckForm
+        title="Cobertura activa"
+        text=""
+        checked={formCoverage.activo}
+        onChange={() =>
+          setFormCoverage((prev) => ({
+            ...prev,
+            ["activo"]: !formCoverage.activo,
+          }))
+        }
+      />
       <div className="d-flex align-items-center w-100 gap-2 p-3">
         <span className="form-label mb-0">Búsqueda:</span>
 
@@ -58,21 +170,10 @@ function ModificarCobertura() {
           className="form-control"
           placeholder="Buscar..."
           style={{ maxWidth: "75%" }}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <IconButton icon={Search} />
       </div>
-      <div className="form-check form-check-inline">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          name="montoCheck"
-          id="checkboxFijo"
-        />
-        <label className="form-check-label" htmlFor="checkboxFijo">
-          Mostrar Solo Detalles Asociados
-        </label>
-      </div>
-
       <div className="d-flex  my-4" style={{ width: "-20px" }}>
         <Table
           titles={titles}

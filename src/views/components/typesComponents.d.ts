@@ -7,7 +7,9 @@ interface tableContent {
 
 interface iconsAction {
   customIcons?: Icon;
+  alternateIcon?: Icon; // Ícono al hacer click (opcional)
   onAction?: (value: any) => void;
+  isActive?: (value: any) => boolean;
 }
 
 interface tableBodys {

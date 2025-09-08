@@ -22,6 +22,7 @@ function ModificarDetalleCobertura({
     descripcion: detalle.descripcion,
     porcentaje_miles: detalle.porcentaje_miles,
     monto_fijo: detalle.monto_fijo,
+    activo: detalle.activo,
   });
 
   const handleCancel = (): void => {
@@ -133,7 +134,14 @@ function ModificarDetalleCobertura({
           )
         }
       />
-
+      <CheckForm
+        title="Detalle activo"
+        text=""
+        checked={formDetail.activo}
+        onChange={() =>
+          setFormDetail((prev) => ({ ...prev, ["activo"]: !formDetail.activo }))
+        }
+      />
       <div
         className="d-grid d-md-flex justify-content-md-end"
         style={{ padding: "10px", gap: "2rem" }}
