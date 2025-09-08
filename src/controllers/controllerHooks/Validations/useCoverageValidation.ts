@@ -1,27 +1,25 @@
 import { useState, useEffect } from "react";
 
-interface errorDetalle {
+interface errorCobertura {
   nombre?: string;
   descripcion?: string;
-  porcentaje_miles?: string;
-  monto_fijo?: string;
-  activo?: boolean;
+  recargoPorAtras?: string;
 }
 
 interface UseFormValidationReturn {
-  errors: errorDetalle;
+  errors: errorCobertura;
   isValid: boolean;
   validateField: (
-    fieldName: keyof errorDetalle,
+    fieldName: keyof errorCobertura,
     value: string | boolean
   ) => void;
-  validateForm: (formData: errorDetalle) => boolean;
+  validateForm: (formData: errorCobertura) => boolean;
   clearErrors: () => void;
-  clearFieldError: (fieldName: keyof errorDetalle) => void;
+  clearFieldError: (fieldName: keyof errorCobertura) => void;
 }
 
-const useFormValidationDetail = (): UseFormValidationReturn => {
-  const [errors, setErrors] = useState<errorDetalle>({});
+const useFormValidationCoverages = (): UseFormValidationReturn => {
+  const [errors, setErrors] = useState<errorCobertura>({});
   const [isValid, setIsValid] = useState<boolean>(false);
 
   // Patrones de validación
@@ -30,16 +28,14 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
     nombre: /^[A-Za-z0-9\s]{2,50}$/,
     descripcion: /^[A-Za-z0-9\s]{5,100}$/,
 
-    // Porcentaje en miles: entre 0 y 10 (incluye 0 y 10)
-    porcentaje_miles: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,
-    // Monto fijo: numero grande
-    monto_fijo: /^\d{1,20}(\.\d{1,2})?$/,
+    // recargoPorAtras: entre 0 y 10 (incluye 0 y 10)
+    recargoPorAtras: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,
   };
 
   // VER PARA VALIDAR FECHA
 
   const validateField = (
-    fieldName: keyof errorDetalle,
+    fieldName: keyof errorCobertura,
     value: string | boolean
   ): void => {
     const newErrors = { ...errors };
@@ -68,30 +64,20 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
         }
         break;
 
-      case "porcentaje_miles":
+      case "recargoPorAtras":
         const porcentajeValue = value as string;
         if (!porcentajeValue.trim()) {
-          newErrors.porcentaje_miles = "El porcentaje en miles es requerido";
+          newErrors.recargoPorAtras = "El recargo por atraso es requerido";
         } else if (
-          !patterns.porcentaje_miles.test(porcentajeValue.toUpperCase())
+          !patterns.recargoPorAtras.test(porcentajeValue.toUpperCase())
         ) {
-          newErrors.porcentaje_miles =
+          newErrors.recargoPorAtras =
             "El porcentaje debe ser un numero del 0 al 10";
         } else {
-          delete newErrors.porcentaje_miles;
+          delete newErrors.recargoPorAtras;
         }
         break;
 
-      case "monto_fijo":
-        const montoValue = value as string;
-        if (!montoValue.trim()) {
-          newErrors.monto_fijo = "El monto fijo es requerido";
-        } else if (!patterns.monto_fijo.test(montoValue.toUpperCase())) {
-          newErrors.monto_fijo = "El monto fijo debe ser un numero mayor a 1";
-        } else {
-          delete newErrors.monto_fijo;
-        }
-        break;
       default:
         break;
     }
@@ -99,8 +85,8 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
     setErrors(newErrors);
   };
 
-  const validateForm = (formData: errorDetalle): boolean => {
-    const newErrors: errorDetalle = {};
+  const validateForm = (formData: errorCobertura): boolean => {
+    const newErrors: errorCobertura = {};
 
     // Validar nombre
     if (!formData.nombre!.trim()) {
@@ -118,21 +104,14 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
       newErrors.descripcion! = "El descripcion! debe ser mayor a 2 letras";
     }
 
-    // Validar procentaje en miles
-    if (!formData.porcentaje_miles!.trim()) {
-      newErrors.porcentaje_miles! = "El porcentaje en miles es requerido";
+    // Validar recargo por atraso
+    if (!formData.recargoPorAtras!.trim()) {
+      newErrors.recargoPorAtras! = "El recargo por atraso es requerido";
     } else if (
-      !patterns.porcentaje_miles!.test(formData.porcentaje_miles!.toUpperCase())
+      !patterns.recargoPorAtras!.test(formData.recargoPorAtras!.toUpperCase())
     ) {
-      newErrors.porcentaje_miles! =
-        "El porcentaje en miles debe un numero entre 0 y 10";
-    }
-
-    // Validar monto fijo
-    if (!formData.monto_fijo!.trim()) {
-      newErrors.monto_fijo! = "El monto fijo es requerido";
-    } else if (!patterns.monto_fijo!.test(formData.monto_fijo!.toUpperCase())) {
-      newErrors.monto_fijo! = "El monto fijo debe ser mayor a 1";
+      newErrors.recargoPorAtras! =
+        "El recargo por atraso debe un numero entre 0 y 10";
     }
 
     setErrors(newErrors);
@@ -143,7 +122,7 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
     setErrors({});
   };
 
-  const clearFieldError = (fieldName: keyof errorDetalle): void => {
+  const clearFieldError = (fieldName: keyof errorCobertura): void => {
     const newErrors = { ...errors };
     delete newErrors[fieldName];
     setErrors(newErrors);
@@ -164,4 +143,4 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
   };
 };
 
-export default useFormValidationDetail;
+export default useFormValidationCoverages;

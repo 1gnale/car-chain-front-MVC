@@ -7,12 +7,12 @@ import ControladorVerCotizacion from "./controllers/ControladorVerPoliza.tsx";
 import ControladorMarcas from "./controllers/ControladorMarcas.tsx";
 import ControladorModelos from "./controllers/ControladorModelos.tsx";
 import ControladorVersiones from "./controllers/ControladorVersiones.tsx";
-import ModificarMarca from "./views/FuturePages/PageCasoEstudio02ModificarMarca.tsx";
 import ControladorPruebaPago from "./controllers/ControladorPruebaPago.tsx";
 import ControladorProcesandoPrimerPago from "./controllers/ControladorProcesandoPrimerPago.tsx";
 import ControladorProcesandoPago from "./controllers/ControladorProcesandoPago.tsx";
 import PagoExitoso from "./views/pages/PagoExitoso.tsx";
 import ControladorDetalles from "./controllers/ControladorDetalles.tsx";
+import ControladorCoberturas from "./controllers/ControladorCobertura.tsx";
 
 function App() {
   return (
@@ -56,7 +56,15 @@ function App() {
           </ProtectedRoute>
         }
       />
-
+      {/* Caso de uso 06: Gestionar Coberturas */}
+      <Route
+        path="/coberturas"
+        element={
+          <ProtectedRoute>
+            <ControladorCoberturas />
+          </ProtectedRoute>
+        }
+      />
       {/* Caso de uso 09: Solicitar Contratación de Póliza */}
 
       <Route

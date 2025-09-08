@@ -52,12 +52,6 @@ const PageCasoEstudio05 = ({
           customIcons: Trash,
         },
       ],
-      /*     "ID",
-      "Nombre",
-      "Descripcion",
-      "Porcentaje En Miles",
-      "Monto Fijo",
-      "Opciones",*/
       titles: [
         "ID",
         "Nombre",

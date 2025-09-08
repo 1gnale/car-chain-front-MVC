@@ -1,13 +1,24 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TableButton = (tabla: tableContent) => {
+  const [activeRows, setActiveRows] = useState<Record<number, boolean>>({});
+
+  const toggleRow = (rowKey: number) => {
+    setActiveRows((prev) => ({
+      ...prev,
+      [rowKey]: !prev[rowKey], // alterna true/false
+    }));
+  };
 
   return (
     <table className="table table-hover table-responsive table-bordered">
       <thead className="table-dark">
         <tr>
           {tabla.titles.map((title, idx) => (
-            <th scope="col" key={idx}>{title}</th>
+            <th scope="col" key={idx}>
+              {title}
+            </th>
           ))}
           {tabla.showButtom
             ? tabla.customIcons?.map((_, idx) => <th key={idx}></th>)
@@ -22,20 +33,30 @@ const TableButton = (tabla: tableContent) => {
             ))}
 
             {tabla.showButtom
-              ? tabla.customIcons?.map((IconComponent, iconIdx) => (
-                  <td
-                    key={iconIdx}
-                    className="text-center align-middle"
-                    style={{ width: "80px" }}
-                  >
-                    <div className="d-flex justify-content-center align-items-center">
-                      <IconComponent.customIcons
+              ? tabla.customIcons?.map((iconConfig, iconIdx) => {
+                  const IconDefault = iconConfig.customIcons;
+                  const IconAlt = iconConfig.alternateIcon;
+                  const active = iconConfig.isActive?.(tbody.value) ?? false;
+
+                  return (
+                    <td
+                      key={iconIdx}
+                      className="text-center align-middle"
+                      style={{ width: "80px" }}
+                    >
+                      <div
                         style={{ cursor: "pointer" }}
-                        onClick={IconComponent.onAction ? (tbody.value ? () => IconComponent.onAction!(tbody.value):  () => IconComponent.onAction!(tbody.key)): () => {}}
-                      />
-                    </div>
-                  </td>
-                ))
+                        onClick={() => {
+                          if (iconConfig.onAction) {
+                            iconConfig.onAction(tbody.value ?? tbody.key);
+                          }
+                        }}
+                      >
+                        {active && IconAlt ? <IconAlt /> : <IconDefault />}
+                      </div>
+                    </td>
+                  );
+                })
               : ""}
           </tr>
         ))}

@@ -124,7 +124,7 @@ interface Linea_Cotizacion {
 }
 
 interface Cobertura {
-  id_cobertura: number;
+  id: number;
   nombre?: string;
   descripcion?: string;
   recargoPorAtraso?: number;
@@ -136,7 +136,6 @@ interface Cobertura_Detalle {
   cobertura: Cobertura;
   detalle: Detalle;
   aplica: boolean;
-  activo?: boolean;
 }
 
 interface Detalle {
