@@ -47,7 +47,9 @@ function ModificarCobertura({
     setFormCoverage((prev) => ({ ...prev, [field]: value }));
     validateField(field as keyof typeof errors, value);
   };
-
+  const handleCancel = (): void => {
+    handleCurrentView(true);
+  };
   const filteredDetalles = detalles.filter((detalle) => {
     const matchesSearch = detalle.nombre
       ?.toLowerCase()
@@ -109,7 +111,7 @@ function ModificarCobertura({
   const { titles, tableBody, customIcons, showButtom } = handleTable();
 
   return (
-    <div className="container-fluid w-75">
+    <div className="bg-white p-4 rounded shadow-sm mb-4">
       <Input
         title="Nombre"
         labelStyle={{ width: "100px" }}
@@ -152,8 +154,7 @@ function ModificarCobertura({
         }
       />
       <CheckForm
-        title="Cobertura activa"
-        text=""
+        text="Cobertura activa"
         checked={formCoverage.activo}
         onChange={() =>
           setFormCoverage((prev) => ({
@@ -182,29 +183,9 @@ function ModificarCobertura({
           showButtom={showButtom}
         />
       </div>
-      <div
-        className="d-grid d-md-flex justify-content-md-end"
-        style={{ padding: "10px", gap: "2rem" }}
-      >
-        <div
-          style={{
-            transform: "scale(1.4)",
-            transformOrigin: "left",
-            width: "100px",
-            paddingBottom: "20px",
-          }}
-        >
-          <GrayButton text="Cancelar" onClick={() => {}} />
-        </div>
-        <div
-          style={{
-            transform: "scale(1.4)",
-            transformOrigin: "left",
-            width: "100px",
-          }}
-        >
-          <GrayButton text="Confirmar" onClick={() => {}} />
-        </div>
+      <div className="d-flex justify-content-end gap-3 mt-4">
+        <GrayButton text="Cancelar" onClick={handleCancel} />
+        <GrayButton text="Confirmar" onClick={() => {}} />
       </div>
     </div>
   );

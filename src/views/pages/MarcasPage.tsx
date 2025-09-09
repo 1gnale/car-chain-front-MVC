@@ -4,8 +4,8 @@ import PageCasoEstudio02 from "../FuturePages/PageCasoEstudio02";
 import { useState } from "react";
 import ModificarMarca from "../FuturePages/PageCasoEstudio02ModificarMarca";
 const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
- const [currentView, setCurrentView] = useState<number>(0);
- const [currentBrand, setCurrentBrand] = useState<Marca>({id: 1});
+  const [currentView, setCurrentView] = useState<number>(0);
+  const [currentBrand, setCurrentBrand] = useState<Marca>({ id: 1 });
   const handleCurrentView = (pass: boolean) => {
     setCurrentView((prev) => {
       if (pass && prev < views.length - 1) {
@@ -16,20 +16,16 @@ const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
       return prev;
     });
   };
-  
+
   const views = [
-    <PageCasoEstudio02  handleCurrentView={handleCurrentView} setCurrentBrand={setCurrentBrand}/>,
-    <ModificarMarca marca={currentBrand}  />
+    <PageCasoEstudio02
+      handleCurrentView={handleCurrentView}
+      setCurrentBrand={setCurrentBrand}
+    />,
+    <ModificarMarca marca={currentBrand} />,
   ];
 
-
-  return (
-    <>
-      <Navbar isAuth={isAuth} />
-      <TitleSection title="MARCAS" />
-      {views[currentView]}
-    </>
-  );
+  return <>{views[currentView]}</>;
 };
 
 export default MarcasPage;

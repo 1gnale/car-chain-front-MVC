@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 
 interface errorDetalle {
   nombre?: string;
-  descripcion?: string;
-  porcentaje_miles?: string;
-  monto_fijo?: string;
-  activo?: boolean;
+  cantidadMeses?: string;
+  descuento?: string;
 }
 
 interface UseFormValidationReturn {
@@ -20,7 +18,7 @@ interface UseFormValidationReturn {
   clearFieldError: (fieldName: keyof errorDetalle) => void;
 }
 
-const useFormValidationDetail = (): UseFormValidationReturn => {
+const usePayementPeriodsValidation = (): UseFormValidationReturn => {
   const [errors, setErrors] = useState<errorDetalle>({});
   const [isValid, setIsValid] = useState<boolean>(false);
 
@@ -31,9 +29,9 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
     descripcion: /^.{5,100}$/,
 
     // Porcentaje en miles: entre 0 y 10 (incluye 0 y 10)
-    porcentaje_miles: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,
+    descuento: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,
     // Monto fijo: numero grande
-    monto_fijo: /^\d{1,20}(\.\d{1,2})?$/,
+    cantidadMeses: /^\d{1,20}(\.\d{1,2})?$/,
   };
 
   // VER PARA VALIDAR FECHA
@@ -56,40 +54,26 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
         }
         break;
 
-      case "descripcion":
-        const descripcionValue = value as string;
-        if (!descripcionValue.trim()) {
-          newErrors.descripcion = "La descripcion es requerido";
-        } else if (!patterns.descripcion.test(descripcionValue.toUpperCase())) {
-          newErrors.descripcion =
-            "El descripcion debe tener un minimo de 5 caracteres";
-        } else {
-          delete newErrors.descripcion;
-        }
-        break;
-
-      case "porcentaje_miles":
+      case "descuento":
         const porcentajeValue = value as string;
         if (!porcentajeValue.trim()) {
-          newErrors.porcentaje_miles = "El porcentaje en miles es requerido";
-        } else if (
-          !patterns.porcentaje_miles.test(porcentajeValue.toUpperCase())
-        ) {
-          newErrors.porcentaje_miles =
-            "El porcentaje debe ser un numero del 0 al 10";
+          newErrors.descuento = "El descuento es requerido";
+        } else if (!patterns.descuento.test(porcentajeValue.toUpperCase())) {
+          newErrors.descuento = "El descuento debe ser un numero del 0 al 10";
         } else {
-          delete newErrors.porcentaje_miles;
+          delete newErrors.descuento;
         }
         break;
 
-      case "monto_fijo":
+      case "cantidadMeses":
         const montoValue = value as string;
         if (!montoValue.trim()) {
-          newErrors.monto_fijo = "El monto fijo es requerido";
-        } else if (!patterns.monto_fijo.test(montoValue.toUpperCase())) {
-          newErrors.monto_fijo = "El monto fijo debe ser un numero mayor a 1";
+          newErrors.cantidadMeses = "El monto fijo es requerido";
+        } else if (!patterns.cantidadMeses.test(montoValue.toUpperCase())) {
+          newErrors.cantidadMeses =
+            "El monto fijo debe ser un numero mayor a 1";
         } else {
-          delete newErrors.monto_fijo;
+          delete newErrors.cantidadMeses;
         }
         break;
       default:
@@ -109,30 +93,20 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
       newErrors.nombre = "El nombre debe ser mayor a 2 letras";
     }
 
-    // Validar descripcion
-    if (!formData.descripcion!.trim()) {
-      newErrors.descripcion! = "El descripcion! es requerido";
+    // Validar cantidadMeses
+    if (!formData.cantidadMeses!.trim()) {
+      newErrors.cantidadMeses! = "El cantidadMeses! es requerido";
     } else if (
-      !patterns.descripcion!.test(formData.descripcion!.toUpperCase())
+      !patterns.cantidadMeses!.test(formData.cantidadMeses!.toUpperCase())
     ) {
-      newErrors.descripcion! = "El descripcion! debe ser mayor a 2 letras";
+      newErrors.cantidadMeses! = "El cantidadMeses! debe ser mayor a 2 letras";
     }
 
     // Validar procentaje en miles
-    if (!formData.porcentaje_miles!.trim()) {
-      newErrors.porcentaje_miles! = "El porcentaje en miles es requerido";
-    } else if (
-      !patterns.porcentaje_miles!.test(formData.porcentaje_miles!.toUpperCase())
-    ) {
-      newErrors.porcentaje_miles! =
-        "El porcentaje en miles debe un numero entre 0 y 10";
-    }
-
-    // Validar monto fijo
-    if (!formData.monto_fijo!.trim()) {
-      newErrors.monto_fijo! = "El monto fijo es requerido";
-    } else if (!patterns.monto_fijo!.test(formData.monto_fijo!.toUpperCase())) {
-      newErrors.monto_fijo! = "El monto fijo debe ser mayor a 1";
+    if (!formData.descuento!.trim()) {
+      newErrors.descuento! = "El descuento es requerido";
+    } else if (!patterns.descuento!.test(formData.descuento!.toUpperCase())) {
+      newErrors.descuento! = "El descuento debe un numero entre 0 y 10";
     }
 
     setErrors(newErrors);
@@ -164,4 +138,4 @@ const useFormValidationDetail = (): UseFormValidationReturn => {
   };
 };
 
-export default useFormValidationDetail;
+export default usePayementPeriodsValidation;

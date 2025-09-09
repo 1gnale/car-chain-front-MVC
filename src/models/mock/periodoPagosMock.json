@@ -1,0 +1,30 @@
+[
+  {
+    "id": 4,
+    "nombre": "12 Cuotas",
+    "cantidadMeses": 12,
+    "descuento": 0,
+    "activo": true
+  },
+  {
+    "id": 2,
+    "nombre": "3 Cuotas",
+    "cantidadMeses": 3,
+    "descuento": 5,
+    "activo": true
+  },
+  {
+    "id": 3,
+    "nombre": "6 Cuotas",
+    "cantidadMeses": 6,
+    "descuento": 1,
+    "activo": true
+  },
+  {
+    "id": 1,
+    "nombre": "Contado",
+    "cantidadMeses": 1,
+    "descuento": 10,
+    "activo": false
+  }
+]

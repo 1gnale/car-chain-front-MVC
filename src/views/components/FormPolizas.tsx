@@ -25,8 +25,7 @@ function FormPolizas() {
       tableBody: coverage_details
         .filter(
           (coverDetail) =>
-            coverDetail.cobertura.id_cobertura ===
-            policy.lineaContizacion?.cobertura?.id_cobertura
+            coverDetail.cobertura.id === policy.lineaContizacion?.cobertura?.id
         )
         .map((coverDetail, idx) => ({
           key: idx,

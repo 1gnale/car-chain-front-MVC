@@ -25,8 +25,8 @@ const useFormValidationCoverages = (): UseFormValidationReturn => {
   // Patrones de validación
   const patterns = {
     // Nombre y descripción: letras y números
-    nombre: /^[A-Za-z0-9\s]{2,50}$/,
-    descripcion: /^[A-Za-z0-9\s]{5,100}$/,
+    nombre: /^.{2,50}$/,
+    descripcion: /^.{5,100}$/,
 
     // recargoPorAtras: entre 0 y 10 (incluye 0 y 10)
     recargoPorAtras: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,

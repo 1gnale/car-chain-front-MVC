@@ -4,7 +4,7 @@ import { useState } from "react";
 import ModificarDetalleCobertura from "../FuturePages/PageCasoEstudio05ModificarDetalle";
 import PageCasoEstudio05 from "../FuturePages/PageCasoEstudio05";
 import CrearDetalleCobertura from "../FuturePages/PageCasoEstudio05CrearDetalle";
-import BreadCrumbNav from "../components/GeneralComponents/BreadCrumbNav";
+import HeaderSection from "../components/GeneralComponents/headerSection";
 
 const DetallesPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
@@ -35,9 +35,10 @@ const DetallesPage = ({ isAuth }: { isAuth: boolean }) => {
 
   return (
     <>
-      <Navbar isAuth={isAuth} />
-      <TitleSection title="DETALLES" />
-      <BreadCrumbNav items={[{ page: "Detalles" }]} />
+      <HeaderSection
+        title="Gestión de Detalles"
+        text="Administra los detalles de seguros disponibles en el sistema"
+      ></HeaderSection>
       {views[currentView]}
     </>
   );
