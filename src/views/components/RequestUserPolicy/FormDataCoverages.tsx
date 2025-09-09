@@ -97,9 +97,7 @@ const FormDataCoverages = ({
 
     //Obtener los detalles de cobertura
     const coberturaDetalles = coverage_details.filter(
-      (covDetail) =>
-        LineCoverage.cobertura?.id_cobertura ===
-        covDetail.cobertura.id_cobertura
+      (covDetail) => LineCoverage.cobertura?.id === covDetail.cobertura.id
     );
 
     // Obtener el monto base a partir de los detalles
@@ -158,9 +156,7 @@ const FormDataCoverages = ({
     console.log(details);
     return details.map((detalle) => {
       const found = coverage_details.find(
-        (cd) =>
-          cd.cobertura.id_cobertura === id_cobertura &&
-          cd.detalle.id === detalle.id
+        (cd) => cd.cobertura.id === id_cobertura && cd.detalle.id === detalle.id
       );
 
       return {
@@ -210,9 +206,7 @@ const FormDataCoverages = ({
               <CoverageCard
                 titulo={lineaCot.cobertura?.nombre || ""}
                 precio={"$ " + handleAmount(lineaCot)}
-                itemsApply={handleAppliedDetails(
-                  lineaCot.cobertura?.id_cobertura
-                )}
+                itemsApply={handleAppliedDetails(lineaCot.cobertura?.id)}
                 onContratar={() => {
                   handleHirePolicy(lineaCot);
                 }}

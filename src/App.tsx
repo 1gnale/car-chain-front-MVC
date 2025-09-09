@@ -13,6 +13,7 @@ import ControladorProcesandoPago from "./controllers/ControladorProcesandoPago.t
 import PagoExitoso from "./views/pages/PagoExitoso.tsx";
 import ControladorDetalles from "./controllers/ControladorDetalles.tsx";
 import ControladorCoberturas from "./controllers/ControladorCobertura.tsx";
+import ContoladorDashboard from "./controllers/ContoladorDashboard.tsx";
 
 function App() {
   return (
@@ -103,6 +104,15 @@ function App() {
         element={
           <ProtectedRoute>
             <ControladorPerfil />
+          </ProtectedRoute>
+        }
+      />
+      {/* Centro de mando de admin */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <ContoladorDashboard />
           </ProtectedRoute>
         }
       />

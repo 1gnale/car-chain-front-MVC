@@ -1,43 +1,43 @@
 import Table from "../components/GeneralComponents/Table";
-import Input from "../components/GeneralComponents/Input";
-import GrayButton from "../components/GeneralComponents/Button";
-import LabelNinfo from "../components/GeneralComponents/LabelNinfo";
 import IconButton from "../components/GeneralComponents/IconButton";
 import { Search, PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
-import { useAppSelector } from "../../redux/reduxTypedHooks";
 import { useState } from "react";
+import { useAppSelector } from "../../redux/reduxTypedHooks";
 import CheckForm from "../components/GeneralComponents/CheckForm";
 
-const PageCasoEstudio05 = ({
+function PageCasoUso15({
   handleCurrentView,
-  setCurrentDetail,
+  setCurrentPeriodoPago,
 }: {
   handleCurrentView: (pass: boolean) => void;
-  setCurrentDetail: (detail: Detalle) => void;
-}) => {
-  const detalles: Detalle[] = useAppSelector((state) => state.detalles.detalle);
+  setCurrentPeriodoPago: (coverage: PeriodoPago) => void;
+}) {
+  const periodosPago: PeriodoPago[] = useAppSelector(
+    (state) => state.periodosPago.periodoPago
+  );
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
-  // Filtrado por búsqueda y por estado (activo/inactivo)
-  const filteredDetalles = detalles.filter((detalle) => {
-    const matchesSearch = detalle.nombre
+  const filteredPeriodosPago = periodosPago.filter((periodoPago) => {
+    const matchesSearch = periodoPago.nombre
       ?.toLowerCase()
       .includes(search.toLowerCase());
 
     // Si checkbox está activado => mostrar solo inactivas
     if (checkbox) {
-      return detalle && matchesSearch;
+      return periodoPago && matchesSearch;
     }
 
     // Si checkbox no está activado => mostrar solo activas
-    return detalle.activo && matchesSearch;
+    return periodoPago.activo && matchesSearch;
   });
-  const handleUpdateDetail = (detalle: any): void => {
-    setCurrentDetail(detalle);
+
+  const handleUpdatePaymentPeriod = (periodoPago: any): void => {
+    setCurrentPeriodoPago(periodoPago);
     handleCurrentView(false);
   };
-  const handleCreateDetail = (): void => {
+
+  const handleCreatePaymentPeriod = (): void => {
     handleCurrentView(true);
   };
   const handleTable = (): tableContent => {
@@ -46,31 +46,23 @@ const PageCasoEstudio05 = ({
       customIcons: [
         {
           customIcons: Pencil,
-          onAction: handleUpdateDetail,
+          onAction: handleUpdatePaymentPeriod,
         },
         {
           customIcons: Trash,
         },
       ],
-      titles: [
-        "ID",
-        "Nombre",
-        "Descripcion",
-        "Porcentaje En Miles",
-        "Monto Fijo",
-        "Estado",
-      ],
-      tableBody: filteredDetalles.map((detail) => ({
-        key: detail.id,
-        value: detail,
+      titles: ["ID", "Nombre", "Cantidad de meses", "Descuento (%)", "Estado"],
+      tableBody: filteredPeriodosPago.map((periodoPago) => ({
+        key: periodoPago.id,
+        value: periodoPago,
         rowContent: [
-          String(detail.id) ?? "",
-          detail.nombre ?? "",
-          detail.descripcion ?? "",
-          String(detail.porcentaje_miles) ?? "",
-          String(detail.monto_fijo) ?? "",
+          String(periodoPago.id) ?? "",
+          periodoPago.nombre ?? "",
+          String(periodoPago.cantidadMeses) ?? "",
+          String(periodoPago.descuento) ?? "",
           (() => {
-            if (detail.activo) {
+            if (periodoPago.activo) {
               return "Activo";
             } else {
               return "Inactivo";
@@ -95,8 +87,8 @@ const PageCasoEstudio05 = ({
           align-items: center;
           gap: 24px;
           flex-wrap: wrap;
-        }
-         `}</style>
+          }
+          `}</style>
       <div className="container-fluid">
         <div className="controls">
           <div className="d-flex align-items-center gap-2 w-100">
@@ -109,18 +101,17 @@ const PageCasoEstudio05 = ({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <IconButton icon={PlusSquare} onClick={handleCreateDetail} />
+            <IconButton icon={PlusSquare} onClick={handleCreatePaymentPeriod} />
           </div>
 
           {/* Checkbox controlado */}
           <CheckForm
-            text="Mostrar todos los detalles"
+            text="Mostrar todos los periodos de pago"
             checked={checkbox}
             onChange={() => setCheckbox(!checkbox)}
           />
         </div>
-
-        <div className="d-flex  my-4" style={{ width: "-20px" }}>
+        <div className="d-flex my-4" style={{ width: "-20px" }}>
           <Table
             titles={titles}
             tableBody={tableBody}
@@ -128,9 +119,8 @@ const PageCasoEstudio05 = ({
             showButtom={showButtom}
           />
         </div>
-      </div>{" "}
+      </div>
     </>
   );
-};
-
-export default PageCasoEstudio05;
+}
+export default PageCasoUso15;

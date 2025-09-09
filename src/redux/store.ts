@@ -21,6 +21,7 @@ import polizasReducer from "./policeSlice";
 
 import lineaCotizacionReducer from "./lineaCotizacionSlice";
 
+import periodoPagoReducer from "./periodoPagosSlice";
 export const store = configureStore({
   reducer: {
     marcas: marcasReducer,
@@ -37,6 +38,7 @@ export const store = configureStore({
     coberturasDetalles: coberturasDetalleReducer,
     polizas: polizasReducer,
     lineasCotizacion: lineaCotizacionReducer,
+    periodosPago: periodoPagoReducer,
   },
 });
 

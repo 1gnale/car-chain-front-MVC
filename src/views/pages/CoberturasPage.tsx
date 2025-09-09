@@ -7,7 +7,7 @@ import BreadCrumbNav from "../components/GeneralComponents/BreadCrumbNav";
 import PageCasoEstudio06 from "../FuturePages/PageCasoEstudio06";
 import CrearCobertura from "../FuturePages/PageCasoEstudio06CrearCobertura";
 import ModificarCobertura from "../FuturePages/PageCasoEstudio06ModificarCobertura";
-
+import HeaderSection from "../components/GeneralComponents/headerSection";
 const CoberturasPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
   const [currentCoverage, setCurrentCoverage] = useState<Cobertura>({ id: 1 });
@@ -37,9 +37,10 @@ const CoberturasPage = ({ isAuth }: { isAuth: boolean }) => {
 
   return (
     <>
-      <Navbar isAuth={isAuth} />
-      <TitleSection title="DETALLES" />
-      <BreadCrumbNav items={[{ page: "Detalles" }]} />
+      <HeaderSection
+        title="Gestión de Coberturas"
+        text="Administra las coberturas de seguros disponibles en el sistema"
+      ></HeaderSection>
       {views[currentView]}
     </>
   );
