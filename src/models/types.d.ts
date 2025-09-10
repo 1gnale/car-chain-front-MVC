@@ -31,7 +31,6 @@ interface Cliente extends Persona {
 
 interface Usuario extends Persona {
   idUsuario: number;
-  estado?: string;
   legajo?: string;
   tipoUsuario?: string;
   activo?: boolean;
@@ -199,7 +198,7 @@ interface Revision {
 interface PeriodoPago {
   id: number;
   nombre?: string;
-  cantidadMesas?: number;
+  cantidadMeses?: number;
   descuento?: number;
   activo?: boolean;
 }

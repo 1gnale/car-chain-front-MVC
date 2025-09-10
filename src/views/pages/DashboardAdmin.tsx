@@ -9,10 +9,18 @@ import ControladorVersiones from "../../controllers/ControladorVersiones";
 import { useAuth0 } from "@auth0/auth0-react";
 import PeriodoPagoPage from "./PeriodoPagoPage";
 import ControladorPeriodoPago from "../../controllers/ControladorPeriodoPago";
+import PageDashboardDefault from "../FuturePages/PageDefaultDashboard";
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("");
-  const { logout } = useAuth0();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const logout = () => {
+    if (window.confirm("¿Estás seguro de que querés cerrar sesión?")) {
+      console.log("Logout functionality - Auth0 integration needed");
+    }
+  };
+
   const navigationItems = [
     { id: "usuarios", label: "Usuarios", emoji: "👥" },
     { id: "marcas", label: "Marcas", emoji: "🏷️" },
@@ -27,13 +35,16 @@ export default function Home() {
       id: "cerrarSesion",
       label: "Cerrar Sesion",
       emoji: "⛔",
-      action: () => {
-        if (window.confirm("¿Estás seguro de que querés cerrar sesión?")) {
-          logout();
-        }
-      },
+      action: logout,
     },
   ];
+
+  const getCurrentSectionLabel = () => {
+    const currentItem = navigationItems.find(
+      (item) => item.id === activeSection
+    );
+    return currentItem ? currentItem.label : "Inicio";
+  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -46,15 +57,15 @@ export default function Home() {
           </div>
         );
       case "marcas":
-        return <ControladorMarcas></ControladorMarcas>;
+        return <ControladorMarcas />;
       case "modelos":
-        return <ControladorModelos></ControladorModelos>;
+        return <ControladorModelos />;
       case "versiones":
-        return <ControladorVersiones></ControladorVersiones>;
+        return <ControladorVersiones />;
       case "detalles-cobertura":
-        return <ControladorDetalles></ControladorDetalles>;
+        return <ControladorDetalles />;
       case "coberturas":
-        return <ControladorCoberturas></ControladorCoberturas>;
+        return <ControladorCoberturas />;
       case "periodos-pago":
         return <ControladorPeriodoPago />;
       case "tipos-contratacion":
@@ -68,13 +79,13 @@ export default function Home() {
       case "configuraciones":
         return (
           <div>
-            <h1>Tipos de Contratación</h1>
-            <p>Aquí puedes agregar tu contenido para tipos de contratación</p>
-            {/* Aquí agregas tus componentes de tipos de contratación */}
+            <h1>Configuraciones</h1>
+            <p>Aquí puedes agregar tu contenido para configuraciones</p>
+            {/* Aquí agregas tus componentes de configuraciones */}
           </div>
         );
       default:
-        return <div>Selecciona una sección</div>;
+        return <PageDashboardDefault></PageDashboardDefault>;
     }
   };
 
@@ -108,6 +119,18 @@ export default function Home() {
           top: 0;
           height: 100vh;
           z-index: 1000;
+          transition: transform 0.3s ease;
+        }
+        
+        /* Added responsive styles for sidebar */
+        @media (max-width: 768px) {
+          .sidebar {
+            transform: translateX(-100%);
+          }
+          
+          .sidebar.mobile-open {
+            transform: translateX(0);
+          }
         }
         
         .sidebar-header {
@@ -168,6 +191,13 @@ export default function Home() {
           overflow-y: auto;
         }
         
+        /* Added responsive styles for main content */
+        @media (max-width: 768px) {
+          .main-content {
+            margin-left: 0;
+          }
+        }
+        
         .main-header {
           background-color: white;
           border-bottom: 1px solid #e5e7eb;
@@ -177,6 +207,75 @@ export default function Home() {
         .header-text {
           color: #6b7280;
           font-size: 16px;
+        }
+        
+        /* Added breadcrumb styles */
+        .breadcrumb-container {
+          display: none;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 24px;
+          background-color: white;
+          border-bottom: 1px solid #e5e7eb;
+        }
+        
+        @media (max-width: 768px) {
+          .breadcrumb-container {
+            display: flex;
+          }
+        }
+        
+        .mobile-menu-button {
+          display: none;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          border: none;
+          border-radius: 6px;
+          background-color: #f3f4f6;
+          color: #374151;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+        
+        .mobile-menu-button:hover {
+          background-color: #e5e7eb;
+        }
+        
+        @media (max-width: 768px) {
+          .mobile-menu-button {
+            display: flex;
+          }
+        }
+        
+        .breadcrumb-text {
+          color: #374151;
+          font-size: 16px;
+          font-weight: 500;
+        }
+        
+        .breadcrumb-separator {
+          color: #9ca3af;
+          font-size: 14px;
+        }
+        
+        /* Added mobile overlay */
+        .mobile-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+        }
+        
+        @media (max-width: 768px) {
+          .mobile-overlay.show {
+            display: block;
+          }
         }
         
         .content-area {
@@ -201,13 +300,19 @@ export default function Home() {
       `}</style>
 
       <div className="dashboard-container">
+        <div
+          className={`mobile-overlay ${isMobileMenuOpen ? "show" : ""}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+
         {/* Sidebar */}
-        <div className="sidebar">
+        <div className={`sidebar ${isMobileMenuOpen ? "mobile-open" : ""}`}>
           <div className="sidebar-header">
             <h2
               className="sidebar-title"
               onClick={() => {
                 setActiveSection("default");
+                setIsMobileMenuOpen(false);
               }}
               style={{ cursor: "pointer" }}
             >
@@ -225,6 +330,7 @@ export default function Home() {
                   } else {
                     setActiveSection(item.id);
                   }
+                  setIsMobileMenuOpen(false);
                 }}
                 className={`nav-button ${
                   activeSection === item.id ? "active" : ""
@@ -239,6 +345,36 @@ export default function Home() {
 
         {/* Main Content */}
         <div className="main-content">
+          <div className="breadcrumb-container">
+            <button
+              className="mobile-menu-button"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Abrir menú"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+            <span className="breadcrumb-text">Admin Panel</span>
+            {activeSection && activeSection !== "default" && (
+              <>
+                <span className="breadcrumb-separator">›</span>
+                <span className="breadcrumb-text">
+                  {getCurrentSectionLabel()}
+                </span>
+              </>
+            )}
+          </div>
+
           <header className="main-header">
             <span className="header-text">Sistema de Gestión Car-Chain</span>
           </header>
