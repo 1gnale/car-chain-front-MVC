@@ -3,6 +3,7 @@ import ImgInput from "../GeneralComponents/ImgInput";
 import { useState, useEffect } from "react";
 import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormDocumetsValidation";
 import TitleForm from "../GeneralComponents/TitleForm";
+import useCheckFirstLogin from "../../../controllers/controllerHooks/Fetchs/useCheckFirstLogin";
 
 const FormDocumentation = ({
   handleCurrentView,
@@ -15,6 +16,7 @@ const FormDocumentation = ({
   const [fileFotoLateral2, setFileLateral2] = useState<File>();
   const [fileFotoTecho, setFileTecho] = useState<File>();
   const [fileCedulaVerde, setFileCedulaVerde] = useState<File>();
+  useCheckFirstLogin();
 
   const { errors, validateField, validateForm } = useFormValidation();
 

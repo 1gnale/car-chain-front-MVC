@@ -14,6 +14,7 @@ import PagoExitoso from "./views/pages/PagoExitoso.tsx";
 import ControladorDetalles from "./controllers/ControladorDetalles.tsx";
 import ControladorCoberturas from "./controllers/ControladorCobertura.tsx";
 import ContoladorDashboard from "./controllers/ContoladorDashboard.tsx";
+import ControladorRegister from "./controllers/ControladorRegister.tsx";
 
 function App() {
   return (
@@ -66,6 +67,8 @@ function App() {
           </ProtectedRoute>
         }
       />
+      {/* Caso de uso 07: Registrar Cliente */}
+      <Route path="/registrar" element={<ControladorRegister />} />
       {/* Caso de uso 09: Solicitar Contratación de Póliza */}
 
       <Route
