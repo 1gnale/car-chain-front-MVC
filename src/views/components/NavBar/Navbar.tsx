@@ -3,8 +3,6 @@ import UserPicture from "./UserPicture";
 import AuthUser from "./AuthUser";
 
 const Navbar = ({ isAuth }: { isAuth: boolean }) => {
-
-
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -30,7 +28,7 @@ const Navbar = ({ isAuth }: { isAuth: boolean }) => {
             <a href="#" className="nav-item nav-link active">
               ¿Quienes somos?
             </a>
-            <a href="#" className="nav-item nav-link active">
+            <a href="#/quienesSomos" className="nav-item nav-link active">
               Contactanos
             </a>
             <a href="#" className="nav-item nav-link active" tabIndex={-1}>

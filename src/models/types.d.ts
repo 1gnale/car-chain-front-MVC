@@ -31,7 +31,6 @@ interface Cliente extends Persona {
 
 interface Usuario extends Persona {
   idUsuario: number;
-  legajo?: string;
   tipoUsuario?: string;
   activo?: boolean;
 }
@@ -105,6 +104,7 @@ interface ConfigLocalidad {
 }
 
 interface Cotizacion {
+  id?: number;
   fechaCreacion?: string;
   fechaVencimiento?: string;
   vehiculo?: Vehiculo;

@@ -6,30 +6,31 @@ import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
 import SelectForm from "../GeneralComponents/SelectForm";
-
+import { User, Shield, MapPin } from "lucide-react";
 const AccountDataInputs = ({ user }: { user: Cliente }) => {
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [selectedDocumentType, setSelectedDocumentType] = useState(0);
 
   const [formClient, setFormClient] = useState<Cliente>({
-    idClient: 0,
-    id: 0,
-    nombres: "",
-    apellido: "",
-    fechaNacimiento: "",
-    tipoDocumento: "",
-    documento: "",
-    domicilio: "",
-    correo: "",
-    telefono: "",
-    sexo: "",
+    idClient: user.idClient,
+    id: user.id,
+    nombres: user.nombres,
+    apellido: user.apellido,
+    fechaNacimiento: user.fechaNacimiento,
+    tipoDocumento: user.tipoDocumento,
+    documento: user.documento,
+    domicilio: user.domicilio,
+    correo: user.correo,
+    telefono: user.telefono,
+    sexo: user.sexo,
     contraseña: "",
     localidad: {
-      id: 0,
-      descripcion: "",
-      codigoPostal: "",
+      id: user.localidad!.id,
+      descripcion: user.localidad!.descripcion,
+      codigoPostal: user.localidad!.codigoPostal,
       provincia: {
-        id: 0,
-        descripcion: "",
+        id: user.localidad!.provincia!.id,
+        descripcion: user.localidad!.provincia!.descripcion,
       },
     },
   });
@@ -49,6 +50,14 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     { id: 2, name: "Masculino" },
   ];
 
+  const handleDocumentType = useMemo(() => {
+    const result = documentTypes.map((documentTypes, idx) => {
+      return { id: idx + 1, name: documentTypes };
+    });
+
+    return result;
+  }, [documentTypes]);
+
   const localities: Localidad[] = useAppSelector(
     (state) => state.localidades.localidad
   );
@@ -59,11 +68,8 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
   const [selectedLocality, setSelectedLocality] = useState(0);
   const [selectedProvince, setSelectedProvinces] = useState(0);
 
-  console.log(documentTypes);
-  console.log(formClient.tipoDocumento);
-
   useEffect(() => {
-    // localStorage.removeItem("ClientData");
+    /* // localStorage.removeItem("ClientData");
     const clientStorage = useLocalStorageItem<Cliente>("ClientData");
 
     const sexoFiltrado = listSex.find(
@@ -77,10 +83,21 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
       sexoFiltrado !== undefined &&
       tipoDocFiltrado !== undefined
     ) {
-      setSelectedLocality(clientStorage.localidad?.id || 0);
-      setSelectedSex(sexoFiltrado.id);
-      setSelectedProvinces(clientStorage.localidad?.provincia?.id || 0);
-    }
+      
+    const indexDocType = documentTypes.findIndex(
+      (doc) => doc === clientStorage.tipoDocumento
+      );
+      console.log(clientStorage.tipoDocumento);
+      setSelectedDocumentType(indexDocType);
+      }*/
+    setSelectedLocality(user.localidad?.id || 0);
+    setSelectedSex(user.id);
+    setSelectedProvinces(user.localidad?.provincia?.id || 0);
+    const indexDocType = documentTypes.findIndex(
+      (doc) => doc === user.tipoDocumento
+    );
+    console.log(indexDocType);
+    setSelectedDocumentType(indexDocType + 1);
   }, []);
 
   const handleProvinces = useMemo(() => {
@@ -105,6 +122,15 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
   const handleStateDisabled = () => {
     setDisabled(!disabled);
     setLocality(false);
+  };
+
+  // HANDLE STATE
+  const handleStateDocumentType = (id: number) => {
+    setSelectedDocumentType(id);
+    // Encontrar el nombre del tipo documento
+    const selectedDocumentType = documentTypes[id - 1] || "";
+    setFormClient((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
+    validateField("tipoDocumento", selectedDocumentType);
   };
 
   const handleStateSexo = (id: number) => {
@@ -156,166 +182,207 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     });
   };
   return (
-    <div className="col-xl-9">
-      <TitleForm title="Informacion Personal" />
-      <div className="row g-3">
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("nombres", value);
-            }}
-            value={formClient.nombres}
-            title="Nombre/s"
-            place=""
-            disabled={disabled}
-          />
-        </div>
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("apellidos", value);
-            }}
-            value={formClient.apellido}
-            title="Apellido/s"
-            place=""
-            disabled={disabled}
-          />
-        </div>
-        <div className="col-md-4">
-          <SelectForm
-            status={!disabled}
-            value={selectedSex}
-            title="Sexo"
-            items={listSex}
-            onChange={handleStateSexo}
-          />
-        </div>
-      </div>
+    <div className="row g-4">
+      <div className="col-12">
+        <div className="card bg-dark border-info">
+          <div className="card-header bg-transparent border-info">
+            <h5 className="card-title text-info mb-0 d-flex align-items-center">
+              <User className="me-2" size={20} />
+              Información Personal
+            </h5>
+          </div>
+          <div className="card-body">
+            <div className="row g-3">
+              <Input
+                title="Nombre/s"
+                place=""
+                classNameLabel={"form-label text-light"}
+                classNameDiv="col-md-4"
+                style="form-control bg-dark text-light border-secondary"
+                onChange={(value) => {
+                  handleInputChange("nombres", value);
+                }}
+                value={formClient.nombres}
+                disabled={disabled}
+              ></Input>
 
-      <div className="row g-3 mt-2">
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("tipoDocumento", value);
-            }}
-            value={formClient.tipoDocumento}
-            title="Tipo de Documento"
-            place=""
-            disabled={true}
-          />
-        </div>
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("documento", value);
-            }}
-            value={formClient.documento}
-            title="Documento"
-            place=""
-            disabled={true}
-          />
-        </div>
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("fechaNacimiento", value);
-            }}
-            value={formClient.fechaNacimiento}
-            title="Fecha de nacimiento"
-            place=""
-            disabled={true}
-          />
-        </div>
-      </div>
-
-      <div className="row g-3 mt-2">
-        <TitleForm title="Privacidad y Seguridad" />
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("correo", value);
-            }}
-            value={formClient.correo}
-            title="Email"
-            place=""
-            disabled={disabled}
-          />
-        </div>
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("contraseña", value);
-            }}
-            value={formClient.contraseña}
-            title="Contraseña"
-            place=""
-            disabled={disabled}
-          />
-        </div>
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("telefono", value);
-            }}
-            value={formClient.telefono}
-            title="Telefono"
-            place=""
-            disabled={disabled}
-          />
-        </div>
-      </div>
-
-      <div className="row g-3 mt-2">
-        <TitleForm title="Ubicacion" />
-        <div className="col-md-4">
-          <SelectForm
-            status={!disabled}
-            value={selectedProvince}
-            title="Provincia"
-            items={handleProvinces}
-            onChange={handleStateProvinces}
-            error={errors.provincia}
-            onBlur={() =>
-              validateField(
-                "provincia",
-                formClient.localidad?.provincia?.descripcion || ""
-              )
-            }
-          />
-        </div>
-        <div className="col-md-4">
-          <SelectForm
-            status={locality}
-            value={selectedLocality}
-            title="Localidad"
-            items={handleLocality}
-            onChange={handleStateLocality}
-            error={errors.localidad}
-            onBlur={() =>
-              validateField(
-                "localidad",
-                formClient.localidad?.descripcion || ""
-              )
-            }
-          />
-        </div>
-        <div className="col-md-4">
-          <Input
-            onChange={(value) => {
-              handleInputChange("domicilio", value);
-            }}
-            value={formClient.domicilio}
-            title="Domicilio"
-            place=""
-            disabled={disabled}
-          />
-          <div className="text-end mt-2">
-            <GrayButton
-              onClick={handleStateDisabled}
-              text={disabled ? "Modificar" : "Guardar"}
-            />
+              <Input
+                title="Apellido/s"
+                place=""
+                classNameLabel={"form-label text-light"}
+                classNameDiv="col-md-4"
+                style="form-control bg-dark text-light border-secondary"
+                onChange={(value) => {
+                  handleInputChange("apellido", value);
+                }}
+                value={formClient.apellido}
+                disabled={disabled}
+              ></Input>
+              <div className="col-md-4">
+                <SelectForm
+                  status={!disabled}
+                  value={selectedSex}
+                  title="Sexo"
+                  items={listSex}
+                  onChange={handleStateSexo}
+                  classNameLabel={"form-label text-light"}
+                  classNameSelect={
+                    "form-select bg-dark text-light border-secondary"
+                  }
+                />
+              </div>
+              <div className="col-md-4">
+                <SelectForm
+                  status={false}
+                  value={selectedDocumentType}
+                  title="Tipo Documento"
+                  items={handleDocumentType}
+                  onChange={handleStateDocumentType}
+                  classNameLabel={"form-label text-light"}
+                  classNameSelect={
+                    "form-select bg-dark text-light border-secondary"
+                  }
+                />
+              </div>
+              <Input
+                title="Documento"
+                place=""
+                classNameLabel={"form-label text-light"}
+                classNameDiv="col-md-4"
+                style="form-control bg-dark text-light border-secondary"
+                onChange={(value) => {
+                  handleInputChange("documento", value);
+                }}
+                value={formClient.documento}
+                disabled={true}
+              ></Input>
+              <Input
+                title="Fecha de nacimiento"
+                place=""
+                classNameLabel={"form-label text-light"}
+                classNameDiv="col-md-4"
+                style="form-control bg-dark text-light border-secondary"
+                onChange={(value) => {
+                  handleInputChange("fechaNacimiento", value);
+                }}
+                value={formClient.fechaNacimiento}
+                disabled={true}
+              ></Input>
+            </div>
           </div>
         </div>
+      </div>
+
+      <div className="col-12">
+        <div className="card bg-dark border-info">
+          <div className="card-header bg-transparent border-info">
+            <h5 className="card-title text-info mb-0 d-flex align-items-center">
+              <Shield className="me-2" size={20} />
+              Privacidad y Seguridad
+            </h5>
+          </div>
+          <div className="card-body">
+            <div className="row g-3">
+              <Input
+                title="Email"
+                place=""
+                classNameLabel={"form-label text-light"}
+                classNameDiv="col-md-4"
+                style="form-control bg-dark text-light border-secondary"
+                value={formClient.correo}
+                disabled={true}
+              ></Input>
+              <Input
+                title="Telefono"
+                place=""
+                classNameLabel={"form-label text-light"}
+                classNameDiv="col-md-4"
+                style="form-control bg-dark text-light border-secondary"
+                onChange={(value) => {
+                  handleInputChange("telefono", value);
+                }}
+                value={formClient.telefono}
+                disabled={disabled}
+              ></Input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="col-12">
+        <div className="card bg-dark border-info">
+          <div className="card-header bg-transparent border-info">
+            <h5 className="card-title text-info mb-0 d-flex align-items-center">
+              <MapPin className="me-2" size={20} />
+              Ubicación
+            </h5>
+          </div>
+          <div className="card-body">
+            <div className="row g-3">
+              <div className="col-md-4">
+                <SelectForm
+                  status={!disabled}
+                  value={selectedProvince}
+                  classNameLabel={"form-label text-light"}
+                  classNameSelect={
+                    "form-select bg-dark text-light border-secondary"
+                  }
+                  title="Provincia"
+                  items={handleProvinces}
+                  onChange={handleStateProvinces}
+                  error={errors.provincia}
+                  onBlur={() =>
+                    validateField(
+                      "provincia",
+                      formClient.localidad?.provincia?.descripcion || ""
+                    )
+                  }
+                />
+              </div>
+              <div className="col-md-4">
+                <SelectForm
+                  status={locality}
+                  value={selectedLocality}
+                  title="Localidad"
+                  classNameLabel={"form-label text-light"}
+                  classNameSelect={
+                    "form-select bg-dark text-light border-secondary"
+                  }
+                  items={handleLocality}
+                  onChange={handleStateLocality}
+                  error={errors.localidad}
+                  onBlur={() =>
+                    validateField(
+                      "localidad",
+                      formClient.localidad?.descripcion || ""
+                    )
+                  }
+                />
+              </div>
+              <Input
+                title="Domicilio"
+                place=""
+                classNameLabel={"form-label text-light"}
+                classNameDiv="col-md-4"
+                style="form-control bg-dark text-light border-secondary"
+                onChange={(value) => {
+                  handleInputChange("domicilio", value);
+                }}
+                value={formClient.domicilio}
+                disabled={disabled}
+              ></Input>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="col-12 text-end">
+        <button
+          className="btn btn-info btn-lg px-4"
+          onClick={handleStateDisabled}
+        >
+          {disabled ? "Modificar" : "Guardar"}
+        </button>
       </div>
     </div>
   );

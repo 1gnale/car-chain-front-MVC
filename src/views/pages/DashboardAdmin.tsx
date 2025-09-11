@@ -10,32 +10,49 @@ import { useAuth0 } from "@auth0/auth0-react";
 import PeriodoPagoPage from "./PeriodoPagoPage";
 import ControladorPeriodoPago from "../../controllers/ControladorPeriodoPago";
 import PageDashboardDefault from "../FuturePages/PageDefaultDashboard";
+import {
+  Users,
+  Tag,
+  Car,
+  FileText,
+  Shield,
+  Lock,
+  Calendar,
+  CreditCard,
+  Settings,
+  LogOut,
+} from "lucide-react";
 
 export default function Home() {
+  const { logout } = useAuth0();
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const logout = () => {
+  const logOut = () => {
     if (window.confirm("¿Estás seguro de que querés cerrar sesión?")) {
-      console.log("Logout functionality - Auth0 integration needed");
+      logout();
     }
   };
 
   const navigationItems = [
-    { id: "usuarios", label: "Usuarios", emoji: "👥" },
-    { id: "marcas", label: "Marcas", emoji: "🏷️" },
-    { id: "modelos", label: "Modelos", emoji: "🚗" },
-    { id: "versiones", label: "Versiones", emoji: "📄" },
-    { id: "detalles-cobertura", label: "Detalles De Cobertura", emoji: "🛡️" },
-    { id: "coberturas", label: "Coberturas", emoji: "🔒" },
-    { id: "periodos-pago", label: "Períodos De Pago", emoji: "📅" },
-    { id: "tipos-contratacion", label: "Tipos De Contratación", emoji: "💳" },
-    { id: "configuraciones", label: "Configuraciónes", emoji: "⚙️" },
+    { id: "usuarios", label: "Usuarios", icon: Users },
+    { id: "marcas", label: "Marcas", icon: Tag },
+    { id: "modelos", label: "Modelos", icon: Car },
+    { id: "versiones", label: "Versiones", icon: FileText },
+    { id: "detalles-cobertura", label: "Detalles De Cobertura", icon: Shield },
+    { id: "coberturas", label: "Coberturas", icon: Lock },
+    { id: "periodos-pago", label: "Períodos De Pago", icon: Calendar },
+    {
+      id: "tipos-contratacion",
+      label: "Tipos De Contratación",
+      icon: CreditCard,
+    },
+    { id: "configuraciones", label: "Configuraciónes", icon: Settings },
     {
       id: "cerrarSesion",
-      label: "Cerrar Sesion",
-      emoji: "⛔",
-      action: logout,
+      label: "Cerrar Sesión",
+      icon: LogOut,
+      action: logOut,
     },
   ];
 
@@ -336,7 +353,7 @@ export default function Home() {
                   activeSection === item.id ? "active" : ""
                 }`}
               >
-                <span className="nav-emoji">{item.emoji}</span>
+                <item.icon className="w-5 h-5 me-2" />
                 <span>{item.label}</span>
               </button>
             ))}
@@ -375,7 +392,7 @@ export default function Home() {
             )}
           </div>
 
-          <header className="main-header">
+          <header className="main-header bg-light">
             <span className="header-text">Sistema de Gestión Car-Chain</span>
           </header>
 

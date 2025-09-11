@@ -14,12 +14,12 @@ const FormDataCoverages = ({
   handleCurrentView: (pass: boolean) => void;
   Auth: boolean;
 }) => {
+  const { loginWithRedirect } = useAuth0();
   // States de la DB
   const coverages: Cobertura[] = useAppSelector(
     (state) => state.coberturas.cobertura
   );
   const details: Detalle[] = useAppSelector((state) => state.detalles.detalle);
-  const { loginWithRedirect } = useAuth0();
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
@@ -97,7 +97,9 @@ const FormDataCoverages = ({
 
     //Obtener los detalles de cobertura
     const coberturaDetalles = coverage_details.filter(
-      (covDetail) => LineCoverage.cobertura?.id === covDetail.cobertura.id
+      (covDetail) =>
+        LineCoverage.cobertura?.id === covDetail.cobertura.id &&
+        covDetail.detalle.activo
     );
 
     // Obtener el monto base a partir de los detalles
@@ -153,18 +155,20 @@ const FormDataCoverages = ({
   };
 
   const handleAppliedDetails = (id_cobertura?: number) => {
-    console.log(details);
-    return details.map((detalle) => {
-      const found = coverage_details.find(
-        (cd) => cd.cobertura.id === id_cobertura && cd.detalle.id === detalle.id
-      );
+    return details
+      .filter((detalle) => detalle.activo) // 👈 solo deja pasar los activos
+      .map((detalle) => {
+        const found = coverage_details.find(
+          (cd) =>
+            cd.cobertura.id === id_cobertura && cd.detalle.id === detalle.id
+        );
 
-      return {
-        name: detalle.nombre || "",
-        apply: found?.aplica === true, // true si se encontró y aplica, false si no
-        description: detalle.descripcion || "",
-      };
-    });
+        return {
+          name: detalle.nombre || "",
+          apply: found?.aplica === true, // true si se encontró y aplica
+          description: detalle.descripcion || "",
+        };
+      });
   };
 
   const handleHirePolicy = (linea_cotization: Linea_Cotizacion) => {
@@ -192,28 +196,30 @@ const FormDataCoverages = ({
         className="d-flex flex-wrap justify-content-center gap-4"
         style={{ rowGap: "2rem" }}
       >
-        {linea_cotization.map((lineaCot, index) => (
-          <div
-            key={index}
-            className="d-flex"
-            style={{
-              flex: "1 1 300px",
-              maxWidth: "350px",
-              minWidth: "280px",
-            }}
-          >
-            <div className="w-100 d-flex flex-column">
-              <CoverageCard
-                titulo={lineaCot.cobertura?.nombre || ""}
-                precio={"$ " + handleAmount(lineaCot)}
-                itemsApply={handleAppliedDetails(lineaCot.cobertura?.id)}
-                onContratar={() => {
-                  handleHirePolicy(lineaCot);
-                }}
-              />
+        {linea_cotization.map((lineaCot, index) =>
+          lineaCot.cobertura?.activo ? (
+            <div
+              key={index}
+              className="d-flex"
+              style={{
+                flex: "1 1 300px",
+                maxWidth: "350px",
+                minWidth: "280px",
+              }}
+            >
+              <div className="w-100 d-flex flex-column">
+                <CoverageCard
+                  titulo={lineaCot.cobertura?.nombre || ""}
+                  precio={"$ " + handleAmount(lineaCot)}
+                  itemsApply={handleAppliedDetails(lineaCot.cobertura?.id)}
+                  onContratar={() => {
+                    handleHirePolicy(lineaCot);
+                  }}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ) : null
+        )}
       </div>
 
       {/* Botón inferior */}

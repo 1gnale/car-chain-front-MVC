@@ -7,6 +7,7 @@ interface InputProps {
   onBlur?: () => void;
   disabled?: boolean;
   style?: string;
+  classNameLabel?: string;
   inputStyle?: React.CSSProperties;
   labelStyle?: React.CSSProperties;
   divStyle?: React.CSSProperties;
@@ -29,6 +30,7 @@ const Input = ({
   labelStyle,
   divStyle,
   classNameDiv,
+  classNameLabel,
   as = "input",
   rows = 3,
   asLabel = "label",
@@ -40,7 +42,11 @@ const Input = ({
     >
       <div>
         {asLabel === "none" ? null : (
-          <label htmlFor="exampleInputEmail1" style={labelStyle || {}}>
+          <label
+            className={classNameLabel}
+            htmlFor="exampleInputEmail1"
+            style={labelStyle || {}}
+          >
             {title}
           </label>
         )}

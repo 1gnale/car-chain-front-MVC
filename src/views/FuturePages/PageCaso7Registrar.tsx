@@ -1,34 +1,48 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Input from "../components/GeneralComponents/Input"
-import SelectForm from "../components/GeneralComponents/SelectForm"
-
+import { useState } from "react";
+import Input from "../components/GeneralComponents/Input";
+import SelectForm from "../components/GeneralComponents/SelectForm";
 
 const PersonRegistrationCard = () => {
   // Opciones para los selects
   const sexoOptions = [
     { id: 1, name: "Masculino" },
     { id: 2, name: "Femenino" },
-    { id: 3, name: "Otro" }
+    { id: 3, name: "Otro" },
   ];
 
   const tipoDocumentoOptions = [
     { id: 1, name: "DNI" },
     { id: 2, name: "Pasaporte" },
-    { id: 3, name: "Cédula" }
+    { id: 3, name: "Cédula" },
   ];
 
   // Mapeo de IDs a valores string
-  const sexoMap: {[key: number]: string} = { 1: "masculino", 2: "femenino", 3: "otro" };
-  const tipoDocumentoMap: {[key: number]: string} = { 1: "DNI", 2: "pasaporte", 3: "cedula" };
+  const sexoMap: { [key: number]: string } = {
+    1: "masculino",
+    2: "femenino",
+    3: "otro",
+  };
+  const tipoDocumentoMap: { [key: number]: string } = {
+    1: "DNI",
+    2: "pasaporte",
+    3: "cedula",
+  };
 
   // Función para obtener ID por valor
   const getSexoId = (value: string): number => {
-    return parseInt(Object.keys(sexoMap).find(key => sexoMap[parseInt(key)] === value) || "0");
+    return parseInt(
+      Object.keys(sexoMap).find((key) => sexoMap[parseInt(key)] === value) ||
+        "0"
+    );
   };
   const getTipoDocumentoId = (value: string): number => {
-    return parseInt(Object.keys(tipoDocumentoMap).find(key => tipoDocumentoMap[parseInt(key)] === value) || "1");
+    return parseInt(
+      Object.keys(tipoDocumentoMap).find(
+        (key) => tipoDocumentoMap[parseInt(key)] === value
+      ) || "1"
+    );
   };
 
   // Handlers para los selects
@@ -51,23 +65,23 @@ const PersonRegistrationCard = () => {
     domicilio: "",
     tipoDocumento: "DNI",
     documento: "",
-    fechaNacimiento: ""
-  })
+    fechaNacimiento: "",
+  });
 
-  const [errors, setErrors] = useState<Partial<Persona>>({})
+  const [errors, setErrors] = useState<Partial<Persona>>({});
 
   const handleInputChange = (field: keyof Persona, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
+    }));
 
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({
         ...prev,
         [field]: "",
-      }))
+      }));
     }
 
     // Validación especial para fecha de nacimiento
@@ -76,8 +90,11 @@ const PersonRegistrationCard = () => {
       const today = new Date();
       let age = today.getFullYear() - selectedDate.getFullYear();
       const monthDiff = today.getMonth() - selectedDate.getMonth();
-      
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < selectedDate.getDate())) {
+
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < selectedDate.getDate())
+      ) {
         age--;
       }
 
@@ -85,46 +102,50 @@ const PersonRegistrationCard = () => {
         setErrors((prev) => ({
           ...prev,
           fechaNacimiento: "La fecha de nacimiento no puede ser en el futuro",
-        }))
+        }));
       } else if (age < 18) {
         setErrors((prev) => ({
           ...prev,
           fechaNacimiento: "Debe ser mayor de 18 años",
-        }))
+        }));
       } else if (age > 120) {
         setErrors((prev) => ({
           ...prev,
           fechaNacimiento: "Por favor ingrese una fecha válida",
-        }))
+        }));
       }
     }
-  }
+  };
 
   const validateForm = () => {
     const newErrors: Partial<Persona> = {};
-    
+
     // Validaciones básicas
-    if (!formData.nombres?.trim()) newErrors.nombres = "Los nombres son requeridos";
-    if (!formData.apellido?.trim()) newErrors.apellido = "El apellido es requerido";
+    if (!formData.nombres?.trim())
+      newErrors.nombres = "Los nombres son requeridos";
+    if (!formData.apellido?.trim())
+      newErrors.apellido = "El apellido es requerido";
     if (!formData.correo?.trim()) newErrors.correo = "El email es requerido";
-    if (!formData.documento?.trim()) newErrors.documento = "El documento es requerido";
-    if (!formData.fechaNacimiento) newErrors.fechaNacimiento = "La fecha de nacimiento es requerida";
-    
+    if (!formData.documento?.trim())
+      newErrors.documento = "El documento es requerido";
+    if (!formData.fechaNacimiento)
+      newErrors.fechaNacimiento = "La fecha de nacimiento es requerida";
+
     // Validación de email
     if (formData.correo && !/\S+@\S+\.\S+/.test(formData.correo)) {
       newErrors.correo = "El email no es válido";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
     if (validateForm()) {
-      console.log("Datos del formulario:", formData)
-      alert("Persona registrada exitosamente")
+      console.log("Datos del formulario:", formData);
+      alert("Persona registrada exitosamente");
     }
-  }
+  };
 
   const handleCancel = () => {
     setFormData({
@@ -138,10 +159,10 @@ const PersonRegistrationCard = () => {
       domicilio: "",
       tipoDocumento: "DNI",
       documento: "",
-      fechaNacimiento: ""
-    })
-    setErrors({})
-  }
+      fechaNacimiento: "",
+    });
+    setErrors({});
+  };
 
   return (
     <div className="container-fluid p-4">
@@ -222,10 +243,14 @@ const PersonRegistrationCard = () => {
                   </label>
                   <input
                     type="date"
-                    className={`form-control ${errors.fechaNacimiento ? 'is-invalid' : ''}`}
+                    className={`form-control ${
+                      errors.fechaNacimiento ? "is-invalid" : ""
+                    }`}
                     value={formData.fechaNacimiento}
-                    onChange={(e) => handleInputChange("fechaNacimiento", e.target.value)}
-                    max={new Date().toISOString().split('T')[0]} // No permite fechas futuras
+                    onChange={(e) =>
+                      handleInputChange("fechaNacimiento", e.target.value)
+                    }
+                    max={new Date().toISOString().split("T")[0]} // No permite fechas futuras
                     min="1900-01-01" // Fecha mínima razonable
                   />
                   {errors.fechaNacimiento && (
@@ -274,10 +299,18 @@ const PersonRegistrationCard = () => {
 
             {/* Botones */}
             <div className="d-flex justify-content-end gap-3 mt-4">
-              <button type="button" className="btn btn-secondary px-4" onClick={handleCancel}>
+              <button
+                type="button"
+                className="btn btn-secondary px-4"
+                onClick={handleCancel}
+              >
                 Cancelar
               </button>
-              <button type="button" className="btn btn-secondary px-4" onClick={handleSubmit}>
+              <button
+                type="button"
+                className="btn btn-secondary px-4"
+                onClick={handleSubmit}
+              >
                 Confirmar
               </button>
             </div>
@@ -285,7 +318,7 @@ const PersonRegistrationCard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PersonRegistrationCard
+export default PersonRegistrationCard;

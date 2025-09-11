@@ -5,6 +5,8 @@ import Navbar from "../views/components/NavBar/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 import usePolicesHook from "./controllerHooks/Fetchs/usePolicesHook";
 import useLineaCotizacion from "./controllerHooks/Fetchs/useLineaCotizacion";
+import ClientProfile from "../views/pages/AccountData2";
+import PerfilPage from "../views/pages/AccountData2";
 const ControladorPerfil = () => {
   const { isAuthenticated } = useAuth0();
 
@@ -25,9 +27,7 @@ const ControladorPerfil = () => {
   return (
     <>
       <Navbar isAuth={isAuthenticated} />
-      <TitleSection title="Datos" />
-      <BreadCrumbNav items={[{ page: "Perfil" }]} />
-      <AccountData />
+      <PerfilPage />
     </>
   );
 };

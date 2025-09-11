@@ -208,13 +208,15 @@ const FormDataVehicle = ({
         <div className="col-xl-9">
           <div className="row " style={{ padding: "2px" }}>
             <div className="row " style={{ padding: "2px" }}>
-            <TitleForm title="Informacion Del Vehiculo" />
+              <TitleForm title="Informacion Del Vehiculo" />
             </div>
             <Input
               title="Matricula"
               place=""
               value={formVehicle.matricula}
-              onChange={(value) => {handleInputChange("matricula", value)}}
+              onChange={(value) => {
+                handleInputChange("matricula", value);
+              }}
               error={errors.matricula}
               onBlur={() => validateField("matricula", formVehicle.matricula)}
             />
@@ -281,8 +283,7 @@ const FormDataVehicle = ({
           <div className="row " style={{ padding: "2px" }}>
             <div className="col">
               <CheckForm
-                title="GNC"
-                text="Activar GNC"
+                text="GNC"
                 checked={formVehicle.gnc}
                 onChange={(value) => handleCheckboxChange("gnc", value)}
               />
@@ -305,7 +306,7 @@ const FormDataVehicle = ({
               className="d-grid gap-2 d-md-flex justify-content-md-end"
               style={{ padding: "10px" }}
             >
-              <GrayButton text="Cancelar" style="me-md-2" onClick={() => { }} />
+              <GrayButton text="Cancelar" style="me-md-2" onClick={() => {}} />
               <GrayButton text="Siguiente" onClick={handleSubmit} />
             </div>
           </div>

@@ -17,7 +17,10 @@ const FormDataConfirmation = ({
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
-
+  const formato = new Intl.NumberFormat("es-AR", {
+    style: "currency",
+    currency: "ARS",
+  });
   // Estado para almacenar los paths de documentación
   const [documentationPaths, setDocumentationPaths] = useState<any>({});
   // Estado para almacenar las imágenes como URLs de objeto
@@ -81,23 +84,60 @@ const FormDataConfirmation = ({
     return documentationImages[imageKey] || "";
   }
 
+  /*const handleTable = (): tableContent => {
+    return {
+      showButtom: true,
+      customIcons: [
+        {
+          customIcons: Pencil,
+          onAction: handleUpdateDetail,
+        },
+        {
+          customIcons: Trash,
+        },
+      ],
+      titles: [
+        "ID",
+        "Nombre",
+        "Descripcion",
+        "Porcentaje En Miles",
+        "Monto Fijo",
+        "Estado",
+      ],
+      tableBody: filteredDetalles.map((detail) => ({
+        key: detail.id,
+        value: detail,
+        rowContent: [
+          String(detail.id) ?? "",
+          detail.nombre ?? "",
+          detail.descripcion ?? "",
+          String(detail.porcentaje_miles) ?? "",
+          String(detail.monto_fijo) ?? "",
+          (() => {
+            if (detail.activo) {
+              return "Activo";
+            } else {
+              return "Inactivo";
+            }
+          })(),
+        ],
+      })),
+    };
+  };*/
   const handleTable = (): tableContent => {
-    const formato = new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-    });
-
-    const table: tableContent = {
+    return {
       showButtom: false,
       titles: ["ID", "Detalle", "Descripcion", "Monto asegurado"],
       tableBody: coverage_details
         .filter(
-          (coverDetail) =>
-            coverDetail.cobertura.id_cobertura ===
-            policy.lineaContizacion?.cobertura?.id_cobertura
+          (covDetail) =>
+            policy.lineaContizacion?.cobertura?.id === covDetail.cobertura.id &&
+            covDetail.detalle.activo &&
+            covDetail.aplica
         )
         .map((coverDetail, idx) => ({
           key: idx,
+          value: idx,
           rowContent: [
             String(coverDetail.detalle.id),
             String(coverDetail.detalle.nombre),
@@ -124,8 +164,6 @@ const FormDataConfirmation = ({
           ],
         })),
     };
-
-    return table;
   };
   const { titles, tableBody, customIcons, showButtom } = handleTable();
   console.log("BODY DE LA TABLA");
@@ -389,17 +427,19 @@ const FormDataConfirmation = ({
           <div className="row g-3">
             <div className="col-md-3">
               <LabelNinfo
-                title="Precio:"
-                text={String(policy.lineaContizacion?.monto)}
+                title="Precio: "
+                text={String(formato.format(policy.lineaContizacion?.monto!))}
               />
             </div>
           </div>
-          <Table
-            titles={titles}
-            tableBody={tableBody}
-            customIcons={customIcons}
-            showButtom={showButtom}
-          />
+          <div className="d-flex  my-4" style={{ width: "-20px" }}>
+            <Table
+              titles={titles}
+              tableBody={tableBody}
+              customIcons={customIcons}
+              showButtom={showButtom}
+            />
+          </div>
           <div
             className="d-grid gap-2 d-md-flex justify-content-md-end"
             style={{ padding: "10px" }}
