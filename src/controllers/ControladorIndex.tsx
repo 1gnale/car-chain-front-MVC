@@ -4,9 +4,9 @@ import useCheckFirstLogin from "./controllerHooks/Fetchs/useCheckFirstLogin";
 
 const ControladorIndex = () => {
   const { isAuthenticated, isLoading } = useAuth0();
-  //const { isLoading: isCheckingFirstLogin } = useCheckFirstLogin();
+  const { isLoading: isCheckingFirstLogin } = useCheckFirstLogin();
   // Mostrar loading mientras Auth0 inicializa
-  if (isLoading) {
+  if (isLoading || isCheckingFirstLogin) {
     return <div>Cargando...</div>;
   }
 

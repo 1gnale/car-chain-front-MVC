@@ -10,9 +10,6 @@ interface SelectFormProps {
   status: boolean;
   value: number;
   error?: string;
-  classNameDiv?: string;
-  classNameLabel?: string;
-  classNameSelect?: string;
   onBlur?: () => void;
   classNameDiv?: string;
   classNameLabel?: string;
