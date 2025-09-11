@@ -6,7 +6,7 @@ import ModificarModelo from "../FuturePages/PageCasoEstudio03ModificarModelo";
 import { id } from "date-fns/locale";
 
 const ModelosPage = ({ isAuth }: { isAuth: boolean }) => {
-  const [currentView, setCurrentView] = useState<number>(0);
+  const [currentView, setCurrentView] = useState<number>(1);
   const [currentBrand, setCurrentBrand] = useState<Marca>({ id: 1 });
   const [currentModel, setCurrentModel] = useState<Modelo>({
     id: 1,
@@ -24,11 +24,11 @@ const ModelosPage = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
+    <ModificarModelo modelo={currentModel} handleCurrentView={handleCurrentView} />,
     <PageCasoEstudio03
       handleCurrentView={handleCurrentView}
       setCurrentModel={setCurrentModel}
     />,
-    <ModificarModelo modelo={currentModel} />,
   ];
 
   return <>{views[currentView]}</>;

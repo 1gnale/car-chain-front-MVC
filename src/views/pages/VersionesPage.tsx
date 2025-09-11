@@ -8,8 +8,6 @@ const VersionesPage = ({ isAuth }: { isAuth: boolean }) => {
 
   return (
     <>
-      <Navbar isAuth={isAuth} />
-      <TitleSection title="VERSIONES" />
       <PageCasoEstudio04 />
     </>
   );

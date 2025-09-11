@@ -4,7 +4,7 @@ import PageCasoEstudio02 from "../FuturePages/PageCasoEstudio02";
 import { useState } from "react";
 import ModificarMarca from "../FuturePages/PageCasoEstudio02ModificarMarca";
 const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
-  const [currentView, setCurrentView] = useState<number>(0);
+  const [currentView, setCurrentView] = useState<number>(1);
   const [currentBrand, setCurrentBrand] = useState<Marca>({ id: 1 });
   const handleCurrentView = (pass: boolean) => {
     setCurrentView((prev) => {
@@ -18,11 +18,11 @@ const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
+    <ModificarMarca marca={currentBrand} handleCurrentView={handleCurrentView} />,
     <PageCasoEstudio02
       handleCurrentView={handleCurrentView}
       setCurrentBrand={setCurrentBrand}
     />,
-    <ModificarMarca marca={currentBrand} />,
   ];
 
   return <>{views[currentView]}</>;
