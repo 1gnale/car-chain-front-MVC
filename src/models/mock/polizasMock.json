@@ -381,6 +381,8 @@
     "numero_poliza": 2003,
     "precioPolziaActual": 80767.76,
     "montoAsegurado": 10000000,
+
+    "estadoPoliza": "Pendiente",
     "lineaContizacion": {
       "id": 1,
       "monto": 120000.5,
@@ -631,6 +633,7 @@
   {
     "numero_poliza": 2005,
     "precioPolziaActual": 179856.36,
+    "estadoPoliza": "Cancelada",
     "montoAsegurado": 10000000,
     "lineaContizacion": {
       "id": 1,

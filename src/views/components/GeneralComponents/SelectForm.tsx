@@ -10,6 +10,9 @@ interface SelectFormProps {
   status: boolean;
   value: number;
   error?: string;
+  classNameDiv?: string;
+  classNameLabel?: string;
+  classNameSelect?: string;
   onBlur?: () => void;
 }
 
@@ -20,13 +23,18 @@ const SelectForm = ({
   status,
   value,
   error,
-  onBlur, 
+  onBlur,
+  classNameDiv,
+  classNameLabel,
+  classNameSelect,
 }: SelectFormProps) => {
   return (
-    <div className="col">
-      <label>{title}</label>
+    <div className={classNameDiv ? classNameDiv : "col"}>
+      <label className={classNameLabel}>{title}</label>
       <select
-        className={`form-select ${error ? "is-invalid" : ""}`}
+        className={`form-select ${
+          error ? "is-invalid" : ""
+        } ${classNameSelect}`}
         disabled={!status}
         required
         value={value}
