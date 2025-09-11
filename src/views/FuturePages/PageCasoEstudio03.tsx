@@ -37,8 +37,7 @@ const PageCasoEstudio03 =
   });
   const handleUpdateModel = (modelo: any): void => {
     setCurrentModel(modelo)
-    handleCurrentView(true)
-    console.log(modelo)
+    handleCurrentView(false)
   }
   const handleTable = (): tableContent => {
     return {
@@ -88,8 +87,7 @@ const PageCasoEstudio03 =
         <IconButton icon={PlusSquare} />
       </div>
       <CheckForm
-        title="Mostrar Todos Los Modelos"
-        text=""
+        text="Mostrar Todos Los Modelos"
         checked={checkbox}
         onChange={() => setCheckbox(!checkbox)}
       />

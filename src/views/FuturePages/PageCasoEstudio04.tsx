@@ -35,7 +35,14 @@ function PageCasoEstudio04() {
   const handleTable = (): tableContent => {
     const table: tableContent = {
       showButtom: true,
-      customIcons: [Pencil, Trash],
+            customIcons: [
+        {
+          customIcons: Pencil,
+        },
+        {
+          customIcons: Trash,
+        },
+      ],
       titles: [
         "ID",
         "Nombre",
@@ -86,8 +93,7 @@ function PageCasoEstudio04() {
         <IconButton icon={PlusSquare} />
       </div>
       <CheckForm
-        title="Mostrar Todos Los Modelos"
-        text=""
+        text="Mostrar Todos Los Modelos"
         checked={checkbox}
         onChange={() => setCheckbox(!checkbox)}
       />
