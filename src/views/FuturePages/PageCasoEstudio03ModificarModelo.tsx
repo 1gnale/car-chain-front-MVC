@@ -8,15 +8,32 @@ import { useLocalStorage } from "../../controllers/controllerHooks/LocalStorage/
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import type { Mode } from "fs";
 import CheckForm from "../components/GeneralComponents/CheckForm.tsx";
-function ModificarModelo({ modelo }: { modelo: Modelo }) {
+import Input from "../components/GeneralComponents/Input.tsx";
+
+function ModificarModelo({
+  modelo,
+  handleCurrentView,
+}: {
+  modelo: Modelo;
+  handleCurrentView: (pass: boolean) => void;
+}) {
   const [checkbox, setCheckbox] = useState<boolean>(modelo.activo!);
-  const [nombre, setNombre] = useState<string>(modelo.nombre!);
-  const [descripcion, setDescripcion] = useState<string>(modelo.descripcion!);
 
   // Redux selectors para traer las marcas
   const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
   const [selectedBrand, setSelectedBrand] = useState<number>(modelo.marca.id);
 
+  const [formModel, setFormModel] = useState<Modelo>({
+    id: modelo.id,
+    nombre: modelo.nombre,
+    descripcion: modelo.descripcion,
+    marca: modelo.marca,
+    activo: modelo.activo,
+  });
+
+  const handleCancel = (): void => {
+    handleCurrentView(true);
+  };
   // Convertimos las marcas en un formato que entienda el SelectForm
   const handleBrand = useMemo(() => {
     return brands.map((brand) => ({
@@ -31,73 +48,49 @@ function ModificarModelo({ modelo }: { modelo: Modelo }) {
   };
 
   return (
-    <div className="container-fluid w-75">
-      <div className="d-flex align-items-start mb-3">
-        <label className="me-3 pt-2" style={{ width: "100px" }}>
-          Nombre
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+    <div className="bg-white p-4 rounded shadow-sm mb-4">
+      <Input
+        title="Nombre"
+        place=""
+        labelStyle={{ width: "100px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        value={formModel.nombre}
+      />
+
+      <Input
+        title="Descripcion"
+        place=""
+        labelStyle={{ width: "100px" }}
+        as="textarea"
+        classNameDiv="d-flex align-items-start mb-3"
+        value={formModel.descripcion}
+      />
+
+      <div className="col-md-4 ">
+        <SelectForm
+          status={true}
+          value={selectedBrand}
+          title="Marca"
+          items={handleBrand}
+          onChange={handleStateBrand}
+          classNameDiv="d-flex align-items-start mb-3 gap-5"
+          classNameSelect="ms-1"
+          classNameLabel="ms-1"
         />
       </div>
-
-      <div className="d-flex align-items-start mb-3">
-        <label className="me-3 pt-2" style={{ width: "100px" }}>
-          Descripción
-        </label>
-        <textarea
-          className="form-control"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-        />
+      <div className="ms-1">
+      <CheckForm
+        text="Modelo Activo"
+        checked={checkbox}
+        onChange={() => setCheckbox(!checkbox)}
+      />
       </div>
-
-      <div className="d-flex align-items-center mb-3">
-        <label className="me-3 pt-2" style={{ width: "100px" }}>
-          Marca
-        </label>
-        <div style={{ width: "300px" }}>
-          <SelectForm
-            status={true}
-            value={selectedBrand}
-            title=""
-            items={handleBrand}
-            onChange={handleStateBrand}
-          />
-        </div>
-      </div>
-
       <div
         className="d-grid d-md-flex justify-content-md-end"
         style={{ padding: "10px", gap: "2rem" }}
       >
-        <CheckForm
-          title="Modelo Activo"
-          text=""
-          checked={checkbox}
-          onChange={() => setCheckbox(!checkbox)}
-        />
-
-        <div
-          style={{
-            transform: "scale(1.4)",
-            transformOrigin: "left",
-            width: "100px",
-            paddingBottom: "20px",
-          }}
-        >
-          <GrayButton text="Cancelar" onClick={() => {}} />
-        </div>
-        <div
-          style={{
-            transform: "scale(1.4)",
-            transformOrigin: "left",
-            width: "100px",
-          }}
-        >
+        <div className="d-flex justify-content-end gap-3 mt-4">
+          <GrayButton text="Cancelar" onClick={handleCancel} />
           <GrayButton text="Confirmar" onClick={() => {}} />
         </div>
       </div>

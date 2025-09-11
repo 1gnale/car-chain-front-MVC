@@ -38,7 +38,7 @@ const PageCasoEstudio02 =
   });
   const handleUpdateBrand = (marca: any): void => {
     setCurrentBrand(marca)
-    handleCurrentView(true)
+    handleCurrentView(false)
     console.log(marca)
   }
   const handleTable = (): tableContent => {
@@ -91,8 +91,7 @@ const PageCasoEstudio02 =
 
       {/* Checkbox controlado */}
       <CheckForm
-        title="Mostrar Todas Las Marcas"
-        text=""
+        text="Mostrar Todas Las Marcas"
         checked={checkbox}
         onChange={() => setCheckbox(!checkbox)}
       />
