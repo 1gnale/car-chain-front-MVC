@@ -65,9 +65,9 @@ interface Version {
   id: number;
   nombre?: string;
   descripcion?: string;
-  precio_mercado: number;
+  precio_mercado?: number;
   precio_mercado_gnc?: number;
-  modelo: Modelo;
+  modelo?: Modelo;
   activo?: boolean;
 }
 

@@ -23,7 +23,6 @@ import ConfigurarEdad from "../FuturePages/PageCaso13ConfigurarEdad";
 import EdadPage from "./EdadPage";
 import CrearConfiguracionEdad from "../FuturePages/PageCaso13CrearConfigEdad";
 import CrearConfiguracionLocalidad from "../FuturePages/PageCaso15CrearConfigLocalidad";
-
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
 
@@ -38,7 +37,7 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
     });
   };
 
-  const views = [
+  const views = [ 
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
     <FormDataClient handleCurrentView={handleCurrentView} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,

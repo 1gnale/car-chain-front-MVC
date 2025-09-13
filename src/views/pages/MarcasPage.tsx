@@ -3,6 +3,7 @@ import TitleSection from "../components/GeneralComponents/TitleSection";
 import PageCasoEstudio02 from "../FuturePages/PageCasoEstudio02";
 import { useState } from "react";
 import ModificarMarca from "../FuturePages/PageCasoEstudio02ModificarMarca";
+import HeaderSection from "../components/GeneralComponents/headerSection";
 const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
   const [currentBrand, setCurrentBrand] = useState<Marca>({ id: 1 });
@@ -25,7 +26,13 @@ const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
     />,
   ];
 
-  return <>{views[currentView]}</>;
+  return <>
+        <HeaderSection
+        title="Gestión de Marcas"
+        text="Administra las marcas de seguros disponibles en el sistema"
+      ></HeaderSection>
+  {views[currentView]}
+  </>;
 };
 
 export default MarcasPage;

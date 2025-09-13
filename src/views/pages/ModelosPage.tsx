@@ -3,6 +3,7 @@ import TitleSection from "../components/GeneralComponents/TitleSection";
 import PageCasoEstudio03 from "../FuturePages/PageCasoEstudio03";
 import { useState } from "react";
 import ModificarModelo from "../FuturePages/PageCasoEstudio03ModificarModelo";
+import HeaderSection from "../components/GeneralComponents/headerSection";
 import { id } from "date-fns/locale";
 
 const ModelosPage = ({ isAuth }: { isAuth: boolean }) => {
@@ -31,7 +32,12 @@ const ModelosPage = ({ isAuth }: { isAuth: boolean }) => {
     />,
   ];
 
-  return <>{views[currentView]}</>;
+  return <>
+          <HeaderSection
+        title="Gestión de Modelos"
+        text="Administra los modelos de seguros disponibles en el sistema"
+      ></HeaderSection>
+  {views[currentView]}</>;
 };
 
 export default ModelosPage;
