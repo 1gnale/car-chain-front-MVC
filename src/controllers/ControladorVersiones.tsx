@@ -13,11 +13,13 @@ const ControladorVersiones = () => {
   const { isAuthenticated, isLoading } = useAuth0();
   // Hook que trae todas las marcas
   const { loading, error } = useVersionesHook();
+  const { loading: loadingMarcas , error: errorMarca } = useMarcasHook();
+  const { loading: loadingModels, error: errorModelo } = useModelosHook();
   // Mostrar loading mientras Auth0 inicializa
-  if (isLoading || loading) {
+  if (isLoading || loading || loadingMarcas || loadingModels) {
     return <div>Cargando...</div>;
   }
-  if (error) {
+  if (error || errorMarca || errorModelo) {
     return <div>Error: ha ocurrido un error inesperado</div>;
   }
   return (
