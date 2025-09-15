@@ -75,35 +75,51 @@ const PageCasoEstudio03 = ({
   const { titles, tableBody, customIcons, showButtom } = handleTable();
 
   return (
-    <div className="container-fluid">
-      <div className="d-flex align-items-center w-100 gap-2 p-3">
-        <span className="form-label mb-0">Búsqueda:</span>
+    <>
+      <style>{`  .controls {
+          background: white;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 24px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          flex-wrap: wrap;
+        }
+         `}</style>
+      <div className="container-fluid">
+        <div className="controls">
+          <div className="d-flex align-items-center gap-2 w-100">
+            <span className="form-label mb-0">Búsqueda:</span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar..."
+              style={{ maxWidth: "75%" }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <IconButton icon={PlusSquare} />
+          </div>
 
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar..."
-          style={{ maxWidth: "75%" }}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <IconButton icon={PlusSquare} />
+          {/* Checkbox controlado */}
+          <CheckForm
+            text="Mostrar todos los modelos"
+            checked={checkbox}
+            onChange={() => setCheckbox(!checkbox)}
+          />
+        </div>
+        <div className="d-flex  my-4" style={{ width: "-20px" }}>
+          <Table
+            titles={titles}
+            tableBody={tableBody}
+            customIcons={customIcons}
+            showButtom={showButtom}
+          />
+        </div>
       </div>
-      <CheckForm
-        text="Mostrar Todos Los Modelos"
-        checked={checkbox}
-        onChange={() => setCheckbox(!checkbox)}
-      />
-
-      <div className="d-flex  my-4" style={{ width: "-20px" }}>
-        <Table
-          titles={titles}
-          tableBody={tableBody}
-          customIcons={customIcons}
-          showButtom={showButtom}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

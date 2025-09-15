@@ -10,7 +10,10 @@ import { Pencil } from "react-bootstrap-icons";
 import { Trash } from "react-bootstrap-icons";
 import CheckForm from "../components/GeneralComponents/CheckForm";
 
-function PageCasoEstudio04() {
+const PageCasoEstudio04 = ({handleCurrentView, setCurrentVersion}: {
+    handleCurrentView: (pass: boolean) => void,
+  setCurrentVersion: (version: Version ) => void,
+}) => {
   const versiones: Version[] = useAppSelector(
     (state) => state.versiones.version
   );
@@ -31,13 +34,17 @@ function PageCasoEstudio04() {
     // Si checkbox no está activado => mostrar solo activas
     return version.activo && matchesSearch;
   });
-
+  const handleUpdateVersion = (version: any): void => {
+    setCurrentVersion(version)
+    handleCurrentView(false)
+  }
   const handleTable = (): tableContent => {
-    const table: tableContent = {
+
+    return {
       showButtom: true,
       customIcons: [
         {
-          customIcons: Pencil,
+          customIcons: Pencil,  onAction: handleUpdateVersion
         },
         {
           customIcons: Trash,
@@ -55,14 +62,15 @@ function PageCasoEstudio04() {
       ],
       tableBody: filteredVersiones.map((version, idx) => ({
         key: idx,
+        value: version,
         rowContent: [
           String(version.id) ?? "",
           version.nombre ?? "",
           version.descripcion ?? "",
           String(version.precio_mercado) ?? "",
           String(version.precio_mercado_gnc) ?? "",
-          version.modelo.nombre ?? "",
-          version.modelo.marca.nombre ?? "",
+          version.modelo?.nombre ?? "",
+          version.modelo?.marca.nombre ?? "",
           (() => {
             if (version.activo) {
               return "Activo";
@@ -73,30 +81,45 @@ function PageCasoEstudio04() {
         ],
       })),
     };
-    return table;
   };
 
   const { titles, tableBody, customIcons, showButtom } = handleTable();
   return (
-    <div className="container-fluid">
-      <div className="d-flex align-items-center w-100 gap-2 p-3">
-        <span className="form-label mb-0">Búsqueda:</span>
+     <>
+      <style>{`  .controls {
+          background: white;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 24px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          flex-wrap: wrap;
+        }
+         `}</style>
+      <div className="container-fluid">
+        <div className="controls">
+          <div className="d-flex align-items-center gap-2 w-100">
+            <span className="form-label mb-0">Búsqueda:</span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar..."
+              style={{ maxWidth: "75%" }}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <IconButton icon={PlusSquare} />
+          </div>
 
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar..."
-          style={{ maxWidth: "75%" }}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <IconButton icon={PlusSquare} />
-      </div>
-      <CheckForm
-        text="Mostrar Todos Los Modelos"
-        checked={checkbox}
-        onChange={() => setCheckbox(!checkbox)}
-      />
+          {/* Checkbox controlado */}
+          <CheckForm
+            text="Mostrar todas las versiones"
+            checked={checkbox}
+            onChange={() => setCheckbox(!checkbox)}
+          />
+        </div>
 
       <div className="d-flex  my-4" style={{ width: "-20px" }}>
         <Table
@@ -107,6 +130,7 @@ function PageCasoEstudio04() {
         />
       </div>
     </div>
+    </>
   );
 }
 

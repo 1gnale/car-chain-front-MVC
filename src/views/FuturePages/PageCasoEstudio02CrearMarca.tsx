@@ -1,44 +1,38 @@
 import GrayButton from "../components/GeneralComponents/Button";
+import Input from "../components/GeneralComponents/Input";
 
 function CrearMarca() {
   return (
     <div className="container-fluid w-75">
-      <div className="d-flex align-items-start mb-3">
-        <label className="me-3 pt-2" style={{ width: "100px" }}>
-          Nombre
-        </label>
-        <input type="text" className="form-control" />
-      </div>
+<Input
+        title="Nombre"
+        place=""
+        labelStyle={{ width: "100px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        value=""
+      />
 
-      <div className="d-flex align-items-start mb-3">
-        <label className="me-3 pt-2" style={{ width: "100px" }}>
-          Descripción
-        </label>
-        <textarea className="form-control" rows={4} />
-      </div>
-      <div
+      <Input
+        title="Descripcion"
+        place=""
+        labelStyle={{ width: "100px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        value=""
+        as = "textarea"
+      />
+            <div
         className="d-grid d-md-flex justify-content-md-end"
         style={{ padding: "10px", gap: "2rem" }}
       >
-        <div
-          style={{
-            transform: "scale(1.4)",
-            transformOrigin: "left",
-            width: "100px",
-            paddingBottom: "20px",
-          }}
-        >
-          <GrayButton text="Cancelar" onClick={() => {}} />
-        </div>
-        <div
-          style={{
-            transform: "scale(1.4)",
-            transformOrigin: "left",
-            width: "100px",
-          }}
-        >
+              <div
+        className="d-grid d-md-flex justify-content-md-end"
+        style={{ padding: "10px", gap: "2rem" }}
+      >
+        <div className="d-flex justify-content-end gap-3 mt-4">
+          <GrayButton text="Cancelar" />
           <GrayButton text="Confirmar" onClick={() => {}} />
         </div>
+      </div>
       </div>
     </div>
   );
