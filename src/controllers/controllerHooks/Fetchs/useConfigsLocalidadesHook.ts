@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jsonConfigLocalidad from "../../../models/mock/configLocalidad.json";
-import { setcConfigEdad } from "../../../redux/configEdadSlice";
+import { setConfigEdad } from "../../../redux/configEdadSlice";
 import { ConfigLocalidadesRepository } from "../../../models/repository/Repositorys/configLocalidadRepository";
 import fetchConfigLocalidades from "../../../models/fetchs/fetchConfigLocalidades";
+import { setConfigLocalidadd } from "../../../redux/configLocalidadSlice";
 
 const useLocalidadesHook = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const useLocalidadesHook = () => {
     setLoading(true);
     fetchConfigLocalidades(configLocalidadRepo)
       .then((fetchedConfigLocalidades) => {
-        dispatch(setcConfigEdad(fetchedConfigLocalidades));
+        dispatch(setConfigLocalidadd(fetchedConfigLocalidades));
       })
       .catch((err) => {
         console.error("Error fetching config localidades:", err);

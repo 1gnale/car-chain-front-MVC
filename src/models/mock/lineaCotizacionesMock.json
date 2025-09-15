@@ -87,7 +87,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -181,7 +181,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -275,7 +275,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -369,7 +369,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -463,7 +463,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -557,7 +557,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -651,7 +651,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -745,7 +745,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -839,7 +839,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5
@@ -933,7 +933,7 @@
       }
     },
     "cobertura": {
-      "id_cobertura": 1,
+      "id": 1,
       "nombre": "Cobertura Total",
       "descripcion": "Incluye daños, robo y responsabilidad civil",
       "recargoPorAtraso": 2.5

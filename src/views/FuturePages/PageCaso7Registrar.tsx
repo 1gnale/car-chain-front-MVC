@@ -1,23 +1,36 @@
-
 import { useState, useMemo, useEffect } from "react";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
 import Input from "../components/GeneralComponents/Input";
 import SelectForm from "../components/GeneralComponents/SelectForm";
 import useFormValidation from "../../controllers/controllerHooks/Validations/useFormClientValidation";
 import getFromLocalStorage from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
+import DateInput from "../components/GeneralComponents/DateInput";
+import { createClient } from "../../models/fetchs/fetchCreateClient";
+import { tipoDocumentoSlice } from "../../redux/tiposDocumentosSlice";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const PageRegistrar = () => {
   // Hook de validación
-  const { errors, isValid, validateField, validateForm, clearErrors, clearFieldError } = useFormValidation();
+  const {
+    errors,
+    isValid,
+    validateField,
+    validateForm,
+    clearErrors,
+    clearFieldError,
+  } = useFormValidation();
   const [locality, setLocality] = useState<boolean>(false);
   const [selectedProvince, setSelectedProvinces] = useState(0);
   const [selectedLocality, setSelectedLocality] = useState(0);
+  const [selectedSex, setSelectedSex] = useState(0);
+  const [selectedDocumentType, setSelectedDocumentType] = useState(0);
+  const { user } = useAuth0();
 
   // Estado adaptado para trabajar con el hook de validación
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
-    tipoDocumento: "DNI",
+    tipoDocumento: "",
     documento: "",
     fechaNacimiento: "",
     telefono: "",
@@ -44,7 +57,7 @@ const PageRegistrar = () => {
         const clientData = getFromLocalStorage<any>("ClientData");
         if (clientData) {
           console.log("Datos encontrados en localStorage:", clientData);
-          
+
           // Auto-rellenar el formulario con los datos existentes
           const updatedFormData = {
             nombre: clientData.nombres || clientData.nombre || "",
@@ -54,20 +67,54 @@ const PageRegistrar = () => {
             fechaNacimiento: clientData.fechaNacimiento || "",
             telefono: clientData.telefono || "",
             sexo: clientData.sexo || "",
-            provincia: clientData.localidad.provincia.id || "",
-            localidad: clientData.localidad.id || "0",
+            provincia: clientData.localidad.provincia.descripcion || "",
+            localidad: clientData.localidad.descripcion || "",
             domicilio: clientData.domicilio || "",
           };
 
           setFormData(updatedFormData);
 
           // También actualizar los selects de provincia si existe el dato
-          if (clientData.provincia && provinces.length > 0) {
-            const foundProvince = provinces.find(p => 
-              p.descripcion?.toLowerCase() === clientData.provincia.toLowerCase()
+          if (clientData.localidad.provincia && provinces.length > 0) {
+            const foundProvince = provinces.find(
+              (p) =>
+                p.descripcion?.toLowerCase() ===
+                clientData.localidad.provincia.descripcion.toLowerCase()
             );
             if (foundProvince) {
               setSelectedProvinces(foundProvince.id);
+            }
+          }
+
+          // También actualizar los selects de localidad si existe el dato
+          if (clientData.localidad && localities.length > 0) {
+            const foundLocality = localities.find(
+              (p) =>
+                p.descripcion?.toLowerCase() ===
+                clientData.localidad.descripcion.toLowerCase()
+            );
+            if (foundLocality) {
+              setSelectedLocality(foundLocality.id);
+              setLocality(true);
+            }
+          }
+
+          // También actualizar los selects de tipo documento si existe el dato
+          if (clientData.tipoDocumento && documentTypes.length > 0) {
+            const tipoDocFiltrado: number | undefined = documentTypes.findIndex(
+              (doc) => doc === clientData?.tipoDocumento
+            );
+            if (tipoDocFiltrado != undefined) {
+              setSelectedDocumentType(tipoDocFiltrado + 1);
+            }
+          }
+
+          if (clientData.tipoDocumento && documentTypes.length > 0) {
+            const sexoFiltrado = sexoOptions.find(
+              (sex) => sex.name === clientData?.sexo
+            );
+            if (sexoFiltrado != undefined) {
+              setSelectedSex(sexoFiltrado.id);
             }
           }
 
@@ -121,35 +168,19 @@ const PageRegistrar = () => {
   const sexoOptions = [
     { id: 1, name: "Masculino" },
     { id: 2, name: "Femenino" },
-    { id: 3, name: "Otro" },
   ];
-
-
 
   // Mapeo de IDs a valores string
   const sexoMap: { [key: number]: string } = {
-    1: "masculino",
-    2: "femenino",
-    3: "otro",
-  };
-  const tipoDocumentoMap: { [key: number]: string } = {
-    1: "DNI",
-    2: "pasaporte",
-    3: "cedula",
+    1: "Masculino",
+    2: "Femenino",
   };
 
   // Función para obtener ID por valor
   const getSexoId = (value: string): number => {
     return parseInt(
       Object.keys(sexoMap).find((key) => sexoMap[parseInt(key)] === value) ||
-      "0"
-    );
-  };
-  const getTipoDocumentoId = (value: string): number => {
-    return parseInt(
-      Object.keys(tipoDocumentoMap).find(
-        (key) => tipoDocumentoMap[parseInt(key)] === value
-      ) || "1"
+        "0"
     );
   };
 
@@ -161,8 +192,10 @@ const PageRegistrar = () => {
   };
 
   const handleTipoDocumentoChange = (id: number) => {
-    const tipoDocValue = tipoDocumentoMap[id] || "DNI";
+    const tipoDocValue = documentTypes[id - 1];
     setFormData((prev) => ({ ...prev, tipoDocumento: tipoDocValue }));
+    setSelectedDocumentType(id);
+    console.log(id);
     validateField("tipoDocumento", tipoDocValue);
   };
 
@@ -173,23 +206,44 @@ const PageRegistrar = () => {
     }));
 
     // Validar el campo usando el hook
-    validateField(field as any, value);
+    validateField(field as any, field === "fechaNacimiento" ? value : value);
   };
-
-  const handleSubmit = () => {
+  const a = {
+    nombres: formData.nombre,
+    apellido: formData.apellido,
+    fechaNacimiento: "1999-01-01",
+    tipoDocumento: formData.tipoDocumento,
+    documento: formData.documento,
+    domicilio: formData.domicilio,
+    correo: user?.email,
+    telefono: formData.telefono,
+    sexo: formData.sexo,
+    contraseña: "PEPEPEPEPEPEPE",
+    localidad_id: selectedLocality,
+  };
+  console.log(a);
+  const handleSubmit = async () => {
     if (validateForm(formData)) {
       try {
-        // Guardar datos en localStorage para futuras sesiones
-        localStorage.setItem("ClientData", JSON.stringify(formData));
-        console.log("Datos guardados en localStorage:", formData);
-        
-        console.log("Datos del formulario:", formData);
+        const a = await createClient({
+          personaData: {
+            nombres: formData.nombre,
+            apellido: formData.apellido,
+            fechaNacimiento: "1999-01-01",
+            tipoDocumento: formData.tipoDocumento,
+            documento: formData.documento,
+            domicilio: formData.domicilio,
+            correo: user?.email,
+            telefono: formData.telefono,
+            sexo: formData.sexo,
+            localidad_id: selectedLocality,
+          },
+        });
+
         alert("Persona registrada exitosamente");
       } catch (error) {
-        console.error("Error al guardar en localStorage:", error);
-        // Aún así proceder con el registro
-        console.log("Datos del formulario:", formData);
-        alert("Persona registrada exitosamente");
+        console.error("Error en createClient:", error);
+        alert("ERROR: " + error);
       }
     }
   };
@@ -208,17 +262,17 @@ const PageRegistrar = () => {
       localidad: "",
       domicilio: "",
     });
-    
+
     // Limpiar errores
     clearErrors();
-    
+
     // Resetear selects
     setSelectedProvinces(0);
     setSelectedLocality(0);
-    
+
     // Opcional: también limpiar localStorage
     // localStorage.removeItem("ClientData");
-    
+
     console.log("Formulario reiniciado");
   };
 
@@ -280,12 +334,17 @@ const PageRegistrar = () => {
               <div className="col-md-6">
                 <SelectForm
                   title="Tipo Documento"
-                  items={documentTypes.map((docType, index) => ({ id: index + 1, name: docType }))}
+                  items={documentTypes.map((docType, index) => ({
+                    id: index + 1,
+                    name: docType,
+                  }))}
                   onChange={handleTipoDocumentoChange}
                   status={true}
-                  value={getTipoDocumentoId(formData.tipoDocumento || "DNI")}
+                  value={selectedDocumentType}
                   error={errors.tipoDocumento}
-                  onBlur={() => validateField("tipoDocumento", formData.tipoDocumento)}
+                  onBlur={() =>
+                    validateField("tipoDocumento", formData.tipoDocumento)
+                  }
                 />
               </div>
               <div className="col-md-6">
@@ -325,22 +384,16 @@ const PageRegistrar = () => {
 
               {/* Quinta fila: Fecha de Nacimiento y Domicilio */}
               <div className="col-md-6">
-                  <label>Fecha de nacimiento</label>
-                  <input
-                    type="date"
-                    className={`form-control ${errors.fechaNacimiento ? "is-invalid" : ""}`}
-                    value={formData.fechaNacimiento}
-                    onChange={(e) => handleInputChange("fechaNacimiento", e.target.value)}
-                    max={new Date().toISOString().split("T")[0]}
-                    min="1900-01-01"
-                    placeholder="MM/DD/AAAA"
-                    onBlur={() => validateField("fechaNacimiento", formData.fechaNacimiento)}
-                  />
-                  {errors.fechaNacimiento && (
-                    <div className="invalid-feedback">
-                      {errors.fechaNacimiento}
-                    </div>
-                  )}
+                <DateInput
+                  title="Fecha de nacimiento"
+                  value={formData.fechaNacimiento}
+                  onChange={(value) =>
+                    handleInputChange("fechaNacimiento", value)
+                  }
+                  onBlur={(value) => validateField("fechaNacimiento", value)}
+                  error={errors.fechaNacimiento}
+                  showFormat={false}
+                />
               </div>
               <div className="col-md-6">
                 <Input

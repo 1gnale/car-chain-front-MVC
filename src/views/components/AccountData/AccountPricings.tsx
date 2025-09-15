@@ -2,11 +2,13 @@ import TitleForm from "../GeneralComponents/TitleForm";
 import TableButton from "../GeneralComponents/Table";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import { type Icon, Eye, Pencil } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import ProfileCard from "../GeneralComponents/ProfileCard";
 import { Calculator } from "react-bootstrap-icons";
 
-const AccountPricings = () => {
+const AccountPricings = ({}) => {
+  const navigate = useNavigate();
+
   const cotizaciones: Cotizacion[] = [
     {
       id: 1,
@@ -65,7 +67,7 @@ const AccountPricings = () => {
             fecha={cotizacion.fechaCreacion!}
             text="Fecha de creacion"
             estado={cotizacion.activo ? "Vigente" : "Cancelada"}
-            onClick={(num) => console.log("Card clickeada con número:", num)}
+            onClick={() => navigate(`/cotizacion/${cotizacion.id}`)}
           />
         ))}
       </div>

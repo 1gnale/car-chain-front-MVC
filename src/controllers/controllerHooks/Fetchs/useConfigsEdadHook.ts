@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import jsonConfigEdad from "../../../models/mock/configEdad.json";
 import { ConfigEdadRepository } from "../../../models/repository/Repositorys/configEdadRepository";
 import fetchConfigEdades from "../../../models/fetchs/fetchConfigEdades";
-import { setcConfigEdad } from "../../../redux/configEdadSlice";
+import { setConfigEdad } from "../../../redux/configEdadSlice";
 
 const useEdadHook = () => {
   const dispatch = useDispatch();
@@ -15,8 +15,8 @@ const useEdadHook = () => {
     setError(false);
     setLoading(true);
     fetchConfigEdades(configEdadRepo)
-      .then((fetchedConfigAntiguedad) => {
-        dispatch(setcConfigEdad(fetchedConfigAntiguedad));
+      .then((fetchedConfigEdad) => {
+        dispatch(setConfigEdad(fetchedConfigEdad));
       })
       .catch((err) => {
         console.error("Error fetching config edad:", err);

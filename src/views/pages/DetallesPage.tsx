@@ -1,10 +1,8 @@
-import Navbar from "../components/NavBar/Navbar";
-import TitleSection from "../components/GeneralComponents/TitleSection";
 import { useState } from "react";
-import ModificarDetalleCobertura from "../FuturePages/PageCasoEstudio05ModificarDetalle";
-import PageCasoEstudio05 from "../FuturePages/PageCasoEstudio05";
-import CrearDetalleCobertura from "../FuturePages/PageCasoEstudio05CrearDetalle";
-import HeaderSection from "../components/GeneralComponents/headerSection";
+import ModificarDetalleCobertura from "../components/ManageDetails/ModificarDetalleCobertura";
+import ManageDetails from "../components/ManageDetails/ManageDetails";
+import CrearDetalleCobertura from "../components/ManageDetails/CrearDetalleCobertura";
+import HeaderSection from "../components/GeneralComponents/HeaderSection";
 
 const DetallesPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
@@ -26,7 +24,7 @@ const DetallesPage = ({ isAuth }: { isAuth: boolean }) => {
       detalle={currentDetail}
       handleCurrentView={handleCurrentView}
     />,
-    <PageCasoEstudio05
+    <ManageDetails
       handleCurrentView={handleCurrentView}
       setCurrentDetail={setCurrentDetail}
     />,

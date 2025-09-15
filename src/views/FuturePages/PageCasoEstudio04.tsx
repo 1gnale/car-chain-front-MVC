@@ -42,7 +42,7 @@ const PageCasoEstudio04 = ({handleCurrentView, setCurrentVersion}: {
 
     return {
       showButtom: true,
-            customIcons: [
+      customIcons: [
         {
           customIcons: Pencil,  onAction: handleUpdateVersion
         },

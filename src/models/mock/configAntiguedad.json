@@ -3,8 +3,8 @@
   "nombre": "Cuando es usado",
   "minima": 4,
   "maxima": 6,
-  "descuento": 0.0,
-  "ganancia": 0.0,
+  "descuento": 1.0,
+  "ganancia": 20.0,
   "recargo": 100.0,
   "activo": true
 }

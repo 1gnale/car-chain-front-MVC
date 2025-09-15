@@ -1,11 +1,4 @@
-import { useEffect } from "react";
-import HomePage from "../views/pages/HomePage";
 import { useAuth0 } from "@auth0/auth0-react";
-import useMarcasHook from "./controllerHooks/Fetchs/useMarcasHook";
-import PageCasoEstudio02 from "../views/FuturePages/PageCasoEstudio02";
-import MarcasPage from "../views/pages/MarcasPage";
-import ModelosPage from "../views/pages/ModelosPage";
-import useModelosHook from "./controllerHooks/Fetchs/useModelosHook";
 import useVersionesHook from "./controllerHooks/Fetchs/useVersionesHook";
 import VersionesPage from "../views/pages/VersionesPage";
 
@@ -24,7 +17,7 @@ const ControladorVersiones = () => {
   }
   return (
     <div>
-    <VersionesPage isAuth={isAuthenticated}/>
+      <VersionesPage isAuth={isAuthenticated} />
     </div>
   );
 };

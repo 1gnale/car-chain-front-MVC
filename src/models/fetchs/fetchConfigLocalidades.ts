@@ -2,12 +2,12 @@ import type IConfigLocalidadRepository from "../repository/Irepositorys/IConfigL
 
 const fetchConfigLocalidades = async (
   ConfigLocalidadesRepo: IConfigLocalidadRepository
-): Promise<ConfigLocalidad[]> => {
+): Promise<ConfigLocalidad> => {
   try {
     return await ConfigLocalidadesRepo.getConfigLocalidades();
   } catch (error) {
     console.error("Error fetching config localidades:", error);
-    return [];
+    return {};
   }
 };
 

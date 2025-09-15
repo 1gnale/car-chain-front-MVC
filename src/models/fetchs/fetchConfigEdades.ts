@@ -2,12 +2,12 @@ import type IConfigEdadRepository from "../repository/Irepositorys/IConfigEdadRe
 
 const fetchConfigEdades = async (
   ConfigEdadRepo: IConfigEdadRepository
-): Promise<ConfigEdad[]> => {
+): Promise<ConfigEdad> => {
   try {
     return await ConfigEdadRepo.getConfigEdad();
   } catch (error) {
     console.error("Error fetching config edad:", error);
-    return [];
+    return {};
   }
 };
 

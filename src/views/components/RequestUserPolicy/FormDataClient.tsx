@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
-import Input from "./../GeneralComponents/Input";
-import { useAppSelector } from "./../../../redux/reduxTypedHooks";
-import SelectForm from "./../GeneralComponents/SelectForm.tsx";
-import GrayButton from "./../GeneralComponents/Button.tsx";
-import useLocalStorageItem from "./../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import TitleForm from "./../GeneralComponents/TitleForm.tsx";
+import Input from "../GeneralComponents/Input.tsx";
+import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import SelectForm from "../GeneralComponents/SelectForm.tsx";
+import GrayButton from "../GeneralComponents/Button.tsx";
+import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import TitleForm from "../GeneralComponents/TitleForm.tsx";
+import DateInput from "../GeneralComponents/DateInput.tsx";
 
 const FormDataClient = ({
   handleCurrentView,
@@ -51,7 +52,7 @@ const FormDataClient = ({
     localidad: "",
     domicilio: "",
   });
-
+  console.log("documentTypes");
   console.log(documentTypes);
   console.log(formClient.tipoDocumento);
 
@@ -75,7 +76,7 @@ const FormDataClient = ({
       setSelectedProvinces(clientStorage.localidad?.provincia?.id || 0);
       setSelectedLocality(clientStorage.localidad?.id || 0);
       setSelectedSex(sexoFiltrado.id);
-      setSelectedDocumentType(tipoDocFiltrado);
+      setSelectedDocumentType(tipoDocFiltrado + 1);
       setFormClient(parseFormClient(clientStorage));
     }
   }, []);
@@ -112,7 +113,7 @@ const FormDataClient = ({
             fechaNacimiento: formClient.fechaNacimiento,
             tipoDocumento: formClient.tipoDocumento,
             documento: formClient.documento,
-            domicilio: formClient.documento,
+            domicilio: formClient.domicilio,
             correo: "",
             telefono: formClient.telefono,
             sexo: formClient.sexo,
@@ -322,17 +323,15 @@ const FormDataClient = ({
           </div>
           <div className="row " style={{ padding: "2px" }}>
             <div className="col">
-              <Input
+              <DateInput
                 title="Fecha de nacimiento"
-                place="MM/DD/AAAA"
                 value={formClient.fechaNacimiento}
                 onChange={(value) =>
                   handleInputChange("fechaNacimiento", value)
                 }
+                onBlur={(value) => validateField("fechaNacimiento", value)}
                 error={errors.fechaNacimiento}
-                onBlur={() =>
-                  validateField("fechaNacimiento", formClient.fechaNacimiento)
-                }
+                showFormat={false}
               />
             </div>
             <div className="col">

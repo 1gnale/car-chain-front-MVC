@@ -1,6 +1,6 @@
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
-import CoverageCard from "./../GeneralComponents/CoverageCard.tsx";
-import GrayButton from "./../GeneralComponents/Button";
+import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import CoverageCard from "../GeneralComponents/CoverageCard.tsx";
+import GrayButton from "../GeneralComponents/Button.tsx";
 import { ExclamationCircleFill } from "react-bootstrap-icons";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -23,13 +23,13 @@ const FormDataCoverages = ({
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
-
   const config_antiguedad: ConfigAntiguedad = useAppSelector(
     (state) => state.configAntiguedades.configAntiguedad
   );
   const config_localidad: ConfigLocalidad = useAppSelector(
     (state) => state.configLocalidades.configLocalidad
   );
+
   const config_edad: ConfigEdad = useAppSelector(
     (state) => state.configEdades.configEdad
   );

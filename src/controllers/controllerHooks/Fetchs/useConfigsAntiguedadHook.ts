@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import jsonConfigAnt from "../../../models/mock/configAntiguedad.json";
 import { ConfigAntiguedadRepository } from "../../../models/repository/Repositorys/configAntiguedadRepository";
 import fetchConfigAntiguedades from "../../../models/fetchs/fetchConfigAntiguedades";
-import { setConfigLocalidadd } from "../../../redux/configLocalidadSlice";
+import { setcConfigAntiguedad } from "../../../redux/configAntiguedadSlice";
 
 const useAntiguedadHook = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const useAntiguedadHook = () => {
     setLoading(true);
     fetchConfigAntiguedades(configAntiguedadRepo)
       .then((fetchedConfigAntiguedad) => {
-        dispatch(setConfigLocalidadd(fetchedConfigAntiguedad));
+        dispatch(setcConfigAntiguedad(fetchedConfigAntiguedad));
       })
       .catch((err) => {
         console.error("Error fetching config antiguedad:", err);

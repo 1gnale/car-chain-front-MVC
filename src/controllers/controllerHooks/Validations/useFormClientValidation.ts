@@ -153,14 +153,35 @@ const useFormValidation = (): UseFormValidationReturn => {
         break;
 
       case "fechaNacimiento":
-        const nas = value as string;
-        if (!nas.trim()) {
+        const fechaValue = value as string;
+
+        // Determinar si la fecha viene en formato ISO (YYYY-MM-DD) o MM/DD/YYYY
+        let fechaParaValidacion = fechaValue;
+        let fechaParaDate = fechaValue;
+
+        if (fechaValue.includes("-")) {
+          // Formato ISO (YYYY-MM-DD) del input date
+          const [year, month, day] = fechaValue.split("-");
+          fechaParaValidacion = `${month}/${day}/${year}`;
+          fechaParaDate = fechaValue; // Mantener formato ISO para crear Date
+        } else if (fechaValue.includes("/")) {
+          // Formato MM/DD/YYYY
+          fechaParaValidacion = fechaValue;
+          // Convertir a formato ISO para crear Date
+          const [month, day, year] = fechaValue.split("/");
+          fechaParaDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
+            2,
+            "0"
+          )}`;
+        }
+
+        if (!fechaValue.trim()) {
           newErrors.fechaNacimiento = "La fecha de nacimiento es requerido";
-        } else if (!patterns.fechaNacimiento.test(nas)) {
+        } else if (!patterns.fechaNacimiento.test(fechaParaValidacion)) {
           newErrors.fechaNacimiento =
-            "La decha de nacimiento debe venir en un formato MM/DD/YYYY";
-        } else if (typeof value === "string") {
-          const fechaNacimiento = new Date(value);
+            "La fecha de nacimiento debe venir en un formato MM/DD/YYYY";
+        } else {
+          const fechaNacimiento = new Date(fechaParaDate);
 
           if (isNaN(fechaNacimiento.getTime())) {
             newErrors.fechaNacimiento = "La fecha no es válida";
@@ -183,8 +204,6 @@ const useFormValidation = (): UseFormValidationReturn => {
               delete newErrors.fechaNacimiento;
             }
           }
-        } else {
-          delete newErrors.fechaNacimiento;
         }
 
         break;
@@ -260,6 +279,20 @@ const useFormValidation = (): UseFormValidationReturn => {
     // Validar fecha nacimiento
     if (!formData.fechaNacimiento.trim()) {
       newErrors.fechaNacimiento = "La fecha de nacimiento es requerida";
+    } else {
+      // Determinar formato y validar
+      let fechaParaValidacion = formData.fechaNacimiento;
+
+      if (formData.fechaNacimiento.includes("-")) {
+        // Formato ISO (YYYY-MM-DD) - convertir a MM/DD/YYYY para validación
+        const [year, month, day] = formData.fechaNacimiento.split("-");
+        fechaParaValidacion = `${month}/${day}/${year}`;
+      }
+
+      if (!patterns.fechaNacimiento.test(fechaParaValidacion)) {
+        newErrors.fechaNacimiento =
+          "La fecha de nacimiento debe venir en un formato MM/DD/YYYY";
+      }
     }
 
     setErrors(newErrors);

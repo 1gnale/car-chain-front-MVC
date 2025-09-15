@@ -12,6 +12,7 @@ import useConfigAntiguedadHook from "./controllerHooks/Fetchs/useConfigsAntigued
 import useConfigEdadHook from "./controllerHooks/Fetchs/useConfigsEdadHook";
 import useConfigLocalidadHook from "./controllerHooks/Fetchs/useConfigsLocalidadesHook";
 import { useAuth0 } from "@auth0/auth0-react";
+import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 
 const ControladorSolicitarContratacionDePoliza = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -63,7 +64,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
     loadingConfEdad ||
     loadingConfigLoc
   ) {
-    return <div>Loading...</div>;
+    return <Spinner title="Loading..." text="Por favor espere" />;
   }
 
   if (

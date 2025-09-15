@@ -1,12 +1,10 @@
-import Navbar from "../components/NavBar/Navbar";
-import TitleSection from "../components/GeneralComponents/TitleSection";
-import PageCasoEstudio03 from "../FuturePages/PageCasoEstudio03";
 import PageCasoEstudio04 from "../FuturePages/PageCasoEstudio04";
 import { useState } from "react";
 import ModificarVersion from "../FuturePages/PageCasoEstudio04ModificarVersion";
 import HeaderSection from "../components/GeneralComponents/headerSection";
 
 const VersionesPage = ({ isAuth }: { isAuth: boolean }) => {
+
 const [currentView, setCurrentView] = useState<number>(1);
 const [currentBrand, setCurrentBrand] = useState<Marca>({ id: 1 });
 const [currentModel, setCurrentModel] = useState<Modelo>({

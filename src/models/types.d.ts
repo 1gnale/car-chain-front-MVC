@@ -30,7 +30,7 @@ interface Cliente extends Persona {
 }
 
 interface Usuario extends Persona {
-  idUsuario: number;
+  legajo: number;
   tipoUsuario?: string;
   activo?: boolean;
 }
@@ -147,6 +147,7 @@ interface Detalle {
 }
 
 interface Documentacion {
+  id?: int;
   fotoFrontal?: File;
   fotoTrasera?: File;
   fotoLateral1?: File;
@@ -212,12 +213,13 @@ interface TipoContratacion {
 
 interface Poliza {
   numero_poliza?: number;
-  precioPolzaActual?: number;
+  precioPolizaActual?: number;
   montoAsegurado?: number;
   fechaContratacion?: string;
   horaContratacion?: string;
   fechaVencimiento?: string;
   fechaCancelacion?: string;
+  fechaDePago?: string;
   renovacionAutomatica?: boolean;
   usuario?: Usuario;
   documentacion?: Documentacion;

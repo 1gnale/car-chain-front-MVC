@@ -8,7 +8,7 @@ export const configEdadSlice = createSlice({
   name: "configEdad",
   initialState,
   reducers: {
-    setcConfigEdad: (state, action) => {
+    setConfigEdad: (state, action) => {
       state.configEdad = action.payload;
     },
     clearConfigEdad: (state) => {
@@ -17,6 +17,6 @@ export const configEdadSlice = createSlice({
   },
 });
 
-export const { setcConfigEdad, clearConfigEdad } = configEdadSlice.actions;
+export const { setConfigEdad, clearConfigEdad } = configEdadSlice.actions;
 
 export default configEdadSlice.reducer;

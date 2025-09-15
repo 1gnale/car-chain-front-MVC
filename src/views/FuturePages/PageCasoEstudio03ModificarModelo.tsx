@@ -1,9 +1,9 @@
-import GrayButton from "../components/GeneralComponents/Button";
+import GrayButton from "../components/GeneralComponents/Button.tsx";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
 import useFormValidation from "../../controllers/controllerHooks/Validations/useFormValidation";
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
-import SelectForm from "../components/GeneralComponents/SelectForm";
+import SelectForm from "../components/GeneralComponents/SelectForm.tsx";
 import { useLocalStorage } from "../../controllers/controllerHooks/LocalStorage/useLocalStorage";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import type { Mode } from "fs";
@@ -79,11 +79,11 @@ function ModificarModelo({
         />
       </div>
       <div className="ms-1">
-      <CheckForm
-        text="Modelo Activo"
-        checked={checkbox}
-        onChange={() => setCheckbox(!checkbox)}
-      />
+        <CheckForm
+          text="Modelo Activo"
+          checked={checkbox}
+          onChange={() => setCheckbox(!checkbox)}
+        />
       </div>
       <div
         className="d-grid d-md-flex justify-content-md-end"

@@ -19,7 +19,10 @@ const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
-    <ModificarMarca marca={currentBrand} handleCurrentView={handleCurrentView} />,
+    <ModificarMarca
+      marca={currentBrand}
+      handleCurrentView={handleCurrentView}
+    />,
     <PageCasoEstudio02
       handleCurrentView={handleCurrentView}
       setCurrentBrand={setCurrentBrand}

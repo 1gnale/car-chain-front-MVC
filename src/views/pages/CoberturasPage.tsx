@@ -1,12 +1,7 @@
-import Navbar from "../components/NavBar/Navbar";
-import TitleSection from "../components/GeneralComponents/TitleSection";
 import { useState } from "react";
-import ModificarDetalleCobertura from "../FuturePages/PageCasoEstudio05ModificarDetalle";
-import CrearDetalleCobertura from "../FuturePages/PageCasoEstudio05CrearDetalle";
-import BreadCrumbNav from "../components/GeneralComponents/BreadCrumbNav";
-import PageCasoEstudio06 from "../FuturePages/PageCasoEstudio06";
-import CrearCobertura from "../FuturePages/PageCasoEstudio06CrearCobertura";
-import ModificarCobertura from "../FuturePages/PageCasoEstudio06ModificarCobertura";
+import ManageCoverage from "../components/ManageCoverage/ManageCoverage";
+import CrearCobertura from "../components/ManageCoverage/CrearCobertura";
+import ModificarCobertura from "../components/ManageCoverage/ModificarCobertura";
 import HeaderSection from "../components/GeneralComponents/headerSection";
 const CoberturasPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
@@ -28,7 +23,7 @@ const CoberturasPage = ({ isAuth }: { isAuth: boolean }) => {
       cobertura={currentCoverage}
       handleCurrentView={handleCurrentView}
     />,
-    <PageCasoEstudio06
+    <ManageCoverage
       handleCurrentView={handleCurrentView}
       setCurrentCoverage={setCurrentCoverage}
     />,

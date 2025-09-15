@@ -1,10 +1,10 @@
 import { useState } from "react";
-import LabelNinfo from "./GeneralComponents/LabelNinfo";
-import TitleForm from "./GeneralComponents/TitleForm";
-import Table from "./GeneralComponents/Table";
+import LabelNinfo from "./GeneralComponents/LabelNinfo.tsx";
+import TitleForm from "./GeneralComponents/TitleForm.tsx";
+import Table from "./GeneralComponents/Table.tsx";
 import GrayButton from "./GeneralComponents/Button.tsx";
-import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
-import { useAppSelector } from "../../redux/reduxTypedHooks";
+import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation.tsx";
+import { useAppSelector } from "../../redux/reduxTypedHooks.ts";
 
 function FormPolizas() {
   const [policy, setPolicy] = useState<Poliza>({});

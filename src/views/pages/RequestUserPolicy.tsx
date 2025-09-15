@@ -7,22 +7,7 @@ import FormDataClient from "../components/RequestUserPolicy/FormDataClient";
 import FormDataCoverages from "../components/RequestUserPolicy/FormDataCoverages";
 import FormDataDocumentation from "../components/RequestUserPolicy/FormDocumentation";
 import FormDataConfirmation from "../components/RequestUserPolicy/FormDataConfirmation";
-import PageCasoEstudio02 from "../FuturePages/PageCasoEstudio02";
-import CrearMarca from "../FuturePages/PageCasoEstudio02CrearMarca";
-import ModificarMarca from "../FuturePages/PageCasoEstudio02ModificarMarca";
-import PageCasoEstudio03 from "../FuturePages/PageCasoEstudio03";
-import CrearModelo from "../FuturePages/PageCasoEstudio03CrearModelo";
-import ModificarModelo from "../FuturePages/PageCasoEstudio03ModificarModelo";
-import PageCasoEstudio04 from "../FuturePages/PageCasoEstudio04";
-import CrearVersion from "../FuturePages/PageCasoEstudio04CrearVersion";
-import CrearDetalleCobertura from "../FuturePages/PageCasoEstudio05CrearDetalle";
-import CrearCobertura from "../FuturePages/PageCasoEstudio06CrearCobertura";
-import InicioSesion from "../FuturePages/PageCasoEstudio07";
-import CentroMando from "../FuturePages/PageCasoEstudio07CentroMando";
-import ConfigurarEdad from "../FuturePages/PageCaso13ConfigurarEdad";
-import EdadPage from "./EdadPage";
-import CrearConfiguracionEdad from "../FuturePages/PageCaso13CrearConfigEdad";
-import CrearConfiguracionLocalidad from "../FuturePages/PageCaso15CrearConfigLocalidad";
+
 const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(0);
 
