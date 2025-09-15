@@ -1,10 +1,10 @@
 import Navbar from "../components/NavBar/Navbar";
 import TitleSection from "../components/GeneralComponents/TitleSection";
 import { useState } from "react";
-import PageCasoUso15 from "../FuturePages/PageCasoUso15";
-import PageCasoUso15CrearPeriodo from "../FuturePages/PageCasoUso15CrearPeriodoPago";
-import PageCasoUso15ModificarPeriodo from "../FuturePages/PageCasoUso15ModificarPeriodoPago";
-
+import ManagePaymentPeriod from "../components/ManagePaymentPeriod/ManagePaymentPeriod";
+import CrearPeriodoPago from "../components/ManagePaymentPeriod/CrearPeriodoPago";
+import ModificarPeriodoPago from "../components/ManagePaymentPeriod/ModificarPeriodoPago";
+import HeaderSection from "../components/GeneralComponents/HeaderSection";
 const PeriodoPagoPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
   const [currentPeriodoPago, setCurrentPeriodoPago] = useState<PeriodoPago>({
@@ -22,18 +22,27 @@ const PeriodoPagoPage = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
-    <PageCasoUso15ModificarPeriodo
+    <ModificarPeriodoPago
       periodoPago={currentPeriodoPago}
       handleCurrentView={handleCurrentView}
     />,
-    <PageCasoUso15
+    <ManagePaymentPeriod
       handleCurrentView={handleCurrentView}
       setCurrentPeriodoPago={setCurrentPeriodoPago}
     />,
-    <PageCasoUso15CrearPeriodo handleCurrentView={handleCurrentView} />,
+    <CrearPeriodoPago handleCurrentView={handleCurrentView} />,
   ];
 
-  return <>{views[currentView]}</>;
+  return (
+    <>
+      {" "}
+      <HeaderSection
+        title="Gestión de Periodo de pago"
+        text="Administra los tipos de contratacion de seguros disponibles en el sistema"
+      ></HeaderSection>
+      {views[currentView]}
+    </>
+  );
 };
 
 export default PeriodoPagoPage;

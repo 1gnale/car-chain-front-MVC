@@ -35,7 +35,7 @@ function PageCasoEstudio04() {
   const handleTable = (): tableContent => {
     const table: tableContent = {
       showButtom: true,
-            customIcons: [
+      customIcons: [
         {
           customIcons: Pencil,
         },

@@ -9,7 +9,9 @@ const useMarcasHook = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>();
-  const marcaRepo = new MarcaRepository(jsonMarcas);
+  const marcaRepo = new MarcaRepository(
+    `${import.meta.env.VITE_BASEURL}/api/marcas/`
+  );
 
   useEffect(() => {
     setError(false);
@@ -25,7 +27,7 @@ const useMarcasHook = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [dispatch, marcaRepo]);
+  }, [dispatch]);
 
   return { loading, error };
 };

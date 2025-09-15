@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
-import Input from "./../GeneralComponents/Input";
-import TitleForm from "./../GeneralComponents/TitleForm";
+import Input from "../GeneralComponents/Input";
+import TitleForm from "../GeneralComponents/TitleForm";
 import GrayButton from "../GeneralComponents/Button";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation";

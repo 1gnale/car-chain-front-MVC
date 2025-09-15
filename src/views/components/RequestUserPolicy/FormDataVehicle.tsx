@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
-import Input from "./../GeneralComponents/Input";
-import CheckForm from "./../GeneralComponents/CheckForm";
-import SelectForm from "./../GeneralComponents/SelectForm";
-import GrayButton from "./../GeneralComponents/Button";
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
+import Input from "../GeneralComponents/Input.tsx";
+import CheckForm from "../GeneralComponents/CheckForm.tsx";
+import SelectForm from "../GeneralComponents/SelectForm.tsx";
+import GrayButton from "../GeneralComponents/Button.tsx";
+import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
-import "../../../models/types.d.ts";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import TitleForm from "./../GeneralComponents/TitleForm.tsx";
+import TitleForm from "../GeneralComponents/TitleForm.tsx";
 
 interface FormVehicleProps {
   matricula: string;

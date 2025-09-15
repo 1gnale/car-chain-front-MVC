@@ -7,9 +7,9 @@ import ControladorMarcas from "../../controllers/ControladorMarcas";
 import ControladorModelos from "../../controllers/ControladorModelos";
 import ControladorVersiones from "../../controllers/ControladorVersiones";
 import { useAuth0 } from "@auth0/auth0-react";
-import PeriodoPagoPage from "./PeriodoPagoPage";
 import ControladorPeriodoPago from "../../controllers/ControladorPeriodoPago";
-import PageDashboardDefault from "../FuturePages/PageDefaultDashboard";
+import PageDashboardDefault from "../components/PageDefaultDashboard";
+
 import {
   Users,
   Tag,
@@ -22,6 +22,9 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import ControladorTipoContratacion from "../../controllers/ControladorTipoContratacion";
+import ControladorConfiguraciones from "../../controllers/ControladorConfiguraciones";
+import ControladorUsuarios from "../../controllers/ControladorUsuarios";
 
 export default function Home() {
   const { logout } = useAuth0();
@@ -66,13 +69,7 @@ export default function Home() {
   const renderContent = () => {
     switch (activeSection) {
       case "usuarios":
-        return (
-          <div>
-            <h1>Gestión de Usuarios</h1>
-            <p>Aquí puedes agregar tu contenido para usuarios</p>
-            {/* Aquí agregas tus componentes de usuarios */}
-          </div>
-        );
+        return <ControladorUsuarios />;
       case "marcas":
         return <ControladorMarcas />;
       case "modelos":
@@ -86,21 +83,10 @@ export default function Home() {
       case "periodos-pago":
         return <ControladorPeriodoPago />;
       case "tipos-contratacion":
-        return (
-          <div>
-            <h1>Tipos de Contratación</h1>
-            <p>Aquí puedes agregar tu contenido para tipos de contratación</p>
-            {/* Aquí agregas tus componentes de tipos de contratación */}
-          </div>
-        );
+        return <ControladorTipoContratacion />;
+
       case "configuraciones":
-        return (
-          <div>
-            <h1>Configuraciones</h1>
-            <p>Aquí puedes agregar tu contenido para configuraciones</p>
-            {/* Aquí agregas tus componentes de configuraciones */}
-          </div>
-        );
+        return <ControladorConfiguraciones />;
       default:
         return <PageDashboardDefault></PageDashboardDefault>;
     }

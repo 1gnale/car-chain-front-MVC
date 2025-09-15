@@ -11,8 +11,10 @@ export class LineaCotizacionRepository implements ILineaCotizacionRepository {
     return Promise.resolve(this.data);
   }
 
-  getLineaCotizacionById(id: string): Promise<Linea_Cotizacion | null> {
-    const linea = this.data.find((line) => line.id === Number(id));
-    return Promise.resolve(linea || null);
+  getLineaCotizacionByCotizacionId(id: string): Promise<Linea_Cotizacion[]> {
+    const lineas = this.data.filter(
+      (line) => line.cotizacion?.id === Number(id)
+    );
+    return Promise.resolve(lineas);
   }
 }

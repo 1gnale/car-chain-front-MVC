@@ -3,7 +3,7 @@ import ControladorIndex from "./controllers/ControladorIndex.tsx";
 import ControladorSolicitarCotizacionDePoliza from "./controllers/ControladorSolicitarContratacionDePoliza.tsx";
 import ControladorPerfil from "./controllers/ControladorPerfil.tsx";
 import ProtectedRoute from "./controllers/ProtectedRoute.tsx";
-import ControladorVerCotizacion from "./controllers/ControladorVerPoliza.tsx";
+import ControladorVerCotizacion from "./controllers/ControladorConsultarCotizacion.tsx";
 import ControladorMarcas from "./controllers/ControladorMarcas.tsx";
 import ControladorModelos from "./controllers/ControladorModelos.tsx";
 import ControladorVersiones from "./controllers/ControladorVersiones.tsx";
@@ -15,6 +15,7 @@ import ControladorDetalles from "./controllers/ControladorDetalles.tsx";
 import ControladorCoberturas from "./controllers/ControladorCobertura.tsx";
 import ContoladorDashboard from "./controllers/ContoladorDashboard.tsx";
 import ControladorRegister from "./controllers/ControladorRegister.tsx";
+import ControladorAdministrarPoliza from "./controllers/ControladorAdministrarPoliza.tsx";
 
 function App() {
   return (
@@ -77,12 +78,21 @@ function App() {
       />
       <Route path="/" element={<ControladorIndex />} />
 
-      {/* CREO Q HAY Q ELIMINARLO */}
+      {/* Caso de uso 10: ConsultarCotizacion */}
       <Route
         path="/cotizacion/:id"
         element={
           <ProtectedRoute>
             <ControladorVerCotizacion />
+          </ProtectedRoute>
+        }
+      />
+      {/* Caso de uso 18: Administrar Poliza */}
+      <Route
+        path="/administrarPoliza/:id"
+        element={
+          <ProtectedRoute>
+            <ControladorAdministrarPoliza />
           </ProtectedRoute>
         }
       />

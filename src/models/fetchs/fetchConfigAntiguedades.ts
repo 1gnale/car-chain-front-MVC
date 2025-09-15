@@ -2,12 +2,12 @@ import type IConfigAntiguedadRepository from "../repository/Irepositorys/IConfig
 
 const fetchConfigAntiguedades = async (
   ConfigAntiguedadRepo: IConfigAntiguedadRepository
-): Promise<ConfigAntiguedad[]> => {
+): Promise<ConfigAntiguedad> => {
   try {
     return await ConfigAntiguedadRepo.getConfigAntiguedad();
   } catch (error) {
     console.error("Error fetching config antiguedades:", error);
-    return [];
+    return {};
   }
 };
 

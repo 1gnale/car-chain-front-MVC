@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const TableButton = (tabla: tableContent) => {
   const [activeRows, setActiveRows] = useState<Record<number, boolean>>({});

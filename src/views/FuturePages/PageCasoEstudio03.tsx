@@ -10,12 +10,12 @@ import { Pencil } from "react-bootstrap-icons";
 import { Trash } from "react-bootstrap-icons";
 import { useState } from "react";
 
-const PageCasoEstudio03 =
-  ({
-  handleCurrentView, setCurrentModel
+const PageCasoEstudio03 = ({
+  handleCurrentView,
+  setCurrentModel,
 }: {
-  handleCurrentView: (pass: boolean) => void,
-  setCurrentModel: (modelo: Modelo ) => void,
+  handleCurrentView: (pass: boolean) => void;
+  setCurrentModel: (modelo: Modelo) => void;
 }) => {
   const modelos: Modelo[] = useAppSelector((state) => state.modelos.modelo);
   const [checkbox, setCheckbox] = useState<boolean>(false);
@@ -36,17 +36,21 @@ const PageCasoEstudio03 =
     return modelo.activo && matchesSearch;
   });
   const handleUpdateModel = (modelo: any): void => {
-    setCurrentModel(modelo)
-    handleCurrentView(false)
-  }
+    setCurrentModel(modelo);
+    handleCurrentView(false);
+  };
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
-      customIcons: [{
-        customIcons: Pencil, onAction: handleUpdateModel
-      }, {
-        customIcons: Trash
-      }],
+      customIcons: [
+        {
+          customIcons: Pencil,
+          onAction: handleUpdateModel,
+        },
+        {
+          customIcons: Trash,
+        },
+      ],
       titles: ["ID", "Marca", "Nombre", "Descripcion", "Estado"],
       tableBody: filteredModelos.map((modelo, idx) => ({
         key: idx,
@@ -56,11 +60,10 @@ const PageCasoEstudio03 =
           modelo.marca.nombre ?? "",
           modelo.nombre ?? "",
           modelo.descripcion ?? "",
-          (() =>  {
+          (() => {
             if (modelo.activo) {
               return "Activo";
-            }
-            else {
+            } else {
               return "Inactivo";
             }
           })(),
@@ -102,6 +105,6 @@ const PageCasoEstudio03 =
       </div>
     </div>
   );
-}
+};
 
 export default PageCasoEstudio03;

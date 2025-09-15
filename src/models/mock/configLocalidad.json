@@ -8,6 +8,10 @@
   "localidad": {
     "id": 1,
     "descripcion": "La Plata",
-    "codigoPostal": "1900"
+    "codigoPostal": "1900",
+    "provincia": {
+      "id": 1,
+      "descripcion": "Buenos Aires"
+    }
   }
 }

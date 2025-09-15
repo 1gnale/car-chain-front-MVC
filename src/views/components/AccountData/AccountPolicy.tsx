@@ -1,13 +1,10 @@
-import TitleForm from "../GeneralComponents/TitleForm";
-import TableButton from "../GeneralComponents/Table";
-import { useEffect, useState } from "react";
-import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
-import { Eye } from "react-bootstrap-icons";
+import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import ProfileCard from "../GeneralComponents/ProfileCard.tsx";
 import { Shield } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 const AccountPolicy = () => {
+  const navigate = useNavigate();
   const polices_user: Poliza[] = useAppSelector(
     (state) => state.polizas.poliza
   );
@@ -30,7 +27,9 @@ const AccountPolicy = () => {
             number={poliza.numero_poliza!}
             fecha={poliza.fechaContratacion!}
             estado={poliza.estadoPoliza!}
-            onClick={(num) => console.log("Card clickeada con número:", num)}
+            onClick={() =>
+              navigate(`/administrarPoliza/${poliza.numero_poliza}`)
+            }
           />
         ))}
       </div>

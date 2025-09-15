@@ -6,17 +6,16 @@ import IconButton from "../components/GeneralComponents/IconButton";
 import { Search, PlusSquare } from "react-bootstrap-icons";
 import CheckForm from "../components/GeneralComponents/CheckForm";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
-import {  Pencil } from "react-bootstrap-icons";
+import { Pencil } from "react-bootstrap-icons";
 import { Trash } from "react-bootstrap-icons";
 import { useState } from "react";
 
-
-const PageCasoEstudio02 =
-  ({
-  handleCurrentView, setCurrentBrand
+const PageCasoEstudio02 = ({
+  handleCurrentView,
+  setCurrentBrand,
 }: {
-  handleCurrentView: (pass: boolean) => void,
-  setCurrentBrand: (marca: Marca ) => void,
+  handleCurrentView: (pass: boolean) => void;
+  setCurrentBrand: (marca: Marca) => void;
 }) => {
   const marcas: Marca[] = useAppSelector((state) => state.marcas.marca);
   const [checkbox, setCheckbox] = useState<boolean>(false);
@@ -37,21 +36,25 @@ const PageCasoEstudio02 =
     return marca.activo && matchesSearch;
   });
   const handleUpdateBrand = (marca: any): void => {
-    setCurrentBrand(marca)
-    handleCurrentView(false)
-    console.log(marca)
-  }
+    setCurrentBrand(marca);
+    handleCurrentView(false);
+    console.log(marca);
+  };
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
-      customIcons: [{
-        customIcons: Pencil, onAction: handleUpdateBrand
-      }, {
-        customIcons: Trash
-      }],
-      
+      customIcons: [
+        {
+          customIcons: Pencil,
+          onAction: handleUpdateBrand,
+        },
+        {
+          customIcons: Trash,
+        },
+      ],
+
       titles: ["ID", "Nombre", "Descripcion", "Estado"],
-      tableBody: filteredMarcas.map(marca  => ({
+      tableBody: filteredMarcas.map((marca) => ({
         key: marca.id,
         value: marca,
         rowContent: [
@@ -59,11 +62,10 @@ const PageCasoEstudio02 =
           marca.nombre ?? "",
           marca.descripcion ?? "",
 
-          (() =>  {
+          (() => {
             if (marca.activo) {
               return "Activo";
-            }
-            else {
+            } else {
               return "Inactivo";
             }
           })(),
@@ -106,6 +108,6 @@ const PageCasoEstudio02 =
       </div>
     </div>
   );
-}
+};
 
 export default PageCasoEstudio02;

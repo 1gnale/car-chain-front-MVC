@@ -1,96 +1,188 @@
 [
-    {
+  {
+    "id": 1,
+    "monto": 15000,
+    "cotizacion": {
+      "id": 1,
+      "fechaCreacion": "2024-01-14",
+      "fechaVencimiento": "2024-02-14",
+      "vehiculo": {
         "id": 1,
-        "monto": 92718.59,
-        "cotizacion": {
-            "fechaCreacion": "2025-07-01",
-            "fechaVencimiento": "2025-08-01",
-            "vehiculo": {
-                "id": 1,
-                "nombre": "Peugeot",
-                "descripcion": "Marca japonesa",
-                "version": {
-                    "id": 1,
-                    "nombre": "Base",
-                    "descripcion": "Versión intermedia",
-                    "precio_mercado": 10353290,
-                    "precio_mercado_gnc": 10439339,
-                    "modelo": {
-                        "id": 1,
-                        "nombre": "Focus",
-                        "descripcion": "Sedán compacto",
-                        "marca": {
-                            "id": 1,
-                            "nombre": "Renault",
-                            "descripcion": "Marca japonesa"
-                        }
-                    }
-                },
-                "cliente": {
-                    "idClient": 1,
-                    "id": 1,
-                    "nombres": "Ejemplo",
-                    "apellido": "Ejemplo",
-                    "fechaNacimiento": "Ejemplo",
-                    "tipoDocumento": "Ejemplo",
-                    "documento": "Ejemplo",
-                    "domicilio": "Ejemplo",
-                    "correo": "Ejemplo",
-                    "telefono": "Ejemplo",
-                    "sexo": "Ejemplo",
-                    "contraseña": "Ejemplo",
-                    "localidad": {
-                        "id": 1,
-                        "descripcion": "La Plata",
-                        "codigoPostal": "1900",
-                        "provincia": {
-                            "id": 1,
-                            "descripcion": "Buenos Aires"
-                        }
-                    }
-                },
-                "modelos": [],
-                "matricula": "MAT-1592"
-            },
-            "configuaracionLocalidad": {
-                "id": 1,
-                "nombre": "La Plata",
-                "descuento": 1,
-                "ganancia": 10,
-                "recargo": 1.5,
-                "activo": true,
-                "localidad": {
-                    "id": 1,
-                    "descripcion": "La Plata",
-                    "codigoPostal": "1900"
-                }
-            },
-            "configudacionEdad": {
-                "id": 3,
-                "nombre": "Mayores",
-                "minima": 51,
-                "maxima": 70,
-                "descuento": 7.5,
-                "ganancia": 6,
-                "recargo": 1,
-                "activo": true
-            },
-            "configuracionAntiguedad": {
-                "id": 2,
-                "nombre": "Cuando es usado",
-                "minima": 4,
-                "maxima": 6,
-                "descuento": 0,
-                "ganancia": 0,
-                "recargo": 100,
-                "activo": true
+        "chasis": "9BWZZZ377VT004251",
+        "matricula": "ABC123",
+        "numeroMotor": "2TR001234",
+        "gnc": false,
+        "version": {
+          "id": 1,
+          "nombre": "XLI",
+          "descripcion": "XLI 1.8 MT",
+          "precio_mercado": 3500000,
+          "precio_mercado_gnc": 3700000,
+          "modelo": {
+            "id": 1,
+            "nombre": "Corolla",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Toyota",
+              "descripcion": "Toyota Motor Corporation"
             }
+          }
         },
-        "cobertura": {
-            "id_cobertura": 1,
-            "nombre": "Cobertura Total",
-            "descripcion": "Incluye daños, robo y responsabilidad civil",
-            "recargoPorAtraso": 2.5
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Juan Carlos",
+          "apellido": "García López",
+          "fechaNacimiento": "1985-03-14",
+          "tipoDocumento": "DNI",
+          "documento": "20123456789",
+          "domicilio": "Av. Corrientes 1234",
+          "correo": "juan.garcia@email.com",
+          "telefono": "11-4555-1234",
+          "sexo": "Masculino",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
         }
+      }
+    },
+    "cobertura": {
+      "id": 1,
+      "nombre": "Cobertura Básica",
+      "descripcion": "Cubre daños menores",
+      "recargoPorAtraso": 2.5,
+      "activo": true
     }
+  },
+  {
+    "id": 6,
+    "monto": 50000,
+    "cotizacion": {
+      "id": 1,
+      "fechaCreacion": "2024-01-14",
+      "fechaVencimiento": "2024-02-14",
+      "vehiculo": {
+        "id": 1,
+        "chasis": "9BWZZZ377VT004251",
+        "matricula": "ABC123",
+        "numeroMotor": "2TR001234",
+        "gnc": false,
+        "version": {
+          "id": 1,
+          "nombre": "XLI",
+          "descripcion": "XLI 1.8 MT",
+          "precio_mercado": 3500000,
+          "precio_mercado_gnc": 3700000,
+          "modelo": {
+            "id": 1,
+            "nombre": "Corolla",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Toyota",
+              "descripcion": "Toyota Motor Corporation"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Juan Carlos",
+          "apellido": "García López",
+          "fechaNacimiento": "1985-03-14",
+          "tipoDocumento": "DNI",
+          "documento": "20123456789",
+          "domicilio": "Av. Corrientes 1234",
+          "correo": "juan.garcia@email.com",
+          "telefono": "11-4555-1234",
+          "sexo": "Masculino",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        }
+      }
+    },
+    "cobertura": {
+      "id": 2,
+      "nombre": "Cobertura Intermedia",
+      "descripcion": "Cubre daños importantes excepto destrucción total",
+      "recargoPorAtraso": 3.5,
+      "activo": true
+    }
+  },
+  {
+    "id": 7,
+    "monto": 150000,
+    "cotizacion": {
+      "id": 1,
+      "fechaCreacion": "2024-01-14",
+      "fechaVencimiento": "2024-02-14",
+      "vehiculo": {
+        "id": 1,
+        "chasis": "9BWZZZ377VT004251",
+        "matricula": "ABC123",
+        "numeroMotor": "2TR001234",
+        "gnc": false,
+        "version": {
+          "id": 1,
+          "nombre": "XLI",
+          "descripcion": "XLI 1.8 MT",
+          "precio_mercado": 3500000,
+          "precio_mercado_gnc": 3700000,
+          "modelo": {
+            "id": 1,
+            "nombre": "Corolla",
+            "descripcion": "Sedán compacto",
+            "marca": {
+              "id": 1,
+              "nombre": "Toyota",
+              "descripcion": "Toyota Motor Corporation"
+            }
+          }
+        },
+        "cliente": {
+          "idClient": 1,
+          "id": 1,
+          "nombres": "Juan Carlos",
+          "apellido": "García López",
+          "fechaNacimiento": "1985-03-14",
+          "tipoDocumento": "DNI",
+          "documento": "20123456789",
+          "domicilio": "Av. Corrientes 1234",
+          "correo": "juan.garcia@email.com",
+          "telefono": "11-4555-1234",
+          "sexo": "Masculino",
+          "localidad": {
+            "id": 1,
+            "descripcion": "La Plata",
+            "codigoPostal": "1900",
+            "provincia": {
+              "id": 1,
+              "descripcion": "Buenos Aires"
+            }
+          }
+        }
+      }
+    },
+    "cobertura": {
+      "id": 3,
+      "nombre": "Cobertura Total",
+      "descripcion": "Cubre todo tipo de daños",
+      "recargoPorAtraso": 5.0,
+      "activo": true
+    }
+  }
 ]

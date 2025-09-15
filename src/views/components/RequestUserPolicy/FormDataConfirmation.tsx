@@ -13,7 +13,6 @@ const FormDataConfirmation = ({
   handleCurrentView: (pass: boolean) => void;
 }) => {
   const [policy, setPolicy] = useState<Poliza>({});
-
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
@@ -84,47 +83,9 @@ const FormDataConfirmation = ({
     return documentationImages[imageKey] || "";
   }
 
-  /*const handleTable = (): tableContent => {
-    return {
-      showButtom: true,
-      customIcons: [
-        {
-          customIcons: Pencil,
-          onAction: handleUpdateDetail,
-        },
-        {
-          customIcons: Trash,
-        },
-      ],
-      titles: [
-        "ID",
-        "Nombre",
-        "Descripcion",
-        "Porcentaje En Miles",
-        "Monto Fijo",
-        "Estado",
-      ],
-      tableBody: filteredDetalles.map((detail) => ({
-        key: detail.id,
-        value: detail,
-        rowContent: [
-          String(detail.id) ?? "",
-          detail.nombre ?? "",
-          detail.descripcion ?? "",
-          String(detail.porcentaje_miles) ?? "",
-          String(detail.monto_fijo) ?? "",
-          (() => {
-            if (detail.activo) {
-              return "Activo";
-            } else {
-              return "Inactivo";
-            }
-          })(),
-        ],
-      })),
-    };
-  };*/
   const handleTable = (): tableContent => {
+    console.log("policy");
+    console.log(policy);
     return {
       showButtom: false,
       titles: ["ID", "Detalle", "Descripcion", "Monto asegurado"],

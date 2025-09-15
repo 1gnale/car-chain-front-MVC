@@ -24,7 +24,10 @@ const ModelosPage = ({ isAuth }: { isAuth: boolean }) => {
   };
 
   const views = [
-    <ModificarModelo modelo={currentModel} handleCurrentView={handleCurrentView} />,
+    <ModificarModelo
+      modelo={currentModel}
+      handleCurrentView={handleCurrentView}
+    />,
     <PageCasoEstudio03
       handleCurrentView={handleCurrentView}
       setCurrentModel={setCurrentModel}

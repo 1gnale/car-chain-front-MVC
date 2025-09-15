@@ -1,9 +1,9 @@
-import GrayButton from "../components/GeneralComponents/Button";
+import GrayButton from "../components/GeneralComponents/Button.tsx";
 import { useAppSelector } from "../../redux/reduxTypedHooks";
 import useFormValidation from "../../controllers/controllerHooks/Validations/useFormValidation";
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
-import SelectForm from "../components/GeneralComponents/SelectForm";
+import SelectForm from "../components/GeneralComponents/SelectForm.tsx";
 import { useLocalStorage } from "../../controllers/controllerHooks/LocalStorage/useLocalStorage";
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 
