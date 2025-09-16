@@ -1,13 +1,13 @@
 import type IConfigEdadRepository from "../Irepositorys/IConfigEdadRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class ConfigEdadRepository implements IConfigEdadRepository {
-  private data: ConfigEdad = {};
-
-  constructor(data: ConfigEdad) {
-    this.data = data;
+export class ConfigEdadRepository extends BaseRepository<ConfigEdad> implements IConfigEdadRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
-  getConfigEdad(): Promise<ConfigEdad> {
-    return Promise.resolve(this.data);
+  async getConfigEdad(): Promise<ConfigEdad> {
+    const data = await this.fetchData();
+    return data[0] || {};
   }
 }

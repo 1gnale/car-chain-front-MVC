@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonCobertura from "../../../models/mock/coberturasMock.json";
-import { CoberturasRepository } from "../../../models/repository/Repositorys/coberturasRepository";
-import fetchCoberturas from "../../../models/fetchs/fetchCoberturas";
 import { setCobertura } from "../../../redux/coberturaSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useCoberturasHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const coberturaRepo = new CoberturasRepository(jsonCobertura);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/cobertura/`;
+
+  const { data: coberturas, loading, error, refetch } = useGenericFetch<string>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchCoberturas(coberturaRepo)
-      .then((fetchedCoberturas) => {
-        dispatch(setCobertura(fetchedCoberturas));
-      })
-      .catch((err) => {
-        console.error("Error fetching coberturas:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, coberturaRepo]);
+    if (coberturas.length > 0) {
+      dispatch(setCobertura(coberturas));
+    }
+  }, [coberturas, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useCoberturasHook;

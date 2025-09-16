@@ -1,32 +1,28 @@
 import { useEffect, useState } from "react";
-import { fetchLineaCotizacionById } from "../../../models/fetchs/fetchLineaCotizacion";
-import { LineaCotizacionRepository } from "../../../models/repository/Repositorys/lineaCotizacionRepository";
-import type ILineaCotizacionRepository from "../../../models/repository/Irepositorys/ILineaCotizacionRepository";
-import json from "../../../models/mock/id1Cotizacion.json";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useGetPricing = (id: string) => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
   const [pricing, setPricing] = useState<Linea_Cotizacion[] | null>(null);
-  const lineaCotizacionRepo: ILineaCotizacionRepository =
-    new LineaCotizacionRepository(json);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/lineas-cotizacion/`;
+  
+  const { data: lineasCotizacion, loading, error, refetch } = useGenericFetch<Linea_Cotizacion>(apiUrl);
+
   useEffect(() => {
-    setLoading(true);
-    setError(false);
+    if (lineasCotizacion.length > 0 && id) {
+      // Filtrar las líneas de cotización por el ID de cotización
+      const filteredPricing = lineasCotizacion.filter(
+        (linea) => linea.cotizacion?.id === Number(id)
+      );
+      setPricing(filteredPricing);
+    }
+  }, [lineasCotizacion, id]);
 
-    fetchLineaCotizacionById(lineaCotizacionRepo, id)
-      .then((data) => {
-        setPricing(data);
-      })
-      .catch(() => {
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [id]);
-
-  return { loading, error, pricing };
+  return { 
+    loading, 
+    error: !!error, 
+    pricing,
+    refetch 
+  };
 };
 
 export default useGetPricing;

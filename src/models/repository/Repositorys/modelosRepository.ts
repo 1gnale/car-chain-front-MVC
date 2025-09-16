@@ -1,13 +1,12 @@
 import type IModelosRepository from "../Irepositorys/IModelosRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class ModeloRepository implements IModelosRepository {
-  private data: Modelo[] = [];
-
-  constructor(data: Modelo[]) {
-    this.data = data;
+export class ModeloRepository extends BaseRepository<Modelo> implements IModelosRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getModelos(): Promise<Modelo[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

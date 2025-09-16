@@ -1,35 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonTiposContratacion from "../../../models/mock/tipoContratacionMock.json";
-import { TipoContratacionRepository } from "../../../models/repository/Repositorys/tipoContratacionRepository";
-import fetchTiposContratacion from "../../../models/fetchs/fetchTipoContratacion";
 import { setTipoContratacion } from "../../../redux/hiringTypesSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useTipoContratacionHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const tipoContratacionRepo = new TipoContratacionRepository(
-    jsonTiposContratacion
-  );
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/tipoContratacion/`;
+  
+  const { data: tiposContratacion, loading, error, refetch } = useGenericFetch<TipoContratacion>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchTiposContratacion(tipoContratacionRepo)
-      .then((fetchedTipoContratacion) => {
-        dispatch(setTipoContratacion(fetchedTipoContratacion));
-      })
-      .catch((err) => {
-        console.error("Error fetching brands:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch]);
+    if (tiposContratacion.length > 0) {
+      dispatch(setTipoContratacion(tiposContratacion));
+    }
+  }, [tiposContratacion, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useTipoContratacionHook;

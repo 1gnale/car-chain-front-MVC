@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonVersion from "../../../models/mock/versionesMock.json";
-import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository";
-import fetchVersiones from "../../../models/fetchs/fetchVersiones";
 import { setVersion } from "../../../redux/versionSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useVersionesHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const versionRepo = new VersionRepository(jsonVersion);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/versiones`;
+  
+  const { data: versiones, loading, error, refetch } = useGenericFetch<Version>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchVersiones(versionRepo)
-      .then((fetchedVersiones) => {
-        dispatch(setVersion(fetchedVersiones));
-      })
-      .catch((err) => {
-        console.error("Error fetching versiones:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, versionRepo]);
+    if (versiones.length > 0) {
+      dispatch(setVersion(versiones));
+    }
+  }, [versiones, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useVersionesHook;

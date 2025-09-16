@@ -1,13 +1,13 @@
 import type IConfigLocalidadRepository from "../Irepositorys/IConfigLocalidadRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class ConfigLocalidadesRepository implements IConfigLocalidadRepository {
-  private data: ConfigLocalidad = {};
-
-  constructor(data: ConfigLocalidad) {
-    this.data = data;
+export class ConfigLocalidadesRepository extends BaseRepository<ConfigLocalidad> implements IConfigLocalidadRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
-  getConfigLocalidades(): Promise<ConfigLocalidad> {
-    return Promise.resolve(this.data);
+  async getConfigLocalidades(): Promise<ConfigLocalidad> {
+    const data = await this.fetchData();
+    return data[0] || {};
   }
 }

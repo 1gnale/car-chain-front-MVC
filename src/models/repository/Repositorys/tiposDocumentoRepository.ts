@@ -1,13 +1,12 @@
 import type ITiposDocumentoRepository from "../Irepositorys/ITiposDocumentoRepository.ts";
+import { BaseRepository } from "./BaseRepository";
 
-export class tiposDocumentoRepository implements ITiposDocumentoRepository {
-  private data: string[] = [];
-
-  constructor(data: string[]) {
-    this.data = data;
+export class tiposDocumentoRepository extends BaseRepository<string> implements ITiposDocumentoRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getTiposDocumento(): Promise<string[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

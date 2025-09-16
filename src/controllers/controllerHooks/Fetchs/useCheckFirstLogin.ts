@@ -18,7 +18,7 @@ const useCheckFirstLogin = () => {
 
       const data = await response.json();
 
-      if (!data) {
+      if (!data.data) {
         navigate("/registrar");
       }
     } catch (error) {

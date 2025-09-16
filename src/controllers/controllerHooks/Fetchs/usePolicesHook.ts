@@ -1,35 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonPoliza from "../../../models/mock/polizasMock.json";
-import { PolizasRepository } from "../../../models/repository/Repositorys/polizasRepository";
-
-import { setModelo } from "../../../redux/modeloSlice";
-import fetchPolices from "../../../models/fetchs/fetchPolices";
 import { setPoliza } from "../../../redux/policeSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
-const useModelosHook = () => {
+const usePolicesHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const polizaRepo = new PolizasRepository(jsonPoliza);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/polizas/`;
+  
+  const { data: polizas, loading, error, refetch } = useGenericFetch<Poliza>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchPolices(polizaRepo)
-      .then((fetchedPolizas) => {
-        dispatch(setPoliza(fetchedPolizas));
-      })
-      .catch((err) => {
-        console.error("Error fetching polizas:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, polizaRepo]);
+    if (polizas.length > 0) {
+      dispatch(setPoliza(polizas));
+    }
+  }, [polizas, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
-export default useModelosHook;
+export default usePolicesHook;

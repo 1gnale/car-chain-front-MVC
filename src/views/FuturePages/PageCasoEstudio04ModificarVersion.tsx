@@ -8,6 +8,7 @@ import { useLocalStorage } from "../../controllers/controllerHooks/LocalStorage/
 import useLocalStorageItem from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import Input from "../components/GeneralComponents/Input.tsx";
 import CheckForm from "../components/GeneralComponents/CheckForm.tsx";
+import useUpdateVersion from "../../controllers/controllerHooks/Mutations/useUpdateVersionHook.ts";
 
 function ModificarVersion({
   version,
@@ -17,6 +18,9 @@ function ModificarVersion({
   handleCurrentView: (pass: boolean) => void;
 }) {
   const [checkbox, setCheckbox] = useState<boolean>(version.activo!);
+  
+  // Hook para actualizar versión
+  const { updateVersion, loading, error, success } = useUpdateVersion();
 
   // Redux selectors
   const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
@@ -36,10 +40,48 @@ function ModificarVersion({
     modelo: version.modelo,
     activo: version.activo,
   });
-console.log(brands)
-console.log(models)
+
   const handleCancel = (): void => {
     handleCurrentView(true);
+  };
+
+  // Función para manejar la actualización
+  const handleUpdate = async (): Promise<void> => {
+    try {
+      // Buscar el modelo seleccionado
+      const selectedModelData = models.find(model => model.id === selectedModel);
+      
+      if (!selectedModelData) {
+        alert('Por favor selecciona un modelo válido');
+        return;
+      }
+
+      const updatedVersionData: Partial<Version> = {
+        nombre: formVersion.nombre,
+        descripcion: formVersion.descripcion,
+        precio_mercado: formVersion.precio_mercado,
+        precio_mercado_gnc: formVersion.precio_mercado_gnc,
+        modelo: selectedModelData,
+        activo: checkbox,
+      };
+
+      await updateVersion(version.id!, updatedVersionData);
+      
+      if (success) {
+        alert('Versión actualizada exitosamente');
+        handleCurrentView(true);
+      }
+    } catch (err) {
+      alert(`Error al actualizar la versión: ${error || 'Error desconocido'}`);
+    }
+  };
+
+  // Manejadores de cambio para los inputs
+  const handleInputChange = (field: keyof Version, value: string | number) => {
+    setFormVersion(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   // Opciones de marcas
@@ -67,7 +109,26 @@ console.log(models)
 
   const handleStateModel = (id: number) => {
     setSelectedModel(id);
+    // Actualizar el modelo en formVersion
+    const selectedModelData = models.find(model => model.id === id);
+    if (selectedModelData) {
+      setFormVersion(prev => ({
+        ...prev,
+        modelo: selectedModelData
+      }));
+    }
   };
+
+  // Efecto para actualizar el modelo cuando cambien los selects
+  useEffect(() => {
+    const selectedModelData = models.find(model => model.id === selectedModel);
+    if (selectedModelData) {
+      setFormVersion(prev => ({
+        ...prev,
+        modelo: selectedModelData
+      }));
+    }
+  }, [selectedModel, models]);
 
   return (
     <div className="bg-white p-4 rounded shadow-sm mb-4">
@@ -77,6 +138,25 @@ console.log(models)
         labelStyle={{ width: "100px" }}
         classNameDiv="d-flex align-items-start mb-3"
         value={formVersion.nombre}
+        onChange={(value) => handleInputChange('nombre', value)}
+      />
+
+      <Input
+        title="Precio Mercado"
+        place=""
+        labelStyle={{ width: "100px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        value={formVersion.precio_mercado?.toString() || ''}
+        onChange={(value) => handleInputChange('precio_mercado', parseFloat(value) || 0)}
+      />
+
+      <Input
+        title="Precio Mercado GNC"
+        place=""
+        labelStyle={{ width: "100px" }}
+        classNameDiv="d-flex align-items-start mb-3"
+        value={formVersion.precio_mercado_gnc?.toString() || ''}
+        onChange={(value) => handleInputChange('precio_mercado_gnc', parseFloat(value) || 0)}
       />
 
       <Input
@@ -86,6 +166,7 @@ console.log(models)
         as="textarea"
         classNameDiv="d-flex align-items-start mb-3"
         value={formVersion.descripcion}
+        onChange={(value) => handleInputChange('descripcion', value)}
       />
 
       <div className="col-md-4 ">
@@ -122,13 +203,31 @@ console.log(models)
         />
       </div>
 
+      {/* Mostrar errores */}
+      {error && (
+        <div className="alert alert-danger mt-3" role="alert">
+          Error: {error}
+        </div>
+      )}
+
+      {/* Mostrar éxito */}
+      {success && (
+        <div className="alert alert-success mt-3" role="alert">
+          Versión actualizada exitosamente
+        </div>
+      )}
+
       <div
         className="d-grid d-md-flex justify-content-md-end"
         style={{ padding: "10px", gap: "2rem" }}
       >
         <div className="d-flex justify-content-end gap-3 mt-4">
           <GrayButton text="Cancelar" onClick={handleCancel} />
-          <GrayButton text="Confirmar" onClick={() => {}} />
+          <GrayButton 
+            text={loading ? "Actualizando..." : "Confirmar"} 
+            onClick={handleUpdate}
+            disabled={loading}
+          />
         </div>
       </div>
     </div>

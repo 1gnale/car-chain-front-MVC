@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setPeriodoPago } from "../../../redux/periodoPagosSlice";
-import jsonPeriodosPago from "../../../models/mock/periodoPagosMock.json";
-import { PeriodosPagoRepository } from "../../../models/repository/Repositorys/periodosPagoRepository";
-import fetchPeriodosPago from "../../../models/fetchs/fetchPeriodosPago";
+import { useGenericFetch } from "./useGenericFetch";
 
 const usePeriodosPagoHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const periodosRepo = new PeriodosPagoRepository(jsonPeriodosPago);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/periodoPago/`;
+  
+  const { data: periodosPago, loading, error, refetch } = useGenericFetch<PeriodoPago>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchPeriodosPago(periodosRepo)
-      .then((fetchedPeriodosPago) => {
-        dispatch(setPeriodoPago(fetchedPeriodosPago));
-      })
-      .catch((err) => {
-        console.error("Error fetching payment period:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, periodosRepo]);
+    if (periodosPago.length > 0) {
+      dispatch(setPeriodoPago(periodosPago));
+    }
+  }, [periodosPago, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default usePeriodosPagoHook;

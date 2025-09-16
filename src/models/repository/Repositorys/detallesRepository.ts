@@ -1,13 +1,12 @@
 import type IDetallesRepository from "../Irepositorys/IDetallesRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class DetallesRepository implements IDetallesRepository {
-  private data: Detalle[] = [];
-
-  constructor(data: Detalle[]) {
-    this.data = data;
+export class DetallesRepository extends BaseRepository<Detalle> implements IDetallesRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getDetalles(): Promise<Detalle[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

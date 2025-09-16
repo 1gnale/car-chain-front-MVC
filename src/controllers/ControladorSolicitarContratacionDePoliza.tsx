@@ -1,6 +1,6 @@
 import RequestUserPolicy from "../views/pages/RequestUserPolicy";
-import useMarcasHook from "./controllerHooks/Fetchs/useMarcasHook";
-import useModelosHook from "./controllerHooks/Fetchs/useModelosHook";
+import useMarcasHookV2 from "./controllerHooks/Fetchs/useMarcasHookV2";
+import useModelosHookV2 from "./controllerHooks/Fetchs/useModelosHookV2";
 import useTiposDocumentosHook from "./controllerHooks/Fetchs/useTiposDocumentosHook";
 import useVersionesHook from "./controllerHooks/Fetchs/useVersionesHook";
 import useLocalidadesHook from "./controllerHooks/Fetchs/useLocalidadesHook";
@@ -16,10 +16,10 @@ import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 
 const ControladorSolicitarContratacionDePoliza = () => {
   const { isAuthenticated, isLoading } = useAuth0();
-  // Hook que trae todas las marcas
-  const { loading, error } = useMarcasHook();
-  // Hook que trae todas las modelos
-  const { loading: loadingModelos, error: errorModelos } = useModelosHook();
+  // Hook que trae todas las marcas (versión optimizada)
+  const { loading, error } = useMarcasHookV2();
+  // Hook que trae todas las modelos (versión optimizada)
+  const { loading: loadingModelos, error: errorModelos } = useModelosHookV2();
   // Hook que trae todas las versiones
   const { loading: loadingVersiones, error: errorVersiones } =
     useVersionesHook();

@@ -1,6 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import useVersionesHook from "./controllerHooks/Fetchs/useVersionesHook";
 import VersionesPage from "../views/pages/VersionesPage";
+import useMarcasHook from "./controllerHooks/Fetchs/useMarcasHookV2";
+import useModelosHook from "./controllerHooks/Fetchs/useModelosHookV2";
 
 const ControladorVersiones = () => {
   const { isAuthenticated, isLoading } = useAuth0();

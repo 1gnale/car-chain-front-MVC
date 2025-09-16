@@ -1,13 +1,12 @@
 import type ILocalidadRepository from "../Irepositorys/ILocalidadRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class LocalidadRepository implements ILocalidadRepository {
-  private data: Localidad[] = [];
-
-  constructor(data: Localidad[]) {
-    this.data = data;
+export class LocalidadRepository extends BaseRepository<Localidad> implements ILocalidadRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getLocalidades(): Promise<Localidad[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

@@ -6,7 +6,6 @@ import useFormValidation from "../../controllers/controllerHooks/Validations/use
 import getFromLocalStorage from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
 import DateInput from "../components/GeneralComponents/DateInput";
 import { createClient } from "../../models/fetchs/fetchCreateClient";
-import { tipoDocumentoSlice } from "../../redux/tiposDocumentosSlice";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const PageRegistrar = () => {

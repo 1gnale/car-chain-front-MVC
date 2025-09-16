@@ -1,13 +1,12 @@
 import type ITipoContratacionRepository from "../Irepositorys/ITipoContratacionRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class TipoContratacionRepository implements ITipoContratacionRepository {
-  private data: TipoContratacion[] = [];
-
-  constructor(data: TipoContratacion[]) {
-    this.data = data;
+export class TipoContratacionRepository extends BaseRepository<TipoContratacion> implements ITipoContratacionRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getTiposContratacion(): Promise<TipoContratacion[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

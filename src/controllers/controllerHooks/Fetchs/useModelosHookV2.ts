@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setModelo } from "../../../redux/modeloSlice";
 import { useGenericFetch } from "./useGenericFetch";
 
-const useModelosHook = () => {
+const useModelosHookV2 = () => {
   const dispatch = useDispatch();
   const apiUrl = `${import.meta.env.VITE_BASEURL}/api/modelos/`;
   
@@ -22,4 +22,4 @@ const useModelosHook = () => {
   };
 };
 
-export default useModelosHook;
+export default useModelosHookV2;

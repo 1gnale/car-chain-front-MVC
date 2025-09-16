@@ -1,13 +1,12 @@
 import type ICoberturasRepository from "../Irepositorys/ICoberturasRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class CoberturasRepository implements ICoberturasRepository {
-  private data: Cobertura[] = [];
-
-  constructor(data: Cobertura[]) {
-    this.data = data;
+export class CoberturasRepository extends BaseRepository<Cobertura> implements ICoberturasRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getCoberturas(): Promise<Cobertura[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

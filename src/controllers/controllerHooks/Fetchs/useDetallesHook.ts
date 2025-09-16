@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonDetalles from "../../../models/mock/detallesMock.json";
-import { DetallesRepository } from "../../../models/repository/Repositorys/detallesRepository";
-import fetchDetalles from "../../../models/fetchs/fetchDetalles";
 import { setDetalles } from "../../../redux/detallesSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useDetallesHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const detallesRepo = new DetallesRepository(jsonDetalles);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/detalle/`;
+  
+  const { data: detalles, loading, error, refetch } = useGenericFetch<Detalle>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchDetalles(detallesRepo)
-      .then((fetchedDetalle) => {
-        dispatch(setDetalles(fetchedDetalle));
-      })
-      .catch((err) => {
-        console.error("Error fetching detalles:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, detallesRepo]);
+    if (detalles.length > 0) {
+      dispatch(setDetalles(detalles));
+    }
+  }, [detalles, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useDetallesHook;

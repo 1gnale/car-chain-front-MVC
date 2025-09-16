@@ -1,20 +1,20 @@
 import type ILineaCotizacionRepository from "../Irepositorys/ILineaCotizacionRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class LineaCotizacionRepository implements ILineaCotizacionRepository {
-  private data: Linea_Cotizacion[] = [];
-
-  constructor(data: Linea_Cotizacion[]) {
-    this.data = data;
+export class LineaCotizacionRepository extends BaseRepository<Linea_Cotizacion> implements ILineaCotizacionRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getLineaCotizacion(): Promise<Linea_Cotizacion[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 
-  getLineaCotizacionByCotizacionId(id: string): Promise<Linea_Cotizacion[]> {
-    const lineas = this.data.filter(
+  async getLineaCotizacionByCotizacionId(id: string): Promise<Linea_Cotizacion[]> {
+    const data = await this.fetchData();
+    const lineas = data.filter(
       (line) => line.cotizacion?.id === Number(id)
     );
-    return Promise.resolve(lineas);
+    return lineas;
   }
 }

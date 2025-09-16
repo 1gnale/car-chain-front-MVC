@@ -6,12 +6,11 @@ import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 
 const ControladorRegister = () => {
   // Lógica del controlador de registro
-  const { loading: loadingTipoDoc, error: errorTipoDoc } =
-    useTiposDocumentosHook();
+  const { loading: loadingTipoDoc } = useTiposDocumentosHook();
   // Hook que trae todos las provincias
-  const { loading: loadingProv, error: errorProv } = useProvinciasHook();
+  const { loading: loadingProv } = useProvinciasHook();
   // Hook que trae todas las localidades
-  const { loading: loadingLoc, error: errorLoc } = useLocalidadesHook();
+  const { loading: loadingLoc } = useLocalidadesHook();
   if (loadingTipoDoc || loadingProv || loadingLoc) {
     return <Spinner title="Loading..." text="Por favor espere" />;
   }

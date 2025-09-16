@@ -1,30 +1,12 @@
 import type IMarcaRepository from "../Irepositorys/IMarcaRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class MarcaRepository implements IMarcaRepository {
-  private apiUrl?: string;
-
+export class MarcaRepository extends BaseRepository<Marca> implements IMarcaRepository {
   constructor(apiUrl?: string) {
-    this.apiUrl = apiUrl;
+    super(apiUrl);
   }
 
-  async getMarcas(): Promise<any> {
-    if (this.apiUrl) {
-      // Usar API real
-      try {
-        const response = await fetch(this.apiUrl);
-        const apiData = await response.json();
-        console.log("response MARCAS");
-        console.log(apiData);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return apiData.data;
-      } catch (error) {
-        console.error("Error fetching from API:", error);
-        // Fallback a datos mock si existen
-        throw error;
-      }
-    }
+  async getMarcas(): Promise<Marca[]> {
+    return this.fetchData();
   }
 }

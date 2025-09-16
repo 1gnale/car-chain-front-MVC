@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonProvincia from "../../../models/mock/provinciasMock.json";
-import { ProvinciaRepository } from "../../../models/repository/Repositorys/provinciasRepository";
-import fetchProvincias from "../../../models/fetchs/fetchProvincias";
 import { setProvincias } from "../../../redux/provinciasSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useProvinciasHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const provinciaRepo = new ProvinciaRepository(jsonProvincia);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/provincias/`;
+  
+  const { data: provincias, loading, error, refetch } = useGenericFetch<Provincia>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchProvincias(provinciaRepo)
-      .then((fetchedProvincias) => {
-        dispatch(setProvincias(fetchedProvincias));
-      })
-      .catch((err) => {
-        console.error("Error fetching Provincias:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, provinciaRepo]);
+    if (provincias.length > 0) {
+      dispatch(setProvincias(provincias));
+    }
+  }, [provincias, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useProvinciasHook;

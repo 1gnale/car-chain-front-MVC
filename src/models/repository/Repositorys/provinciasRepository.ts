@@ -1,13 +1,12 @@
 import type IProvinciasRepository from "../Irepositorys/IProvinciasRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class ProvinciaRepository implements IProvinciasRepository {
-  private data: Provincia[] = [];
-
-  constructor(data: Provincia[]) {
-    this.data = data;
+export class ProvinciaRepository extends BaseRepository<Provincia> implements IProvinciasRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getProvincias(): Promise<Provincia[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

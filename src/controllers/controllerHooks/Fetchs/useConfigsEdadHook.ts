@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonConfigEdad from "../../../models/mock/configEdad.json";
-import { ConfigEdadRepository } from "../../../models/repository/Repositorys/configEdadRepository";
-import fetchConfigEdades from "../../../models/fetchs/fetchConfigEdades";
 import { setConfigEdad } from "../../../redux/configEdadSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useEdadHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const configEdadRepo = new ConfigEdadRepository(jsonConfigEdad);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/configuracionEdad/`;
+  
+  const { data: configEdad, loading, error, refetch } = useGenericFetch<ConfigEdad>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchConfigEdades(configEdadRepo)
-      .then((fetchedConfigEdad) => {
-        dispatch(setConfigEdad(fetchedConfigEdad));
-      })
-      .catch((err) => {
-        console.error("Error fetching config edad:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, configEdadRepo]);
+    if (configEdad.length > 0) {
+      dispatch(setConfigEdad(configEdad));
+    }
+  }, [configEdad, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useEdadHook;

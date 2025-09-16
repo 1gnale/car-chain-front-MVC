@@ -1,35 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonCoberturaDetalle from "../../../models/mock/coberturaDetalleMock.json";
-import fetchCoberturasDetalles from "../../../models/fetchs/fetchCoberturasDetalle";
-import { CoberturasDetalleRepository } from "../../../models/repository/Repositorys/coberturasDetalleRepository";
 import { setCoberturaDetalle } from "../../../redux/coberturaDetalleSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
-const useCoberturasDetalleHook = () => {
+const useCoberturaDetalle = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const coberturaDetalleRepo = new CoberturasDetalleRepository(
-    jsonCoberturaDetalle
-  );
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/coberturaDetalle/`;
+  
+  const { data: coberturaDetalle, loading, error, refetch } = useGenericFetch<string>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchCoberturasDetalles(coberturaDetalleRepo)
-      .then((fetchedCoberturasDetalle) => {
-        dispatch(setCoberturaDetalle(fetchedCoberturasDetalle));
-      })
-      .catch((err) => {
-        console.error("Error fetching coberturas detalle:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, coberturaDetalleRepo]);
+    if (coberturaDetalle.length > 0) {
+      dispatch(setCoberturaDetalle(coberturaDetalle));
+    }
+  }, [coberturaDetalle, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
-export default useCoberturasDetalleHook;
+export default useCoberturaDetalle;

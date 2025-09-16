@@ -1,13 +1,12 @@
 import type IPolizasRepository from "../Irepositorys/IPolizasRepository";
+import { BaseRepository } from "./BaseRepository";
 
-export class PolizasRepository implements IPolizasRepository {
-  private data: Poliza[] = [];
-
-  constructor(data: Poliza[]) {
-    this.data = data;
+export class PolizasRepository extends BaseRepository<Poliza> implements IPolizasRepository {
+  constructor(apiUrl?: string) {
+    super(apiUrl);
   }
 
   getPolizas(): Promise<Poliza[]> {
-    return Promise.resolve(this.data);
+    return this.fetchData();
   }
 }

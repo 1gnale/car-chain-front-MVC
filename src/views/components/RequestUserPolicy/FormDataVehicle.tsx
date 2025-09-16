@@ -63,8 +63,8 @@ const FormDataVehicle = ({
     if (vehicleLocalStorage !== null) {
       setModel(true);
       setVersion(true);
-      setSelectedBrand(vehicleLocalStorage.version.modelo.marca.id);
-      setSelectedModel(vehicleLocalStorage.version.modelo.id);
+      setSelectedBrand(vehicleLocalStorage.version.modelo!.marca.id);
+      setSelectedModel(vehicleLocalStorage.version.modelo!.id);
       setSelectedVersion(vehicleLocalStorage.version.id);
       setFormVehicle(parseFormVehicle(vehicleLocalStorage));
     }
@@ -73,9 +73,9 @@ const FormDataVehicle = ({
   function parseFormVehicle(vehiculo: Vehiculo): FormVehicleProps {
     return {
       matricula: vehiculo.matricula || "",
-      marca: vehiculo.version.modelo.marca.nombre || "",
+      marca: vehiculo.version.modelo!.marca.nombre || "",
       chasis: vehiculo.chasis || "",
-      modelo: vehiculo.version.modelo.nombre || "",
+      modelo: vehiculo.version.modelo!.nombre || "",
       numeroMotor: vehiculo.numeroMotor || "",
       version: vehiculo.version.nombre || "",
       gnc: vehiculo.gnc || false,
@@ -105,7 +105,7 @@ const FormDataVehicle = ({
 
   const handleVersion = useMemo(() => {
     const versionesFiltrados = versions.filter(
-      (version) => version.modelo.id === selectedModel
+      (version) => version.modelo!.id === selectedModel
     );
 
     const result = versionesFiltrados.map((version) => ({

@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setTipoDocumento } from "../../../redux/tiposDocumentosSlice";
-import jsonDocType from "../../../models/mock/tiposDeDocumentoMock.json";
-import { tiposDocumentoRepository } from "../../../models/repository/Repositorys/tiposDocumentoRepository";
-import fetchTiposDocumento from "../../../models/fetchs/fetchTiposDocumento";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useTiposDocumentos = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const documentTypeRepo = new tiposDocumentoRepository(jsonDocType);
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/tipos-documento/values`;
+
+  const { data: tiposDocumento, loading, error, refetch } = useGenericFetch<string[]>(apiUrl);
 
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchTiposDocumento(documentTypeRepo)
-      .then((fetchedTipoDocumento) => {
-        dispatch(setTipoDocumento(fetchedTipoDocumento));
-      })
-      .catch((err) => {
-        console.error("Error fetching tipo documentos:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, documentTypeRepo]);
+    if (tiposDocumento.length > 0) {
+      dispatch(setTipoDocumento(tiposDocumento));
+    }
+  }, [tiposDocumento, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useTiposDocumentos;

@@ -1,33 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import jsonLocalidades from "../../../models/mock/localidadesMock.json";
-import { LocalidadRepository } from "../../../models/repository/Repositorys/localidadRepository";
-import fetchLocalidades from "../../../models/fetchs/fetchLocalidades";
 import { setLocalidad } from "../../../redux/localidadesSlice";
+import { useGenericFetch } from "./useGenericFetch";
 
 const useLocalidadesHook = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>();
-  const localidadRepo = new LocalidadRepository(jsonLocalidades);
-
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/localidades/`;
+  
+  const { data: localidades, loading, error, refetch } = useGenericFetch<Localidad>(apiUrl);
+  console.log("localidades", localidades);
   useEffect(() => {
-    setError(false);
-    setLoading(true);
-    fetchLocalidades(localidadRepo)
-      .then((fetchedLocalidades) => {
-        dispatch(setLocalidad(fetchedLocalidades));
-      })
-      .catch((err) => {
-        console.error("Error fetching localidades:", err);
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [dispatch, localidadRepo]);
+    if (localidades.length > 0) {
+      dispatch(setLocalidad(localidades));
+    }
+  }, [localidades, dispatch]);
 
-  return { loading, error };
+  return { 
+    loading, 
+    error: !!error, 
+    refetch 
+  };
 };
 
 export default useLocalidadesHook;
