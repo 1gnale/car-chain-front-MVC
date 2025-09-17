@@ -4,8 +4,14 @@ import GrayButton from "../GeneralComponents/Button.tsx";
 import { ExclamationCircleFill } from "react-bootstrap-icons";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import useClearLocalStorage from "../../../controllers/controllerHooks/LocalStorage/useClearLocalStorage.ts";
 import { useAuth0 } from "@auth0/auth0-react";
+import useCreateCotizacion from "../../../controllers/controllerHooks/Mutations/useCreateCotizacionHook";
+import useLocalidadesHookByLocalityId from "../../../controllers/controllerHooks/Fetchs/useConfigLocalidadesByLocalityId.ts";
+import useEdadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigEdadByAge.ts";
+import useConfigAntiguedadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigAntiguedadByAge.ts";
 
 const FormDataCoverages = ({
   handleCurrentView,
@@ -15,7 +21,29 @@ const FormDataCoverages = ({
   Auth: boolean;
 }) => {
   const { loginWithRedirect } = useAuth0();
-  // States de la DB
+  const navigate = useNavigate();
+  const { clearAllData } = useClearLocalStorage();
+  const { saveCotizacion, loading: savingCotizacion, error: savingError, success: savingSuccess } = useCreateCotizacion();  // Cargar las configuraciones necesarias
+  const vehicleData = useLocalStorageItem<Vehiculo>("VehicleData");
+  const localidadId = vehicleData?.cliente?.localidad?.id; 
+  console.log("=== DEBUG LOCALIDAD ===");
+  console.log("vehicleData:", vehicleData);
+  console.log("localidadId extraído:", localidadId);
+  
+  const edad = vehicleData?.cliente?.fechaNacimiento ? Math.floor((new Date().getTime() - new Date(vehicleData.cliente.fechaNacimiento).getTime()) / (1000 * 60 * 60 * 24 * 365.25)) : undefined;
+  const antiguedad = vehicleData?.añoFabricacion ? new Date().getFullYear() - vehicleData.añoFabricacion : undefined;
+  
+  console.log("=== DEBUG VALORES CALCULADOS ===");
+  console.log("edad calculada:", edad);
+  console.log("antiguedad calculada:", antiguedad);
+  console.log("fechaNacimiento:", vehicleData?.cliente?.fechaNacimiento);
+  console.log("añoFabricacion:", vehicleData?.añoFabricacion);
+  
+  // Solo llamar a los hooks si tenemos valores válidos
+  const { loading: loadingConfigLocalidad } = useLocalidadesHookByLocalityId(localidadId);
+  const { loading: loadingConfigEdad } = useEdadHookByAge(edad);
+  const { loading: loadingConfigAntiguedad } = useConfigAntiguedadHookByAge(antiguedad);
+  // Estados de la DB - obtener arrays de configuraciones desde los slices correspondientes  
   const coverages: Cobertura[] = useAppSelector(
     (state) => state.coberturas.cobertura
   );
@@ -23,20 +51,27 @@ const FormDataCoverages = ({
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
-  const config_antiguedad: ConfigAntiguedad = useAppSelector(
+  
+  // Obtener configuraciones desde Redux (manejar tanto objetos como arrays)
+  const config_antiguedad_data = useAppSelector(
     (state) => state.configAntiguedades.configAntiguedad
   );
-  const config_localidad: ConfigLocalidad = useAppSelector(
+  const config_localidad_data = useAppSelector(
     (state) => state.configLocalidades.configLocalidad
   );
-
-  const config_edad: ConfigEdad = useAppSelector(
+  const config_edad_data = useAppSelector(
     (state) => state.configEdades.configEdad
   );
+
+  //console.log("=== DEBUG CONFIGURACIONES ===");
+  //console.log("config_antiguedad_data:", config_antiguedad_data)
+  //console.log("config_localidad_data:", config_localidad_data)
+  //console.log("config_edad_data:", config_edad_data)
 
   const [linea_cotization, setLineaCotization] = useState<Linea_Cotizacion[]>(
     []
   );
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
 
   const formatDate = (date: Date): string => {
     return (
@@ -55,6 +90,8 @@ const FormDataCoverages = ({
 
     const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData");
     if (vehicleLocalStorage !== null) {
+      //("vehicleLocalStorage:", vehicleLocalStorage);
+      
       const today = new Date();
       const vencimiento = new Date(today);
       vencimiento.setDate(vencimiento.getDate() + 7);
@@ -63,9 +100,11 @@ const FormDataCoverages = ({
       NuevaCotization.fechaCreacion = formatDate(today);
       NuevaCotization.fechaVencimiento = formatDate(vencimiento);
 
-      NuevaCotization.configuaracionLocalidad = config_localidad;
-      NuevaCotization.configudacionEdad = config_edad;
-      NuevaCotization.configuracionAntiguedad = config_antiguedad;
+      NuevaCotization.ConfigLocalidad = config_localidad_data;
+      NuevaCotization.ConfigEdad = config_edad_data;
+      NuevaCotization.configuracionAntiguedad = config_antiguedad_data;
+
+      //("NuevaCotization creada:", NuevaCotization);
 
       coverages.forEach((cover) => {
         const linea: Linea_Cotizacion = {
@@ -79,15 +118,30 @@ const FormDataCoverages = ({
         setLineaCotization(NuevaLinea_cotization);
       });
     }
+  }, [config_localidad_data, config_antiguedad_data, config_edad_data]); // Ejecutar solo cuando las configuraciones hayan cargado
+
+  // Limpiar intervalos al desmontar el componente
+  useEffect(() => {
+    return () => {
+      // Este cleanup se ejecutará cuando el componente se desmonte
+      if (redirectCountdown !== null) {
+        setRedirectCountdown(null);
+      }
+    };
   }, []);
 
+
+  // Mostrar loading mientras se cargan las configuraciones
+  if (loadingConfigLocalidad || loadingConfigEdad || loadingConfigAntiguedad) {
+    return <div className="container my-5 text-center">Cargando configuraciones...</div>;
+  }
   /// Handles
   const handleAmount = (LineCoverage: Linea_Cotizacion) => {
     let total = 0;
     let montoVehiculo = 0;
     let multiplicador = 1;
     let acumulador = 0;
-
+    //console.log(LineCoverage)
     // Obtener el costo del vehículo
     const vehiculo = LineCoverage.cotizacion?.vehiculo;
     montoVehiculo =
@@ -101,7 +155,7 @@ const FormDataCoverages = ({
         LineCoverage.cobertura?.id === covDetail.cobertura.id &&
         covDetail.detalle.activo
     );
-
+    //("Cobertura Detalles Filtrados Vehiculo: ", montoVehiculo);
     // Obtener el monto base a partir de los detalles
     for (const d of coberturaDetalles) {
       if (d?.detalle.porcentaje_miles != undefined) {
@@ -117,7 +171,7 @@ const FormDataCoverages = ({
     const cien = 100;
 
     const descuentoLocalidad =
-      LineCoverage.cotizacion?.configuaracionLocalidad?.descuento ?? 0;
+      LineCoverage.cotizacion?.ConfigLocalidad?.descuento ?? 0;
     multiplicador *= uno - descuentoLocalidad / cien;
 
     const descuentoAntiguedad =
@@ -125,30 +179,30 @@ const FormDataCoverages = ({
     multiplicador *= uno - descuentoAntiguedad / cien;
 
     const descuentoEdad =
-      LineCoverage.cotizacion?.configudacionEdad?.descuento ?? 0;
+      LineCoverage.cotizacion?.ConfigEdad?.descuento ?? 0;
     multiplicador *= uno - descuentoEdad / cien;
 
     const gananciaLocalidad =
-      LineCoverage.cotizacion?.configuaracionLocalidad?.ganancia ?? 0;
+      LineCoverage.cotizacion?.ConfigLocalidad?.ganancia ?? 0;
     const gananciaAntiguedad =
       LineCoverage.cotizacion?.configuracionAntiguedad?.ganancia ?? 0;
     const gananciEdad =
-      LineCoverage.cotizacion?.configudacionEdad?.ganancia ?? 0;
+      LineCoverage.cotizacion?.ConfigEdad?.ganancia ?? 0;
     multiplicador *= uno + gananciaLocalidad / cien;
     multiplicador *= uno + gananciaAntiguedad / cien;
     multiplicador *= uno + gananciEdad / cien;
 
     // Obtener todos los sumadores
-    acumulador += LineCoverage.cotizacion?.configudacionEdad?.recargo ?? 0;
+    acumulador += LineCoverage.cotizacion?.ConfigEdad?.recargo ?? 0;
     acumulador +=
-      LineCoverage.cotizacion?.configuaracionLocalidad?.recargo ?? 0;
+      LineCoverage.cotizacion?.ConfigLocalidad?.recargo ?? 0;
     acumulador +=
       LineCoverage.cotizacion?.configuracionAntiguedad?.recargo ?? 0;
     // Calcular el monto final
     const monto = Math.round(total * multiplicador + acumulador);
-    console.log("total FINAL: " + total);
-    console.log("multiplicador: " + multiplicador);
-    console.log("acumulador: " + acumulador);
+    //("total FINAL: " + total);
+    //("multiplicador: " + multiplicador);
+    //("acumulador: " + acumulador);
     LineCoverage.monto = monto;
 
     return monto;
@@ -162,7 +216,7 @@ const FormDataCoverages = ({
           (cd) =>
             cd.cobertura.id === id_cobertura && cd.detalle.id === detalle.id
         );
-
+        //("Found coverage detail:", found);
         return {
           name: detalle.nombre || "",
           apply: found?.aplica === true, // true si se encontró y aplica
@@ -183,6 +237,65 @@ const FormDataCoverages = ({
       loginWithRedirect();
     }
     return null;
+  };
+
+  const handleSaveCotizacion = async () => {
+    // Verificar que tenemos datos de cotización para guardar
+    if (linea_cotization.length === 0) {
+      console.error("No hay cotizaciones para guardar");
+      return;
+    }
+
+    try {
+      // Tomar la primera cotización (asumiendo que todas comparten la misma cotización base)
+      const cotizacionToSave = linea_cotization[0]?.cotizacion;
+      
+      if (!cotizacionToSave) {
+        console.error("No se encontró una cotización válida para guardar");
+        return;
+      }
+
+      // Verificar que la cotización tenga todas las configuraciones necesarias
+      if (!cotizacionToSave.ConfigLocalidad?.id) {
+        console.error("La cotización no tiene configuración de localidad válida");
+        return;
+      }
+
+      // Asegurar que todas las líneas tengan montos calculados
+      const lineasConMontos = linea_cotization.map(linea => ({
+        ...linea,
+        monto: handleAmount(linea) // Recalcular el monto para asegurar que esté actualizado
+      }));
+
+      console.log("Guardando vehículo, cotización y líneas de cotización...");
+      console.log("Líneas a guardar:", lineasConMontos);
+      
+      const result = await saveCotizacion(cotizacionToSave, lineasConMontos);
+      console.log("Vehículo, cotización y líneas guardados exitosamente:", result);
+      
+      // Limpiar localStorage después del guardado exitoso
+      console.log("Limpiando localStorage...");
+      clearAllData();
+      
+      // Iniciar cuenta regresiva
+      setRedirectCountdown(3);
+      
+      // Cuenta regresiva e intervalos
+      const countdownInterval = setInterval(() => {
+        setRedirectCountdown(prev => {
+          if (prev === null || prev <= 1) {
+            clearInterval(countdownInterval);
+            navigate("/");
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      
+    } catch (error) {
+      console.error("Error al guardar la cotización:", error);
+      // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario
+    }
   };
 
   return (
@@ -225,7 +338,18 @@ const FormDataCoverages = ({
       {/* Botón inferior */}
       <div className="row">
         <div className="col d-flex justify-content-center mt-4">
-          <GrayButton style="-2" text="Guardar cotización" />
+          <GrayButton 
+            style="-2" 
+            text={
+              redirectCountdown 
+                ? `Redirigiendo en ${redirectCountdown}...` 
+                : savingCotizacion 
+                ? "Guardando vehículo, cotización y líneas..." 
+                : "Guardar cotización"
+            } 
+            onClick={handleSaveCotizacion}
+            disabled={savingCotizacion || redirectCountdown !== null}
+          />
           <div
             className="d-flex align-items-center justify-content-center rounded-circle bg-light text-dark"
             style={{
@@ -239,6 +363,33 @@ const FormDataCoverages = ({
             <ExclamationCircleFill size={22} />
           </div>
         </div>
+        
+        {/* Mostrar mensajes de estado */}
+        {savingError && (
+          <div className="col-12 d-flex justify-content-center mt-2">
+            <div className="alert alert-danger" role="alert">
+              Error al guardar la cotización: {savingError}
+            </div>
+          </div>
+        )}
+        
+        {savingSuccess && !redirectCountdown && (
+          <div className="col-12 d-flex justify-content-center mt-2">
+            <div className="alert alert-success" role="alert">
+              ¡Cotización guardada exitosamente!
+            </div>
+          </div>
+        )}
+
+        {redirectCountdown && (
+          <div className="col-12 d-flex justify-content-center mt-2">
+            <div className="alert alert-success" role="alert">
+              <strong>¡Cotización guardada exitosamente!</strong>
+              <br />
+              Serás redirigido al inicio en {redirectCountdown} segundo{redirectCountdown !== 1 ? 's' : ''}...
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -108,8 +108,8 @@ interface Cotizacion {
   fechaCreacion?: string;
   fechaVencimiento?: string;
   vehiculo?: Vehiculo;
-  configuaracionLocalidad?: ConfigLocalidad;
-  configudacionEdad?: ConfigEdad;
+  ConfigLocalidad?: ConfigLocalidad;
+  ConfigEdad?: ConfigEdad;
   configuracionAntiguedad?: ConfigAntiguedad;
   activo?: boolean;
 }

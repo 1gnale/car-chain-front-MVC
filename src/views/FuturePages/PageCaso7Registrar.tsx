@@ -55,7 +55,7 @@ const PageRegistrar = () => {
       try {
         const clientData = getFromLocalStorage<any>("ClientData");
         if (clientData) {
-          console.log("Datos encontrados en localStorage:", clientData);
+          //("Datos encontrados en localStorage:", clientData);
 
           // Auto-rellenar el formulario con los datos existentes
           const updatedFormData = {
@@ -117,7 +117,7 @@ const PageRegistrar = () => {
             }
           }
 
-          console.log("Formulario auto-rellenado con datos del localStorage");
+          //("Formulario auto-rellenado con datos del localStorage");
         }
       } catch (error) {
         console.error("Error al cargar datos del localStorage:", error);
@@ -194,7 +194,7 @@ const PageRegistrar = () => {
     const tipoDocValue = documentTypes[id - 1];
     setFormData((prev) => ({ ...prev, tipoDocumento: tipoDocValue }));
     setSelectedDocumentType(id);
-    console.log(id);
+    //(id);
     validateField("tipoDocumento", tipoDocValue);
   };
 
@@ -220,7 +220,7 @@ const PageRegistrar = () => {
     contraseña: "PEPEPEPEPEPEPE",
     localidad_id: selectedLocality,
   };
-  console.log(a);
+  //(a);
   const handleSubmit = async () => {
     if (validateForm(formData)) {
       try {
@@ -272,7 +272,7 @@ const PageRegistrar = () => {
     // Opcional: también limpiar localStorage
     // localStorage.removeItem("ClientData");
 
-    console.log("Formulario reiniciado");
+    //("Formulario reiniciado");
   };
 
   return (

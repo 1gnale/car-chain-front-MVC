@@ -9,48 +9,10 @@ import { Calculator } from "react-bootstrap-icons";
 const AccountPricings = ({}) => {
   const navigate = useNavigate();
 
-  const cotizaciones: Cotizacion[] = [
-    {
-      id: 1,
-      fechaCreacion: "2025-01-15T10:30:00Z",
-      activo: true,
-    },
-    {
-      id: 2,
-      fechaCreacion: "2025-01-20T14:45:00Z",
-      activo: false,
-    },
-    {
-      id: 3,
-      fechaCreacion: "2025-02-05T09:15:00Z",
-      activo: true,
-    },
-    {
-      id: 4,
-      fechaCreacion: "2025-02-10T18:20:00Z",
-      activo: true,
-    },
-    {
-      id: 5,
-      fechaCreacion: "2025-03-01T12:00:00Z",
-      activo: false,
-    },
-    {
-      id: 6,
-      fechaCreacion: "2025-03-12T16:40:00Z",
-      activo: true,
-    },
-    {
-      id: 7,
-      fechaCreacion: "2025-04-03T11:25:00Z",
-      activo: false,
-    },
-    {
-      id: 8,
-      fechaCreacion: "2025-04-20T08:55:00Z",
-      activo: true,
-    },
-  ];
+  const cotizaciones: Linea_Cotizacion[] = useAppSelector(
+    (state) => state.lineasCotizacion.lineaCotizacion
+  );
+
   return (
     <div className="card bg-dark border-info">
       <div className="card-header bg-transparent border-info">

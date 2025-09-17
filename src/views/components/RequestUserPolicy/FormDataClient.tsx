@@ -52,9 +52,9 @@ const FormDataClient = ({
     localidad: "",
     domicilio: "",
   });
-  console.log("documentTypes");
-  console.log(documentTypes);
-  console.log(formClient.tipoDocumento);
+  //("documentTypes");
+  //(documentTypes);
+  //(formClient.tipoDocumento);
 
   // UseEffect
   useEffect(() => {
@@ -99,7 +99,7 @@ const FormDataClient = ({
   // HANDLEs
   const handleSubmit = () => {
     if (validateForm(formClient)) {
-      console.log("Formulario válido:", formClient);
+      //("Formulario válido:", formClient);
       try {
         const localidadFiltrada: Localidad | undefined = localities.find(
           (locality) => locality.id === selectedLocality
@@ -134,11 +134,11 @@ const FormDataClient = ({
           }
         }
       } catch (error) {
-        console.log("ERROR");
+        //("ERROR");
       }
       handleCurrentView(true);
     } else {
-      console.log("Formulario inválido:", errors);
+      //("Formulario inválido:", errors);
     }
   };
   const handleBack = () => {

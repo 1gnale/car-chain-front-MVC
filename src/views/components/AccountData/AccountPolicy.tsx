@@ -8,8 +8,8 @@ const AccountPolicy = () => {
   const polices_user: Poliza[] = useAppSelector(
     (state) => state.polizas.poliza
   );
-  console.log("poliza");
-  console.log(polices_user);
+  //("poliza");
+  //(polices_user);
 
   return (
     <div className="card bg-dark border-info">

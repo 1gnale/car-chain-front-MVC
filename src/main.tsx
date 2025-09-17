@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import App from "./App.tsx";
 
-console.log(import.meta.env.VITE_AUTH0_DOMAIN);
+//(import.meta.env.VITE_AUTH0_DOMAIN);
 
 const domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientID = import.meta.env.VITE_AUTH0_CLIENT_ID;

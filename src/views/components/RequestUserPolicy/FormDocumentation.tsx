@@ -71,17 +71,17 @@ const FormDocumentation = ({
         const storedDocumentation = localStorage.getItem("Documentation");
         if (storedDocumentation) {
           const documentationData = JSON.parse(storedDocumentation);
-          console.log("📱 Datos cargados desde localStorage:", documentationData);
+          //("📱 Datos cargados desde localStorage:", documentationData);
           
           // Cargar las URLs de imágenes si existen
           if (documentationData.imageData) {
             setImageUrls(documentationData.imageData);
-            console.log("🖼️ URLs de imágenes cargadas:", documentationData.imageData);
+            //("🖼️ URLs de imágenes cargadas:", documentationData.imageData);
             
             // Recrear objetos File desde Base64 si existen
             if (documentationData.filePaths) {
               const { imageData, filePaths } = documentationData;
-              console.log("📁 Recreando archivos desde localStorage...");
+              //("📁 Recreando archivos desde localStorage...");
               
               // Actualizar nombres de archivos guardados
               setStoredFileNames(filePaths);
@@ -89,7 +89,7 @@ const FormDocumentation = ({
               if (imageData.fotoFrontal && filePaths.fotoFrontal) {
                 const file = base64ToFile(imageData.fotoFrontal, filePaths.fotoFrontal);
                 setFileFrontal(file);
-                console.log("✅ Foto frontal recreada:", file.name);
+                //("✅ Foto frontal recreada:", file.name);
               }
               
               if (imageData.fotoTrasera && filePaths.fotoTrasera) {
@@ -156,7 +156,7 @@ const FormDocumentation = ({
       };
       
       localStorage.setItem("Documentation", JSON.stringify(updatedData));
-      console.log(`Imagen ${type} guardada en localStorage`);
+      //(`Imagen ${type} guardada en localStorage`);
       
     } catch (error) {
       console.error(`Error guardando imagen ${type}:`, error);

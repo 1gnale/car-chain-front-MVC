@@ -13,7 +13,7 @@ function ModificarUsuario({
   handleCurrentView: (pass: boolean) => void;
   usuario: Usuario;
 }) {
-  console.log(usuario);
+  //(usuario);
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
   );
@@ -40,7 +40,7 @@ function ModificarUsuario({
   const rolFiltrado: number | undefined = tiposDeUsuario.findIndex(
     (doc) => doc === usuario?.tipoUsuario
   );
-  console.log(rolFiltrado);
+  //(rolFiltrado);
   const { errors, validateField, validateForm } = useFormClientValidation();
   const [selectedSex, setSelectedSex] = useState(sexoFiltrado?.id);
   const [selectedRol, setSelectedRol] = useState(rolFiltrado + 1);

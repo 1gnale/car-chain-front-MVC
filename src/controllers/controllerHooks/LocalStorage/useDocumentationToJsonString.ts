@@ -9,7 +9,7 @@ export default async function saveDocumentacionToLocalStorage(
     const file = doc[key as keyof Documentacion];
     if (file instanceof File) {
       serializableDoc[key] = await fileToBase64(file);
-      console.log(JSON.stringify(serializableDoc));
+      //(JSON.stringify(serializableDoc));
     }
   }
   return JSON.stringify(serializableDoc);

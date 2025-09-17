@@ -17,7 +17,7 @@ function ConfigurarLocalidad({
     (state) => state.configLocalidades.configLocalidad
   );
   const configsEdad: ConfigLocalidad[] = Array(3).fill(ConfigurarLocalidad);
-  console.log(ConfigurarLocalidad);
+  //(ConfigurarLocalidad);
 
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");

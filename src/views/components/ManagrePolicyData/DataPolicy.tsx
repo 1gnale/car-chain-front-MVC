@@ -53,7 +53,7 @@ const PolicyProfile = ({
         cedulaVerde: URL.createObjectURL(policy.documentacion?.cedulaVerde!),
       };
       setDocumentationPaths(documentacion);
-      console.log("Paths de documentación cargados:", documentacion);
+      //("Paths de documentación cargados:", documentacion);
     }
 
     // Cargar las imágenes desde sessionStorage
@@ -80,8 +80,8 @@ const PolicyProfile = ({
   }
 
   const handleTable = (): tableContent => {
-    console.log("policy");
-    console.log(policy);
+    //("policy");
+    //(policy);
     return {
       showButtom: false,
       titles: ["ID", "Detalle", "Descripcion", "Monto asegurado"],

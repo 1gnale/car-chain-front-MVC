@@ -8,7 +8,7 @@ const useLocalidadesHook = () => {
   const apiUrl = `${import.meta.env.VITE_BASEURL}/api/localidades/`;
   
   const { data: localidades, loading, error, refetch } = useGenericFetch<Localidad>(apiUrl);
-  console.log("localidades", localidades);
+  //("localidades", localidades);
   useEffect(() => {
     if (localidades.length > 0) {
       dispatch(setLocalidad(localidades));

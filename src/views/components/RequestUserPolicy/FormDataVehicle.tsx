@@ -117,10 +117,10 @@ const FormDataVehicle = ({
   }, [versions, selectedModel]);
 
   const handleSubmit = () => {
-    console.log(formVehicle);
+    //(formVehicle);
     try {
       if (validateForm(formVehicle)) {
-        console.log("Formulario válido:", formVehicle);
+        //("Formulario válido:", formVehicle);
         try {
           const versionFiltrada: Version | undefined = versions.find(
             (version) => version.id === selectedVersion
@@ -138,14 +138,14 @@ const FormDataVehicle = ({
             localStorage.setItem("VehicleData", JSON.stringify(vehicle));
           }
         } catch (error) {
-          console.log("ERROR");
+          //("ERROR");
         }
         handleCurrentView(true);
       } else {
-        console.log("Formulario inválido:", errors);
+        //("Formulario inválido:", errors);
       }
     } catch (error) {
-      console.log("Error");
+      //("Error");
     }
   };
 
@@ -195,7 +195,7 @@ const FormDataVehicle = ({
 
     const selectedVersionName =
       versions.find((version) => version.id === id)?.nombre || "";
-    console.log(selectedVersionName);
+    //(selectedVersionName);
     setFormVehicle((prev) => ({ ...prev, version: selectedVersionName }));
     setFormVehicle((prev) => ({ ...prev, versionId: id }));
     validateField("version", selectedVersionName);

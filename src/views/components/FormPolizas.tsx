@@ -56,8 +56,8 @@ function FormPolizas() {
     return table;
   };
   const { titles, tableBody, showButtom } = handleTable();
-  console.log("BODY DE LA TABLA");
-  console.log(tableBody);
+  //("BODY DE LA TABLA");
+  //(tableBody);
   return (
     <div className="container-fluid">
       <div className="row justify-content-center">

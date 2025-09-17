@@ -17,7 +17,7 @@ function ManageConfigurationAge({
     (state) => state.configEdades.configEdad
   );
   const configsEdad: ConfigEdad[] = Array(3).fill(ConfigurarEdad);
-  console.log(ConfigurarEdad);
+  //(ConfigurarEdad);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 

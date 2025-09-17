@@ -36,7 +36,7 @@ const useUpdateVersion = (): UseUpdateVersionResult => {
     // Validar que el modelo tenga un ID válido
     if (version.modelo && (!version.modelo.id || version.modelo.id <= 0)) {
       const errorMsg = "El modelo seleccionado no tiene un ID válido";
-      console.log("❌ Validation Error:", errorMsg);
+      //("❌ Validation Error:", errorMsg);
       setError(errorMsg);
       setLoading(false);
       throw new Error(errorMsg);
@@ -52,29 +52,29 @@ const useUpdateVersion = (): UseUpdateVersionResult => {
       activo: version.activo,
     };
 
-    console.log("🚀 Attempting to update version:");
-    console.log("Original version data:", version);
-    console.log("Transformed payload:", payload);
-    console.log("modelo_id value:", payload.modelo_id, "type:", typeof payload.modelo_id);
+    //("🚀 Attempting to update version:");
+    //("Original version data:", version);
+    //("Transformed payload:", payload);
+    //("modelo_id value:", payload.modelo_id, "type:", typeof payload.modelo_id);
 
     try {
       const updatedVersion = await versionRepo.updateVersion(id, payload as Partial<Version>);
-      console.log("✅ Version updated successfully:", updatedVersion);
+      //("✅ Version updated successfully:", updatedVersion);
       setSuccess(true);
       return updatedVersion;
     } catch (err) {
-      console.log("❌ Error updating version:");
-      console.log("Error object:", err);
+      //("❌ Error updating version:");
+      //("Error object:", err);
       
       let errorMessage = 'Error updating version';
       
       if (err instanceof Error) {
         errorMessage = err.message;
-        console.log("Error message:", err.message);
-        console.log("Error stack:", err.stack);
+        //("Error message:", err.message);
+        //("Error stack:", err.stack);
       } else {
-        console.log("Unknown error type:", typeof err);
-        console.log("Error value:", err);
+        //("Unknown error type:", typeof err);
+        //("Error value:", err);
       }
       
       setError(errorMessage);

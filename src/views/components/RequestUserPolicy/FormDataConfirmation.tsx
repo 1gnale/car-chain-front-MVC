@@ -29,19 +29,19 @@ const FormDataConfirmation = ({
       const storedDocumentation = localStorage.getItem("Documentation");
       if (storedDocumentation) {
         const documentationData = JSON.parse(storedDocumentation);
-        console.log("📱 Datos de documentación cargados:", documentationData);
+        //("📱 Datos de documentación cargados:", documentationData);
         
         if (documentationData.imageData) {
           setDocumentationImages(documentationData.imageData);
-          console.log("🖼️ Imágenes cargadas para confirmación:", documentationData.imageData);
+          //("🖼️ Imágenes cargadas para confirmación:", documentationData.imageData);
         }
         
         if (documentationData.filePaths) {
           setDocumentationPaths(documentationData.filePaths);
-          console.log("📁 Paths cargados:", documentationData.filePaths);
+          //("📁 Paths cargados:", documentationData.filePaths);
         }
       } else {
-        console.log("⚠️ No se encontraron datos de documentación en localStorage");
+        //("⚠️ No se encontraron datos de documentación en localStorage");
       }
     } catch (error) {
       console.error("❌ Error cargando imágenes desde localStorage:", error);
@@ -75,8 +75,8 @@ const FormDataConfirmation = ({
   }
 
   const handleTable = (): tableContent => {
-    console.log("policy");
-    console.log(policy);
+    //("policy");
+    //(policy);
     return {
       showButtom: false,
       titles: ["ID", "Detalle", "Descripcion", "Monto asegurado"],
@@ -118,8 +118,8 @@ const FormDataConfirmation = ({
     };
   };
   const { titles, tableBody, customIcons, showButtom } = handleTable();
-  console.log("BODY DE LA TABLA");
-  console.log(tableBody);
+  //("BODY DE LA TABLA");
+  //(tableBody);
   return (
     <div className="min-vh-100" style={{ backgroundColor: '#1a1a1a' }}>
       <div className="container-fluid py-4">

@@ -42,7 +42,7 @@ const CheckoutButton = () => {
       const data = await res.json();
       const initPoint = data.init_point;
       window.location.href = initPoint; // Redirige al Checkout Pro
-      console.log("Pago exitoso");
+      //("Pago exitoso");
     } catch (error) {
       console.error("Error iniciando pago:", error);
     }

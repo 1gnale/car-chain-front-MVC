@@ -1,4 +1,5 @@
 import type ILineaCotizacionRepository from "../Irepositorys/ILineaCotizacionRepository";
+import type { LineaCotizacionPayload } from "../Irepositorys/ILineaCotizacionRepository";
 import { BaseRepository } from "./BaseRepository";
 
 export class LineaCotizacionRepository extends BaseRepository<Linea_Cotizacion> implements ILineaCotizacionRepository {
@@ -16,5 +17,22 @@ export class LineaCotizacionRepository extends BaseRepository<Linea_Cotizacion> 
       (line) => line.cotizacion?.id === Number(id)
     );
     return lineas;
+  }
+
+  async createLineaCotizacion(data: LineaCotizacionPayload, authToken?: string): Promise<any> {
+    const response = await fetch(`${this.apiUrl}/createLineaCotizacion`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(authToken && { Authorization: `Bearer ${authToken}` }),
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al crear línea de cotización: ${response.statusText}`);
+    }
+
+    return response.json();
   }
 }

@@ -3,7 +3,7 @@ import { useGenericFetch } from "./useGenericFetch";
 
 const useGetPricing = (id: string) => {
   const [pricing, setPricing] = useState<Linea_Cotizacion[] | null>(null);
-  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/lineas-cotizacion/`;
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/vehiculoCotizacion/getCotizacion/`;
   
   const { data: lineasCotizacion, loading, error, refetch } = useGenericFetch<Linea_Cotizacion>(apiUrl);
 

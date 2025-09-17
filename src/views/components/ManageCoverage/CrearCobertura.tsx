@@ -26,7 +26,7 @@ function CrearCobertura({
   });
 
   useEffect(() => {
-    console.log(formCoverageDetail);
+    //(formCoverageDetail);
   }, [formCoverageDetail]);
 
   const handleInputChange = (field: string, value: string) => {

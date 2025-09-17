@@ -38,7 +38,7 @@ const PageCasoEstudio02 = ({
   const handleUpdateBrand = (marca: any): void => {
     setCurrentBrand(marca);
     handleCurrentView(false);
-    console.log(marca);
+    //(marca);
   };
   const handleTable = (): tableContent => {
     return {

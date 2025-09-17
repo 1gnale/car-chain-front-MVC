@@ -14,7 +14,10 @@ export function useGenericFetch<T>(apiUrl?: string): UseGenericFetchResult<T> {
 
   const fetchData = async (): Promise<void> => {
     if (!apiUrl) {
-      setError("API URL is not defined");
+      // No establecer error si no hay URL, solo no hacer nada
+      setLoading(false);
+      setError(null);
+      setData([]);
       return;
     }
 
@@ -23,12 +26,12 @@ export function useGenericFetch<T>(apiUrl?: string): UseGenericFetchResult<T> {
 
     try {
       const response = await fetch(apiUrl);
-      
+
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.status}`);
       }
       const result = await response.json();
-      setData(result.data ||[]);
+      setData(result.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

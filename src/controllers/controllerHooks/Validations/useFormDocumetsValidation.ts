@@ -33,10 +33,10 @@ const useFormValidation = (): UseFormValidationReturn => {
 
     switch (fieldName) {
       case "fotoFrontal":
-        console.log(value);
+        //(value);
         if (!value?.type.startsWith("image/")) {
           newErrors.fotoFrontal = "El archivo debe ser una imagen";
-          console.log(newErrors);
+          //(newErrors);
         } else if (!(value && value.size > 0)) {
           newErrors.fotoFrontal = "El archivo es requerido";
         } else {

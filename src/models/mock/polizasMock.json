@@ -78,7 +78,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -91,7 +91,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -204,7 +204,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -217,7 +217,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -330,7 +330,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -343,7 +343,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -457,7 +457,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -470,7 +470,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -583,7 +583,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -596,7 +596,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -709,7 +709,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -722,7 +722,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -835,7 +835,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -848,7 +848,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -961,7 +961,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -974,7 +974,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -1087,7 +1087,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -1100,7 +1100,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,
@@ -1213,7 +1213,7 @@
             }
           ]
         },
-        "configuaracionLocalidad": {
+        "ConfigLocalidad": {
           "id": 1,
           "nombre": "La Plata",
           "descuento": 1,
@@ -1226,7 +1226,7 @@
             "codigoPostal": "1900"
           }
         },
-        "configudacionEdad": {
+        "ConfigEdad": {
           "id": 3,
           "nombre": "Mayores",
           "minima": 51,

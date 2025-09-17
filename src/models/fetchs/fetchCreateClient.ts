@@ -39,7 +39,7 @@ export const createClient = async (clientData: any, authToken = "") => {
     if (err.response && err.response.data.errors) {
       // Acá tenés tus validaciones del backend
       err.response.data.errors.forEach((val: any) => {
-        console.log(`Campo: ${val.field} → ${val.message}`);
+        //(`Campo: ${val.field} → ${val.message}`);
       });
     } else {
       console.error("Error inesperado", err);

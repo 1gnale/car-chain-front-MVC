@@ -87,7 +87,7 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     const indexDocType = documentTypes.findIndex(
       (doc) => doc === clientStorage.tipoDocumento
       );
-      console.log(clientStorage.tipoDocumento);
+      //(clientStorage.tipoDocumento);
       setSelectedDocumentType(indexDocType);
       }*/
     setSelectedLocality(user.localidad?.id || 0);
@@ -96,7 +96,7 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     const indexDocType = documentTypes.findIndex(
       (doc) => doc === user.tipoDocumento
     );
-    console.log(indexDocType);
+    //(indexDocType);
     setSelectedDocumentType(indexDocType + 1);
   }, []);
 

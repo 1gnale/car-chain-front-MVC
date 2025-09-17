@@ -116,7 +116,7 @@ const useFormValidation = (): UseFormValidationReturn => {
         break;
 
       case "sexo":
-        console.log("EL SEXO ES: " + value);
+        //("EL SEXO ES: " + value);
         if (!value || value === "") {
           newErrors.sexo = "El tipo de sexo es requerido";
         } else {
