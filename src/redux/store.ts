@@ -24,6 +24,11 @@ import lineaCotizacionReducer from "./lineaCotizacionSlice";
 import periodoPagoReducer from "./periodoPagosSlice";
 
 import tipoContratacionReduer from "./hiringTypesSlice";
+
+import clientReducer from "./clientSlice";
+
+import cotizacionReducer from "./cotizacionSlice";
+
 export const store = configureStore({
   reducer: {
     marcas: marcasReducer,
@@ -42,6 +47,8 @@ export const store = configureStore({
     lineasCotizacion: lineaCotizacionReducer,
     periodosPago: periodoPagoReducer,
     tiposContratacion: tipoContratacionReduer,
+    cliente: clientReducer,
+    cotizacion: cotizacionReducer,
   },
 });
 

@@ -79,6 +79,7 @@ const FormDataClient = ({
       setSelectedDocumentType(tipoDocFiltrado + 1);
       setFormClient(parseFormClient(clientStorage));
     }
+    console.log(clientStorage);
   }, []);
 
   function parseFormClient(client: Cliente): any {

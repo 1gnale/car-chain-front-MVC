@@ -3,17 +3,23 @@ import { useDispatch } from "react-redux";
 import { useGenericFetch } from "./useGenericFetch";
 import { setCotizacion } from "../../../redux/cotizacionSlice";
 
-const useCotizacionHook = ({mail}: {mail: string}) => {
+const useCotizacionHook = ({ mail }: { mail: string }) => {
   const dispatch = useDispatch();
-  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/vehiculoCotizacion/getCotizacion/${mail}`;
-  
-  const { data: lineaCotizacion, loading, error } = useGenericFetch<Cotizacion>(apiUrl);
+  const apiUrl = `${
+    import.meta.env.VITE_BASEURL
+  }/api/vehiculoCotizacion/getCotizacion/${mail}`;
+
+  const {
+    data: cotizacion,
+    loading,
+    error,
+  } = useGenericFetch<Cotizacion>(apiUrl);
 
   useEffect(() => {
-    if (lineaCotizacion.length > 0) {
-      dispatch(setCotizacion(lineaCotizacion));
+    if (cotizacion.length > 0) {
+      dispatch(setCotizacion(cotizacion));
     }
-  }, [lineaCotizacion, dispatch]);
+  }, [cotizacion, dispatch]);
 
   return { loading, error: !!error };
 };

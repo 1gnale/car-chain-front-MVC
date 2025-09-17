@@ -1,22 +1,55 @@
 import Navbar from "../views/components/NavBar/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
 import usePolicesHook from "./controllerHooks/Fetchs/usePolicesHook";
-import useLineaCotizacion from "./controllerHooks/Fetchs/useCotizacion";
+import useCotizacionHook from "./controllerHooks/Fetchs/useCotizacion";
 import PerfilPage from "../views/pages/AccountData";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
+import useClientByMailHook from "./controllerHooks/Fetchs/useClientByMail";
+import useLocalidadesHook from "./controllerHooks/Fetchs/useLocalidadesHook";
+import useProvinciasHook from "./controllerHooks/Fetchs/useProvinciasHook";
+import useTiposDocumentos from "./controllerHooks/Fetchs/useTiposDocumentosHook";
 const ControladorPerfil = () => {
   const { isAuthenticated, user } = useAuth0();
 
-  const { loading: loadingPolice, error: errorPolice } = usePolicesHook({mail: (user?.email) || ""});
+  const { loading: loadingClient, error: errorClient } = useClientByMailHook(
+    user?.email || ""
+  );
+  const { loading: loadingPolice, error: errorPolice } = usePolicesHook({
+    mail: user?.email || "",
+  });
 
-  const { loading: loadingLinePriciring, error: errorLinePriciring } = useLineaCotizacion({mail: (user?.email) || ""});
+  const { loading: loadingLocalities, error: errorLocalities } =
+    useLocalidadesHook();
+
+  const { loading: loadingProvinces, error: errorProvinces } =
+    useProvinciasHook();
+
+  const { loading: loadingDocumentTypes, error: errorDocumentTypes } =
+    useTiposDocumentos();
+
+  const { loading: loadingPriciring, error: errorPriciring } =
+    useCotizacionHook({ mail: user?.email || "" });
 
   // Hook que trae todas las versiones
-  if (loadingPolice || loadingLinePriciring) {
+  if (
+    loadingPolice ||
+    loadingPriciring ||
+    loadingClient ||
+    loadingLocalities ||
+    loadingProvinces ||
+    loadingDocumentTypes
+  ) {
     return <Spinner title="Loading..." text="Por favor espere" />;
   }
 
-  if (errorPolice || errorLinePriciring) {
+  if (
+    errorPolice ||
+    errorPriciring ||
+    errorClient ||
+    errorLocalities ||
+    errorProvinces ||
+    errorDocumentTypes
+  ) {
     return <div>Error: ha ocurrido un error inesperado</div>;
   }
 

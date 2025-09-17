@@ -5,6 +5,7 @@ import AccountPricings from "../components/AccountData/AccountPricings";
 import { useState } from "react";
 import { User, Calculator, LogOut, Settings, Shield } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useAppSelector } from "../../redux/reduxTypedHooks";
 
 export default function PerfilPage() {
   const [activeTab, setActiveTab] = useState("datos");
@@ -15,39 +16,17 @@ export default function PerfilPage() {
     { id: "polizas", label: "Pólizas", icon: Shield },
     { id: "cotizaciones", label: "Cotizaciones", icon: Calculator },
   ];
-  const mockUsuario: Cliente = {
-    idClient: 1,
-    id: 101,
-    nombres: "Juan Carlos",
-    apellido: "Pérez",
-    fechaNacimiento: "1990-05-12",
-    tipoDocumento: "LC",
-    documento: "30123456",
-    domicilio: "Calle Falsa 123",
-    correo: "juan.perez@example.com",
-    telefono: "+54 9 381 4567890",
-    sexo: "Masculino",
-    contraseña: "1234Segura!",
-    localidad: {
-      id: 15,
-      descripcion: "San Miguel de Tucumán",
-      codigoPostal: "4000",
-      provincia: {
-        id: 2,
-        descripcion: "Tucumán",
-      },
-    },
-  };
   const logOut = () => {
     if (window.confirm("¿Estás seguro de que querés cerrar sesión?")) {
       logout();
     }
   };
+  const client = useAppSelector((state) => state.cliente.client) as Cliente;
 
   const renderContent = () => {
     switch (activeTab) {
       case "datos":
-        return <AccountDataInputs user={mockUsuario}></AccountDataInputs>;
+        return <AccountDataInputs user={client}></AccountDataInputs>;
 
       case "polizas":
         return <AccountPolicy></AccountPolicy>;

@@ -7,6 +7,7 @@ import getFromLocalStorage from "../../controllers/controllerHooks/LocalStorage/
 import DateInput from "../components/GeneralComponents/DateInput";
 import { createClient } from "../../models/fetchs/fetchCreateClient";
 import { useAuth0 } from "@auth0/auth0-react";
+import { redirect } from "react-router-dom";
 
 const PageRegistrar = () => {
   // Hook de validación
@@ -240,6 +241,7 @@ const PageRegistrar = () => {
         });
 
         alert("Persona registrada exitosamente");
+        redirect("/");
       } catch (error) {
         console.error("Error en createClient:", error);
         alert("ERROR: " + error);

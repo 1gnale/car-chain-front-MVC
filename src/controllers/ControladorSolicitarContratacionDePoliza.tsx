@@ -10,8 +10,14 @@ import useCoberturasHook from "./controllerHooks/Fetchs/useCoberturasHook";
 import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
 import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
-
+import useCreateCotizacion from "./controllerHooks/Mutations/useCreateCotizacionHook";
 const ControladorSolicitarContratacionDePoliza = () => {
+  const {
+    saveCotizacion,
+    loading: loadingCotizacion,
+    error: errorCotizacion,
+  } = useCreateCotizacion();
+
   const { isAuthenticated, isLoading } = useAuth0();
   // Hook que trae todas las marcas (versión optimizada)
   const { loading, error } = useMarcasHookV2();
@@ -36,6 +42,74 @@ const ControladorSolicitarContratacionDePoliza = () => {
   // Hook que trae todas las Detalles
   const { loading: loadingDet, error: errorDet } = useDetallesHook();
 
+  // Handle confirmacion poliza
+  const handleConfirmacionPoliza = async (poliza: Poliza) => {
+    // Lógica para manejar la confirmación de la póliza
+    if (!poliza) {
+      console.error("No hay poliza para guardar");
+      return;
+    }
+    try {
+      const cotizacionToSave = poliza.lineaContizacion?.cotizacion;
+
+      if (!cotizacionToSave) {
+        console.error("No se encontró una cotización válida para guardar");
+        return;
+      }
+
+      const result = await saveCotizacion(cotizacionToSave);
+      console.log(
+        "Vehículo, cotización y líneas guardados exitosamente:",
+        result
+      );
+    } catch (error) {
+      console.error("Error al procesar la póliza:", error);
+    }
+
+    console.log("Póliza confirmada");
+  };
+  /* const handleSaveCotizacion = async () => {
+    try {
+      // Tomar la primera cotización (asumiendo que todas comparten la misma cotización base)
+      const cotizacionToSave = linea_cotization[0]?.cotizacion;
+
+      if (!cotizacionToSave) {
+        console.error("No se encontró una cotización válida para guardar");
+        return;
+      }
+
+      const result = await saveCotizacion(cotizacionToSave, lineasConMontos);
+      console.log(
+        "Vehículo, cotización y líneas guardados exitosamente:",
+        result
+      );
+
+      // Limpiar localStorage después del guardado exitoso
+      console.log("Limpiando localStorage...");
+      clearAllData();
+
+      // Iniciar cuenta regresiva
+      setRedirectCountdown(3);
+
+      // Cuenta regresiva e intervalos
+      const countdownInterval = setInterval(() => {
+        setRedirectCountdown((prev) => {
+          if (prev === null || prev <= 1) {
+            clearInterval(countdownInterval);
+            navigate("/");
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (error) {
+      console.error("Error al guardar la cotización:", error);
+      // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario
+    }
+  };*/
+
+  // Mostrar spinner de carga si alguno de los hooks está cargando
+
   if (
     isLoading ||
     loading ||
@@ -46,7 +120,8 @@ const ControladorSolicitarContratacionDePoliza = () => {
     loadingLoc ||
     loadingCober ||
     loadingCobDet ||
-    loadingDet
+    loadingDet ||
+    loadingCotizacion
   ) {
     return <Spinner title="Loading..." text="Por favor espere" />;
   }
@@ -60,12 +135,18 @@ const ControladorSolicitarContratacionDePoliza = () => {
     errorLoc ||
     errorCober ||
     errorCobDet ||
-    errorDet
+    errorDet ||
+    errorCotizacion
   ) {
     return <div>Error: ha ocurrido un error inesperado</div>;
   }
 
-  return <RequestUserPolicy isAuth={isAuthenticated} />;
+  return (
+    <RequestUserPolicy
+      isAuth={isAuthenticated}
+      handleConfirmacionPoliza={handleConfirmacionPoliza}
+    />
+  );
 };
 
 export default ControladorSolicitarContratacionDePoliza;

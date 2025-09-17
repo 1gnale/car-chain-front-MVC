@@ -12,32 +12,28 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
   const [selectedDocumentType, setSelectedDocumentType] = useState(0);
 
   const [formClient, setFormClient] = useState<Cliente>({
-    idClient: user.idClient,
-    id: user.id,
-    nombres: user.nombres,
-    apellido: user.apellido,
-    fechaNacimiento: user.fechaNacimiento,
-    tipoDocumento: user.tipoDocumento,
-    documento: user.documento,
-    domicilio: user.domicilio,
-    correo: user.correo,
-    telefono: user.telefono,
-    sexo: user.sexo,
+    idClient: user.idClient || 0,
+    id: user.id || 0,
+    nombres: user.nombres || "",
+    apellido: user.apellido || "",
+    fechaNacimiento: user.fechaNacimiento || "",
+    tipoDocumento: user.tipoDocumento || "",
+    documento: user.documento || "",
+    domicilio: user.domicilio || "",
+    correo: user.correo || "",
+    telefono: user.telefono || "",
+    sexo: user.sexo || "",
     contraseña: "",
     localidad: {
-      id: user.localidad!.id,
-      descripcion: user.localidad!.descripcion,
-      codigoPostal: user.localidad!.codigoPostal,
+      id: user.localidad?.id || 0,
+      descripcion: user.localidad?.descripcion || "",
+      codigoPostal: user.localidad?.codigoPostal || "",
       provincia: {
-        id: user.localidad!.provincia!.id,
-        descripcion: user.localidad!.provincia!.descripcion,
+        id: user.localidad?.provincia?.id || 0,
+        descripcion: user.localidad?.provincia?.descripcion || "",
       },
     },
   });
-
-  useMemo(() => {
-    setFormClient(user);
-  }, []);
 
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
@@ -66,7 +62,9 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
   const [selectedSex, setSelectedSex] = useState(0);
   const [locality, setLocality] = useState<boolean>(false);
   const [selectedLocality, setSelectedLocality] = useState(0);
-  const [selectedProvince, setSelectedProvinces] = useState(0);
+  const [selectedProvince, setSelectedProvinces] = useState(
+    user.localidad?.provincia?.id || 0
+  );
 
   useEffect(() => {
     /* // localStorage.removeItem("ClientData");
@@ -90,15 +88,16 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
       //(clientStorage.tipoDocumento);
       setSelectedDocumentType(indexDocType);
       }*/
+
+    setFormClient(user);
     setSelectedLocality(user.localidad?.id || 0);
-    setSelectedSex(user.id);
     setSelectedProvinces(user.localidad?.provincia?.id || 0);
     const indexDocType = documentTypes.findIndex(
       (doc) => doc === user.tipoDocumento
     );
     //(indexDocType);
     setSelectedDocumentType(indexDocType + 1);
-  }, []);
+  }, [user]);
 
   const handleProvinces = useMemo(() => {
     const result = provinces.map((provinces) => {

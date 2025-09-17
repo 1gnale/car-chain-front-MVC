@@ -1,18 +1,14 @@
-import TitleForm from "../GeneralComponents/TitleForm";
-import TableButton from "../GeneralComponents/Table";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
-import { type Icon, Eye, Pencil } from "react-bootstrap-icons";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProfileCard from "../GeneralComponents/ProfileCard";
 import { Calculator } from "react-bootstrap-icons";
 
 const AccountPricings = ({}) => {
   const navigate = useNavigate();
 
-  const cotizaciones: Linea_Cotizacion[] = useAppSelector(
-    (state) => state.lineasCotizacion.lineaCotizacion
+  const cotizaciones: Cotizacion[] = useAppSelector(
+    (state) => state.cotizacion.cotizacion
   );
-
   return (
     <div className="card bg-dark border-info">
       <div className="card-header bg-transparent border-info">

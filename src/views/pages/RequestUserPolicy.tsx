@@ -8,7 +8,13 @@ import FormDataCoverages from "../components/RequestUserPolicy/FormDataCoverages
 import FormDataDocumentation from "../components/RequestUserPolicy/FormDocumentation";
 import FormDataConfirmation from "../components/RequestUserPolicy/FormDataConfirmation";
 
-const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
+const RequestUserPolicy = ({
+  isAuth,
+  handleConfirmacionPoliza,
+}: {
+  isAuth: boolean;
+  handleConfirmacionPoliza: (poliza: Poliza) => void;
+}) => {
   const [currentView, setCurrentView] = useState<number>(0);
 
   const handleCurrentView = (pass: boolean) => {
@@ -22,7 +28,7 @@ const RequestUserPolicy = ({ isAuth }: { isAuth: boolean }) => {
     });
   };
 
-  const views = [ 
+  const views = [
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
     <FormDataClient handleCurrentView={handleCurrentView} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,

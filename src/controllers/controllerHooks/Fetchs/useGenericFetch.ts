@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface UseGenericFetchResult<T> {
-  data: T[];
+  data: any;
   loading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
@@ -11,7 +11,6 @@ export function useGenericFetch<T>(apiUrl?: string): UseGenericFetchResult<T> {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
   const fetchData = async (): Promise<void> => {
     if (!apiUrl) {
       // No establecer error si no hay URL, solo no hacer nada
@@ -23,17 +22,17 @@ export function useGenericFetch<T>(apiUrl?: string): UseGenericFetchResult<T> {
 
     setLoading(true);
     setError(null);
-
     try {
       const response = await fetch(apiUrl);
-
+      console.log("response");
+      console.log(response);
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.status}`);
       }
       const result = await response.json();
       setData(result.data || []);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -47,7 +46,7 @@ export function useGenericFetch<T>(apiUrl?: string): UseGenericFetchResult<T> {
     data,
     loading,
     error,
-    refetch: fetchData
+    refetch: fetchData,
   };
 }
 
