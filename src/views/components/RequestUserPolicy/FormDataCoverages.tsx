@@ -267,11 +267,11 @@ const FormDataCoverages = ({
         monto: handleAmount(linea) // Recalcular el monto para asegurar que esté actualizado
       }));
 
-      console.log("Guardando vehículo, cotización y líneas de cotización...");
+      console.log("Guardando vehículo, cotización, líneas de cotización, documentación y póliza...");
       console.log("Líneas a guardar:", lineasConMontos);
       
       const result = await saveCotizacion(cotizacionToSave, lineasConMontos);
-      console.log("Vehículo, cotización y líneas guardados exitosamente:", result);
+      console.log("Vehículo, cotización, líneas, documentación y póliza guardados exitosamente:", result);
       
       // Limpiar localStorage después del guardado exitoso
       console.log("Limpiando localStorage...");
@@ -344,7 +344,7 @@ const FormDataCoverages = ({
               redirectCountdown 
                 ? `Redirigiendo en ${redirectCountdown}...` 
                 : savingCotizacion 
-                ? "Guardando vehículo, cotización y líneas..." 
+                ? "Guardando vehículo, cotización, líneas, documentación y póliza..." 
                 : "Guardar cotización"
             } 
             onClick={handleSaveCotizacion}
