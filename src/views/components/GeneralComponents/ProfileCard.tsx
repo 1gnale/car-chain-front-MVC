@@ -20,30 +20,27 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   onClick,
 }) => {
   const badgeColor =
-    estado === "Vigente"
+    estado === "VIGENTE"
       ? "bg-success"
-      : estado === "Pendiente" ||
-        estado === "En Revision" ||
-        estado === "Aprobada"
+      : estado === "PENDIENTE" ||
+        estado === "EN REVISION" ||
+        estado === "APROBADA"
       ? "bg-warning"
-      : estado === "Cancelada" ||
-        estado === "Impaga" ||
-        estado === "Rechazada" ||
-        "Cancelada"
+      : estado === "CANCELADA" ||
+        estado === "IMPAGA" ||
+        estado === "RECHAZADA" ||
+        "CANCELADA"
       ? "bg-danger"
       : "bg-secondary";
 
   const borderColor =
-    estado === "Vigente"
+    estado === "VIGENTE"
       ? "border-success"
-      : estado === "Pendiente" ||
-        estado === "En Revision" ||
-        estado === "Aprobada"
+      : estado === "PENDIENTE" ||
+        estado === "EN REVISION" ||
+        estado === "APROBADA"
       ? "border-warning"
-      : estado === "Cancelada" ||
-        estado === "Impaga" ||
-        estado === "Rechazada" ||
-        "Cancelada"
+      : estado === "CANCELADA" || estado === "IMPAGA" || estado === "RECHAZADA"
       ? "border-danger"
       : "border-secondary";
   return (

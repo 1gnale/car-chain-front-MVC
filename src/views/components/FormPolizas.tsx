@@ -25,7 +25,7 @@ function FormPolizas() {
       tableBody: coverage_details
         .filter(
           (coverDetail) =>
-            coverDetail.cobertura.id === policy.lineaContizacion?.cobertura?.id
+            coverDetail.cobertura.id === policy.lineaCotizacion?.cobertura?.id
         )
         .map((coverDetail, idx) => ({
           key: idx,
@@ -35,7 +35,7 @@ function FormPolizas() {
             String(coverDetail.detalle.descripcion),
             (() => {
               const version =
-                policy.lineaContizacion?.cotizacion?.vehiculo?.version;
+                policy.lineaCotizacion?.cotizacion?.vehiculo?.version;
 
               if (!version) return "N/A";
 
@@ -44,7 +44,7 @@ function FormPolizas() {
                 return String(coverDetail.detalle.monto_fijo);
               }
               // Si tiene GNC, usamos precio_mercado_gnc
-              else if (policy.lineaContizacion?.cotizacion?.vehiculo?.gnc) {
+              else if (policy.lineaCotizacion?.cotizacion?.vehiculo?.gnc) {
                 return String(version.precio_mercado_gnc);
               } else {
                 return String(version.precio_mercado);

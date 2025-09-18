@@ -115,7 +115,7 @@ interface Cotizacion {
 }
 
 interface Linea_Cotizacion {
-  id: number;
+  id?: number;
   monto?: number;
   cotizacion?: Cotizacion;
   cobertura?: Cobertura;
@@ -224,7 +224,7 @@ interface Poliza {
   usuario?: Usuario;
   documentacion?: Documentacion;
   estadoPoliza?: string;
-  lineaContizacion?: Linea_Cotizacion;
+  lineaCotizacion?: Linea_Cotizacion;
   periodoPago?: PeriodoPago;
   tipoContratacion?: TipoContratacion;
 }

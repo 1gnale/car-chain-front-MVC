@@ -2,16 +2,22 @@ import type IDocumentacionRepository from "../Irepositorys/IDocumentacionReposit
 import type { DocumentacionPayload } from "../Irepositorys/IDocumentacionRepository";
 import { BaseRepository } from "./BaseRepository";
 
-export class DocumentacionRepository extends BaseRepository<any> implements IDocumentacionRepository {
+export class DocumentacionRepository
+  extends BaseRepository<any>
+  implements IDocumentacionRepository
+{
   constructor(apiUrl?: string) {
     super(apiUrl);
   }
 
-  async createDocumentacion(data: DocumentacionPayload, authToken?: string): Promise<any> {
+  async createDocumentacion(
+    data: DocumentacionPayload,
+    authToken?: string
+  ): Promise<any> {
     const response = await fetch(`${this.apiUrl}/createDocumentacion`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...(authToken && { Authorization: `Bearer ${authToken}` }),
       },
       body: JSON.stringify(data),

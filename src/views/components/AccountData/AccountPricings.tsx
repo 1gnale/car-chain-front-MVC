@@ -24,7 +24,7 @@ const AccountPricings = ({}) => {
             number={cotizacion.id!}
             fecha={cotizacion.fechaCreacion!}
             text="Fecha de creacion"
-            estado={cotizacion.activo ? "Vigente" : "Cancelada"}
+            estado={cotizacion.activo ? "VIGENTE" : "CANCELADA"}
             onClick={() => navigate(`/cotizacion/${cotizacion.id}`)}
           />
         ))}

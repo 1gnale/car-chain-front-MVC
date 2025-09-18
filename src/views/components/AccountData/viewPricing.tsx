@@ -44,7 +44,7 @@ const ViewPricings = ({
     if (Auth) {
       const policy: Poliza = {
         numero_poliza: 1,
-        lineaContizacion: linea_cotization,
+        lineaCotizacion: linea_cotization,
       };
       localStorage.setItem("PolicyData", JSON.stringify(policy));
       handleCurrentView(true);

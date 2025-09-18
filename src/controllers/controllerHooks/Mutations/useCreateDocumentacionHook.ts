@@ -5,7 +5,9 @@ import type { DocumentacionPayload } from "../../../models/repository/Irepositor
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface UseCreateDocumentacionResult {
-  createDocumentacion: (documentacionData: DocumentacionPayload) => Promise<any>;
+  createDocumentacion: (
+    documentacionData: DocumentacionPayload
+  ) => Promise<any>;
   loading: boolean;
   error: string | null;
   success: boolean;
@@ -18,27 +20,31 @@ const useCreateDocumentacion = (): UseCreateDocumentacionResult => {
   const { getAccessTokenSilently } = useAuth0();
 
   // Crear instancia del repository
-  const documentacionRepo: IDocumentacionRepository = new DocumentacionRepository(
-    `${import.meta.env.VITE_BASEURL}/api/poliza`
-  );
+  const documentacionRepo: IDocumentacionRepository =
+    new DocumentacionRepository(`${import.meta.env.VITE_BASEURL}/api/poliza`);
 
-  const createDocumentacion = async (documentacionData: DocumentacionPayload): Promise<any> => {
+  const createDocumentacion = async (
+    documentacionData: DocumentacionPayload
+  ): Promise<any> => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
       console.log("Creando documentación:", documentacionData);
-      
+
       // Obtener token para autorización
       const token = await getAccessTokenSilently();
-      
-      const documentacionCreada = await documentacionRepo.createDocumentacion(documentacionData, token);
+
+      const documentacionCreada = await documentacionRepo.createDocumentacion(
+        documentacionData,
+        token
+      );
       console.log("Documentación creada exitosamente:", documentacionCreada);
 
       setSuccess(true);
       setLoading(false);
-      
+
       return documentacionCreada;
     } catch (err: any) {
       console.error("Error al crear la documentación:", err);

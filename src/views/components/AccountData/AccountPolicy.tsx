@@ -11,6 +11,8 @@ const AccountPolicy = () => {
   //("poliza");
   //(polices_user);
 
+  console.log("polices_user");
+  console.log(polices_user[0]);
   return (
     <div className="card bg-dark border-info">
       <div className="card-header bg-transparent border-info">
@@ -25,8 +27,9 @@ const AccountPolicy = () => {
             title="Póliza"
             text="Fecha de contratacion"
             number={poliza.numero_poliza!}
-            fecha={poliza.fechaContratacion!}
-            estado={poliza.estadoPoliza!}
+            fecha={poliza.fechaContratacion || "N/A"}
+            secondaryText={poliza.lineaCotizacion?.cobertura?.nombre || "N/A"}
+            estado={poliza.estadoPoliza}
             onClick={() =>
               navigate(`/administrarPoliza/${poliza.numero_poliza}`)
             }

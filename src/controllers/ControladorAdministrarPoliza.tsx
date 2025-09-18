@@ -97,7 +97,7 @@ const ControladorAdministrarPoliza = () => {
       cantidadMeses: 12,
       activo: true,
     },
-    lineaContizacion: {
+    lineaCotizacion: {
       id: 1,
       monto: 15000,
       cotizacion: {

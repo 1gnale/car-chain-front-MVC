@@ -8,5 +8,8 @@ export interface DocumentacionPayload {
 }
 
 export default interface IDocumentacionRepository {
-  createDocumentacion(data: DocumentacionPayload, authToken?: string): Promise<any>;
+  createDocumentacion(
+    data: DocumentacionPayload,
+    authToken?: string
+  ): Promise<any>;
 }

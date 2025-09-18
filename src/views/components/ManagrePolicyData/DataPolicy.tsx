@@ -88,7 +88,7 @@ const PolicyProfile = ({
       tableBody: coverage_details
         .filter(
           (covDetail) =>
-            policy.lineaContizacion?.cobertura?.id === covDetail.cobertura.id &&
+            policy.lineaCotizacion?.cobertura?.id === covDetail.cobertura.id &&
             covDetail.detalle.activo &&
             covDetail.aplica
         )
@@ -101,7 +101,7 @@ const PolicyProfile = ({
             String(coverDetail.detalle.descripcion),
             (() => {
               const version =
-                policy.lineaContizacion?.cotizacion?.vehiculo?.version;
+                policy.lineaCotizacion?.cotizacion?.vehiculo?.version;
 
               if (!version) return "N/A";
 
@@ -112,7 +112,7 @@ const PolicyProfile = ({
                 );
               }
               // Si tiene GNC, usamos precio_mercado_gnc
-              else if (policy.lineaContizacion?.cotizacion?.vehiculo?.gnc) {
+              else if (policy.lineaCotizacion?.cotizacion?.vehiculo?.gnc) {
                 return String(formato.format(version.precio_mercado_gnc ?? 0));
               } else {
                 return String(formato.format(version.precio_mercado));
@@ -237,7 +237,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Nombre/s:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.nombres
                   }
                 />
@@ -246,7 +246,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Apellido/s:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.apellido
                   }
                 />
@@ -255,7 +255,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Sexo:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente?.sexo
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.sexo
                   }
                 />
               </div>
@@ -263,7 +263,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Fecha de Nacimiento:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.fechaNacimiento
                   }
                 />
@@ -273,7 +273,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Tipo de"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.tipoDocumento
                   }
                 />
@@ -283,7 +283,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Documento:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.documento
                   }
                 />
@@ -292,7 +292,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Teléfono:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.telefono
                   }
                 />
@@ -301,7 +301,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Correo:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.correo
                   }
                 />
@@ -310,7 +310,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Provincia:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.localidad?.provincia?.descripcion
                   }
                 />
@@ -319,7 +319,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Localidad:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.localidad?.descripcion
                   }
                 />
@@ -328,7 +328,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Domicilio:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.cliente
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                       ?.domicilio
                   }
                 />
@@ -352,22 +352,20 @@ const PolicyProfile = ({
               <div className="col-md-3">
                 <LabelNinfo
                   title="Matrícula: "
-                  text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.matricula
-                  }
+                  text={policy.lineaCotizacion?.cotizacion?.vehiculo?.matricula}
                 />
               </div>
               <div className="col-md-3">
                 <LabelNinfo
                   title="Chasis:"
-                  text={policy.lineaContizacion?.cotizacion?.vehiculo?.chasis}
+                  text={policy.lineaCotizacion?.cotizacion?.vehiculo?.chasis}
                 />
               </div>
               <div className="col-md-3">
                 <LabelNinfo
                   title="N° motor:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.numeroMotor
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.numeroMotor
                   }
                 />
               </div>
@@ -375,7 +373,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="GNC:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.gnc
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.gnc
                       ? "Sí"
                       : "No"
                   }
@@ -385,8 +383,8 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Marca:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.version
-                      .modelo.marca.nombre
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.version.modelo
+                      .marca.nombre
                   }
                 />
               </div>
@@ -394,8 +392,8 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Modelo:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.version
-                      .modelo.nombre
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.version.modelo
+                      .nombre
                   }
                 />
               </div>
@@ -403,8 +401,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Version:"
                   text={
-                    policy.lineaContizacion?.cotizacion?.vehiculo?.version
-                      .nombre
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.version.nombre
                   }
                 />
               </div>
@@ -412,8 +409,7 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Año:"
                   text={String(
-                    policy.lineaContizacion?.cotizacion?.vehiculo
-                      ?.añoFabricacion
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.añoFabricacion
                   )}
                 />
               </div>
@@ -535,14 +531,14 @@ const PolicyProfile = ({
                   <div className="col-md-6">
                     <LabelNinfo
                       title="Nombre:"
-                      text={policy.lineaContizacion?.cobertura?.nombre}
+                      text={policy.lineaCotizacion?.cobertura?.nombre}
                     />
                   </div>
                   <div className="col-md-6">
                     <LabelNinfo
                       title="Precio:"
                       text={String(
-                        formato.format(policy.lineaContizacion?.monto!)
+                        formato.format(policy.lineaCotizacion?.monto!)
                       )}
                     />
                   </div>

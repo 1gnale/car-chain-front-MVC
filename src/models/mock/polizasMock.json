@@ -4,7 +4,7 @@
     "precioPolziaActual": 126938.22,
     "montoAsegurado": 7000000,
     "estadoPoliza": "Vigente",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -130,7 +130,7 @@
     "precioPolziaActual": 122400.81,
     "montoAsegurado": 7000000,
     "estadoPoliza": "Vigente",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -256,7 +256,7 @@
     "precioPolziaActual": 80824.22,
     "montoAsegurado": 8500000,
     "estadoPoliza": "Rechazada",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -383,7 +383,7 @@
     "montoAsegurado": 10000000,
 
     "estadoPoliza": "Pendiente",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -509,7 +509,7 @@
     "precioPolziaActual": 116721.18,
     "montoAsegurado": 7000000,
     "estadoPoliza": "Vigente",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -635,7 +635,7 @@
     "precioPolziaActual": 179856.36,
     "estadoPoliza": "Cancelada",
     "montoAsegurado": 10000000,
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -761,7 +761,7 @@
     "precioPolziaActual": 85164.36,
     "montoAsegurado": 8500000,
     "estadoPoliza": "Rechazada",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -887,7 +887,7 @@
     "precioPolziaActual": 157315.88,
     "montoAsegurado": 7000000,
     "estadoPoliza": "Vigente",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -1013,7 +1013,7 @@
     "precioPolziaActual": 80510.91,
     "montoAsegurado": 8500000,
     "estadoPoliza": "Rechazada",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {
@@ -1139,7 +1139,7 @@
     "precioPolziaActual": 172332.89,
     "montoAsegurado": 7000000,
     "estadoPoliza": "Vigente",
-    "lineaContizacion": {
+    "lineaCotizacion": {
       "id": 1,
       "monto": 120000.5,
       "cotizacion": {

@@ -33,7 +33,10 @@ const RequestUserPolicy = ({
     <FormDataClient handleCurrentView={handleCurrentView} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,
     <FormDataDocumentation handleCurrentView={handleCurrentView} />,
-    <FormDataConfirmation handleCurrentView={handleCurrentView} />,
+    <FormDataConfirmation
+      handleCurrentView={handleCurrentView}
+      handleConfirmacionPoliza={handleConfirmacionPoliza}
+    />,
   ];
 
   return (
