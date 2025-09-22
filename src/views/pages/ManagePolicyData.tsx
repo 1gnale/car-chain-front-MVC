@@ -25,7 +25,7 @@ const ManagePolicyData = ({
         policy={policy}
       ></PolicyProfile>
     ),
-    pagarPolizaPorPrimeraVez: <PolicyFristPayment></PolicyFristPayment>,
+    pagarPolizaPorPrimeraVez: <PolicyFristPayment poliza={policy} />,
   };
 
   return (

@@ -17,7 +17,6 @@ const ControladorSolicitarContratacionDePoliza = () => {
     savePoliza,
     loading: loadingPoliza,
     error: errorPoliza,
-    success: successPoliza,
   } = useCreatePolizaCompleta();
 
   const { isAuthenticated, isLoading, user } = useAuth0();
@@ -46,15 +45,12 @@ const ControladorSolicitarContratacionDePoliza = () => {
 
   // Handle confirmacion poliza
   const handleConfirmacionPoliza = async (poliza: Poliza) => {
-    // Lógica para manejar la confirmación de la póliza completa
     if (!poliza) {
       console.error("No hay poliza para guardar");
       return;
     }
     try {
-      // Asumiendo que poliza tiene las propiedades necesarias:
-      // poliza.cotizacion: Cotizacion
-      // poliza.lineasCotizacion: Linea_Cotizacion[]
+
       const cotizacion = poliza.lineaCotizacion?.cotizacion;
       const lineaCotizacion = poliza.lineaCotizacion;
       const lineasCotizacion: Linea_Cotizacion[] = [];
@@ -62,54 +58,12 @@ const ControladorSolicitarContratacionDePoliza = () => {
 
       const resultado = await savePoliza(cotizacion!, lineasCotizacion);
       console.log("Resultado de guardado de póliza completa:", resultado);
-      // Aquí puedes limpiar localStorage, mostrar mensaje, redirigir, etc.
     } catch (error) {
       console.error("Error al procesar la póliza:", error);
     }
     console.log("Póliza confirmada");
   };
-  /* const handleSaveCotizacion = async () => {
-    try {
-      // Tomar la primera cotización (asumiendo que todas comparten la misma cotización base)
-      const cotizacionToSave = linea_cotization[0]?.cotizacion;
-
-      if (!cotizacionToSave) {
-        console.error("No se encontró una cotización válida para guardar");
-        return;
-      }
-
-      const result = await saveCotizacion(cotizacionToSave, lineasConMontos);
-      console.log(
-        "Vehículo, cotización y líneas guardados exitosamente:",
-        result
-      );
-
-      // Limpiar localStorage después del guardado exitoso
-      console.log("Limpiando localStorage...");
-      clearAllData();
-
-      // Iniciar cuenta regresiva
-      setRedirectCountdown(3);
-
-      // Cuenta regresiva e intervalos
-      const countdownInterval = setInterval(() => {
-        setRedirectCountdown((prev) => {
-          if (prev === null || prev <= 1) {
-            clearInterval(countdownInterval);
-            navigate("/");
-            return null;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    } catch (error) {
-      console.error("Error al guardar la cotización:", error);
-      // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario
-    }
-  };*/
-
-  // Mostrar spinner de carga si alguno de los hooks está cargando
-
+  
   if (
     isLoading ||
     loading ||

@@ -1,57 +1,18 @@
 import { useMemo, useState } from "react";
 import SelectForm from "../GeneralComponents/SelectForm";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
 
-function PolicyFristPayment() {
-  const tiposContratacion: TipoContratacion[] = [
-    {
-      id: 4,
-      nombre: "Mensual",
-      cantidadMeses: 1,
-      activo: true,
-    },
-    {
-      id: 3,
-      nombre: "Trimestral",
-      cantidadMeses: 3,
-      activo: true,
-    },
-    {
-      id: 2,
-      nombre: "Semestral",
-      cantidadMeses: 6,
-      activo: true,
-    },
-    {
-      id: 1,
-      nombre: "Anual",
-      cantidadMeses: 12,
-      activo: false,
-    },
-  ];
-  const periodosPago: PeriodoPago[] = [
-    {
-      id: 1,
-      nombre: "Mensaul",
-      cantidadMeses: 1,
-      descuento: 0,
-      activo: true,
-    },
-    {
-      id: 2,
-      nombre: "Trimestral",
-      cantidadMeses: 3,
-      descuento: 10,
-      activo: true,
-    },
-    {
-      id: 3,
-      nombre: "Semestral",
-      cantidadMeses: 6,
-      descuento: 15,
-      activo: false,
-    },
-  ];
+function PolicyFristPayment({ poliza }: { poliza: Poliza }) {
+  const tiposContratacion: TipoContratacion[] = useAppSelector(
+    (state) => state.tiposContratacion.tipoContratacion
+  );
+  const periodosPago: PeriodoPago[] = useAppSelector(
+    (state) => state.periodosPago.periodoPago
+  );
 
+  console.log("poliza en pagar poliza", poliza.lineaCotizacion?.monto);
+
+  //states
   const [selectedContratType, setSelectedContratType] = useState(0);
   const [selectedPaymentPeriod, setSelectedPaymentPeriod] = useState(0);
   //handles
@@ -60,24 +21,80 @@ function PolicyFristPayment() {
       (line) => line.activo === true
     );
     const result = tiposContratacionFilt.map((tipoContratacion) => {
-      return { id: tipoContratacion.id, name: tipoContratacion.nombre! };
+      return { id: tipoContratacion.id, name: tipoContratacion.nombre!, cantidadMeses: tipoContratacion.cantidadMeses };
     });
     return result;
   }, [tiposContratacion]);
 
   const handlePeriodoPago = useMemo(() => {
     const periodosPagoFilt = periodosPago.filter(
-      (line) => line.activo === true
+      (line) => line.activo === true && line.cantidadMeses! <= handleTiposContratacion.find(e => e.id === selectedContratType)?.cantidadMeses!
     );
+
     const result = periodosPagoFilt.map((periodoPago) => {
-      return { id: periodoPago.id, name: periodoPago.nombre! };
+      return { id: periodoPago.id, name: periodoPago.nombre!, descuento: periodoPago.descuento, cantidadMeses: periodoPago.cantidadMeses };
     });
     return result;
-  }, [periodosPago]);
+  }, [periodosPago, handleTiposContratacion, selectedContratType]);
 
-  return (
-    <>
-      <style>{`
+  const handleTotalAmount = useMemo(() => {
+    const total = poliza.lineaCotizacion?.monto! * handlePeriodoPago.find(e => e.id === selectedPaymentPeriod)?.cantidadMeses!;
+    const descuento = total * handlePeriodoPago.find(e => e.id === selectedPaymentPeriod)?.descuento!;
+    return total - descuento;
+  }, [handleTiposContratacion, selectedContratType, handlePeriodoPago, selectedPaymentPeriod]);
+  const handleSubmit = async () => {
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BASEURL}/api/pago/crearPrimerPago`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          poliza_numero: poliza.numero_poliza,
+          total: handleTotalAmount,
+          descripcion: poliza.lineaCotizacion?.cobertura?.nombre,
+          payer_email: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.correo,
+          payer_name: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.nombres,
+          payer_surname: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.apellido,
+          payer_phone: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.telefono,
+          payer_identification: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.documento,
+          back_urls: {
+            //   success: "https://4bb0c22b9817.ngrok-free.app/sucess",
+            //   failure: "https://4bb0c22b9817.ngrok-free.app/failure",
+            //   pending: "https://4bb0c22b9817.ngrok-free.app/pending",
+          },
+          external_reference: "REF-12345",
+          idTipoContratacion: 1,
+          idPeriodoPago: 1,
+        }),
+      });
+
+      if (!res.ok) {
+        // Intentar obtener el error detallado del backend
+        let errorMessage = `HTTP ${res.status}: ${res.statusText}`;
+        try {
+          const errorData = await res.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+          console.error("Backend Error Details:", errorData);
+        } catch (parseError) {
+          console.error("Could not parse error res:", parseError);
+        }
+        throw new Error(errorMessage);
+      }  
+
+  const data = await res.json();
+  const initPoint = data.init_point;
+  window.location.href = initPoint; // Redirige al Checkout Pro
+  //("Pago exitoso");
+} catch (error) {
+  console.error("Error iniciando pago:", error);
+}
+  };
+
+return (
+  <>
+    <style>{`
         .payment-card {
           max-width: 600px;
           margin: 2rem auto;
@@ -208,53 +225,53 @@ function PolicyFristPayment() {
         }
       `}</style>
 
-      <div className="payment-card">
-        <div className="card-header">
-          <h2 className="card-title">Pagar Póliza</h2>
+    <div className="payment-card">
+      <div className="card-header">
+        <h2 className="card-title">Pagar Póliza</h2>
+      </div>
+
+      <div className="card-body">
+        <div className="form-row">
+          <SelectForm
+            status={true}
+            value={selectedContratType}
+            title="Tipo contratacion"
+            classNameDiv="input-field"
+            classNameLabel="me-2"
+            classNameSelect="flex-grow-1"
+            items={handleTiposContratacion}
+            onChange={setSelectedContratType}
+          />
+
+          <SelectForm
+            status={true}
+            value={selectedPaymentPeriod}
+            title="Periodo de pago"
+            classNameDiv="input-field"
+            classNameLabel="me-2"
+            classNameSelect="flex-grow-1"
+            items={handlePeriodoPago}
+            onChange={setSelectedPaymentPeriod}
+          />
         </div>
 
-        <div className="card-body">
-          <div className="form-row">
-            <SelectForm
-              status={true}
-              value={selectedContratType}
-              title="Tipo contratacion"
-              classNameDiv="input-field"
-              classNameLabel="me-2"
-              classNameSelect="flex-grow-1"
-              items={handleTiposContratacion}
-              onChange={setSelectedContratType}
-            />
+        <div className="total-section">
+          <div className="total-label">TOTAL A PAGAR</div>
+          <h3 className="total-amount">${(selectedPaymentPeriod && selectedContratType) ? handleTotalAmount : poliza.lineaCotizacion?.monto}</h3>
+        </div>
 
-            <SelectForm
-              status={true}
-              value={selectedPaymentPeriod}
-              title="Periodo de pago"
-              classNameDiv="input-field"
-              classNameLabel="me-2"
-              classNameSelect="flex-grow-1"
-              items={handlePeriodoPago}
-              onChange={setSelectedPaymentPeriod}
-            />
-          </div>
-
-          <div className="total-section">
-            <div className="total-label">TOTAL A PAGAR</div>
-            <h3 className="total-amount">$4,958.80</h3>
-          </div>
-
-          <div className="button-group">
-            <button className="btn btn-cancel" onClick={() => {}}>
-              Cancelar
-            </button>
-            <button className="btn btn-confirm" onClick={() => {}}>
-              Pagar
-            </button>
-          </div>
+        <div className="button-group">
+          <button className="btn btn-cancel" onClick={() => { }}>
+            Cancelar
+          </button>
+          <button className="btn btn-confirm" onClick={handleSubmit}>
+            Pagar
+          </button>
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 }
 
 export default PolicyFristPayment;
