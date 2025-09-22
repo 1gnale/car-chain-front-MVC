@@ -43,21 +43,14 @@ const PolicyProfile = ({
   };
 
   useEffect(() => {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    console.log(policy);
     if (policy != undefined) {
-      const documentacion = {
-        fotoFrontal: URL.createObjectURL(policy.documentacion?.fotoFrontal!),
-        fotoTrasera: URL.createObjectURL(policy.documentacion?.fotoTrasera!),
-        fotoLateral1: URL.createObjectURL(policy.documentacion?.fotoLateral1!),
-        fotoLateral2: URL.createObjectURL(policy.documentacion?.fotoLateral2!),
-        fotoTecho: URL.createObjectURL(policy.documentacion?.fotoTecho!),
-        cedulaVerde: URL.createObjectURL(policy.documentacion?.cedulaVerde!),
-      };
-      setDocumentationPaths(documentacion);
       //("Paths de documentación cargados:", documentacion);
+      loadImagesFromSession();
+      console.log("documentationImages");
+      console.log(documentationImages);
     }
-
-    // Cargar las imágenes desde sessionStorage
-    loadImagesFromSession();
 
     // Cleanup function para liberar las URLs de objeto
     return () => {
@@ -67,7 +60,7 @@ const PolicyProfile = ({
         }
       });
     };
-  }, []); // ... existing code ...
+  }, [policy]);
 
   // Función auxiliar para mostrar información de archivos cuando solo tenemos paths
   function getFileDisplayName(filePath?: string): string {
@@ -113,9 +106,9 @@ const PolicyProfile = ({
               }
               // Si tiene GNC, usamos precio_mercado_gnc
               else if (policy.lineaCotizacion?.cotizacion?.vehiculo?.gnc) {
-                return String(formato.format(version.precio_mercado_gnc ?? 0));
+                return String(formato.format(version?.precio_mercado_gnc || 0));
               } else {
-                return String(formato.format(version.precio_mercado));
+                return String(formato.format(version?.precio_mercado || 0));
               }
             })(),
           ],
@@ -161,7 +154,7 @@ const PolicyProfile = ({
             />
             <GrayButton
               text={
-                policy.estadoPoliza === "APROBADO"
+                policy.estadoPoliza === "APROBADA"
                   ? "Pagar por primera vez"
                   : policy.estadoPoliza === "VIGENTE"
                   ? "Pagar Poliza"
@@ -169,14 +162,14 @@ const PolicyProfile = ({
               }
               style="me-md-2"
               onClick={() => {
-                if (policy.estadoPoliza === "APROBADO") {
+                if (policy.estadoPoliza === "APROBADA") {
                   handleCurrentView("pagarPolizaPorPrimeraVez");
                 } else if (policy.estadoPoliza === "VIGENTE") {
                   // acción para pagar
                 }
               }}
               disabled={
-                policy.estadoPoliza !== "APROBADO" &&
+                policy.estadoPoliza !== "APROBADA" &&
                 policy.estadoPoliza !== "VIGENTE"
               }
             />
@@ -203,13 +196,13 @@ const PolicyProfile = ({
               <div className="col-md-3">
                 <LabelNinfo
                   title="Fecha de contratacion:"
-                  text={policy.fechaContratacion}
+                  text={policy.fechaContratacion || " -"}
                 />
               </div>
               <div className="col-md-3">
                 <LabelNinfo
                   title="Hora de contratacion:"
-                  text={policy.horaContratacion}
+                  text={policy.horaContratacion || " -"}
                 />
               </div>
               <div className="col-md-3">
@@ -383,8 +376,8 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Marca:"
                   text={
-                    policy.lineaCotizacion?.cotizacion?.vehiculo?.version.modelo
-                      .marca.nombre
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.version
+                      ?.modelo?.marca?.nombre || ""
                   }
                 />
               </div>
@@ -392,8 +385,8 @@ const PolicyProfile = ({
                 <LabelNinfo
                   title="Modelo:"
                   text={
-                    policy.lineaCotizacion?.cotizacion?.vehiculo?.version.modelo
-                      .nombre
+                    policy.lineaCotizacion?.cotizacion?.vehiculo?.version
+                      ?.modelo?.nombre || ""
                   }
                 />
               </div>
@@ -545,18 +538,17 @@ const PolicyProfile = ({
                   <div className="col-md-6">
                     <LabelNinfo
                       title="Tipo contratación:"
-                      text={policy.tipoContratacion!.nombre}
+                      text={policy.tipoContratacion?.nombre || " -"}
                     />
                   </div>
                   <div className="col-md-6">
                     <LabelNinfo
                       title="Periodo de pago:"
-                      text={policy.periodoPago?.nombre}
+                      text={policy.periodoPago?.nombre || "-"}
                     />
                   </div>
                 </div>
               </div>
-
               <div className="col-md-6">
                 <div
                   className="card text-center"
@@ -588,7 +580,7 @@ const PolicyProfile = ({
                           >
                             {"Inicio: "}
                           </span>
-                          <span>{policy.fechaContratacion}</span>
+                          <span>{policy.fechaContratacion || " -"}</span>
                         </div>
                       </div>
 
@@ -600,7 +592,7 @@ const PolicyProfile = ({
                           >
                             {"Proximo pago: "}
                           </span>
-                          <span>{policy.fechaDePago}</span>
+                          <span>{policy.fechaDePago || " -"}</span>
                         </div>
                       </div>
                     </div>

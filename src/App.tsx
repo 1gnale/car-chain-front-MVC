@@ -129,6 +129,15 @@ function App() {
           </ProtectedRoute>
         }
       />
+      {/* Ver una poliza en particular */}
+      <Route
+        path="/administrarPoliza/:idPoliza"
+        element={
+          <ProtectedRoute>
+            <ControladorAdministrarPoliza />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
