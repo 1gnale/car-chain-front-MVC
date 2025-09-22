@@ -258,6 +258,10 @@ const FormDataCoverages = ({
 
   const handleSaveCotizacion = async () => {
     // Verificar que tenemos datos de cotización para guardar
+    if (!Auth){
+      loginWithRedirect();
+      return;
+    }
     if (linea_cotization.length === 0) {
       console.error("No hay cotizaciones para guardar");
       return;

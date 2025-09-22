@@ -10,14 +10,21 @@ import FormDataConfirmation from "../components/RequestUserPolicy/FormDataConfir
 
 const RequestUserPolicy = ({
   isAuth,
+  userMail,
   handleConfirmacionPoliza,
 }: {
   isAuth: boolean;
+  userMail: string | null;
   handleConfirmacionPoliza: (poliza: Poliza) => void;
 }) => {
   const [currentView, setCurrentView] = useState<number>(0);
 
-  const handleCurrentView = (pass: boolean) => {
+  const handleCurrentView = (pass: boolean, hardValue?: number) => {
+    if (hardValue !== undefined) {
+      setCurrentView(hardValue);
+      return;
+    }
+
     setCurrentView((prev) => {
       if (pass && prev < views.length - 1) {
         return prev + 1;
@@ -30,7 +37,7 @@ const RequestUserPolicy = ({
 
   const views = [
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
-    <FormDataClient handleCurrentView={handleCurrentView} />,
+    <FormDataClient handleCurrentView={handleCurrentView} userMail={userMail} />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,
     <FormDataDocumentation handleCurrentView={handleCurrentView} />,
     <FormDataConfirmation

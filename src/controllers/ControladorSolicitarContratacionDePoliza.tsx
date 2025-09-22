@@ -20,7 +20,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
     success: successPoliza,
   } = useCreatePolizaCompleta();
 
-  const { isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading, user } = useAuth0();
   // Hook que trae todas las marcas (versión optimizada)
   const { loading, error } = useMarcasHookV2();
   // Hook que trae todas las modelos (versión optimizada)
@@ -144,6 +144,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
   return (
     <RequestUserPolicy
       isAuth={isAuthenticated}
+      userMail={user?.email || null}
       handleConfirmacionPoliza={handleConfirmacionPoliza}
     />
   );
