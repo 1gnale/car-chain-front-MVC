@@ -35,7 +35,7 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     },
   });
 
-  console.log(formClient)
+  console.log(formClient);
 
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
@@ -69,7 +69,6 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
   );
 
   useEffect(() => {
-
     setFormClient(user);
     setSelectedLocality(user.localidad?.id || 0);
     setSelectedProvinces(user.localidad?.provincia?.id || 0);
@@ -77,6 +76,8 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
       (doc) => doc === user.tipoDocumento
     );
     setSelectedDocumentType(indexDocType + 1);
+    const indexSex = listSex.findIndex((sex) => sex.name === user.sexo);
+    setSelectedSex(indexSex + 1);
   }, [user]);
 
   const handleProvinces = useMemo(() => {
