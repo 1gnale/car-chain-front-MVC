@@ -141,6 +141,11 @@ const PageRegistrar = () => {
   const handleStateProvinces = (id: number) => {
     setSelectedProvinces(id);
     setSelectedLocality(0);
+    setLocality(true);
+    setFormData((prev) => ({
+      ...prev,
+      ["provincia"]: id.toString(),
+    }));
   };
 
   const handleLocality = useMemo(() => {
@@ -208,28 +213,16 @@ const PageRegistrar = () => {
     // Validar el campo usando el hook
     validateField(field as any, field === "fechaNacimiento" ? value : value);
   };
-  const a = {
-    nombres: formData.nombre,
-    apellido: formData.apellido,
-    fechaNacimiento: "1999-01-01",
-    tipoDocumento: formData.tipoDocumento,
-    documento: formData.documento,
-    domicilio: formData.domicilio,
-    correo: user?.email,
-    telefono: formData.telefono,
-    sexo: formData.sexo,
-    contraseña: "PEPEPEPEPEPEPE",
-    localidad_id: selectedLocality,
-  };
+
   //(a);
   const handleSubmit = async () => {
     if (validateForm(formData)) {
       try {
-        const a = await createClient({
+        const client = await createClient({
           personaData: {
             nombres: formData.nombre,
             apellido: formData.apellido,
-            fechaNacimiento: "1999-01-01",
+            fechaNacimiento: formData.fechaNacimiento,
             tipoDocumento: formData.tipoDocumento,
             documento: formData.documento,
             domicilio: formData.domicilio,

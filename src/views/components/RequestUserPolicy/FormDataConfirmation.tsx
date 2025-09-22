@@ -31,22 +31,22 @@ const FormDataConfirmation = ({
       const storedDocumentation = localStorage.getItem("Documentation");
       if (storedDocumentation) {
         const documentationData = JSON.parse(storedDocumentation);
-        //("📱 Datos de documentación cargados:", documentationData);
+        //(" Datos de documentación cargados:", documentationData);
 
         if (documentationData.imageData) {
           setDocumentationImages(documentationData.imageData);
-          //("🖼️ Imágenes cargadas para confirmación:", documentationData.imageData);
+          //(" Imágenes cargadas para confirmación:", documentationData.imageData);
         }
 
         if (documentationData.filePaths) {
           setDocumentationPaths(documentationData.filePaths);
-          //("📁 Paths cargados:", documentationData.filePaths);
+          //(" Paths cargados:", documentationData.filePaths);
         }
       } else {
-        //("⚠️ No se encontraron datos de documentación en localStorage");
+        //(" No se encontraron datos de documentación en localStorage");
       }
     } catch (error) {
-      console.error("❌ Error cargando imágenes desde localStorage:", error);
+      console.error(" Error cargando imágenes desde localStorage:", error);
     }
   };
 

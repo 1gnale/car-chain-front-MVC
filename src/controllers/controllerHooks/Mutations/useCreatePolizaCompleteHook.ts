@@ -95,12 +95,6 @@ const useCreatePolizaComplete = (): UseCreatePolizaCompleteResult => {
       const documentationData = JSON.parse(storedDocumentation || "{}");
       const documentationDataImage = documentationData.imageData || [];
       let documentacionCreada = null;
-      console.log(
-        "Datos de documentación desde localStorage AAAAAAAAAAAAAAAAAAAAAA:",
-        documentationDataImage.fotoFrontal,
-        "Tipo de dato:",
-        typeof documentationDataImage.fotoFrontal
-      );
       if (documentationDataImage && documentationDataImage.fotoFrontal) {
         const documentacionPayload = {
           fotoFrontal: documentationDataImage.fotoFrontal,

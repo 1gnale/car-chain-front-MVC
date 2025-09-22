@@ -3,19 +3,19 @@ import useGetPricing from "./controllerHooks/Fetchs/useGetPricingHook";
 import { useAuth0 } from "@auth0/auth0-react";
 import useCoberturasDetalleHook from "./controllerHooks/Fetchs/useCoberturaDetalleHook";
 import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
-import ManagrePolicyData from "../views/pages/ManagePolicyData";
+import ManagePolicyData from "../views/pages/ManagePolicyData";
+import usePoliceByIdHook from "./controllerHooks/Fetchs/usePoliceByIdHook";
+
+const convertirBufferAFile = (name: string, fotoFrontal: any): File => {
+  const uint8Array = new Uint8Array(fotoFrontal.data);
+  const blob = new Blob([uint8Array], { type: "image/jpeg" });
+  return new File([blob], name, { type: "image/jpeg" });
+};
 
 const ControladorAdministrarPoliza = () => {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  const convertirBufferAFile = (name: string, fotoFrontal: any): File => {
-    const uint8Array = new Uint8Array(fotoFrontal.data);
-    const blob = new Blob([uint8Array], { type: "image/jpeg" });
-    return new File([blob], name, { type: "image/jpeg" });
-  };
-  // Crear un hook parecido a este xd
-  //const { loading, error, pricing } = useGetPricing(String(id));
-  const policy: Poliza = {
+  /* const policy: Poliza = {
     numero_poliza: 1,
     precioPolizaActual: 15000,
     montoAsegurado: 3500000,
@@ -159,12 +159,14 @@ const ControladorAdministrarPoliza = () => {
         recargoPorAtraso: 0,
       },
     },
-  };
+  };*/
 
   const { id } = useParams<{ id: string }>();
-  const { loading, error, pricing } = useGetPricing(String(id));
+  const { loading, error, policy } = usePoliceByIdHook(String(id));
+
   const { loading: LoadingLine, error: ErrorLine } = useDetallesHook();
   const { loading: LoadingCD, error: ErrorCD } = useCoberturasDetalleHook();
+
   if (isLoading || loading || LoadingLine || LoadingCD) {
     return <div>Loading...</div>;
   }
@@ -172,10 +174,11 @@ const ControladorAdministrarPoliza = () => {
   if (error || ErrorLine || ErrorCD) {
     return <div>Error loading pricing information.</div>;
   }
-  if (!pricing) {
+  if (!policy) {
     return <div>No pricing data found.</div>;
   }
-  return <ManagrePolicyData policy={policy} isAuth={isAuthenticated} />;
+
+  return <ManagePolicyData policy={policy} isAuth={isAuthenticated} />;
 };
 
 export default ControladorAdministrarPoliza;

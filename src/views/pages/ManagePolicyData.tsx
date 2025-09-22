@@ -1,10 +1,9 @@
 import Navbar from "../components/NavBar/Navbar";
 import { useState } from "react";
 import TitleSection from "../components/GeneralComponents/TitleSection";
-import BreadCrumbNav from "../components/GeneralComponents/BreadCrumbNav";
 import PolicyProfile from "../components/ManagrePolicyData/DataPolicy";
 import PolicyFristPayment from "../components/PaymentViews/FormPolicyPayment";
-const ManagrePolicyData = ({
+const ManagePolicyData = ({
   isAuth,
   policy,
 }: {
@@ -38,4 +37,4 @@ const ManagrePolicyData = ({
   );
 };
 
-export default ManagrePolicyData;
+export default ManagePolicyData;

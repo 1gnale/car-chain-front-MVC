@@ -24,12 +24,12 @@ export function useGenericFetch<T>(apiUrl?: string): UseGenericFetchResult<T> {
     setError(null);
     try {
       const response = await fetch(apiUrl);
-      console.log("response");
-      console.log(response);
+
       if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.status}`);
       }
       const result = await response.json();
+
       setData(result.data || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
