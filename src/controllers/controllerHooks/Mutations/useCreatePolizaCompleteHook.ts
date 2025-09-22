@@ -4,7 +4,6 @@ import useCreateCotizacionSingle from "./useCreateCotizacionSingleHook";
 import useCreateLineasCotizacion from "./useCreateLineasCotizacionHook";
 import useCreateDocumentacion from "./useCreateDocumentacionHook";
 import useCreatePoliza from "./useCreatePolizaHook";
-import useLocalStorageItem from "../LocalStorage/getFromLocalStorageHook";
 
 interface UseCreatePolizaCompleteResult {
   savePoliza: (
@@ -183,11 +182,4 @@ const useCreatePolizaComplete = (): UseCreatePolizaCompleteResult => {
 
 export default useCreatePolizaComplete;
 
-function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-    reader.readAsDataURL(file); // devuelve "data:image/png;base64,...."
-  });
-}
+

@@ -35,6 +35,8 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     },
   });
 
+  console.log(formClient)
+
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
   );
@@ -67,27 +69,6 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
   );
 
   useEffect(() => {
-    /* // localStorage.removeItem("ClientData");
-    const clientStorage = useLocalStorageItem<Cliente>("ClientData");
-
-    const sexoFiltrado = listSex.find(
-      (sex) => sex.name === clientStorage?.sexo
-    );
-    const tipoDocFiltrado: number | undefined = documentTypes.findIndex(
-      (doc) => doc === clientStorage?.tipoDocumento
-    );
-    if (
-      clientStorage != null &&
-      sexoFiltrado !== undefined &&
-      tipoDocFiltrado !== undefined
-    ) {
-      
-    const indexDocType = documentTypes.findIndex(
-      (doc) => doc === clientStorage.tipoDocumento
-      );
-      //(clientStorage.tipoDocumento);
-      setSelectedDocumentType(indexDocType);
-      }*/
 
     setFormClient(user);
     setSelectedLocality(user.localidad?.id || 0);
@@ -95,7 +76,6 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     const indexDocType = documentTypes.findIndex(
       (doc) => doc === user.tipoDocumento
     );
-    //(indexDocType);
     setSelectedDocumentType(indexDocType + 1);
   }, [user]);
 

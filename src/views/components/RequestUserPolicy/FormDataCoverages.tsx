@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import useClearLocalStorage from "../../../controllers/controllerHooks/LocalStorage/useClearLocalStorage.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import useCreatePolizaComplete from "../../../controllers/controllerHooks/Mutations/useCreatePolizaCompleteHook.ts";
+import useCreateCotizacionComplete from "../../../controllers/controllerHooks/Mutations/useCreateCotizacionComplete.ts"
 import useLocalidadesHookByLocalityId from "../../../controllers/controllerHooks/Fetchs/useConfigLocalidadesByLocalityId.ts";
 import useEdadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigEdadByAge.ts";
 import useConfigAntiguedadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigAntiguedadByAge.ts";
@@ -24,11 +24,11 @@ const FormDataCoverages = ({
   const navigate = useNavigate();
   const { clearAllData } = useClearLocalStorage();
   const {
-    savePoliza,
+    saveCotizacion,
     loading: savingCotizacion,
     error: savingError,
     success: savingSuccess,
-  } = useCreatePolizaComplete(); // Cargar las configuraciones necesarias
+  } = useCreateCotizacionComplete(); // Cargar las configuraciones necesarias
   const vehicleData = useLocalStorageItem<Vehiculo>("VehicleData");
   const localidadId = vehicleData?.cliente?.localidad?.id;
   console.log("=== DEBUG LOCALIDAD ===");
@@ -289,7 +289,7 @@ const FormDataCoverages = ({
       console.log("Guardando vehículo, cotización y líneas de cotización...");
       console.log("Líneas a guardar:", lineasConMontos);
 
-      const result = await savePoliza(cotizacionToSave, lineasConMontos);
+      const result = await saveCotizacion(cotizacionToSave, lineasConMontos);
       console.log(
         "Vehículo, cotización y líneas guardados exitosamente:",
         result

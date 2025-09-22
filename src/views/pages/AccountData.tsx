@@ -23,6 +23,8 @@ export default function PerfilPage() {
   };
   const client = useAppSelector((state) => state.cliente.client) as Cliente;
 
+  console.log("client:", client);
+
   const renderContent = () => {
     switch (activeTab) {
       case "datos":
