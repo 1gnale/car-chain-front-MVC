@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import SelectForm from "../GeneralComponents/SelectForm";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 
-function PolicyFristPayment({ poliza }: { poliza: Poliza }) {
+function PolicyPayment({ poliza, isFirstPayment }: { poliza: Poliza, isFirstPayment: boolean }) {
   const tiposContratacion: TipoContratacion[] = useAppSelector(
     (state) => state.tiposContratacion.tipoContratacion
   );
@@ -44,15 +44,17 @@ function PolicyFristPayment({ poliza }: { poliza: Poliza }) {
   }, [handleTiposContratacion, selectedContratType, handlePeriodoPago, selectedPaymentPeriod]);
   const handleSubmit = async () => {
 
+    const endPoint = `${import.meta.env.VITE_BASEURL}/api/pago/${isFirstPayment ? 'crearPrimerPago' : 'crearPago'}`
+
     try {
-      const res = await fetch(`${import.meta.env.VITE_BASEURL}/api/pago/crearPrimerPago`, {
+      const res = await fetch(endPoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           poliza_numero: poliza.numero_poliza,
-          total: handleTotalAmount,
+          total: poliza.montoAsegurado || handleTotalAmount,
           descripcion: poliza.lineaCotizacion?.cobertura?.nombre,
           payer_email: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.correo,
           payer_name: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.nombres,
@@ -81,20 +83,20 @@ function PolicyFristPayment({ poliza }: { poliza: Poliza }) {
           console.error("Could not parse error res:", parseError);
         }
         throw new Error(errorMessage);
-      }  
+      }
 
-  const data = await res.json();
-  const initPoint = data.init_point;
-  window.location.href = initPoint; // Redirige al Checkout Pro
-  //("Pago exitoso");
-} catch (error) {
-  console.error("Error iniciando pago:", error);
-}
+      const data = await res.json();
+      const initPoint = data.init_point;
+      window.location.href = initPoint; // Redirige al Checkout Pro
+      //("Pago exitoso");
+    } catch (error) {
+      console.error("Error iniciando pago:", error);
+    }
   };
 
-return (
-  <>
-    <style>{`
+  return (
+    <>
+      <style>{`
         .payment-card {
           max-width: 600px;
           margin: 2rem auto;
@@ -225,53 +227,55 @@ return (
         }
       `}</style>
 
-    <div className="payment-card">
-      <div className="card-header">
-        <h2 className="card-title">Pagar Póliza</h2>
+      <div className="payment-card">
+        <div className="card-header">
+          <h2 className="card-title">Pagar Póliza</h2>
+        </div>
+
+        <div className="card-body">
+          {isFirstPayment && (
+            <div className="form-row">
+              <SelectForm
+                status={true}
+                value={selectedContratType}
+                title="Tipo contratacion"
+                classNameDiv="input-field"
+                classNameLabel="me-2"
+                classNameSelect="flex-grow-1"
+                items={handleTiposContratacion}
+                onChange={setSelectedContratType}
+              />
+
+              <SelectForm
+                status={true}
+                value={selectedPaymentPeriod}
+                title="Periodo de pago"
+                classNameDiv="input-field"
+                classNameLabel="me-2"
+                classNameSelect="flex-grow-1"
+                items={handlePeriodoPago}
+                onChange={setSelectedPaymentPeriod}
+              />
+            </div>
+          )}
+
+          <div className="total-section">
+            <div className="total-label">TOTAL A PAGAR</div>
+            <h3 className="total-amount">${(selectedPaymentPeriod && selectedContratType) ? handleTotalAmount : poliza.montoAsegurado || poliza.lineaCotizacion?.monto}</h3>
+          </div>
+
+          <div className="button-group">
+            <button className="btn btn-cancel" onClick={() => { }}>
+              Cancelar
+            </button>
+            <button className="btn btn-confirm" onClick={handleSubmit}>
+              Pagar
+            </button>
+          </div>
+        </div>
       </div>
-
-      <div className="card-body">
-        <div className="form-row">
-          <SelectForm
-            status={true}
-            value={selectedContratType}
-            title="Tipo contratacion"
-            classNameDiv="input-field"
-            classNameLabel="me-2"
-            classNameSelect="flex-grow-1"
-            items={handleTiposContratacion}
-            onChange={setSelectedContratType}
-          />
-
-          <SelectForm
-            status={true}
-            value={selectedPaymentPeriod}
-            title="Periodo de pago"
-            classNameDiv="input-field"
-            classNameLabel="me-2"
-            classNameSelect="flex-grow-1"
-            items={handlePeriodoPago}
-            onChange={setSelectedPaymentPeriod}
-          />
-        </div>
-
-        <div className="total-section">
-          <div className="total-label">TOTAL A PAGAR</div>
-          <h3 className="total-amount">${(selectedPaymentPeriod && selectedContratType) ? handleTotalAmount : poliza.lineaCotizacion?.monto}</h3>
-        </div>
-
-        <div className="button-group">
-          <button className="btn btn-cancel" onClick={() => { }}>
-            Cancelar
-          </button>
-          <button className="btn btn-confirm" onClick={handleSubmit}>
-            Pagar
-          </button>
-        </div>
-      </div>
-    </div>
-  </>
-);
+    </>
+  );
 }
 
-export default PolicyFristPayment;
+export default PolicyPayment;

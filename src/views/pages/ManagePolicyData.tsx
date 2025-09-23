@@ -11,7 +11,7 @@ const ManagePolicyData = ({
   policy: Poliza;
 }) => {
   // Definimos las keys válidas
-  type ViewName = "PolicyProfile" | "pagarPolizaPorPrimeraVez";
+  type ViewName = "PolicyProfile" | "pagarPolizaPorPrimeraVez" | "pagarPoliza";
 
   const [currentView, setCurrentView] = useState<ViewName>("PolicyProfile");
 
@@ -25,7 +25,8 @@ const ManagePolicyData = ({
         policy={policy}
       ></PolicyProfile>
     ),
-    pagarPolizaPorPrimeraVez: <PolicyFristPayment poliza={policy} />,
+    pagarPolizaPorPrimeraVez: <PolicyFristPayment poliza={policy} isFirstPayment={true} />,
+    pagarPoliza: <PolicyFristPayment poliza={policy} isFirstPayment={false} />,
   };
 
   return (

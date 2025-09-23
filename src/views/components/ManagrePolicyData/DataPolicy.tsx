@@ -8,7 +8,7 @@ import GrayButton from "../GeneralComponents/Button.tsx";
 import ImgConfirmation from "../GeneralComponents/ImgDataConfirmation.tsx";
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 
-type ViewName = "PolicyProfile" | "pagarPolizaPorPrimeraVez";
+type ViewName = "PolicyProfile" | "pagarPolizaPorPrimeraVez" | "pagarPoliza";
 
 const PolicyProfile = ({
   policy,
@@ -156,7 +156,7 @@ const PolicyProfile = ({
               text={
                 policy.estadoPoliza === "APROBADA"
                   ? "Pagar por primera vez"
-                  : policy.estadoPoliza === "VIGENTE"
+                  : policy.estadoPoliza === "IMPAGA"
                   ? "Pagar Poliza"
                   : "No disponible"
               }
@@ -164,13 +164,13 @@ const PolicyProfile = ({
               onClick={() => {
                 if (policy.estadoPoliza === "APROBADA") {
                   handleCurrentView("pagarPolizaPorPrimeraVez");
-                } else if (policy.estadoPoliza === "VIGENTE") {
-                  // acción para pagar
+                } else if (policy.estadoPoliza === "IMPAGA") {
+                  handleCurrentView("pagarPoliza");
                 }
               }}
               disabled={
                 policy.estadoPoliza !== "APROBADA" &&
-                policy.estadoPoliza !== "VIGENTE"
+                policy.estadoPoliza !== "IMPAGA"
               }
             />
           </div>
