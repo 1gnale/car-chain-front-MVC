@@ -4,6 +4,7 @@ import useCoberturasDetalleHook from "./controllerHooks/Fetchs/useCoberturaDetal
 import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
 import ConsultarCotizacionPage from "../views/pages/ConsultarCotizacionPage";
 import useGetLinePricingByIdCotizacionHook from "./controllerHooks/Fetchs/useGetLinePricingByIdCotizacionHook";
+import useCreateDocumentacionNPoliza from "./controllerHooks/Mutations/useCreateDocumentacionNPoliza";
 
 const ControladorConsultarCotizacion = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -12,13 +13,15 @@ const ControladorConsultarCotizacion = () => {
   const { loading, error, LinePricing } = useGetLinePricingByIdCotizacionHook(
     String(id)
   );
+  const { savePoliza, loading: loadingPoliza, error: errorPoliza, success: successPoliza } = useCreateDocumentacionNPoliza();
   const { loading: LoadingLine, error: ErrorLine } = useDetallesHook();
   const { loading: LoadingCD, error: ErrorCD } = useCoberturasDetalleHook();
-  if (isLoading || loading || LoadingLine || LoadingCD) {
+  if (isLoading || loading || LoadingLine || LoadingCD || loadingPoliza) {
     return <div>Loading...</div>;
   }
 
-  if (error || ErrorLine || ErrorCD) {
+
+  if (error || ErrorLine || ErrorCD || errorPoliza) {
     return <div>Error loading pricing information.</div>;
   }
   if (!LinePricing) {
@@ -27,28 +30,19 @@ const ControladorConsultarCotizacion = () => {
 
   // Handle confirmacion poliza
   const handleConfirmacionPoliza = async (poliza: Poliza) => {
-    // Lógica para manejar la confirmación de la póliza completa
     if (!poliza) {
       console.error("No hay poliza para guardar");
       return;
     }
     try {
-      // Asumiendo que poliza tiene las propiedades necesarias:
-      // poliza.cotizacion: Cotizacion
-      // poliza.lineasCotizacion: Linea_Cotizacion[]
-      const cotizacion = poliza.lineaCotizacion?.cotizacion;
-      const lineaCotizacion = poliza.lineaCotizacion;
-      const lineasCotizacion: Linea_Cotizacion[] = [];
-      lineasCotizacion.push(lineaCotizacion!);
-
-      // const resultado = await savePoliza(cotizacion!, lineasCotizacion);
-      console.log("Resultado de guardado de póliza completa:", "resultado");
-      // Aquí puedes limpiar localStorage, mostrar mensaje, redirigir, etc.
+      const result = await savePoliza(poliza);
+      console.log("Resultado de guardado de póliza completa:", result);
     } catch (error) {
       console.error("Error al procesar la póliza:", error);
     }
     console.log("Póliza confirmada");
   };
+
   return (
     <ConsultarCotizacionPage
       lineaCotizacion={LinePricing}

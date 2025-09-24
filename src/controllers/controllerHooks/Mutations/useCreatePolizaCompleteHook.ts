@@ -4,6 +4,7 @@ import useCreateCotizacionSingle from "./useCreateCotizacionSingleHook";
 import useCreateLineasCotizacion from "./useCreateLineasCotizacionHook";
 import useCreateDocumentacion from "./useCreateDocumentacionHook";
 import useCreatePoliza from "./useCreatePolizaHook";
+import { useNavigate } from "react-router-dom";
 
 interface UseCreatePolizaCompleteResult {
   savePoliza: (
@@ -20,6 +21,7 @@ const useCreatePolizaComplete = (): UseCreatePolizaCompleteResult => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   // Usar los hooks separados
   const {
     createVehiculo,
@@ -138,6 +140,7 @@ const useCreatePolizaComplete = (): UseCreatePolizaCompleteResult => {
       setLoading(false);
 
       // Retornar todos los resultados
+      navigate("/")
       return {
         vehiculo: vehiculoCreado,
         cotizacion: cotizacionCreada,

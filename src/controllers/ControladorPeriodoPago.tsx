@@ -1,6 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import usePeriodosPagoHook from "./controllerHooks/Fetchs/usePeriodoPagoHook";
-import MarcasPage from "../views/pages/MarcasPage";
 import PeriodoPagoPage from "../views/pages/PeriodoPagoPage";
 
 const ControladorPeriodoPago = () => {
