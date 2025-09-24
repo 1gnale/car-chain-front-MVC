@@ -59,6 +59,10 @@ const DateInput: React.FC<DateInputProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isoValue = e.target.value;
+    if (!isoValue) {
+      onChange('');
+      return;
+    }
     const displayValue = formatDateForDisplay(isoValue);
     onChange(displayValue);
   };

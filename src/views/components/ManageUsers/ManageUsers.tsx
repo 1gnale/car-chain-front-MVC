@@ -3,8 +3,7 @@ import IconButton from "../GeneralComponents/IconButton";
 import { PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import CheckForm from "../GeneralComponents/CheckForm";
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import { updateUsuarioState } from "../../../redux/usuariosSlice";
 
 function ManageUsers({
@@ -14,10 +13,10 @@ function ManageUsers({
   handleCurrentView: (pass: boolean) => void;
   setCurrentUsuario: (usuario: Usuario) => void;
 }) {
-  const dispatch = useDispatch();
+
   const usuarios: Usuario[] = useAppSelector((state) => state.usuarios.usuario);
 
-  useEffect(() => {}, []);
+  const dispatch = useAppDispatch();
 
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");

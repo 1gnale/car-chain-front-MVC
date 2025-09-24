@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
 import Input from "../GeneralComponents/Input.tsx";
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import SelectForm from "../GeneralComponents/SelectForm.tsx";
 import GrayButton from "../GeneralComponents/Button.tsx";
 import { Search } from "react-bootstrap-icons";
@@ -10,6 +10,7 @@ import IconButton from "../GeneralComponents/IconButton.tsx";
 import useFormValidationUsuarios from "../../../controllers/controllerHooks/Validations/useUsersValidation.ts";
 import { setProvinces } from "../../../redux/provincesSlice.ts";
 import { setDocumentTypes } from "../../../redux/documentTypeSlice.ts";
+import { createUser } from "../../../redux/usuariosSlice.ts";
 
 function CrearUsuario({
   handleCurrentView,
@@ -27,6 +28,7 @@ function CrearUsuario({
   const localities: Localidad[] = useAppSelector(
     (state) => state.localidades.localidad
   );
+  const dispatch = useAppDispatch();
   const listSex = [
     { id: 1, name: "Femenino" },
     { id: 2, name: "Masculino" },
@@ -178,9 +180,20 @@ function CrearUsuario({
     }
   }
 
-  function formatearFecha(fechaISO: String) {
-    const [anio, mes, dia] = fechaISO.split("-"); // Separa la fecha en partes
-    return `${mes}/${dia}/${anio}`; // Retorna en formato DD/MM/AAAA
+  function formatearFecha(fecha: string) {
+    if (!fecha || fecha.includes('undefined')) {
+      return '';
+    }
+    // Si la fecha ya está en formato MM/DD/YYYY, la dejamos así
+    if (fecha.includes('/')) {
+      return fecha;
+    }
+    // Si la fecha está en formato ISO (YYYY-MM-DD), la convertimos
+    if (fecha.includes('-')) {
+      const [anio, mes, dia] = fecha.split("-");
+      return `${mes}/${dia}/${anio}`;
+    }
+    return fecha;
   }
 
   async function crearUsuario() {
@@ -234,8 +247,10 @@ function CrearUsuario({
           console.log("✅ Usuario creado:", data);
           alert(`Usuario  ${formUser.tipoUsuario} creado exitosamente`);
           handleCurrentView(false);
-          return data;
         }
+        dispatch(createUser(data.data))
+        console.log("✅ Usuario creado en Redux:", data.data);
+          return data;
       } catch (error: any) {
         console.error("❌ Error en la creación:", error);
         alert(`Hubo un error: ${error.message}`);

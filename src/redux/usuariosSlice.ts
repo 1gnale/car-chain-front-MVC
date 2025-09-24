@@ -25,10 +25,20 @@ export const usuariosSlice = createSlice({
         u.legajo === legajo ? { ...u, activo: false } : u
       );
     },
-  },
+    updateUsuario: (state, action: PayloadAction<Usuario>) => {
+      const updatedUsuario = action.payload;
+      state.usuario = state.usuario.map((u) =>
+        u.legajo === updatedUsuario.legajo ? { ...updatedUsuario } : u
+      );
+    },
+    createUser: (state, action: PayloadAction<Usuario>) => {
+      state.usuario = [...state.usuario, action.payload];
+    },
+  }
 });
 
-export const { setUsuarios, clearUsuarios, updateUsuarioState } =
+
+export const { setUsuarios, clearUsuarios, updateUsuarioState, updateUsuario, createUser } =
   usuariosSlice.actions;
 
 export default usuariosSlice.reducer;

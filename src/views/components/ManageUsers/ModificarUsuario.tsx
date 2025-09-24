@@ -1,13 +1,14 @@
 import { useState, useMemo } from "react";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
 import Input from "../GeneralComponents/Input.tsx";
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import SelectForm from "../GeneralComponents/SelectForm.tsx";
 import GrayButton from "../GeneralComponents/Button.tsx";
 import DateInput from "../GeneralComponents/DateInput.tsx";
+import { updateUsuarioState } from "../../../redux/usuariosSlice.ts";
 
 function ModificarUsuario({
-  handleCurrentView,
+  handleCurrentView, 
   usuario,
 }: {
   handleCurrentView: (pass: boolean) => void;
