@@ -14,26 +14,43 @@ function ManageUsers({
   setCurrentUsuario: (usuario: Usuario) => void;
 }) {
 
-  const usuarios: Usuario[] = useAppSelector((state) => state.usuarios.usuario);
-
-  const dispatch = useAppDispatch();
-
+  const [isTableLoaded, setIsTableLoaded] = useState(false);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
-  const filteredUsuarios = usuarios.filter((usuario) => {
-    const matchesSearch = usuario.nombres
-      ?.toLowerCase()
-      .includes(search.toLowerCase());
+  const users = useAppSelector((state) => state.usuarios.usuario);
+  const dispatch = useAppDispatch();
 
-    // Si checkbox está activado => mostrar solo inactivas
-    if (checkbox) {
-      return usuario && matchesSearch;
+  console.log("🔄 Usuarios desde Redux:", users);
+  const filterUsers = () => {
+    if (!users) return [];
+
+    return users.filter((usuario) => {
+      if (!usuario) return false;
+
+      const matchesSearch = (usuario.nombres || '')
+        .toLowerCase()
+        .includes(search.toLowerCase());
+
+      // Si checkbox está activado => mostrar todos los usuarios
+      if (checkbox) {
+        return matchesSearch;
+      }
+
+      // Si checkbox no está activado => mostrar solo activos
+      return usuario.activo && matchesSearch;
+    });
+  };
+
+  const filteredUsuarios = filterUsers();
+
+  useEffect(() => {
+    if (users && users.length > 0) {
+      setIsTableLoaded(true);
     }
+  }, [users]);
 
-    // Si checkbox no está activado => mostrar solo activas
-    return usuario.activo && matchesSearch;
-  });
+
 
   const handleUpdateUser = (usuario: any): void => {
     setCurrentUsuario(usuario);
@@ -95,17 +112,11 @@ function ManageUsers({
         key: usuario.legajo,
         value: usuario,
         rowContent: [
-          String(usuario.legajo) ?? "",
-          String(usuario.nombres + " " + usuario.apellido) ?? "",
-          usuario.correo ?? "",
-          usuario.documento ?? "",
-          (() => {
-            if (usuario.activo) {
-              return "Activo";
-            } else {
-              return "Inactivo";
-            }
-          })(),
+          String(usuario.legajo || ''),
+          `${usuario.nombres || ''} ${usuario.apellido || ''}`.trim(),
+          usuario.correo || '',
+          usuario.documento || '',
+          usuario.activo ? "Activo" : "Inactivo"
         ],
       })),
     };
@@ -149,13 +160,19 @@ function ManageUsers({
             onChange={() => setCheckbox(!checkbox)}
           />
         </div>
-        <div className="d-flex my-4" style={{ width: "-20px" }}>
-          <TableButton
-            titles={titles}
-            tableBody={tableBody}
-            customIcons={customIcons}
-            showButtom={showButtom}
-          />
+        <div className="d-flex my-4" style={{ width: "100%" }}>
+          {!users || users.length === 0 ? (
+            <div className="w-100 text-center">No hay usuarios para mostrar</div>
+          ) : !isTableLoaded ? (
+            <div className="w-100 text-center">Cargando...</div>
+          ) : (
+            <TableButton
+              titles={titles}
+              tableBody={tableBody}
+              customIcons={customIcons}
+              showButtom={showButtom}
+            />
+          )}
         </div>
       </div>
     </>

@@ -245,12 +245,27 @@ function CrearUsuario({
           throw new Error(data.message || "Error en validación");
         } else {
           console.log("✅ Usuario creado:", data);
-          alert(`Usuario  ${formUser.tipoUsuario} creado exitosamente`);
+          
+          // Formateamos el usuario para Redux
+          const usuarioParaRedux: Usuario = {
+            ...data.data,
+            nombres: data.data.persona.nombres,
+            apellido: data.data.persona.apellido,
+            correo: data.data.persona.correo,
+            documento: data.data.persona.documento,
+            tipoDocumento: data.data.persona.tipoDocumento,
+            activo: true,
+            legajo: data.data.legajo || data.data.id
+          };
+
+          // Despachamos al store
+          dispatch(createUser(usuarioParaRedux));
+          console.log("✅ Usuario creado en Redux:", usuarioParaRedux);
+          
+          alert(`Usuario ${formUser.tipoUsuario} creado exitosamente`);
           handleCurrentView(false);
-        }
-        dispatch(createUser(data.data))
-        console.log("✅ Usuario creado en Redux:", data.data);
           return data;
+        }
       } catch (error: any) {
         console.error("❌ Error en la creación:", error);
         alert(`Hubo un error: ${error.message}`);
