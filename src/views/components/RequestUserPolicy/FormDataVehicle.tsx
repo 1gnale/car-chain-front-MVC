@@ -8,7 +8,7 @@ import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import TitleForm from "../GeneralComponents/TitleForm.tsx";
-
+import { useNavigate } from "react-router-dom";
 interface FormVehicleProps {
   matricula: string;
   marca: string;
@@ -25,6 +25,7 @@ const FormDataVehicle = ({
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) => {
+  const navigate = useNavigate();
   // States MODELO DATOS
   const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
   const models: Modelo[] = useAppSelector((state) => state.modelos.modelo);
@@ -115,6 +116,13 @@ const FormDataVehicle = ({
 
     return result;
   }, [versions, selectedModel]);
+
+  const handleCancel = () => {
+    if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
+      localStorage.clear();
+      navigate(`/`);
+    }
+  };
 
   const handleSubmit = () => {
     //(formVehicle);
@@ -305,7 +313,11 @@ const FormDataVehicle = ({
               className="d-grid gap-2 d-md-flex justify-content-md-end"
               style={{ padding: "10px" }}
             >
-              <GrayButton text="Cancelar" style="me-md-2" onClick={() => {}} />
+              <GrayButton
+                text="Cancelar"
+                style="me-md-2"
+                onClick={handleCancel}
+              />
               <GrayButton text="Siguiente" onClick={handleSubmit} />
             </div>
           </div>

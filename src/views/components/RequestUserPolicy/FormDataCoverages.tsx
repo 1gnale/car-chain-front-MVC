@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import useClearLocalStorage from "../../../controllers/controllerHooks/LocalStorage/useClearLocalStorage.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-import useCreateCotizacionComplete from "../../../controllers/controllerHooks/Mutations/useCreateCotizacionComplete.ts"
+import useCreateCotizacionComplete from "../../../controllers/controllerHooks/Mutations/useCreateCotizacionComplete.ts";
 import useLocalidadesHookByLocalityId from "../../../controllers/controllerHooks/Fetchs/useConfigLocalidadesByLocalityId.ts";
 import useEdadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigEdadByAge.ts";
 import useConfigAntiguedadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigAntiguedadByAge.ts";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const FormDataCoverages = ({
   handleCurrentView,
@@ -258,7 +259,7 @@ const FormDataCoverages = ({
 
   const handleSaveCotizacion = async () => {
     // Verificar que tenemos datos de cotización para guardar
-    if (!Auth){
+    if (!Auth) {
       loginWithRedirect();
       return;
     }
@@ -385,7 +386,20 @@ const FormDataCoverages = ({
               marginTop: "2px",
             }}
           >
-            <ExclamationCircleFill size={22} />
+            <OverlayTrigger
+              placement="top" // posición: top, right, bottom, left
+              overlay={
+                <Tooltip id="tooltip-icono">
+                  Para guardar una cotización debes estar registrado. Una vez
+                  guardada, podrás contratar la póliza durante una semana; luego
+                  vencerá.
+                </Tooltip>
+              }
+            >
+              <span style={{ cursor: "pointer" }}>
+                <ExclamationCircleFill size={22} />
+              </span>
+            </OverlayTrigger>
           </div>
         </div>
 

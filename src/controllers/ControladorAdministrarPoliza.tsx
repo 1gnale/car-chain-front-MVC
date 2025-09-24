@@ -6,7 +6,7 @@ import ManagePolicyData from "../views/pages/ManagePolicyData";
 import usePoliceByIdHook from "./controllerHooks/Fetchs/usePoliceByIdHook";
 import usePeriodoPago from "./controllerHooks/Fetchs/usePeriodoPago";
 import useTipoContratacion from "./controllerHooks/Fetchs/useTipoContratacion";
-
+import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 
 const ControladorAdministrarPoliza = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -19,8 +19,15 @@ const ControladorAdministrarPoliza = () => {
   const { loading: LoadingTipo, error: ErrorTipo } = useTipoContratacion();
   const { loading: LoadingPeriodo, error: ErrorPeriodo } = usePeriodoPago();
 
-  if (isLoading || loading || LoadingLine || LoadingCD || LoadingTipo || LoadingPeriodo) {
-    return <div>Loading...</div>;
+  if (
+    isLoading ||
+    loading ||
+    LoadingLine ||
+    LoadingCD ||
+    LoadingTipo ||
+    LoadingPeriodo
+  ) {
+    return <Spinner title="Cargando poliza..." text="Por favor espere" />;
   }
 
   if (error || ErrorLine || ErrorCD || ErrorTipo || ErrorPeriodo) {

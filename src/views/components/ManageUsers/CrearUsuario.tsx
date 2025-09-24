@@ -7,12 +7,17 @@ import GrayButton from "../GeneralComponents/Button.tsx";
 import { Search } from "react-bootstrap-icons";
 import DateInput from "../GeneralComponents/DateInput.tsx";
 import IconButton from "../GeneralComponents/IconButton.tsx";
+import useFormValidationUsuarios from "../../../controllers/controllerHooks/Validations/useUsersValidation.ts";
+import { setProvinces } from "../../../redux/provincesSlice.ts";
+import { setDocumentTypes } from "../../../redux/documentTypeSlice.ts";
 
 function CrearUsuario({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) {
+  const { errors, validateField, validateForm } = useFormValidationUsuarios();
+
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
   );
@@ -27,21 +32,23 @@ function CrearUsuario({
     { id: 2, name: "Masculino" },
   ];
   const tiposDeUsuario = [
-    "Administrador",
-    "Vendedor",
-    "Perito",
-    "Gestor de Siniestros",
+    "ADMINISTRADOR",
+    "VENDEDOR",
+    "PERITO",
+    "GESTOR_DE_SINIESTROS",
   ];
 
-  const { errors, validateField, validateForm } = useFormClientValidation();
   const [selectedSex, setSelectedSex] = useState<number>();
   const [selectedRol, setSelectedRol] = useState<number>();
   const [locality, setLocality] = useState<boolean>(false);
   const [selectedProvince, setSelectedProvinces] = useState<number>();
   const [selectedLocality, setSelectedLocality] = useState<number>();
   const [selectedDocumentType, setSelectedDocumentType] = useState<number>();
-  const [formUser, setFormUser] = useState({
-    nombre: "",
+
+  const [formUser, setFormUser] = useState<Usuario>({
+    id: 0,
+    legajo: 0,
+    nombres: "",
     correo: "",
     apellido: "",
     tipoDocumento: "",
@@ -49,14 +56,13 @@ function CrearUsuario({
     fechaNacimiento: "",
     telefono: "",
     sexo: "",
-    provincia: "",
-    localidad: "",
+    localidad: { id: 0 },
     domicilio: "",
-    tipoDeUsuario: "",
+    tipoUsuario: "",
   });
 
   const handleCancel = (): void => {
-    handleCurrentView(true);
+    handleCurrentView(false);
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -110,7 +116,7 @@ function CrearUsuario({
     setSelectedRol(id);
     // Encontrar el nombre del tipo documento
     const selectedRol = tiposDeUsuario[id - 1] || "";
-    setFormUser((prev) => ({ ...prev, tipoDeUsuario: selectedRol }));
+    setFormUser((prev) => ({ ...prev, tipoUsuario: selectedRol }));
     //   validateField("tipoDeUsuario", selectedRol);
   };
 
@@ -129,21 +135,114 @@ function CrearUsuario({
     setLocality(true);
     setSelectedLocality(0);
 
-    // Encontrar el nombre de la provincia seleccionado
-    const selectedProvinceName =
-      provinces.find((province) => province.id === id)?.descripcion || "";
-    setFormUser((prev) => ({ ...prev, provincia: selectedProvinceName }));
-    setFormUser((prev) => ({ ...prev, provinciaId: id }));
-    validateField("provincia", selectedProvinceName);
+    validateField("provincia_id", String(id));
   };
+
   const handleStateLocality = (id: number) => {
     setSelectedLocality(id);
 
-    const selectedLocalityName =
-      localities?.find((localidad) => localidad.id === id)?.descripcion || "";
-    setFormUser((prev) => ({ ...prev, localidad: selectedLocalityName }));
-    validateField("localidad", selectedLocalityName);
+    setFormUser((prev) => ({ ...prev, localidad: { id } }));
+    validateField("localidad_id", String(id));
   };
+
+  async function handleSearchPerson() {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASEURL}/api/usuarios/get-person-by-email/${
+          formUser.correo
+        }`
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Error al obtener la persona");
+      }
+
+      setFormUser(data.data);
+
+      const sexoFiltrado = listSex.find((sex) => sex.name === data.data?.sexo);
+      const tipoDocFiltrado = handleDocumentType.findIndex(
+        (doc) => doc.name === data.data?.tipoDocumento
+      );
+
+      setSelectedProvinces(data.data.localidad.provincia.id);
+      setSelectedLocality(data.data.localidad.id);
+      setSelectedDocumentType(tipoDocFiltrado + 1);
+      setSelectedSex(sexoFiltrado?.id);
+
+      alert(`Persona encontrada: ${data.data.nombres}`);
+    } catch (error: any) {
+      alert(`Hubo un error: ${error.message}`);
+      console.error("❌ Error en la petición:", error.message);
+      throw error;
+    }
+  }
+
+  function formatearFecha(fechaISO: String) {
+    const [anio, mes, dia] = fechaISO.split("-"); // Separa la fecha en partes
+    return `${mes}/${dia}/${anio}`; // Retorna en formato DD/MM/AAAA
+  }
+
+  async function crearUsuario() {
+    const user = {
+      nombres: formUser.nombres,
+      apellido: formUser.apellido,
+      fechaNacimiento: formatearFecha(formUser.fechaNacimiento!),
+      tipoDocumento: formUser.tipoDocumento,
+      documento: formUser.documento,
+      domicilio: formUser.domicilio,
+      correo: formUser.correo,
+      telefono: formUser.telefono,
+      sexo: formUser.sexo,
+      localidad_id: String(selectedLocality),
+      provincia_id: String(selectedProvince),
+      tipoUsuario: formUser.tipoUsuario,
+    };
+    console.log(user);
+    if (validateForm(user)) {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASEURL}/api/usuarios/create-user`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              personaData: {
+                localidad_id: selectedLocality,
+                nombres: formUser.nombres,
+                apellido: formUser.apellido,
+                fechaNacimiento: formUser.fechaNacimiento,
+                tipoDocumento: formUser.tipoDocumento,
+                documento: formUser.documento,
+                domicilio: formUser.domicilio,
+                correo: formUser.correo,
+                telefono: formUser.telefono,
+                sexo: formUser.sexo,
+              },
+              tipoUsuario: formUser.tipoUsuario,
+            }),
+          }
+        );
+        const data = await response.json(); // leer siempre la respuesta
+
+        if (!response.ok) {
+          console.error("❌ Backend devolvió error:", data);
+          throw new Error(data.message || "Error en validación");
+        } else {
+          console.log("✅ Usuario creado:", data);
+          alert(`Usuario  ${formUser.tipoUsuario} creado exitosamente`);
+          handleCurrentView(false);
+          return data;
+        }
+      } catch (error: any) {
+        console.error("❌ Error en la creación:", error);
+        alert(`Hubo un error: ${error.message}`);
+      }
+    } else {
+    }
+  }
 
   return (
     <div className="bg-white p-4 rounded shadow-sm mb-4">
@@ -161,8 +260,10 @@ function CrearUsuario({
                   onChange={(value) => handleInputChange("correo", value)}
                   place=""
                   value={formUser.correo}
+                  error={errors.correo}
+                  onBlur={() => validateField("correo", formUser.correo || "")}
                 />
-                <IconButton icon={Search} onClick={() => {}} />
+                <IconButton icon={Search} onClick={handleSearchPerson} />
               </div>
             </div>
 
@@ -177,7 +278,7 @@ function CrearUsuario({
                 items={listSex}
                 onChange={handleStateSexo}
                 error={errors.sexo}
-                onBlur={() => validateField("sexo", formUser.sexo)}
+                onBlur={() => validateField("sexo", formUser.sexo || "")}
               />
             </div>
           </div>
@@ -192,6 +293,10 @@ function CrearUsuario({
                 place=""
                 onChange={(value) => handleInputChange("telefono", value)}
                 value={formUser.telefono}
+                error={errors.telefono}
+                onBlur={() =>
+                  validateField("telefono", formUser.telefono || "")
+                }
               />
             </div>
             <div className="col-md-6">
@@ -204,8 +309,10 @@ function CrearUsuario({
                 classNameSelect="flex-grow-1"
                 items={handleProvinces}
                 onChange={handleStateProvinces}
-                error={errors.provincia}
-                onBlur={() => validateField("provincia", formUser.provincia)}
+                error={errors.provincia_id}
+                onBlur={() =>
+                  validateField("provincia_id", String(selectedProvince) || "")
+                }
               />
             </div>
           </div>
@@ -218,8 +325,10 @@ function CrearUsuario({
                 classNameDiv="d-flex align-items-start mb-3"
                 title="Nombre/s"
                 place=""
-                onChange={(value) => handleInputChange("nombre", value)}
-                value={formUser.nombre}
+                onChange={(value) => handleInputChange("nombres", value)}
+                value={formUser.nombres}
+                error={errors.nombres}
+                onBlur={() => validateField("nombres", formUser.nombres || "")}
               />
             </div>
             <div className="col-md-6">
@@ -232,8 +341,10 @@ function CrearUsuario({
                 classNameSelect="flex-grow-1"
                 items={handleLocality}
                 onChange={handleStateLocality}
-                error={errors.localidad}
-                onBlur={() => validateField("localidad", formUser.localidad)}
+                error={errors.localidad_id}
+                onBlur={() =>
+                  validateField("localidad_id", String(selectedLocality) || "")
+                }
               />
             </div>
           </div>
@@ -248,6 +359,10 @@ function CrearUsuario({
                 place=""
                 onChange={(value) => handleInputChange("apellido", value)}
                 value={formUser.apellido}
+                error={errors.apellido}
+                onBlur={() =>
+                  validateField("apellido", formUser.apellido || "")
+                }
               />
             </div>
             <div className="col-md-6">
@@ -258,6 +373,10 @@ function CrearUsuario({
                 place=""
                 onChange={(value) => handleInputChange("domicilio", value)}
                 value={formUser.domicilio}
+                error={errors.domicilio}
+                onBlur={() =>
+                  validateField("domicilio", formUser.domicilio || "")
+                }
               />
             </div>
           </div>
@@ -276,7 +395,7 @@ function CrearUsuario({
                 onChange={handleStateDocumentType}
                 error={errors.tipoDocumento}
                 onBlur={() =>
-                  validateField("tipoDocumento", formUser.tipoDocumento)
+                  validateField("tipoDocumento", formUser.tipoDocumento || "")
                 }
               />
             </div>
@@ -288,6 +407,10 @@ function CrearUsuario({
                 place=""
                 onChange={(value) => handleInputChange("documento", value)}
                 value={formUser.documento}
+                error={errors.documento}
+                onBlur={() =>
+                  validateField("documento", formUser.documento || "")
+                }
               />
             </div>
           </div>
@@ -304,19 +427,28 @@ function CrearUsuario({
                 classNameSelect="flex-grow-1"
                 items={handleRol}
                 onChange={handleStateRol}
+                error={errors.tipoUsuario}
+                onBlur={() =>
+                  validateField("tipoUsuario", formUser.tipoUsuario || "")
+                }
               />
             </div>
             <div className="col-md-6">
               <DateInput
                 title="Fecha de nacimiento"
-                value={formUser.fechaNacimiento}
+                value={formUser.fechaNacimiento || ""}
                 labelClassName="me-2 align-self-center"
                 inputClassName="w-auto d-inline-block"
                 onChange={(value) =>
                   handleInputChange("fechaNacimiento", value)
                 }
-                onBlur={(value) => validateField("fechaNacimiento", value)}
                 error={errors.fechaNacimiento}
+                onBlur={() =>
+                  validateField(
+                    "fechaNacimiento",
+                    formUser.fechaNacimiento || ""
+                  )
+                }
                 showFormat={false}
               />
             </div>
@@ -325,7 +457,7 @@ function CrearUsuario({
           {/* Botones */}
           <div className="d-flex justify-content-end gap-3 mt-4">
             <GrayButton text="Cancelar" onClick={handleCancel} />
-            <GrayButton text="Confirmar" onClick={() => {}} />
+            <GrayButton text="Confirmar" onClick={crearUsuario} />
           </div>
         </div>
         <div className="col-xl-1"></div>
