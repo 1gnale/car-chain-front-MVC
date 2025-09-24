@@ -3,7 +3,7 @@ import Table from "../GeneralComponents/Table.tsx";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import { useAuth0 } from "@auth0/auth0-react";
-
+import { useNavigate } from "react-router-dom";
 const FormDataConfirmation = ({
   handleCurrentView,
   handleConfirmacionPoliza,
@@ -11,6 +11,7 @@ const FormDataConfirmation = ({
   handleCurrentView: (pass: boolean) => void;
   handleConfirmacionPoliza: (poliza: Poliza) => void;
 }) => {
+  const navigate = useNavigate();
   const [policy, setPolicy] = useState<Poliza>({});
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
@@ -122,8 +123,16 @@ const FormDataConfirmation = ({
   const { titles, tableBody, customIcons, showButtom } = handleTable();
   //("BODY DE LA TABLA");
   //(tableBody);
+
+  const handleCancel = () => {
+    if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
+      localStorage.clear();
+
+      navigate(`/`);
+    }
+  };
   return (
-    <div className="min-vh-100" style={{ backgroundColor: "#1a1a1a" }}>
+    <div className="min-vh-100" style={{ backgroundColor: "#1e1e1eff" }}>
       <div className="container-fluid py-4">
         <div className="row justify-content-center">
           <div className="col-xl-11 col-lg-12">
@@ -585,9 +594,10 @@ const FormDataConfirmation = ({
                 type="button"
                 className="btn btn-outline-secondary px-4"
                 style={{ borderRadius: "10px" }}
+                onClick={() => handleCurrentView(false)}
               >
                 <i className="fas fa-arrow-left me-2"></i>
-                Anterior
+                Volver
               </button>
 
               <div className="d-flex gap-3">
@@ -595,6 +605,7 @@ const FormDataConfirmation = ({
                   type="button"
                   className="btn btn-outline-light px-4"
                   style={{ borderRadius: "10px" }}
+                  onClick={handleCancel}
                 >
                   <i className="fas fa-times me-2"></i>
                   Cancelar

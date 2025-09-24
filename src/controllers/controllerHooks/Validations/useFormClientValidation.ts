@@ -44,10 +44,10 @@ const useFormValidation = (): UseFormValidationReturn => {
 
   // Patrones de validación
   const patterns = {
-    nombre: /^[A-Z]{2,100}$/,
-    apellido: /^[A-Z]{2,100}$/,
-    documento: /^[A-Z0-9]{5,11}$/,
-    telefono: /^\d{5,20}$/,
+    nombre: /^[A-Z]{2,50}$/,
+    apellido: /^[A-Z]{2,50}$/,
+    documento: /^[A-Z0-9]{7,20}$/,
+    telefono: /^\d{8,20}$/,
     domicilio: /^[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.\s]{5,100}$/,
     fechaNacimiento: /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
   };
@@ -97,7 +97,7 @@ const useFormValidation = (): UseFormValidationReturn => {
           newErrors.documento = "El documento es requerido";
         } else if (!patterns.documento.test(documentoValue.toUpperCase())) {
           newErrors.documento =
-            "El documento debe ser de minimo 2 caracteres y maximo 11";
+            "El documento debe ser de minimo 7 caracteres y maximo 20";
         } else {
           delete newErrors.documento;
         }
@@ -109,7 +109,7 @@ const useFormValidation = (): UseFormValidationReturn => {
           newErrors.telefono = "El telefono es requerido";
         } else if (!patterns.telefono.test(telefonoValue.toUpperCase())) {
           newErrors.telefono =
-            "El telefono debe tener un minimo de 5 caracteres";
+            "El telefono debe tener un minimo de 8 caracteres";
         } else {
           delete newErrors.telefono;
         }
@@ -179,7 +179,7 @@ const useFormValidation = (): UseFormValidationReturn => {
           newErrors.fechaNacimiento = "La fecha de nacimiento es requerido";
         } else if (!patterns.fechaNacimiento.test(fechaParaValidacion)) {
           newErrors.fechaNacimiento =
-            "La fecha de nacimiento debe venir en un formato MM/DD/YYYY";
+            "La fecha de nacimiento debe venir en un formato DD/MM/YYYY";
         } else {
           const fechaNacimiento = new Date(fechaParaDate);
 
@@ -242,7 +242,7 @@ const useFormValidation = (): UseFormValidationReturn => {
       newErrors.documento = "El documento es requerido";
     } else if (!patterns.documento.test(formData.documento.toUpperCase())) {
       newErrors.documento =
-        "El documento debe ser de minimo 2 caracteres y maximo 11 ";
+        "El documento debe ser de minimo 7 caracteres y maximo 20 ";
     }
 
     // Validar fechaNacimiento
@@ -254,7 +254,7 @@ const useFormValidation = (): UseFormValidationReturn => {
     if (!formData.telefono.trim()) {
       newErrors.telefono = "El número de motor es requerido";
     } else if (!patterns.telefono.test(formData.telefono.toUpperCase())) {
-      newErrors.telefono = "El telefono debe tener un minimo de 5 caracteres";
+      newErrors.telefono = "El telefono debe tener un minimo de 8 caracteres";
     }
 
     // Validar sexo

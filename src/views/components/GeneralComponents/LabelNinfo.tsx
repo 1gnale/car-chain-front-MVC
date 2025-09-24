@@ -1,16 +1,24 @@
+interface InfoLabel {
+  title: string;
+  text?: string | React.ReactNode;
+  labelClassName?: string; // clases extra para el label
+  textClassName?: string; // clases extra para el texto
+  containerClassName?: string; // opcional: clases extra para el contenedor principal
+}
+
 function LabelNinfo(props: InfoLabel) {
-  const { title, text } = props;
+  const {
+    title,
+    text,
+    labelClassName = "form-label text-info fw-bold small",
+    textClassName = "text-light fw-normal",
+    containerClassName = "mb-3",
+  } = props;
 
   return (
-    <div className="d-flex mb-1">
-      <div style={{ minWidth: "150px" }}>
-        <strong>
-          <label>{title}</label>
-        </strong>
-      </div>
-      <div>
-        <label>{text}</label>
-      </div>
+    <div className={containerClassName}>
+      <label className={labelClassName}>{title}</label>
+      <div className={textClassName}>{text || "No especificado"}</div>
     </div>
   );
 }

@@ -1,8 +1,17 @@
 import { useMemo, useState } from "react";
 import SelectForm from "../GeneralComponents/SelectForm";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
+type ViewName = "PolicyProfile" | "pagarPolizaPorPrimeraVez" | "pagarPoliza";
 
-function PolicyPayment({ poliza, isFirstPayment }: { poliza: Poliza, isFirstPayment: boolean }) {
+function PolicyPayment({
+  poliza,
+  isFirstPayment,
+  handleCurrentView,
+}: {
+  poliza: Poliza;
+  isFirstPayment: boolean;
+  handleCurrentView: (pass: ViewName) => void;
+}) {
   const tiposContratacion: TipoContratacion[] = useAppSelector(
     (state) => state.tiposContratacion.tipoContratacion
   );
@@ -21,31 +30,55 @@ function PolicyPayment({ poliza, isFirstPayment }: { poliza: Poliza, isFirstPaym
       (line) => line.activo === true
     );
     const result = tiposContratacionFilt.map((tipoContratacion) => {
-      return { id: tipoContratacion.id, name: tipoContratacion.nombre!, cantidadMeses: tipoContratacion.cantidadMeses };
+      return {
+        id: tipoContratacion.id,
+        name: tipoContratacion.nombre!,
+        cantidadMeses: tipoContratacion.cantidadMeses,
+      };
     });
     return result;
   }, [tiposContratacion]);
 
   const handlePeriodoPago = useMemo(() => {
     const periodosPagoFilt = periodosPago.filter(
-      (line) => line.activo === true && line.cantidadMeses! <= handleTiposContratacion.find(e => e.id === selectedContratType)?.cantidadMeses!
+      (line) =>
+        line.activo === true &&
+        line.cantidadMeses! <=
+          handleTiposContratacion.find((e) => e.id === selectedContratType)
+            ?.cantidadMeses!
     );
 
     const result = periodosPagoFilt.map((periodoPago) => {
-      return { id: periodoPago.id, name: periodoPago.nombre!, descuento: periodoPago.descuento, cantidadMeses: periodoPago.cantidadMeses };
+      return {
+        id: periodoPago.id,
+        name: periodoPago.nombre!,
+        descuento: periodoPago.descuento,
+        cantidadMeses: periodoPago.cantidadMeses,
+      };
     });
     return result;
   }, [periodosPago, handleTiposContratacion, selectedContratType]);
 
   const handleTotalAmount = useMemo(() => {
-    const total = poliza.lineaCotizacion?.monto! * handlePeriodoPago.find(e => e.id === selectedPaymentPeriod)?.cantidadMeses!;
-    const descuento = total * handlePeriodoPago.find(e => e.id === selectedPaymentPeriod)?.descuento!;
+    const total =
+      poliza.lineaCotizacion?.monto! *
+      handlePeriodoPago.find((e) => e.id === selectedPaymentPeriod)
+        ?.cantidadMeses!;
+    const descuento =
+      total *
+      handlePeriodoPago.find((e) => e.id === selectedPaymentPeriod)?.descuento!;
     return total - descuento;
-  }, [handleTiposContratacion, selectedContratType, handlePeriodoPago, selectedPaymentPeriod]);
+  }, [
+    handleTiposContratacion,
+    selectedContratType,
+    handlePeriodoPago,
+    selectedPaymentPeriod,
+  ]);
   const handleSubmit = async () => {
-
-    const endPoint = `${import.meta.env.VITE_BASEURL}/api/pago/${isFirstPayment ? 'crearPrimerPago' : 'crearPago'}`
-
+    const endPoint = `${import.meta.env.VITE_BASEURL}/api/pago/${
+      isFirstPayment ? "crearPrimerPago" : "crearPago"
+    }`;
+    console.log("endPoint", endPoint);
     try {
       const res = await fetch(endPoint, {
         method: "POST",
@@ -54,13 +87,18 @@ function PolicyPayment({ poliza, isFirstPayment }: { poliza: Poliza, isFirstPaym
         },
         body: JSON.stringify({
           poliza_numero: poliza.numero_poliza,
-          total: poliza.montoAsegurado || handleTotalAmount,
+          total: poliza.precioPolizaActual || handleTotalAmount,
           descripcion: poliza.lineaCotizacion?.cobertura?.nombre,
-          payer_email: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.correo,
-          payer_name: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.nombres,
-          payer_surname: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.apellido,
-          payer_phone: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.telefono,
-          payer_identification: poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.documento,
+          payer_email:
+            poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.correo,
+          payer_name:
+            poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.nombres,
+          payer_surname:
+            poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.apellido,
+          payer_phone:
+            poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.telefono,
+          payer_identification:
+            poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.documento,
           back_urls: {
             //   success: "https://4bb0c22b9817.ngrok-free.app/sucess",
             //   failure: "https://4bb0c22b9817.ngrok-free.app/failure",
@@ -261,11 +299,19 @@ function PolicyPayment({ poliza, isFirstPayment }: { poliza: Poliza, isFirstPaym
 
           <div className="total-section">
             <div className="total-label">TOTAL A PAGAR</div>
-            <h3 className="total-amount">${(selectedPaymentPeriod && selectedContratType) ? handleTotalAmount : poliza.montoAsegurado || poliza.lineaCotizacion?.monto}</h3>
+            <h3 className="total-amount">
+              $
+              {selectedPaymentPeriod && selectedContratType
+                ? handleTotalAmount
+                : poliza.montoAsegurado || poliza.lineaCotizacion?.monto}
+            </h3>
           </div>
 
           <div className="button-group">
-            <button className="btn btn-cancel" onClick={() => { }}>
+            <button
+              className="btn btn-cancel"
+              onClick={() => handleCurrentView("PolicyProfile")}
+            >
               Cancelar
             </button>
             <button className="btn btn-confirm" onClick={handleSubmit}>

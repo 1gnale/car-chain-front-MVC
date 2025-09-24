@@ -29,6 +29,8 @@ import clientReducer from "./clientSlice";
 
 import cotizacionReducer from "./cotizacionSlice";
 
+import usuarioReducer from "./usuariosSlice";
+
 export const store = configureStore({
   reducer: {
     marcas: marcasReducer,
@@ -49,6 +51,7 @@ export const store = configureStore({
     tiposContratacion: tipoContratacionReduer,
     cliente: clientReducer,
     cotizacion: cotizacionReducer,
+    usuarios: usuarioReducer,
   },
 });
 

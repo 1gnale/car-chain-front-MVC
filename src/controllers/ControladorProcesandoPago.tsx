@@ -41,28 +41,28 @@ const ControladorProcesandoPago = () => {
               fecha_despliegue: data.data.fechaContratacion,
               estado: data.data.estadoPoliza,
               fecha_vencimiento: data.data.fechaVencimiento,
-              cobertura: dataPoliza.data.LineaCotizacion.cobertura.nombre,
+              cobertura: dataPoliza.data.lineaCotizacion.cobertura.nombre,
               cliente: {
                 nombre:
-                  dataPoliza.data.LineaCotizacion.cotizacion.vehiculo.cliente
+                  dataPoliza.data.lineaCotizacion.cotizacion.vehiculo.cliente
                     .nombres,
                 email:
-                  dataPoliza.data.LineaCotizacion.cotizacion.vehiculo.cliente
+                  dataPoliza.data.lineaCotizacion.cotizacion.vehiculo.cliente
                     .correo,
                 documento:
-                  dataPoliza.data.LineaCotizacion.cotizacion.vehiculo.cliente
+                  dataPoliza.data.lineaCotizacion.cotizacion.vehiculo.cliente
                     .documento,
               },
               vehiculo: {
                 marca:
-                  dataPoliza.data.LineaCotizacion.cotizacion.vehiculo.version
+                  dataPoliza.data.lineaCotizacion.cotizacion.vehiculo.version
                     .modelo.marca.nombre,
                 modelo:
-                  dataPoliza.data.LineaCotizacion.cotizacion.vehiculo.version
+                  dataPoliza.data.lineaCotizacion.cotizacion.vehiculo.version
                     .modelo.nombre,
                 monto: data.data.montoAsegurado,
                 patente:
-                  dataPoliza.data.LineaCotizacion.cotizacion.vehiculo.matricula,
+                  dataPoliza.data.lineaCotizacion.cotizacion.vehiculo.matricula,
               },
             },
           },
