@@ -109,7 +109,7 @@ function ManageUsers({
       ],
       titles: ["ID", "Nombres", "Correo", "Documento", "Estado"],
       tableBody: filteredUsuarios.map((usuario) => ({
-        key: usuario.legajo,
+        key: usuario.legajo ? usuario.legajo : 0,
         value: usuario,
         rowContent: [
           String(usuario.legajo || ''),

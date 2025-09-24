@@ -11,7 +11,7 @@ interface Localidad {
 }
 
 interface Persona {
-  id: number;
+  id?: number;
   nombres?: string;
   apellido?: string;
   fechaNacimiento?: string;
@@ -30,7 +30,7 @@ interface Cliente extends Persona {
 }
 
 interface Usuario extends Persona {
-  legajo: number;
+  legajo?: number;
   tipoUsuario?: string;
   activo?: boolean;
 }

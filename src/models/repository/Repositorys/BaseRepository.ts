@@ -5,13 +5,14 @@ export abstract class BaseRepository<T> {
   constructor(apiUrl?: string) {
     this.apiUrl = apiUrl;
   }
- 
-  protected async fetchData(): Promise<T[]> {
-    if (!this.apiUrl) {
+
+  protected async fetchData(otherUrl?: string): Promise<T[]> {
+    const url = otherUrl || this.apiUrl;
+    if (!url) {
       return Promise.reject(new Error("API URL is not defined"));
     }
 
-    return fetch(this.apiUrl)
+    return fetch(url)
       .then(async (response) => {
         if (!response.ok) {
           // Intentar obtener el error detallado del backend
@@ -33,6 +34,15 @@ export abstract class BaseRepository<T> {
       });
   }
 
+  fetchDataById(url: string, identificator: string | number): Promise<T> {
+    if (!this.apiUrl || !url || !identificator) {
+      return Promise.reject(new Error("API URL is not defined"));
+    }
+    const fullUrl = `${this.apiUrl}/${url}/${identificator}`;
+    return Object(this.fetchData(fullUrl));
+  }
+
+
   // Método genérico para POST
   protected async postData(endpoint: string, body: Partial<T>): Promise<T> {
     if (!this.apiUrl) {
@@ -40,7 +50,7 @@ export abstract class BaseRepository<T> {
     }
 
     const url = `${this.apiUrl}${endpoint}`;
-    
+
     return fetch(url, {
       method: 'POST',
       headers: {
@@ -54,7 +64,7 @@ export abstract class BaseRepository<T> {
           let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
           try {
             const errorData = await response.json();
-            errorMessage = errorData.message || errorData.error || errorMessage;
+            errorMessage = errorData.errors[0] || errorData.error || errorMessage;
             console.error("Backend Error Details:", errorData);
           } catch (parseError) {
             console.error("Could not parse error response:", parseError);
@@ -73,7 +83,7 @@ export abstract class BaseRepository<T> {
     }
 
     const url = `${this.apiUrl}${endpoint}`;
-    
+
     return fetch(url, {
       method: 'PUT',
       headers: {
@@ -106,7 +116,7 @@ export abstract class BaseRepository<T> {
     }
 
     const url = `${this.apiUrl}${endpoint}`;
-    
+
     return fetch(url, {
       method: 'PUT',
       headers: {

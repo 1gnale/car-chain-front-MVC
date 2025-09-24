@@ -11,12 +11,17 @@ import useFormValidationUsuarios from "../../../controllers/controllerHooks/Vali
 import { setProvinces } from "../../../redux/provincesSlice.ts";
 import { setDocumentTypes } from "../../../redux/documentTypeSlice.ts";
 import { createUser } from "../../../redux/usuariosSlice.ts";
+import { UsuarioRepository } from "../../../models/repository/Repositorys/UsuariosRepository.ts";
+import Modal from "../GeneralComponents/Modal.tsx";
 
 function CrearUsuario({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) {
+  const usuarioRepo = new UsuarioRepository(
+    `${import.meta.env.VITE_BASEURL}/api/usuarios`
+  );
   const { errors, validateField, validateForm } = useFormValidationUsuarios();
 
   const documentTypes: string[] = useAppSelector(
@@ -46,6 +51,8 @@ function CrearUsuario({
   const [selectedProvince, setSelectedProvinces] = useState<number>();
   const [selectedLocality, setSelectedLocality] = useState<number>();
   const [selectedDocumentType, setSelectedDocumentType] = useState<number>();
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [formUser, setFormUser] = useState<Usuario>({
     id: 0,
@@ -148,35 +155,28 @@ function CrearUsuario({
   };
 
   async function handleSearchPerson() {
+    if (!formUser.correo) return;
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_BASEURL}/api/usuarios/get-person-by-email/${
-          formUser.correo
-        }`
-      );
+      const data = await usuarioRepo.getPersonByEmail(formUser.correo!);
+      console.log(data);
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Error al obtener la persona");
-      }
 
-      setFormUser(data.data);
+      setFormUser(data);
 
-      const sexoFiltrado = listSex.find((sex) => sex.name === data.data?.sexo);
+      const sexoFiltrado = listSex.find((sex) => sex.name === data.sexo);
       const tipoDocFiltrado = handleDocumentType.findIndex(
-        (doc) => doc.name === data.data?.tipoDocumento
+        (doc) => doc.name === data.tipoDocumento
       );
 
-      setSelectedProvinces(data.data.localidad.provincia.id);
-      setSelectedLocality(data.data.localidad.id);
+      setSelectedProvinces(data.localidad?.provincia?.id);
+      setSelectedLocality(data.localidad?.id);
       setSelectedDocumentType(tipoDocFiltrado + 1);
       setSelectedSex(sexoFiltrado?.id);
 
-      alert(`Persona encontrada: ${data.data.nombres}`);
+      alert(`Persona encontrada: ${data.nombres}`);
     } catch (error: any) {
-      alert(`Hubo un error: ${error.message}`);
-      console.error("❌ Error en la petición:", error.message);
-      throw error;
+      setShowError(true);
+      setErrorMessage(error.message || "Error desconocido");
     }
   }
 
@@ -214,61 +214,41 @@ function CrearUsuario({
     console.log(user);
     if (validateForm(user)) {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BASEURL}/api/usuarios/create-user`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              personaData: {
-                localidad_id: selectedLocality,
-                nombres: formUser.nombres,
-                apellido: formUser.apellido,
-                fechaNacimiento: formUser.fechaNacimiento,
-                tipoDocumento: formUser.tipoDocumento,
-                documento: formUser.documento,
-                domicilio: formUser.domicilio,
-                correo: formUser.correo,
-                telefono: formUser.telefono,
-                sexo: formUser.sexo,
-              },
-              tipoUsuario: formUser.tipoUsuario,
-            }),
+        const personData = {
+            localidad_id: String(selectedLocality),
+            nombres: formUser.nombres,
+            apellido: formUser.apellido,
+            fechaNacimiento: formatearFecha(formUser.fechaNacimiento!),
+            tipoDocumento: formUser.tipoDocumento,
+            documento: formUser.documento,
+            domicilio: formUser.domicilio,
+            correo: formUser.correo,
+            telefono: formUser.telefono,
+            sexo: formUser.sexo
           }
-        );
-        const data = await response.json(); // leer siempre la respuesta
+        const response = await usuarioRepo.createUser(personData, formUser.tipoUsuario!);
+        console.log("✅ Usuario creado:", response);
 
-        if (!response.ok) {
-          console.error("❌ Backend devolvió error:", data);
-          throw new Error(data.message || "Error en validación");
-        } else {
-          console.log("✅ Usuario creado:", data);
-          
-          // Formateamos el usuario para Redux
-          const usuarioParaRedux: Usuario = {
-            ...data.data,
-            nombres: data.data.persona.nombres,
-            apellido: data.data.persona.apellido,
-            correo: data.data.persona.correo,
-            documento: data.data.persona.documento,
-            tipoDocumento: data.data.persona.tipoDocumento,
-            activo: true,
-            legajo: data.data.legajo || data.data.id
-          };
+        // Formateamos el usuario para Redux
+        const usuarioParaRedux: Usuario = {
+          ...response,
+          nombres: response.nombres,
+          apellido: response.apellido,
+          correo: response.correo,
+          documento: response.documento,
+          tipoDocumento: response.tipoDocumento,
+          activo: true,
+          legajo: response.legajo || response.id
+        };
 
-          // Despachamos al store
-          dispatch(createUser(usuarioParaRedux));
-          console.log("✅ Usuario creado en Redux:", usuarioParaRedux);
-          
-          alert(`Usuario ${formUser.tipoUsuario} creado exitosamente`);
-          handleCurrentView(false);
-          return data;
-        }
+        // Despachamos al store
+        dispatch(createUser(usuarioParaRedux));
+        console.log("✅ Usuario creado en Redux:", usuarioParaRedux);
+
+        handleCurrentView(false);
       } catch (error: any) {
-        console.error("❌ Error en la creación:", error);
-        alert(`Hubo un error: ${error.message}`);
+        setShowError(true);
+        setErrorMessage(error.message || "Error desconocido");
       }
     } else {
     }
@@ -492,6 +472,13 @@ function CrearUsuario({
         </div>
         <div className="col-xl-1"></div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type="error"
+        title="Error"
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 }
