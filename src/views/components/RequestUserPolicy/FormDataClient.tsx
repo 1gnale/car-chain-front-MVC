@@ -1,14 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
-import Input from "../GeneralComponents/Input.tsx";
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
-import SelectForm from "../GeneralComponents/SelectForm.tsx";
-import GrayButton from "../GeneralComponents/Button.tsx";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import TitleForm from "../GeneralComponents/TitleForm.tsx";
-import DateInput from "../GeneralComponents/DateInput.tsx";
 import { ClienteRepository } from "../../../models/repository/Repositorys/clienteRepository.ts";
 import { useNavigate } from "react-router-dom";
+import DarkTitleForm from "../GeneralComponents/DarkTitleForm.tsx";
+import DarkInput from "../GeneralComponents/DarkInput.tsx";
+import DarkSelectForm from "../GeneralComponents/DarkSelect.tsx";
+import DarkButton from "../GeneralComponents/DarkButton.tsx";
+
 const FormDataClient = ({
   handleCurrentView,
   userMail,
@@ -16,9 +16,10 @@ const FormDataClient = ({
   handleCurrentView: (pass: boolean, hardValue?: number) => void;
   userMail: string | null;
 }) => {
+  // Navigate para volver a home en caso de cancel
   const navigate = useNavigate();
-  // States MODELO DATOS
 
+  // Vehiculo en el local storage
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
   );
@@ -29,11 +30,16 @@ const FormDataClient = ({
     (state) => state.localidades.localidad
   );
 
+  // Validaciones
+  const { errors, validateField, validateForm } = useFormClientValidation();
+
+  // Lista de sexos para el select
   const listSex = [
     { id: 1, name: "Femenino" },
     { id: 2, name: "Masculino" },
   ];
 
+  // Funcion: si el cliente esta autenticado se saltea esta vista
   const clientAuth = async () => {
     const clienteRepository = new ClienteRepository(
       `${
@@ -57,17 +63,14 @@ const FormDataClient = ({
     }
   };
 
-  // State de validacion de datos
-  const { errors, validateField, validateForm } = useFormClientValidation();
-
-  // Statates de Selects
+  // State para los selects
   const [locality, setLocality] = useState<boolean>(false);
   const [selectedSex, setSelectedSex] = useState(0);
   const [selectedProvince, setSelectedProvinces] = useState(0);
   const [selectedLocality, setSelectedLocality] = useState(0);
   const [selectedDocumentType, setSelectedDocumentType] = useState(0);
 
-  // State formulario
+  // formulario
   const [formClient, setFormClient] = useState({
     nombre: "",
     apellido: "",
@@ -80,18 +83,16 @@ const FormDataClient = ({
     localidad: "",
     domicilio: "",
   });
-  //("documentTypes");
-  //(documentTypes);
-  //(formClient.tipoDocumento);
 
-  // UseEffect
+  // Vehiculo y cliente en el local storage
+  const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData"); // Move hook call to top level
+  const clientStorage = useLocalStorageItem<Cliente>("ClientData"); // Move hook call to top level
+
+  // Useeffect para carga el formulario con el local storage
   useEffect(() => {
-    // localStorage.removeItem("ClientData");
     if (userMail != null) {
       clientAuth();
     }
-    const clientStorage = useLocalStorageItem<Cliente>("ClientData");
-
     const sexoFiltrado = listSex.find(
       (sex) => sex.name === clientStorage?.sexo
     );
@@ -110,9 +111,11 @@ const FormDataClient = ({
       setSelectedDocumentType(tipoDocFiltrado + 1);
       setFormClient(parseFormClient(clientStorage));
     }
+    console.log("clientStorage");
     console.log(clientStorage);
-  }, []);
+  }, [userMail]);
 
+  // Parse para adaptar al cliente en local storage al formulario
   function parseFormClient(client: Cliente): any {
     return {
       nombre: client.nombres || "",
@@ -128,74 +131,17 @@ const FormDataClient = ({
     };
   }
 
-  // HANDLEs
-  const handleSubmit = () => {
-    if (validateForm(formClient)) {
-      //("Formulario válido:", formClient);
-      try {
-        const localidadFiltrada: Localidad | undefined = localities.find(
-          (locality) => locality.id === selectedLocality
-        );
-        if (localidadFiltrada != undefined) {
-          const client: Cliente = {
-            idClient: 1,
-            id: 1,
-            nombres: formClient.nombre,
-            apellido: formClient.apellido,
-            fechaNacimiento: formClient.fechaNacimiento,
-            tipoDocumento: formClient.tipoDocumento,
-            documento: formClient.documento,
-            domicilio: formClient.domicilio,
-            correo: "",
-            telefono: formClient.telefono,
-            sexo: formClient.sexo,
-            contraseña: "",
-            localidad: localidadFiltrada,
-          };
-
-          const vehicleLocalStorage =
-            useLocalStorageItem<Vehiculo>("VehicleData");
-
-          if (vehicleLocalStorage != null) {
-            vehicleLocalStorage.cliente = client;
-            localStorage.setItem("ClientData", JSON.stringify(client));
-            localStorage.setItem(
-              "VehicleData",
-              JSON.stringify(vehicleLocalStorage)
-            );
-          }
-        }
-      } catch (error) {
-        //("ERROR");
-      }
-      handleCurrentView(true);
-    } else {
-      //("Formulario inválido:", errors);
-    }
-  };
-
-  const handleCancel = () => {
-    if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
-      localStorage.clear();
-
-      navigate(`/`);
-    }
-  };
-  const handleBack = () => {
-    handleCurrentView(false);
-  };
-
+  // Handles para cargar los selects
   const handleDocumentType = useMemo(() => {
-    const result = documentTypes.map((documentTypes, idx) => {
-      return { id: idx + 1, name: documentTypes };
+    const result = documentTypes.map((documentType, idx) => {
+      return { id: idx + 1, name: documentType };
     });
-
     return result;
   }, [documentTypes]);
 
   const handleProvinces = useMemo(() => {
-    const result = provinces.map((provinces) => {
-      return { id: provinces.id, name: provinces.descripcion! };
+    const result = provinces.map((province) => {
+      return { id: province.id, name: province.descripcion! };
     });
     return result;
   }, [provinces]);
@@ -212,10 +158,9 @@ const FormDataClient = ({
     return result;
   }, [localities, selectedProvince]);
 
-  // HANDLE STATE
+  // Handle states para cargar los selects y el formulario
   const handleStateDocumentType = (id: number) => {
     setSelectedDocumentType(id);
-    // Encontrar el nombre del tipo documento
     const selectedDocumentType = documentTypes[id - 1] || "";
     setFormClient((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
     validateField("tipoDocumento", selectedDocumentType);
@@ -223,8 +168,6 @@ const FormDataClient = ({
 
   const handleStateSexo = (id: number) => {
     setSelectedSex(id);
-
-    // Encontrar el nombre del sexo seleccionada
     const selectedSexName = listSex.find((sex) => sex.id === id)?.name || "";
     setFormClient((prev) => ({ ...prev, sexo: selectedSexName }));
     setFormClient((prev) => ({ ...prev, sexoId: id }));
@@ -236,7 +179,6 @@ const FormDataClient = ({
     setLocality(true);
     setSelectedLocality(0);
 
-    // Encontrar el nombre de la provincia seleccionado
     const selectedProvinceName =
       provinces.find((province) => province.id === id)?.descripcion || "";
     setFormClient((prev) => ({ ...prev, provincia: selectedProvinceName }));
@@ -258,50 +200,121 @@ const FormDataClient = ({
     validateField(field as keyof typeof errors, value);
   };
 
+  // BOTONES (volver, cancelar, siguiente)
+  const handleSubmit = () => {
+    if (validateForm(formClient)) {
+      try {
+        const localidadFiltrada: Localidad | undefined = localities.find(
+          (locality) => locality.id === selectedLocality
+        );
+        if (localidadFiltrada != undefined) {
+          const client: Cliente = {
+            idClient: 1,
+            id: 1,
+            nombres: formClient.nombre,
+            apellido: formClient.apellido,
+            fechaNacimiento: formClient.fechaNacimiento,
+            tipoDocumento: formClient.tipoDocumento,
+            documento: formClient.documento,
+            domicilio: formClient.domicilio,
+            correo: "",
+            telefono: formClient.telefono,
+            sexo: formClient.sexo,
+            contraseña: "",
+            localidad: localidadFiltrada,
+          };
+
+          if (vehicleLocalStorage != null) {
+            vehicleLocalStorage.cliente = client;
+            localStorage.setItem("ClientData", JSON.stringify(client));
+            localStorage.setItem(
+              "VehicleData",
+              JSON.stringify(vehicleLocalStorage)
+            );
+          }
+        }
+      } catch (error) {
+        console.log("ERROR");
+      }
+      handleCurrentView(true);
+    } else {
+      console.log("Formulario inválido:", errors);
+    }
+  };
+
+  const handleCancel = () => {
+    if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
+      localStorage.clear();
+      navigate(`/`);
+    }
+  };
+
+  const handleBack = () => {
+    handleCurrentView(false);
+  };
+
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-xl-1"></div>
-        <div className="col-xl-9">
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="row " style={{ padding: "2px" }}>
-              <TitleForm title="Informacion Del Cliente" />
-            </div>
-            <div className="col">
-              {" "}
-              <Input
+    <div
+      style={{
+        backgroundColor: "#1f2937",
+        minHeight: "100vh",
+        padding: "2rem 0",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>
+        <div
+          style={{
+            backgroundColor: "#374151",
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+            borderRadius: "12px",
+            padding: "2rem",
+          }}
+        >
+          <DarkTitleForm title="Información Del Cliente" />
+
+          <div style={{ display: "grid", gap: "1.5rem" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkInput
                 title="Nombre"
-                place=""
+                place="Ingrese su nombre"
                 value={formClient.nombre}
                 onChange={(value) => handleInputChange("nombre", value)}
                 error={errors.nombre}
                 onBlur={() => validateField("nombre", formClient.nombre)}
               />
-            </div>
-            <div className="col">
-              <Input
-                title="Telefono"
-                place=""
+              <DarkInput
+                title="Teléfono"
+                place="Ingrese su teléfono"
                 value={formClient.telefono}
                 onChange={(value) => handleInputChange("telefono", value)}
                 error={errors.telefono}
                 onBlur={() => validateField("telefono", formClient.telefono)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col">
-              <Input
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkInput
                 title="Apellido"
-                place=""
+                place="Ingrese su apellido"
                 value={formClient.apellido}
                 onChange={(value) => handleInputChange("apellido", value)}
                 error={errors.apellido}
                 onBlur={() => validateField("apellido", formClient.apellido)}
               />
-            </div>
-            <div className="col">
-              <SelectForm
+              <DarkSelectForm
                 status={true}
                 value={selectedSex}
                 title="Sexo"
@@ -311,10 +324,15 @@ const FormDataClient = ({
                 onBlur={() => validateField("sexo", formClient.sexo)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col">
-              <SelectForm
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkSelectForm
                 status={true}
                 value={selectedDocumentType}
                 title="Tipo Documento"
@@ -325,9 +343,7 @@ const FormDataClient = ({
                   validateField("tipoDocumento", formClient.tipoDocumento)
                 }
               />
-            </div>
-            <div className="col">
-              <SelectForm
+              <DarkSelectForm
                 status={true}
                 value={selectedProvince}
                 title="Provincia"
@@ -337,20 +353,23 @@ const FormDataClient = ({
                 onBlur={() => validateField("provincia", formClient.provincia)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col">
-              <Input
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkInput
                 title="Documento"
-                place=""
+                place="Ingrese su documento"
                 value={formClient.documento}
                 onChange={(value) => handleInputChange("documento", value)}
                 error={errors.documento}
                 onBlur={() => validateField("documento", formClient.documento)}
               />
-            </div>
-            <div className="col">
-              <SelectForm
+              <DarkSelectForm
                 status={locality}
                 value={selectedLocality}
                 title="Localidad"
@@ -360,45 +379,63 @@ const FormDataClient = ({
                 onBlur={() => validateField("localidad", formClient.localidad)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col">
-              <DateInput
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkInput
                 title="Fecha de nacimiento"
+                place=""
+                type="date"
                 value={formClient.fechaNacimiento}
                 onChange={(value) =>
                   handleInputChange("fechaNacimiento", value)
                 }
-                onBlur={(value) => validateField("fechaNacimiento", value)}
+                onBlur={() =>
+                  validateField("fechaNacimiento", formClient.fechaNacimiento)
+                }
                 error={errors.fechaNacimiento}
-                showFormat={false}
               />
-            </div>
-            <div className="col">
-              <Input
+              <DarkInput
                 title="Domicilio"
-                place=""
+                place="Ingrese su domicilio"
                 value={formClient.domicilio}
                 onChange={(value) => handleInputChange("domicilio", value)}
                 error={errors.domicilio}
                 onBlur={() => validateField("domicilio", formClient.domicilio)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: " 2px" }}>
-            <div className="col"></div>
 
             <div
-              className="d-grid gap-2 d-md-flex justify-content-md-end"
-              style={{ padding: "10px" }}
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "2rem",
+                paddingTop: "1rem",
+                borderTop: "1px solid #4b5563",
+              }}
             >
-              <GrayButton text="Cancelar" onClick={handleCancel} />
-              <GrayButton text="Anterior" onClick={handleBack} />
-              <GrayButton text="Siguiente" onClick={handleSubmit} />
+              <DarkButton
+                text="Cancelar"
+                onClick={handleCancel}
+                variant="secondary"
+              />
+              <DarkButton
+                text="Anterior"
+                onClick={handleBack}
+                variant="secondary"
+              />
+              <DarkButton
+                text="Siguiente"
+                onClick={handleSubmit}
+                variant="primary"
+              />
             </div>
           </div>
-
-          <div className="col-xl-1"></div>
         </div>
       </div>
     </div>

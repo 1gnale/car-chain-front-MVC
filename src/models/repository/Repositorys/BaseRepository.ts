@@ -42,7 +42,6 @@ export abstract class BaseRepository<T> {
     return Object(this.fetchData(fullUrl));
   }
 
-
   // Método genérico para POST
   protected async postData(endpoint: string, body: Partial<T>): Promise<T> {
     if (!this.apiUrl) {
@@ -52,9 +51,9 @@ export abstract class BaseRepository<T> {
     const url = `${this.apiUrl}${endpoint}`;
 
     return fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     })
@@ -64,7 +63,8 @@ export abstract class BaseRepository<T> {
           let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
           try {
             const errorData = await response.json();
-            errorMessage = errorData.errors[0] || errorData.error || errorMessage;
+            errorMessage =
+              errorData.errors[0] || errorData.error || errorMessage;
             console.error("Backend Error Details:", errorData);
           } catch (parseError) {
             console.error("Could not parse error response:", parseError);
@@ -85,9 +85,9 @@ export abstract class BaseRepository<T> {
     const url = `${this.apiUrl}${endpoint}`;
 
     return fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     })
@@ -110,7 +110,7 @@ export abstract class BaseRepository<T> {
   }
 
   // Método genérico para DELETE
-  protected async logicalDeleteData(endpoint: string): Promise<void> {
+  protected async logicalDeleteData(endpoint: string): Promise<T> {
     if (!this.apiUrl) {
       return Promise.reject(new Error("API URL is not defined"));
     }
@@ -118,25 +118,25 @@ export abstract class BaseRepository<T> {
     const url = `${this.apiUrl}${endpoint}`;
 
     return fetch(url, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          // Intentar obtener el error detallado del backend
-          let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-          try {
-            const errorData = await response.json();
-            errorMessage = errorData.message || errorData.error || errorMessage;
-            console.error("Backend Error Details:", errorData);
-          } catch (parseError) {
-            console.error("Could not parse error response:", parseError);
-          }
-          throw new Error(errorMessage);
+    }).then(async (response) => {
+      if (!response.ok) {
+        // Intentar obtener el error detallado del backend
+        let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.message || errorData.error || errorMessage;
+          console.error("Backend Error Details:", errorData);
+        } catch (parseError) {
+          console.error("Could not parse error response:", parseError);
         }
-      });
+        throw new Error(errorMessage);
+      }
+      return response.json();
+    });
   }
 
   // Método para obtener datos cacheados

@@ -46,7 +46,6 @@ const ConsultarCotizacionPage = ({
     <>
       <Navbar isAuth={isAuth} />
       <TitleSection title="COTIZACIÓN DE VEHÍCULO" />
-      <BreadCrumbNav items={[{ page: "Cotización del vehículo" }]} />
       {views[currentView]}
     </>
   );

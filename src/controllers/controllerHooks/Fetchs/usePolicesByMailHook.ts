@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setPoliza } from "../../../redux/policeSlice";
 import { useGenericFetch } from "./useGenericFetch";
 
-const usePolicesHook = ({ mail }: { mail: string }) => {
+const usePolicesByMailHook = ({ mail }: { mail: string }) => {
   const dispatch = useDispatch();
   const apiUrl = `${
     import.meta.env.VITE_BASEURL
@@ -29,4 +29,4 @@ const usePolicesHook = ({ mail }: { mail: string }) => {
   };
 };
 
-export default usePolicesHook;
+export default usePolicesByMailHook;

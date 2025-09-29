@@ -1,9 +1,12 @@
 import Table from "../GeneralComponents/Table";
 import IconButton from "../GeneralComponents/IconButton";
 import { PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useState } from "react";
 import CheckForm from "../GeneralComponents/CheckForm";
+import Modal from "../GeneralComponents/Modal";
+import { ConfigAntiguedadRepository } from "../../../models/repository/Repositorys/configAntiguedadRepository";
+import { updateConfigAntiguedad } from "../../../redux/configAntiguedadSlice";
 
 function ConfigurarAntiguedad({
   handleCurrentView,
@@ -12,40 +15,83 @@ function ConfigurarAntiguedad({
   handleCurrentView: (pass: boolean) => void;
   setCurrentConfigAntiquity: (config: ConfigAntiguedad) => void;
 }) {
-  /// CAMBIAR LUEGO
-  const configurarAntiguedad: ConfigAntiguedad = useAppSelector(
+  // Repositorio para los ENDPOINTS
+  const configAntiguedadRepo = new ConfigAntiguedadRepository(
+    `${import.meta.env.VITE_BASEURL}/api/configuracionAntiguedad`
+  );
+
+  // Redux datos y dispatch
+  const dispatch = useAppDispatch();
+  const configsAntiguedad: ConfigAntiguedad[] = useAppSelector(
     (state) => state.configAntiguedades.configAntiguedad
   );
-  const configsAntiguedad: ConfigAntiguedad[] =
-    Array(3).fill(configurarAntiguedad);
 
+  // States para la busqueda y filtro
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
-  const filteredTipoContratacion = configsAntiguedad.filter(
-    (configAntiguedad) => {
-      const matchesSearch = configAntiguedad.nombre
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // Buscador
+  const filteredConfigAntiguedad = configsAntiguedad.filter(
+    (configantiguedad) => {
+      const matchesSearch = configantiguedad.nombre
         ?.toLowerCase()
         .includes(search.toLowerCase());
 
       // Si checkbox está activado => mostrar solo inactivas
       if (checkbox) {
-        return configAntiguedad && matchesSearch;
+        return configantiguedad && matchesSearch;
       }
 
       // Si checkbox no está activado => mostrar solo activas
-      return configAntiguedad.activo && matchesSearch;
+      return configantiguedad.activo && matchesSearch;
     }
   );
 
+  // Botones (alta baja y modificacion)
   const handleUpdateConfigAntiquity = (configAntiguedad: any): void => {
     setCurrentConfigAntiquity(configAntiguedad);
     handleCurrentView(false);
   };
-
   const handleCreateConfigAntiquity = (): void => {
     handleCurrentView(true);
   };
+
+  async function handleDeleteConfigAntiquity(configAntiguedad: any) {
+    if (
+      window.confirm(
+        "¿Estás seguro de que querés eliminar la configuracion de antiguedad?"
+      )
+    ) {
+      try {
+        const response = await configAntiguedadRepo.updateStateConfigAntiguedad(
+          configAntiguedad.id
+        );
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updateConfigAntiguedad({ id: configAntiguedad.id }));
+        setShowError(true);
+        setModalMessage(
+          "Estado del configuracion antiguedad " +
+            configAntiguedad.id +
+            " actualizado"
+        );
+        setMessageType("info");
+        setTitleModalMessage("configuracion antiguedad eliminado");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+  // Handles de tablas
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
@@ -56,6 +102,7 @@ function ConfigurarAntiguedad({
         },
         {
           customIcons: Trash,
+          onAction: handleDeleteConfigAntiquity,
         },
       ],
       titles: [
@@ -68,7 +115,7 @@ function ConfigurarAntiguedad({
         "Recargo",
         "Estado",
       ],
-      tableBody: filteredTipoContratacion.map((configsAntiguedad) => ({
+      tableBody: filteredConfigAntiguedad.map((configsAntiguedad) => ({
         key: configsAntiguedad.id || 0,
         value: configsAntiguedad,
         rowContent: [
@@ -141,6 +188,13 @@ function ConfigurarAntiguedad({
           />
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </>
   );
 }

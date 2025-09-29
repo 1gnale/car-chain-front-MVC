@@ -1,18 +1,17 @@
-import PageCasoEstudio04 from "../FuturePages/PageCasoEstudio04";
+import ManageVersion from "../components/ManageVersion/ManageVersion";
 import { useState } from "react";
-import ModificarVersion from "../FuturePages/PageCasoEstudio04ModificarVersion";
-import HeaderSection from "../components/GeneralComponents/headerSection";
+import ModificarVersion from "../components/ManageVersion/ModificarVersion";
+import HeaderSection from "../components/GeneralComponents/HeaderSection";
+import CrearVersion from "../components/ManageVersion/CrearVersion";
 
 const VersionesPage = ({ isAuth }: { isAuth: boolean }) => {
-
-const [currentView, setCurrentView] = useState<number>(1);
-const [currentBrand, setCurrentBrand] = useState<Marca>({ id: 1 });
-const [currentModel, setCurrentModel] = useState<Modelo>({
-  id: 1,
-  marca: currentBrand,
-});
-const [currentVersion, setCurrentVersion] = useState<Version>({id: 1});
-
+  const [currentView, setCurrentView] = useState<number>(1);
+  const [currentBrand, setCurrentBrand] = useState<Marca>({ id: 1 });
+  const [currentModel, setCurrentModel] = useState<Modelo>({
+    id: 1,
+    marca: currentBrand,
+  });
+  const [currentVersion, setCurrentVersion] = useState<Version>({ id: 1 });
 
   const handleCurrentView = (pass: boolean) => {
     setCurrentView((prev) => {
@@ -26,21 +25,26 @@ const [currentVersion, setCurrentVersion] = useState<Version>({id: 1});
   };
 
   const views = [
-  <ModificarVersion version={currentVersion}
-    handleCurrentView={handleCurrentView} />,
-  <PageCasoEstudio04
+    <ModificarVersion
+      version={currentVersion}
       handleCurrentView={handleCurrentView}
-    setCurrentVersion={setCurrentVersion}
-  />,
+    />,
+    <ManageVersion
+      handleCurrentView={handleCurrentView}
+      setCurrentVersion={setCurrentVersion}
+    />,
+    <CrearVersion handleCurrentView={handleCurrentView}></CrearVersion>,
   ];
 
-  return <>
-            <HeaderSection
+  return (
+    <>
+      <HeaderSection
         title="Gestión de Versiones"
         text="Administra las versiones de seguros disponibles en el sistema"
       ></HeaderSection>
-  {views[currentView]}</>;
+      {views[currentView]}
+    </>
+  );
 };
-
 
 export default VersionesPage;

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 interface errorCobertura {
   nombre?: string;
   descripcion?: string;
-  recargoPorAtras?: string;
+  recargoPorAtraso?: string;
 }
 
 interface UseFormValidationReturn {
@@ -28,8 +28,8 @@ const useFormValidationCoverages = (): UseFormValidationReturn => {
     nombre: /^.{2,50}$/,
     descripcion: /^.{5,100}$/,
 
-    // recargoPorAtras: entre 0 y 10 (incluye 0 y 10)
-    recargoPorAtras: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,
+    // recargoPorAtraso: entre 0 y 10 (incluye 0 y 10)
+    recargoPorAtraso: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,
   };
 
   // VER PARA VALIDAR FECHA
@@ -64,17 +64,17 @@ const useFormValidationCoverages = (): UseFormValidationReturn => {
         }
         break;
 
-      case "recargoPorAtras":
+      case "recargoPorAtraso":
         const porcentajeValue = value as string;
         if (!porcentajeValue.trim()) {
-          newErrors.recargoPorAtras = "El recargo por atraso es requerido";
+          newErrors.recargoPorAtraso = "El recargo por atraso es requerido";
         } else if (
-          !patterns.recargoPorAtras.test(porcentajeValue.toUpperCase())
+          !patterns.recargoPorAtraso.test(porcentajeValue.toUpperCase())
         ) {
-          newErrors.recargoPorAtras =
+          newErrors.recargoPorAtraso =
             "El porcentaje debe ser un numero del 0 al 10";
         } else {
-          delete newErrors.recargoPorAtras;
+          delete newErrors.recargoPorAtraso;
         }
         break;
 
@@ -105,12 +105,12 @@ const useFormValidationCoverages = (): UseFormValidationReturn => {
     }
 
     // Validar recargo por atraso
-    if (!formData.recargoPorAtras!.trim()) {
-      newErrors.recargoPorAtras! = "El recargo por atraso es requerido";
+    if (!formData.recargoPorAtraso!.trim()) {
+      newErrors.recargoPorAtraso! = "El recargo por atraso es requerido";
     } else if (
-      !patterns.recargoPorAtras!.test(formData.recargoPorAtras!.toUpperCase())
+      !patterns.recargoPorAtraso!.test(formData.recargoPorAtraso!.toUpperCase())
     ) {
-      newErrors.recargoPorAtras! =
+      newErrors.recargoPorAtraso! =
         "El recargo por atraso debe un numero entre 0 y 10";
     }
 

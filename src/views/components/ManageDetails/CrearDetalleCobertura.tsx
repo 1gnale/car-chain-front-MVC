@@ -2,17 +2,36 @@ import { useState } from "react";
 import GrayButton from "../GeneralComponents/Button";
 import useFormValidationDetail from "../../../controllers/controllerHooks/Validations/useDetailsValidation";
 import Input from "../GeneralComponents/Input";
-
+import { DetallesRepository } from "../../../models/repository/Repositorys/detallesRepository";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
+import Modal from "../GeneralComponents/Modal";
+import { createDetail } from "../../../redux/detallesSlice";
 function CrearDetalleCobertura({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) {
+  // Repositorio para los ENDPOINTS
+  const detalleRepo = new DetallesRepository(
+    `${import.meta.env.VITE_BASEURL}/api/detalle`
+  );
+  const dispatch = useAppDispatch();
+
+  // Hook para las validaaciones
+  const { errors, validateField, validateForm } = useFormValidationDetail();
+
+  // states de los checkbox
   const [opcionMonto, setOpcionMonto] = useState<"porcentaje" | "fijo">(
     "porcentaje"
   );
-  const { errors, validateField, validateForm } = useFormValidationDetail();
 
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // formulario
   const [formDetail, setFormDetail] = useState<Detalle>({
     id: 1,
     nombre: "",
@@ -21,9 +40,7 @@ function CrearDetalleCobertura({
     monto_fijo: 0,
   });
 
-  const handleCancel = (): void => {
-    handleCurrentView(false);
-  };
+  //Handle checkboxs
   const handleMontoFijoCheckBox = (): void => {
     setOpcionMonto("fijo");
     setFormDetail((prev) => ({ ...prev, porcentaje_miles: 0 }));
@@ -34,9 +51,57 @@ function CrearDetalleCobertura({
     setFormDetail((prev) => ({ ...prev, monto_fijo: 0 }));
     validateField("monto_fijo" as keyof typeof errors, "0");
   };
+
+  // Handle para rellenar formulario
   const handleInputChange = (field: string, value: string) => {
     setFormDetail((prev) => ({ ...prev, [field]: value }));
     validateField(field as keyof typeof errors, value);
+  };
+
+  // Handle botones (Crear y cancelar)
+  async function crearDetalle() {
+    const detail = {
+      nombre: formDetail.nombre,
+      descripcion: formDetail.descripcion,
+      monto_fijo: String(formDetail.monto_fijo),
+      porcentaje_miles: String(formDetail.porcentaje_miles),
+    };
+    console.log(detail);
+    if (validateForm(detail)) {
+      try {
+        const response = await detalleRepo.createDetail(formDetail);
+
+        console.log("✅ Detalle creado:", response);
+
+        // Formateamos el usuario para Redux
+        const detalleParaRedux: Detalle = {
+          ...response,
+          nombre: response.nombre,
+          descripcion: response.descripcion,
+          monto_fijo: response.monto_fijo,
+          porcentaje_miles: response.porcentaje_miles,
+        };
+
+        // Despachamos al store
+        dispatch(createDetail(detalleParaRedux));
+        console.log("✅ Detalle creado en Redux:", detalleParaRedux);
+        setShowError(true);
+        setTitleModalMessage("Detalle creado");
+        setModalMessage("Detalle creado con exito: " + response.nombre);
+        setMessageType("success");
+
+        setFormDetail({ id: 0, porcentaje_miles: 0, monto_fijo: 0 });
+      } catch (error: any) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(error.message || "Error desconocido");
+        setMessageType("error");
+      }
+    } else {
+    }
+  }
+  const handleCancel = (): void => {
+    handleCurrentView(false);
   };
   return (
     <div className="bg-white p-4 rounded shadow-sm mb-4">
@@ -131,8 +196,15 @@ function CrearDetalleCobertura({
 
       <div className="d-flex justify-content-end gap-3 mt-4">
         <GrayButton text="Cancelar" onClick={handleCancel} />
-        <GrayButton text="Confirmar" onClick={() => {}} />
+        <GrayButton text="Confirmar" onClick={crearDetalle} />
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 }

@@ -45,25 +45,27 @@ const ControladorSolicitarContratacionDePoliza = () => {
 
   // Handle confirmacion poliza
   const handleConfirmacionPoliza = async (poliza: Poliza) => {
-    if (!poliza) {
-      console.error("No hay poliza para guardar");
-      return;
-    }
-    try {
+    if (window.confirm("¿Estas seguro de confirmar la solicitud de poliza?")) {
+      if (!poliza) {
+        console.error("No hay poliza para guardar");
+        return;
+      }
+      try {
+        const cotizacion = poliza.lineaCotizacion?.cotizacion;
+        const lineaCotizacion = poliza.lineaCotizacion;
+        const lineasCotizacion: Linea_Cotizacion[] = [];
+        lineasCotizacion.push(lineaCotizacion!);
 
-      const cotizacion = poliza.lineaCotizacion?.cotizacion;
-      const lineaCotizacion = poliza.lineaCotizacion;
-      const lineasCotizacion: Linea_Cotizacion[] = [];
-      lineasCotizacion.push(lineaCotizacion!);
-
-      const resultado = await savePoliza(cotizacion!, lineasCotizacion);
-      console.log("Resultado de guardado de póliza completa:", resultado);
-    } catch (error) {
-      console.error("Error al procesar la póliza:", error);
+        const resultado = await savePoliza(cotizacion!, lineasCotizacion);
+        alert(
+          "Poliza solicitada con exito, para consultar su estado revise su perfil."
+        );
+      } catch (error) {
+        console.error("Error al procesar la póliza:", error);
+      }
     }
-    console.log("Póliza confirmada");
   };
-  
+
   if (
     isLoading ||
     loading ||
@@ -74,8 +76,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
     loadingLoc ||
     loadingCober ||
     loadingCobDet ||
-    loadingDet ||
-    loadingPoliza
+    loadingDet
   ) {
     return <Spinner title="Loading..." text="Por favor espere" />;
   }
@@ -92,6 +93,18 @@ const ControladorSolicitarContratacionDePoliza = () => {
     errorDet ||
     errorPoliza
   ) {
+    return <div>Error: ha ocurrido un error inesperado</div>;
+  }
+
+  if (loadingPoliza) {
+    return (
+      <Spinner
+        title="Confirmando solicitud de poliza..."
+        text="Por favor espere"
+      />
+    );
+  }
+  if (errorPoliza) {
     return <div>Error: ha ocurrido un error inesperado</div>;
   }
 

@@ -1,6 +1,6 @@
 import Navbar from "../views/components/NavBar/Navbar";
 import { useAuth0 } from "@auth0/auth0-react";
-import usePolicesHook from "./controllerHooks/Fetchs/usePolicesHook";
+import usePolicesByMailHook from "./controllerHooks/Fetchs/usePolicesByMailHook";
 import useCotizacionHook from "./controllerHooks/Fetchs/useCotizacion";
 import PerfilPage from "../views/pages/AccountData";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
@@ -14,7 +14,7 @@ const ControladorPerfil = () => {
   const { loading: loadingClient, error: errorClient } = useClientByMailHook(
     user?.email || ""
   );
-  const { loading: loadingPolice, error: errorPolice } = usePolicesHook({
+  const { loading: loadingPolice, error: errorPolice } = usePolicesByMailHook({
     mail: user?.email || "",
   });
 

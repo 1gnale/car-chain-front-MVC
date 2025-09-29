@@ -2,6 +2,11 @@ import { useState } from "react";
 import GrayButton from "../GeneralComponents/Button";
 import Input from "../GeneralComponents/Input";
 import CheckForm from "../GeneralComponents/CheckForm";
+import { ConfigAntiguedadRepository } from "../../../models/repository/Repositorys/configAntiguedadRepository";
+import useFormValidationConfigAntiguedad from "../../../controllers/controllerHooks/Validations/useConfigAntiquityValidation";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
+import Modal from "../GeneralComponents/Modal";
+import { updateConfigAntiguedad } from "../../../redux/configAntiguedadSlice";
 
 export default function ModificarConfiguracionAntiguedad({
   configAntiguedad,
@@ -10,10 +15,30 @@ export default function ModificarConfiguracionAntiguedad({
   configAntiguedad: ConfigAntiguedad;
   handleCurrentView: (pass: boolean) => void;
 }) {
-  //const { errors, validateField, validateForm } = useFormValidationConfigAntiquity();
+  // Repositorio para los ENDPOINTS
+  const configAntiguedadRepo = new ConfigAntiguedadRepository(
+    `${import.meta.env.VITE_BASEURL}/api/configuracionAntiguedad`
+  );
+
+  // validaciones
+  const { errors, validateField, validateForm } =
+    useFormValidationConfigAntiguedad();
+
+  //Dispatch Redux
+  const dispatch = useAppDispatch();
+
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // state para los checkbox
   const [opcionConfig, setOpcionConfig] = useState<
     "ganancia" | "descuento" | "recargo"
   >("ganancia");
+
+  // formularios
   const [formConfigAntiquity, setFormConfigAntiquity] =
     useState<ConfigAntiguedad>({
       id: configAntiguedad.id,
@@ -26,10 +51,7 @@ export default function ModificarConfiguracionAntiguedad({
       activo: configAntiguedad.activo,
     });
 
-  const handleCancel = (): void => {
-    handleCurrentView(true);
-  };
-
+  // Handle de los checkbox
   const handleGananciaCheckBox = (): void => {
     setOpcionConfig("ganancia");
     setFormConfigAntiquity((prev) => ({ ...prev, recargo: 0 }));
@@ -50,11 +72,68 @@ export default function ModificarConfiguracionAntiguedad({
     // validateField("monto_fijo" as keyof typeof errors, "0");
   };
 
+  // handle para rellenar formulario
   const handleInputChange = (field: string, value: string) => {
     setFormConfigAntiquity((prev) => ({ ...prev, [field]: value }));
-    // validateField(field as keyof typeof errors, value);
+    validateField(field as keyof typeof errors, value);
   };
 
+  // Botones cancelar y modificar
+  const handleCancel = (): void => {
+    handleCurrentView(true);
+  };
+
+  async function ModificarConfigEdad() {
+    const ConfigAge = {
+      nombre: formConfigAntiquity.nombre,
+      minima: String(formConfigAntiquity.minima),
+      maxima: String(formConfigAntiquity.maxima),
+      descuento: String(formConfigAntiquity.descuento),
+      ganancia: String(formConfigAntiquity.ganancia),
+      recargo: String(formConfigAntiquity.recargo),
+    };
+    console.log(ConfigAge);
+    if (validateForm(ConfigAge)) {
+      try {
+        const response = await configAntiguedadRepo.updateConfigAntiquity(
+          formConfigAntiquity
+        );
+
+        console.log("✅ Configuracion Antiguedad modificado:", response);
+
+        // Formateamos el usuario para Redux
+        const ConfigAntiguedadParaRedux: ConfigAntiguedad = {
+          ...response,
+          id: response.id,
+          nombre: response.nombre,
+          minima: response.minima,
+          maxima: response.maxima,
+          descuento: response.descuento,
+          ganancia: response.ganancia,
+          recargo: response.recargo,
+        };
+
+        // Despachamos al store
+        dispatch(updateConfigAntiguedad(ConfigAntiguedadParaRedux));
+        console.log(
+          "✅ Configuracion Antiguedad modificado en Redux:",
+          ConfigAntiguedadParaRedux
+        );
+        setShowError(true);
+        setTitleModalMessage("Configuracion Antiguedad modificado");
+        setModalMessage(
+          "Configuracion Antiguedad modificado con exito: " + response.nombre
+        );
+        setMessageType("success");
+      } catch (error: any) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(error.message || "Error desconocido");
+        setMessageType("error");
+      }
+    } else {
+    }
+  }
   return (
     <div className="bg-white p-4 rounded shadow-sm mb-4">
       <Input
@@ -64,6 +143,10 @@ export default function ModificarConfiguracionAntiguedad({
         place=""
         value={formConfigAntiquity.nombre}
         onChange={(value) => handleInputChange("nombre", value)}
+        error={errors.nombre}
+        onBlur={() =>
+          validateField("nombre", String(formConfigAntiquity.nombre!))
+        }
       />
 
       <div className="row h-100">
@@ -77,6 +160,10 @@ export default function ModificarConfiguracionAntiguedad({
             place=""
             value={String(formConfigAntiquity.minima)}
             onChange={(value) => handleInputChange("minima", value)}
+            error={errors.minima}
+            onBlur={() =>
+              validateField("minima", String(formConfigAntiquity.minima!))
+            }
           />
           <Input
             title="Antiguedad maxima"
@@ -86,6 +173,10 @@ export default function ModificarConfiguracionAntiguedad({
             place=""
             value={String(formConfigAntiquity.maxima)}
             onChange={(value) => handleInputChange("maxima", value)}
+            error={errors.maxima}
+            onBlur={() =>
+              validateField("maxima", String(formConfigAntiquity.maxima!))
+            }
           />
           <CheckForm
             text="ConfigAntiguedad activo"
@@ -125,6 +216,13 @@ export default function ModificarConfiguracionAntiguedad({
                 value={String(formConfigAntiquity.ganancia)}
                 disabled={opcionConfig !== "ganancia"}
                 onChange={(value) => handleInputChange("ganancia", value)}
+                error={errors.ganancia}
+                onBlur={() =>
+                  validateField(
+                    "ganancia",
+                    String(formConfigAntiquity.ganancia!)
+                  )
+                }
               />
             </div>
           </div>
@@ -153,6 +251,13 @@ export default function ModificarConfiguracionAntiguedad({
                 value={String(formConfigAntiquity.descuento)}
                 disabled={opcionConfig !== "descuento"}
                 onChange={(value) => handleInputChange("descuento", value)}
+                error={errors.descuento}
+                onBlur={() =>
+                  validateField(
+                    "descuento",
+                    String(formConfigAntiquity.descuento!)
+                  )
+                }
               />
             </div>
           </div>
@@ -181,16 +286,27 @@ export default function ModificarConfiguracionAntiguedad({
                 value={String(formConfigAntiquity.recargo)}
                 disabled={opcionConfig !== "recargo"}
                 onChange={(value) => handleInputChange("recargo", value)}
+                error={errors.recargo}
+                onBlur={() =>
+                  validateField("recargo", String(formConfigAntiquity.recargo!))
+                }
               />
             </div>
           </div>
           {/* Botones */}
           <div className="d-flex justify-content-end gap-3 mt-4">
             <GrayButton text="Cancelar" onClick={handleCancel} />
-            <GrayButton text="Confirmar" onClick={() => {}} />
+            <GrayButton text="Confirmar" onClick={ModificarConfigEdad} />
           </div>
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 }

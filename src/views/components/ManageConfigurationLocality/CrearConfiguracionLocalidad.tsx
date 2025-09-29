@@ -2,73 +2,140 @@ import { useMemo, useState } from "react";
 import GrayButton from "../GeneralComponents/Button";
 import Input from "../GeneralComponents/Input";
 import CheckForm from "../GeneralComponents/CheckForm";
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import SelectForm from "../GeneralComponents/SelectForm";
+import useFormValidationConfigLocalidad from "../../../controllers/controllerHooks/Validations/useConfigLocalityValidation";
+import { ConfigLocalidadesRepository } from "../../../models/repository/Repositorys/configLocalidadRepository";
+import Modal from "../GeneralComponents/Modal";
+import { createConfigLocalidad } from "../../../redux/configLocalidadSlice";
 
 export default function CrearConfiguracionLocalidad({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) {
+  // Repositorio para los ENDPOINTS
+  const configLocalidadRepo = new ConfigLocalidadesRepository(
+    `${import.meta.env.VITE_BASEURL}/api/configuracionLocalidad`
+  );
+
+  // Redux datos y dispatch
   const provinces: Provincia[] = useAppSelector(
     (state) => state.provincias.provincia
   );
   const localities: Localidad[] = useAppSelector(
     (state) => state.localidades.localidad
   );
-  const [locality, setLocality] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
+  // Use states para los selects
+  const [locality, setLocality] = useState<boolean>(false);
   const [selectedProvince, setSelectedProvinces] = useState(0);
   const [selectedLocality, setSelectedLocality] = useState(0);
 
-  //const { errors, validateField, validateForm } = useFormValidationConfigLocality();
+  // validaciones
+  const { errors, validateField, validateForm } =
+    useFormValidationConfigLocalidad();
+
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // state de los checkbox
   const [opcionConfig, setOpcionConfig] = useState<
     "ganancia" | "descuento" | "recargo"
   >("ganancia");
+
+  // formulario
   const [formConfigLocality, setFormConfigLocality] = useState<ConfigLocalidad>(
     {
       id: 0,
       nombre: "",
-      localidad: { id: 1 },
+      localidad: {
+        id: 0,
+        descripcion: "",
+        provincia: { id: 0, descripcion: "" },
+      },
       descuento: 0,
       ganancia: 0,
       recargo: 0,
     }
   );
 
+  // botones cancelar y crear
   const handleCancel = (): void => {
-    handleCurrentView(true);
+    handleCurrentView(false);
   };
+
+  async function CrearConfigLocalidad() {
+    const ConfigAge = {
+      nombre: formConfigLocality.nombre,
+      localidad: String(formConfigLocality.localidad?.descripcion),
+      provincia: String(formConfigLocality.localidad?.provincia?.descripcion),
+      descuento: String(formConfigLocality.descuento),
+      ganancia: String(formConfigLocality.ganancia),
+      recargo: String(formConfigLocality.recargo),
+    };
+    console.log(ConfigAge);
+    if (validateForm(ConfigAge)) {
+      try {
+        const response = await configLocalidadRepo.createConfigLocality(
+          formConfigLocality
+        );
+
+        console.log("✅ Configuracion Localidad creado:", response);
+
+        // Formateamos el usuario para Redux
+        const ConfigLocalidadParaRedux: ConfigLocalidad = {
+          ...response,
+          id: response.id,
+          nombre: response.nombre,
+          localidad: response.localidad,
+          descuento: response.descuento,
+          ganancia: response.ganancia,
+          recargo: response.recargo,
+        };
+
+        // Despachamos al store
+        dispatch(createConfigLocalidad(ConfigLocalidadParaRedux));
+        console.log(
+          "✅ Configuracion Localidad creado en Redux:",
+          ConfigLocalidadParaRedux
+        );
+        setShowError(true);
+        setTitleModalMessage("Configuracion Localidad creado");
+        setModalMessage(
+          "Configuracion Localidad creado con exito: " + response.nombre
+        );
+        setMessageType("success");
+
+        setFormConfigLocality({
+          id: 0,
+          descuento: 0,
+          ganancia: 0,
+          recargo: 0,
+        });
+        setSelectedLocality(0);
+        setSelectedProvinces(0);
+      } catch (error: any) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(error.message || "Error desconocido");
+        setMessageType("error");
+      }
+    } else {
+    }
+  }
+
+  // handles para rellenar los selectes
   const handleProvinces = useMemo(() => {
     const result = provinces.map((provinces) => {
       return { id: provinces.id, name: provinces.descripcion! };
     });
     return result;
   }, [provinces]);
-
-  const handleStateProvinces = (id: number) => {
-    setSelectedProvinces(id);
-    setLocality(true);
-    setSelectedLocality(0);
-
-    // Encontrar el nombre de la provincia seleccionado
-    const selectedProvinceName =
-      provinces.find((province) => province.id === id)?.descripcion || "";
-    setFormConfigLocality((prev) => ({
-      ...prev,
-      provincia: selectedProvinceName,
-    }));
-    setFormConfigLocality((prev) => ({ ...prev, provinciaId: id }));
-    // setFormConfigLocality("provincia", selectedProvinceName);
-  };
-  const handleStateLocality = (id: number) => {
-    setSelectedLocality(id);
-
-    const selectedLocalityName =
-      localities?.find((localidad) => localidad.id === id)?.descripcion || "";
-    //   setFormConfigLocality((prev) => ({ ...prev, localidad: selectedLocalityName }));
-    //  validateField("localidad", selectedLocalityName);
-  };
   const handleLocality = useMemo(() => {
     const localitysFiltred = localities.filter(
       (locality) => locality.provincia?.id === selectedProvince
@@ -81,6 +148,43 @@ export default function CrearConfiguracionLocalidad({
     return result;
   }, [localities, selectedProvince]);
 
+  // handle state para los selects seleccionados
+  const handleStateProvinces = (id: number) => {
+    setSelectedProvinces(id);
+    setLocality(true);
+    setSelectedLocality(0);
+
+    // Encontrar la provincia seleccionado
+    const selectedProvince = provinces.find((province) => province.id === id);
+
+    const localidad = formConfigLocality.localidad;
+    if (localidad) {
+      localidad.provincia = selectedProvince;
+    }
+
+    setFormConfigLocality((prev) => ({
+      ...prev,
+      localidad: localidad,
+    }));
+
+    validateField(
+      "provincia",
+      formConfigLocality.localidad?.provincia?.descripcion || ""
+    );
+  };
+  const handleStateLocality = (id: number) => {
+    setSelectedLocality(id);
+
+    const selectedLocality = localities?.find(
+      (localidad) => localidad.id === id
+    );
+
+    setFormConfigLocality((prev) => ({ ...prev, localidad: selectedLocality }));
+
+    validateField("localidad", selectedLocality?.descripcion || "");
+  };
+
+  // Handle de los checkbox
   const handleGananciaCheckBox = (): void => {
     setOpcionConfig("ganancia");
     setFormConfigLocality((prev) => ({ ...prev, recargo: 0 }));
@@ -101,9 +205,10 @@ export default function CrearConfiguracionLocalidad({
     // validateField("monto_fijo" as keyof typeof errors, "0");
   };
 
+  // Handle de input para rellenar el formulario
   const handleInputChange = (field: string, value: string) => {
     setFormConfigLocality((prev) => ({ ...prev, [field]: value }));
-    // validateField(field as keyof typeof errors, value);
+    validateField(field as keyof typeof errors, value);
   };
 
   return (
@@ -115,6 +220,10 @@ export default function CrearConfiguracionLocalidad({
         place=""
         value={formConfigLocality.nombre}
         onChange={(value) => handleInputChange("nombre", value)}
+        error={errors.nombre}
+        onBlur={() =>
+          validateField("nombre", String(formConfigLocality.nombre!))
+        }
       />
 
       <div className="row h-100">
@@ -124,19 +233,33 @@ export default function CrearConfiguracionLocalidad({
             status={true}
             value={selectedProvince!}
             classNameLabel={"form-label w-25"}
-            classNameDiv="d-flex align-items-start mb-3"
+            classNameDiv="d-flex mb-3"
             title="Provincia"
             items={handleProvinces}
             onChange={handleStateProvinces}
+            error={errors.provincia}
+            onBlur={() =>
+              validateField(
+                "provincia",
+                String(formConfigLocality.localidad?.provincia?.descripcion!)
+              )
+            }
           />
           <SelectForm
             status={locality}
             value={selectedLocality!}
             classNameLabel={"form-label w-25"}
-            classNameDiv="d-flex align-items-start mb-3"
+            classNameDiv="d-flex mb-3"
             title="Localidad"
             items={handleLocality}
             onChange={handleStateLocality}
+            error={errors.localidad}
+            onBlur={() =>
+              validateField(
+                "localidad",
+                String(formConfigLocality.localidad?.descripcion!)
+              )
+            }
           />
         </div>
 
@@ -166,6 +289,13 @@ export default function CrearConfiguracionLocalidad({
                 value={String(formConfigLocality.ganancia)}
                 disabled={opcionConfig !== "ganancia"}
                 onChange={(value) => handleInputChange("ganancia", value)}
+                error={errors.ganancia}
+                onBlur={() =>
+                  validateField(
+                    "ganancia",
+                    String(formConfigLocality.ganancia!)
+                  )
+                }
               />
             </div>
           </div>
@@ -194,6 +324,13 @@ export default function CrearConfiguracionLocalidad({
                 value={String(formConfigLocality.descuento)}
                 disabled={opcionConfig !== "descuento"}
                 onChange={(value) => handleInputChange("descuento", value)}
+                error={errors.descuento}
+                onBlur={() =>
+                  validateField(
+                    "descuento",
+                    String(formConfigLocality.descuento!)
+                  )
+                }
               />
             </div>
           </div>
@@ -222,16 +359,27 @@ export default function CrearConfiguracionLocalidad({
                 value={String(formConfigLocality.recargo)}
                 disabled={opcionConfig !== "recargo"}
                 onChange={(value) => handleInputChange("recargo", value)}
+                error={errors.recargo}
+                onBlur={() =>
+                  validateField("recargo", String(formConfigLocality.recargo!))
+                }
               />
             </div>
           </div>
           {/* Botones */}
           <div className="d-flex justify-content-end gap-3 mt-4">
             <GrayButton text="Cancelar" onClick={handleCancel} />
-            <GrayButton text="Confirmar" onClick={() => {}} />
+            <GrayButton text="Confirmar" onClick={CrearConfigLocalidad} />
           </div>
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 }

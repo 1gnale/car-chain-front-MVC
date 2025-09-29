@@ -1,24 +1,27 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setConfigEdad } from "../../../redux/configEdadSlice";
+import { setConfigsEdad } from "../../../redux/configEdadSlice";
 import { useGenericFetch } from "./useGenericFetch";
 
 const useEdadHookByAge = (age?: number) => {
   const dispatch = useDispatch();
-  const apiUrl = age && age > 0 ? `${import.meta.env.VITE_BASEURL}/api/configuracionEdad/byAge/${age}` : undefined;
-  
-  const { data: configEdad, loading, error, refetch } = useGenericFetch<ConfigEdad>(apiUrl);
+  const apiUrl =
+    age && age > 0
+      ? `${import.meta.env.VITE_BASEURL}/api/configuracionEdad/byAge/${age}`
+      : undefined;
 
-  useEffect(() => {
-    if (configEdad) {
-      dispatch(setConfigEdad(configEdad));
-    }
-  }, [configEdad, dispatch]);
+  const {
+    data: configEdad,
+    loading,
+    error,
+    refetch,
+  } = useGenericFetch<ConfigEdad>(apiUrl);
 
-  return { 
-    loading, 
-    error: !!error, 
-    refetch 
+  return {
+    loading,
+    configEdad,
+    error: !!error,
+    refetch,
   };
 };
 

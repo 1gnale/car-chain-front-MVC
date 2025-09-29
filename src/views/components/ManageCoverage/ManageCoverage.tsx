@@ -1,9 +1,13 @@
 import Table from "../GeneralComponents/Table";
 import IconButton from "../GeneralComponents/IconButton";
 import { PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import CheckForm from "../GeneralComponents/CheckForm";
+import Modal from "../GeneralComponents/Modal";
+import { CoberturasRepository } from "../../../models/repository/Repositorys/coberturasRepository";
+import { updateCoberturaState } from "../../../redux/coberturaSlice";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
 
 function ManageCoverage({
   handleCurrentView,
@@ -12,12 +16,28 @@ function ManageCoverage({
   handleCurrentView: (pass: boolean) => void;
   setCurrentCoverage: (coverage: Cobertura) => void;
 }) {
+  // Repositorio para los ENDPOINTS
+  const coberturaRepo = new CoberturasRepository(
+    `${import.meta.env.VITE_BASEURL}/api/cobertura`
+  );
+  const dispatch = useAppDispatch();
+
+  // Traer del redux los repositorios para la tabla
   const coberturas: Cobertura[] = useAppSelector(
     (state) => state.coberturas.cobertura
   );
+  // States para la busqueda y filtro
+  const [isTableLoaded, setIsTableLoaded] = useState(false);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // Buscador
   const filteredCoberturas = coberturas.filter((cobertura) => {
     const matchesSearch = cobertura.nombre
       ?.toLowerCase()
@@ -32,14 +52,45 @@ function ManageCoverage({
     return cobertura.activo && matchesSearch;
   });
 
+  // UseEffect que recarga la tabla al actualizar los datos
+  useEffect(() => {
+    if (coberturas && coberturas.length > 0) {
+      setIsTableLoaded(true);
+    }
+  }, [coberturas]);
+
+  // HANDLES Botones (Alta, baja modificacion)
+  const handleCreateCoverage = (): void => {
+    handleCurrentView(true);
+  };
+  async function handleDeleteCoverage(cobertura: any) {
+    if (window.confirm("¿Estás seguro de que querés eliminar la cobertura?")) {
+      try {
+        const response = await coberturaRepo.updateStateCobertura(cobertura.id);
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updateCoberturaState({ id: cobertura.id }));
+        setShowError(true);
+        setModalMessage(
+          "Estado del cobertura " + cobertura.id + " actualizado"
+        );
+        setMessageType("info");
+        setTitleModalMessage("Cobertura eliminado");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
   const handleUpdateCoverage = (cobertura: any): void => {
     setCurrentCoverage(cobertura);
     handleCurrentView(false);
   };
 
-  const handleCreateCoverage = (): void => {
-    handleCurrentView(true);
-  };
+  // HANDLE TABLA
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
@@ -50,6 +101,7 @@ function ManageCoverage({
         },
         {
           customIcons: Trash,
+          onAction: handleDeleteCoverage,
         },
       ],
       titles: [
@@ -125,6 +177,13 @@ function ManageCoverage({
             showButtom={showButtom}
           />
         </div>
+        <Modal
+          show={showError}
+          onClose={() => setShowError(false)}
+          type={messageType}
+          title={messageTitle}
+          message={errorMessage || "Error inesperado intente mas tarde"}
+        />
       </div>
     </>
   );

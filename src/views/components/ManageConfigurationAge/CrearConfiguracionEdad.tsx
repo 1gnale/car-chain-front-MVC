@@ -1,17 +1,39 @@
 import { useState } from "react";
 import GrayButton from "../GeneralComponents/Button";
 import Input from "../GeneralComponents/Input";
+import { ConfigEdadRepository } from "../../../models/repository/Repositorys/configEdadRepository";
+import useFormValidationConfigEdad from "../../../controllers/controllerHooks/Validations/useConfigAgeValidation";
+import Modal from "../GeneralComponents/Modal";
+import { createConfigEdad } from "../../../redux/configEdadSlice";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
 
 export default function CrearConfiguracionEdad({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) {
-  //const { errors, validateField, validateForm } = useFormValidationConfigAntiquity();
+  // Repositorio para los ENDPOINTS
+  const configEdadRepo = new ConfigEdadRepository(
+    `${import.meta.env.VITE_BASEURL}/api/configuracionEdad`
+  );
+
+  // validacion
+  const { errors, validateField, validateForm } = useFormValidationConfigEdad();
+
+  //Dispatch Redux
+  const dispatch = useAppDispatch();
+
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // state para los checkbox
   const [opcionConfig, setOpcionConfig] = useState<
     "ganancia" | "descuento" | "recargo"
   >("ganancia");
-  const [formConfigAntiquity, setFormConfigAntiquity] = useState<ConfigEdad>({
+  const [formConfigAge, setFormConfigAge] = useState<ConfigEdad>({
     id: 0,
     nombre: "",
     minima: 0,
@@ -21,33 +43,95 @@ export default function CrearConfiguracionEdad({
     recargo: 0,
   });
 
+  // botones  ( cancelar, crear)
   const handleCancel = (): void => {
     handleCurrentView(false);
   };
 
+  async function CrearConfigEdad() {
+    const ConfigAge = {
+      nombre: formConfigAge.nombre,
+      minima: String(formConfigAge.minima),
+      maxima: String(formConfigAge.maxima),
+      descuento: String(formConfigAge.descuento),
+      ganancia: String(formConfigAge.ganancia),
+      recargo: String(formConfigAge.recargo),
+    };
+    console.log(ConfigAge);
+    if (validateForm(ConfigAge)) {
+      try {
+        const response = await configEdadRepo.createConfigAge(formConfigAge);
+
+        console.log("✅ Configuracion Edad creado:", response);
+
+        // Formateamos el usuario para Redux
+        const ConfigEdadParaRedux: ConfigEdad = {
+          ...response,
+          id: response.id,
+          nombre: response.nombre,
+          minima: response.minima,
+          maxima: response.maxima,
+          descuento: response.descuento,
+          ganancia: response.ganancia,
+          recargo: response.recargo,
+        };
+
+        // Despachamos al store
+        dispatch(createConfigEdad(ConfigEdadParaRedux));
+        console.log(
+          "✅ Configuracion Edad creado en Redux:",
+          ConfigEdadParaRedux
+        );
+        setShowError(true);
+        setTitleModalMessage("Configuracion Edad creado");
+        setModalMessage(
+          "Configuracion Edad creado con exito: " + response.nombre
+        );
+        setMessageType("success");
+
+        setFormConfigAge({
+          id: 0,
+          minima: 0,
+          maxima: 0,
+          descuento: 0,
+          ganancia: 0,
+          recargo: 0,
+        });
+      } catch (error: any) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(error.message || "Error desconocido");
+        setMessageType("error");
+      }
+    } else {
+    }
+  }
+
+  // Handles de los checkbox
   const handleGananciaCheckBox = (): void => {
     setOpcionConfig("ganancia");
-    setFormConfigAntiquity((prev) => ({ ...prev, recargo: 0 }));
-    setFormConfigAntiquity((prev) => ({ ...prev, descuento: 0 }));
+    setFormConfigAge((prev) => ({ ...prev, recargo: 0 }));
+    setFormConfigAge((prev) => ({ ...prev, descuento: 0 }));
     //   validateField("porcentaje_miles" as keyof typeof errors, "0");
   };
   const handleDescuentoCheckBox = (): void => {
     setOpcionConfig("descuento");
-    setFormConfigAntiquity((prev) => ({ ...prev, recargo: 0 }));
-    setFormConfigAntiquity((prev) => ({ ...prev, ganancia: 0 }));
+    setFormConfigAge((prev) => ({ ...prev, recargo: 0 }));
+    setFormConfigAge((prev) => ({ ...prev, ganancia: 0 }));
     // validateField("monto_fijo" as keyof typeof errors, "0");
   };
 
   const handleRecargoCheckBox = (): void => {
     setOpcionConfig("recargo");
-    setFormConfigAntiquity((prev) => ({ ...prev, ganancia: 0 }));
-    setFormConfigAntiquity((prev) => ({ ...prev, descuento: 0 }));
+    setFormConfigAge((prev) => ({ ...prev, ganancia: 0 }));
+    setFormConfigAge((prev) => ({ ...prev, descuento: 0 }));
     // validateField("monto_fijo" as keyof typeof errors, "0");
   };
 
+  // HANDLE PARA RELLENAR FORMULARIO
   const handleInputChange = (field: string, value: string) => {
-    setFormConfigAntiquity((prev) => ({ ...prev, [field]: value }));
-    // validateField(field as keyof typeof errors, value);
+    setFormConfigAge((prev) => ({ ...prev, [field]: value }));
+    validateField(field as keyof typeof errors, value);
   };
 
   return (
@@ -57,8 +141,10 @@ export default function CrearConfiguracionEdad({
         labelStyle={{ width: "100px" }}
         classNameDiv="d-flex align-items-start mb-3"
         place=""
-        value={formConfigAntiquity.nombre}
+        value={formConfigAge.nombre}
         onChange={(value) => handleInputChange("nombre", value)}
+        error={errors.nombre}
+        onBlur={() => validateField("nombre", String(formConfigAge.nombre!))}
       />
 
       <div className="row h-100">
@@ -70,8 +156,12 @@ export default function CrearConfiguracionEdad({
             classNameDiv="d-flex align-items-start mb-3"
             rows={5}
             place=""
-            value={String(formConfigAntiquity.minima)}
+            value={String(formConfigAge.minima)}
             onChange={(value) => handleInputChange("minima", value)}
+            error={errors.minima}
+            onBlur={() =>
+              validateField("minima", String(formConfigAge.minima!))
+            }
           />
           <Input
             title="Edad maxima"
@@ -79,8 +169,12 @@ export default function CrearConfiguracionEdad({
             classNameDiv="d-flex align-items-start mb-3"
             rows={5}
             place=""
-            value={String(formConfigAntiquity.maxima)}
+            value={String(formConfigAge.maxima)}
             onChange={(value) => handleInputChange("maxima", value)}
+            error={errors.maxima}
+            onBlur={() =>
+              validateField("maxima", String(formConfigAge.maxima!))
+            }
           />
         </div>
 
@@ -107,9 +201,13 @@ export default function CrearConfiguracionEdad({
                 place=""
                 asLabel="none"
                 inputStyle={{ width: "100%" }}
-                value={String(formConfigAntiquity.ganancia)}
+                value={String(formConfigAge.ganancia)}
                 disabled={opcionConfig !== "ganancia"}
                 onChange={(value) => handleInputChange("ganancia", value)}
+                error={errors.ganancia}
+                onBlur={() =>
+                  validateField("ganancia", String(formConfigAge.ganancia!))
+                }
               />
             </div>
           </div>
@@ -135,9 +233,13 @@ export default function CrearConfiguracionEdad({
                 place=""
                 asLabel="none"
                 inputStyle={{ width: "100%" }}
-                value={String(formConfigAntiquity.descuento)}
+                value={String(formConfigAge.descuento)}
                 disabled={opcionConfig !== "descuento"}
                 onChange={(value) => handleInputChange("descuento", value)}
+                error={errors.descuento}
+                onBlur={() =>
+                  validateField("descuento", String(formConfigAge.descuento!))
+                }
               />
             </div>
           </div>
@@ -163,19 +265,30 @@ export default function CrearConfiguracionEdad({
                 place=""
                 asLabel="none"
                 inputStyle={{ width: "100%" }}
-                value={String(formConfigAntiquity.recargo)}
+                value={String(formConfigAge.recargo)}
                 disabled={opcionConfig !== "recargo"}
                 onChange={(value) => handleInputChange("recargo", value)}
+                error={errors.recargo}
+                onBlur={() =>
+                  validateField("recargo", String(formConfigAge.recargo!))
+                }
               />
             </div>
           </div>
           {/* Botones */}
           <div className="d-flex justify-content-end gap-3 mt-4">
             <GrayButton text="Cancelar" onClick={handleCancel} />
-            <GrayButton text="Confirmar" onClick={() => {}} />
+            <GrayButton text="Confirmar" onClick={CrearConfigEdad} />
           </div>
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 }

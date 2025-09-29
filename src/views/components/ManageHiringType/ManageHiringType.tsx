@@ -1,9 +1,13 @@
 import Table from "../GeneralComponents/Table";
 import IconButton from "../GeneralComponents/IconButton";
 import { PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useState } from "react";
 import CheckForm from "../GeneralComponents/CheckForm";
+import { tiposDocumentoRepository } from "../../../models/repository/Repositorys/tiposDocumentoRepository";
+import Modal from "../GeneralComponents/Modal";
+import { TipoContratacionRepository } from "../../../models/repository/Repositorys/tipoContratacionRepository";
+import { updateTipoContratacion } from "../../../redux/hiringTypesSlice";
 
 const ManageHiringType = ({
   handleCurrentView,
@@ -12,11 +16,26 @@ const ManageHiringType = ({
   handleCurrentView: (pass: boolean) => void;
   setHiringType: (hiringType: TipoContratacion) => void;
 }) => {
+  // Repositorio para los ENDPOINTS
+  const tiposContratacionRepo = new TipoContratacionRepository(
+    `${import.meta.env.VITE_BASEURL}/api/tipoContratacion`
+  );
+
+  // Redux datos y dispatch
   const tiposContratacion: TipoContratacion[] = useAppSelector(
     (state) => state.tiposContratacion.tipoContratacion
   );
+  const dispatch = useAppDispatch();
+
+  // States para la busqueda y filtro
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
+
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
 
   // Filtrado por búsqueda y por estado (activo/inactivo)
   const filteredDetalles = tiposContratacion.filter((tipoContratacion) => {
@@ -32,6 +51,8 @@ const ManageHiringType = ({
     // Si checkbox no está activado => mostrar solo activas
     return tipoContratacion.activo && matchesSearch;
   });
+
+  // Botones (alta, baja, modificacion)
   const handleUpdateHiringType = (tipoContratacion: any): void => {
     setHiringType(tipoContratacion);
     handleCurrentView(false);
@@ -39,6 +60,39 @@ const ManageHiringType = ({
   const handleCreateHiringType = (): void => {
     handleCurrentView(true);
   };
+
+  // Handle para Tablas
+  async function handleDeleteHiringType(tipoContratacion: any) {
+    if (
+      window.confirm(
+        "¿Estás seguro de que querés eliminar el tipo de contratacion?"
+      )
+    ) {
+      try {
+        const response =
+          await tiposContratacionRepo.updateStateTipoContratacion(
+            tipoContratacion.id
+          );
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updateTipoContratacion({ id: tipoContratacion.id }));
+        setShowError(true);
+        setModalMessage(
+          "Estado del tipo de contratacion " +
+            tipoContratacion.id +
+            " actualizado"
+        );
+        setMessageType("info");
+        setTitleModalMessage("tipo de contratacion eliminado");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
@@ -49,6 +103,7 @@ const ManageHiringType = ({
         },
         {
           customIcons: Trash,
+          onAction: handleDeleteHiringType,
         },
       ],
       titles: ["ID", "Nombre", "Cantidad de meses", "Estado"],
@@ -118,6 +173,13 @@ const ManageHiringType = ({
             showButtom={showButtom}
           />
         </div>
+        <Modal
+          show={showError}
+          onClose={() => setShowError(false)}
+          type={messageType}
+          title={messageTitle}
+          message={errorMessage || "Error inesperado intente mas tarde"}
+        />
       </div>{" "}
     </>
   );

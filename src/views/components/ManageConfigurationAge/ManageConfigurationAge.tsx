@@ -4,7 +4,10 @@ import { PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useState } from "react";
 import CheckForm from "../GeneralComponents/CheckForm";
-
+import Modal from "../GeneralComponents/Modal";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
+import { ConfigEdadRepository } from "../../../models/repository/Repositorys/configEdadRepository";
+import { updateConfigEdad } from "../../../redux/configEdadSlice";
 function ManageConfigurationAge({
   handleCurrentView,
   setCurrentConfigAge,
@@ -12,29 +15,43 @@ function ManageConfigurationAge({
   handleCurrentView: (pass: boolean) => void;
   setCurrentConfigAge: (config: ConfigEdad) => void;
 }) {
-  /// CAMBIAR LUEGO
-  const ConfigurarEdad: ConfigEdad = useAppSelector(
+  // Repositorio para los ENDPOINTS
+  const configEdadRepo = new ConfigEdadRepository(
+    `${import.meta.env.VITE_BASEURL}/api/configuracionEdad`
+  );
+
+  // Redux datos y dispatch
+  const dispatch = useAppDispatch();
+  const configsEdad: ConfigEdad[] = useAppSelector(
     (state) => state.configEdades.configEdad
   );
-  const configsEdad: ConfigEdad[] = Array(3).fill(ConfigurarEdad);
-  //(ConfigurarEdad);
+
+  // States para la busqueda y filtro
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
-  const filteredTipoContratacion = configsEdad.filter((configEdad) => {
-    const matchesSearch = configEdad.nombre
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // Buscador
+  const filteredconfigEdad = configsEdad.filter((configedad) => {
+    const matchesSearch = configedad.nombre
       ?.toLowerCase()
       .includes(search.toLowerCase());
 
     // Si checkbox está activado => mostrar solo inactivas
     if (checkbox) {
-      return configEdad && matchesSearch;
+      return configedad && matchesSearch;
     }
 
     // Si checkbox no está activado => mostrar solo activas
-    return configEdad.activo && matchesSearch;
+    return configedad.activo && matchesSearch;
   });
 
+  // Botones (ALTA , BAJA, MODIFICACION)
   const handleUpdateConfigAge = (configEdad: any): void => {
     setCurrentConfigAge(configEdad);
     handleCurrentView(false);
@@ -43,6 +60,36 @@ function ManageConfigurationAge({
   const handleCreateConfigAge = (): void => {
     handleCurrentView(true);
   };
+
+  async function handleDeleteConfigAge(configEdad: any) {
+    if (
+      window.confirm(
+        "¿Estás seguro de que querés eliminar la configuracion de Edad?"
+      )
+    ) {
+      try {
+        const response = await configEdadRepo.updateStateConfigEdad(
+          configEdad.id
+        );
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updateConfigEdad({ id: configEdad.id }));
+        setShowError(true);
+        setModalMessage(
+          "Estado de la configuracion edad " + configEdad.id + " actualizado"
+        );
+        setMessageType("info");
+        setTitleModalMessage("Configuracion edad eliminado");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
+  // Handles de la tabla
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
@@ -53,6 +100,7 @@ function ManageConfigurationAge({
         },
         {
           customIcons: Trash,
+          onAction: handleDeleteConfigAge,
         },
       ],
       titles: [
@@ -65,7 +113,7 @@ function ManageConfigurationAge({
         "Recargo",
         "Estado",
       ],
-      tableBody: filteredTipoContratacion.map((configsEdad) => ({
+      tableBody: filteredconfigEdad.map((configsEdad) => ({
         key: configsEdad.id || 0,
         value: configsEdad,
         rowContent: [
@@ -135,6 +183,13 @@ function ManageConfigurationAge({
           />
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </>
   );
 }

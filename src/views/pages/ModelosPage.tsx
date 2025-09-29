@@ -1,10 +1,11 @@
 import Navbar from "../components/NavBar/Navbar";
 import TitleSection from "../components/GeneralComponents/TitleSection";
-import PageCasoEstudio03 from "../FuturePages/PageCasoEstudio03";
+import ManageModelos from "../components/ManageModels/ManageModelos";
 import { useState } from "react";
-import ModificarModelo from "../FuturePages/PageCasoEstudio03ModificarModelo";
-import HeaderSection from "../components/GeneralComponents/headerSection";
+import ModificarModelo from "../components/ManageModels/ModificarModelo";
+import HeaderSection from "../components/GeneralComponents/HeaderSection";
 import { id } from "date-fns/locale";
+import CrearModelo from "../components/ManageModels/CrearModelo";
 
 const ModelosPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
@@ -29,18 +30,22 @@ const ModelosPage = ({ isAuth }: { isAuth: boolean }) => {
       modelo={currentModel}
       handleCurrentView={handleCurrentView}
     />,
-    <PageCasoEstudio03
+    <ManageModelos
       handleCurrentView={handleCurrentView}
       setCurrentModel={setCurrentModel}
     />,
+    <CrearModelo handleCurrentView={handleCurrentView}></CrearModelo>,
   ];
 
-  return <>
-          <HeaderSection
+  return (
+    <>
+      <HeaderSection
         title="Gestión de Modelos"
         text="Administra los modelos de seguros disponibles en el sistema"
       ></HeaderSection>
-  {views[currentView]}</>;
+      {views[currentView]}
+    </>
+  );
 };
 
 export default ModelosPage;

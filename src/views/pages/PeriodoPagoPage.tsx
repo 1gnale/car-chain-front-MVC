@@ -1,5 +1,3 @@
-import Navbar from "../components/NavBar/Navbar";
-import TitleSection from "../components/GeneralComponents/TitleSection";
 import { useState } from "react";
 import ManagePaymentPeriod from "../components/ManagePaymentPeriod/ManagePaymentPeriod";
 import CrearPeriodoPago from "../components/ManagePaymentPeriod/CrearPeriodoPago";

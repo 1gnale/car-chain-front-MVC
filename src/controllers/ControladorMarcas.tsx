@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import HomePage from "../views/pages/HomePage";
 import { useAuth0 } from "@auth0/auth0-react";
 import useMarcasHook from "./controllerHooks/Fetchs/useMarcasHook";
-import PageCasoEstudio02 from "../views/FuturePages/PageCasoEstudio02";
+import ManageMarcas from "../views/components/ManageBrands/ManageMarcas";
 import MarcasPage from "../views/pages/MarcasPage";
 
 const ControladorMarcas = () => {
@@ -18,7 +18,7 @@ const ControladorMarcas = () => {
   }
   return (
     <div>
-    <MarcasPage isAuth={isAuthenticated}/>
+      <MarcasPage isAuth={isAuthenticated} />
     </div>
   );
 };

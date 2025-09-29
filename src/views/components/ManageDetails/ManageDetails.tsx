@@ -2,8 +2,12 @@ import Table from "../GeneralComponents/Table";
 import IconButton from "../GeneralComponents/IconButton";
 import { PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CheckForm from "../GeneralComponents/CheckForm";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
+import { DetallesRepository } from "../../../models/repository/Repositorys/detallesRepository";
+import { updateDetalleState } from "../../../redux/detallesSlice";
+import Modal from "../GeneralComponents/Modal";
 
 const ManageDetails = ({
   handleCurrentView,
@@ -12,11 +16,27 @@ const ManageDetails = ({
   handleCurrentView: (pass: boolean) => void;
   setCurrentDetail: (detail: Detalle) => void;
 }) => {
+  // Repositorio para los ENDPOINTS
+  const detalleRepo = new DetallesRepository(
+    `${import.meta.env.VITE_BASEURL}/api/detalle`
+  );
+
+  // Traer del redux los repositorios para la tabla
   const detalles: Detalle[] = useAppSelector((state) => state.detalles.detalle);
+  const dispatch = useAppDispatch();
+
+  // States para la busqueda y filtro
+  const [isTableLoaded, setIsTableLoaded] = useState(false);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
-  // Filtrado por búsqueda y por estado (activo/inactivo)
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // Buscador
   const filteredDetalles = detalles.filter((detalle) => {
     const matchesSearch = detalle.nombre
       ?.toLowerCase()
@@ -30,13 +50,46 @@ const ManageDetails = ({
     // Si checkbox no está activado => mostrar solo activas
     return detalle.activo && matchesSearch;
   });
+
+  // UseEffect que recarga la tabla al actualizar los datos
+  useEffect(() => {
+    if (detalles && detalles.length > 0) {
+      setIsTableLoaded(true);
+    }
+  }, [detalles]);
+
+  // Handles (Botones alta baja y modificacion)
+
+  const handleCreateDetail = (): void => {
+    handleCurrentView(true);
+  };
+
+  async function handleDeleteDetail(detalle: any) {
+    if (window.confirm("¿Estás seguro de que querés eliminar el detalle?")) {
+      try {
+        const response = await detalleRepo.updateStateDetalle(detalle.id);
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updateDetalleState({ id: detalle.id }));
+        setShowError(true);
+        setModalMessage("Estado del detalle " + detalle.id + " actualizado");
+        setMessageType("info");
+        setTitleModalMessage("Detalle eliminado");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
   const handleUpdateDetail = (detalle: any): void => {
     setCurrentDetail(detalle);
     handleCurrentView(false);
   };
-  const handleCreateDetail = (): void => {
-    handleCurrentView(true);
-  };
+
+  // Handle que carga la tabla
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
@@ -47,6 +100,7 @@ const ManageDetails = ({
         },
         {
           customIcons: Trash,
+          onAction: handleDeleteDetail,
         },
       ],
       titles: [
@@ -125,6 +179,13 @@ const ManageDetails = ({
             showButtom={showButtom}
           />
         </div>
+        <Modal
+          show={showError}
+          onClose={() => setShowError(false)}
+          type={messageType}
+          title={messageTitle}
+          message={errorMessage || "Error inesperado intente mas tarde"}
+        />
       </div>{" "}
     </>
   );

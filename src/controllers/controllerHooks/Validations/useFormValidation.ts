@@ -33,7 +33,7 @@ interface UseFormValidationReturn {
   clearFieldError: (fieldName: keyof ValidationErrors) => void;
 }
 
-const useFormValidation = (): UseFormValidationReturn => {
+const useFormVehicleValidation = (): UseFormValidationReturn => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isValid, setIsValid] = useState<boolean>(false);
 
@@ -220,4 +220,4 @@ const useFormValidation = (): UseFormValidationReturn => {
   };
 };
 
-export default useFormValidation;
+export default useFormVehicleValidation;

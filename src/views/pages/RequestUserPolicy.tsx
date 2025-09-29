@@ -1,7 +1,6 @@
 import Navbar from "../components/NavBar/Navbar";
 import { useState } from "react";
 import TitleSection from "../components/GeneralComponents/TitleSection";
-import BreadCrumbNav from "../components/GeneralComponents/BreadCrumbNav";
 import FormDataVehicle from "../components/RequestUserPolicy/FormDataVehicle";
 import FormDataClient from "../components/RequestUserPolicy/FormDataClient";
 import FormDataCoverages from "../components/RequestUserPolicy/FormDataCoverages";
@@ -37,7 +36,10 @@ const RequestUserPolicy = ({
 
   const views = [
     <FormDataVehicle handleCurrentView={handleCurrentView} />,
-    <FormDataClient handleCurrentView={handleCurrentView} userMail={userMail} />,
+    <FormDataClient
+      handleCurrentView={handleCurrentView}
+      userMail={userMail}
+    />,
     <FormDataCoverages handleCurrentView={handleCurrentView} Auth={isAuth} />,
     <FormDataDocumentation handleCurrentView={handleCurrentView} />,
     <FormDataConfirmation
@@ -50,7 +52,6 @@ const RequestUserPolicy = ({
     <>
       <Navbar isAuth={isAuth} />
       <TitleSection title="COTIZACIÓN DE VEHÍCULO" />
-      <BreadCrumbNav items={[{ page: "Cotización del vehículo" }]} />
       {views[currentView]}
     </>
   );
