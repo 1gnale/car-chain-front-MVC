@@ -55,8 +55,15 @@ const ViewPricings = ({
   };
 
   return (
-    <div className="container my-5">
-      <div className="text-center my-4">
+    <div
+      style={{
+        backgroundColor: "#1f2937",
+        minHeight: "100vh",
+        padding: "2rem 0",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
+    >
+      <div className="text-center my-4 text-white">
         <h2>¡Te ofrecemos estas coberturas!</h2>
       </div>
 

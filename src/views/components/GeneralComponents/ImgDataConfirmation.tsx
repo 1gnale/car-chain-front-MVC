@@ -1,5 +1,5 @@
 interface imgconfirmationprop {
-  src: string;
+  src?: string;
   alt?: string;
   text: string;
 }

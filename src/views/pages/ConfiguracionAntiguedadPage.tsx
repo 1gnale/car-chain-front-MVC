@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ConfigurarAntiguedad from "../components/ManageConfigurationAntique/ConfigurarAntiguedad";
+import ConfigurarAntiguedad from "../components/ManageConfigurationAntique/ManageConfigurarAntiguedad";
 import ModificarConfiguracionAntiguedad from "../components/ManageConfigurationAntique/ModificarConfiguracionAntiguedad";
 import CrearConfiguracionAntiguedad from "../components/ManageConfigurationAntique/CrearConfiguracionAntiguedad";
 const ConfiguracionAntiguedadPage = () => {

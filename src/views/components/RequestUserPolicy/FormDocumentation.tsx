@@ -3,13 +3,20 @@ import { useState, useEffect } from "react";
 import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormDocumetsValidation";
 import useCheckFirstLogin from "../../../controllers/controllerHooks/Fetchs/useCheckFirstLogin";
 import { useNavigate } from "react-router-dom";
+import DarkButton from "../GeneralComponents/DarkButton";
+import Modal from "../GeneralComponents/Modal";
 const FormDocumentation = ({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) => {
+  // Navigate para volver a home en caso de cancel
   const navigate = useNavigate();
 
+  // Hook para saber si es la primera vez que se
+  useCheckFirstLogin();
+
+  // States para cargar los files
   const [fileFotoFrontal, setFileFrontal] = useState<File>();
   const [fileFotoTrasera, setFileTrasera] = useState<File>();
   const [fileFotoLateral1, setFileLateral1] = useState<File>();
@@ -37,9 +44,8 @@ const FormDocumentation = ({
     cedulaVerde: "",
   });
 
+  // Loader de las imagenes
   const [isLoadingImages, setIsLoadingImages] = useState(true);
-
-  useCheckFirstLogin();
 
   const { errors, validateField, validateForm } = useFormValidation();
 
@@ -66,7 +72,7 @@ const FormDocumentation = ({
     return new File([u8arr], filename, { type: mime });
   };
 
-  // Función para cargar imágenes desde localStorage al inicializar
+  // Useeffect, función para cargar imágenes desde localStorage al inicializar
   useEffect(() => {
     const loadStoredImages = async () => {
       try {
@@ -144,7 +150,7 @@ const FormDocumentation = ({
     loadStoredImages();
   }, []);
 
-  // Función para manejar cambio de archivo y guardar en localStorage
+  // HANDLES para manejar cambio de archivo y guardar en localStorage
   const handleFileChange = async (file: File, type: keyof typeof imageUrls) => {
     try {
       // Convertir archivo a Base64
@@ -214,11 +220,17 @@ const FormDocumentation = ({
     await handleFileChange(file, "cedulaVerde");
     validateField("cedulaVerde", file);
   };
+
+  // BOTONES.
   const handleCancel = () => {
     if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
       localStorage.clear();
       navigate(`/`);
     }
+  };
+
+  const handleBack = () => {
+    handleCurrentView(false);
   };
 
   const handleSubmit = () => {
@@ -242,133 +254,128 @@ const FormDocumentation = ({
   return (
     <div
       style={{
-        padding: "20px",
-        backgroundColor: "#1e1e1eff",
+        backgroundColor: "#1f2937",
         minHeight: "100vh",
+        padding: "2rem 0",
+        fontFamily: "system-ui, -apple-system, sans-serif",
       }}
     >
-      <div
-        className="card bg-dark border-info h-100"
-        style={{
-          borderRadius: "16px",
-          border: "1px solid rgba(13, 202, 240, 0.3)",
-        }}
-      >
-        <div className="card-header bg-transparent border-info border-bottom">
-          <h5 className="card-title text-info mb-0 d-flex align-items-center">
-            <i className="fas fa-car me-2"></i>
-            Fotos y Documentación
-          </h5>
-        </div>
-        <div className="card-body p-4">
-          <div className="row g-4">
-            <div className="col-12 col-md-6 col-lg-4">
-              <ImgInput
-                title="Foto Frontal"
-                srcUrl={imageUrls.fotoFrontal}
-                onCharge={(file: File) => handleFileFrontalChange(file)}
-                error={errors.fotoFrontal}
-                onBlur={() => validateField("fotoFrontal", fileFotoFrontal)}
-                fileName={storedFileNames.fotoFrontal}
-                isLoadedFromStorage={!!storedFileNames.fotoFrontal}
-              />
-            </div>
-
-            <div className="col-12 col-md-6 col-lg-4">
-              <ImgInput
-                title="Foto Trasera"
-                srcUrl={imageUrls.fotoTrasera}
-                onCharge={(file: File) => handleFileTraseraChange(file)}
-                error={errors.fotoTrasera}
-                onBlur={() => validateField("fotoTrasera", fileFotoTrasera)}
-                fileName={storedFileNames.fotoTrasera}
-                isLoadedFromStorage={!!storedFileNames.fotoTrasera}
-              />
-            </div>
-
-            <div className="col-12 col-md-6 col-lg-4">
-              <ImgInput
-                title="Foto Lateral 1"
-                srcUrl={imageUrls.fotoLateral1}
-                onCharge={(file: File) => handleFileLateral1Change(file)}
-                error={errors.fotoLateral1}
-                onBlur={() => validateField("fotoLateral1", fileFotoLateral1)}
-                fileName={storedFileNames.fotoLateral1}
-                isLoadedFromStorage={!!storedFileNames.fotoLateral1}
-              />
-            </div>
-
-            <div className="col-12 col-md-6 col-lg-4">
-              <ImgInput
-                title="Foto Lateral 2"
-                srcUrl={imageUrls.fotoLateral2}
-                onCharge={(file: File) => handleFileLateral2Change(file)}
-                error={errors.fotoLateral2}
-                onBlur={() => validateField("fotoLateral2", fileFotoLateral2)}
-                fileName={storedFileNames.fotoLateral2}
-                isLoadedFromStorage={!!storedFileNames.fotoLateral2}
-              />
-            </div>
-
-            <div className="col-12 col-md-6 col-lg-4">
-              <ImgInput
-                title="Foto Techo"
-                srcUrl={imageUrls.fotoTecho}
-                onCharge={(file: File) => handleFileTechoChange(file)}
-                error={errors.fotoTecho}
-                onBlur={() => validateField("fotoTecho", fileFotoTecho)}
-                fileName={storedFileNames.fotoTecho}
-                isLoadedFromStorage={!!storedFileNames.fotoTecho}
-              />
-            </div>
-
-            <div className="col-12 col-md-6 col-lg-4">
-              <ImgInput
-                title="Cédula Verde"
-                srcUrl={imageUrls.cedulaVerde}
-                onCharge={(file: File) => handleFileCedulaVerdeChange(file)}
-                error={errors.cedulaVerde}
-                onBlur={() => validateField("cedulaVerde", fileCedulaVerde)}
-                fileName={storedFileNames.cedulaVerde}
-                isLoadedFromStorage={!!storedFileNames.cedulaVerde}
-              />
-            </div>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>
+        <div
+          style={{
+            backgroundColor: "#374151",
+            borderRadius: "12px",
+            padding: "2rem",
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          <div className="card-header bg-transparent border-info border-bottom">
+            <h5 className="card-title text-info mb-0 d-flex align-items-center">
+              <i className="fas fa-car me-2"></i>
+              Fotos y Documentación
+            </h5>
           </div>
-          {/* Botones de acción */}
-          <div
-            className="d-flex justify-content-between align-items-center mt-5 pt-4"
-            style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)" }}
-          >
-            <div className="d-flex gap-3">
-              <button
-                type="button"
-                className="btn btn-outline-secondary px-4"
-                style={{ borderRadius: "10px" }}
-                onClick={() => handleCurrentView(false)}
-              >
-                <i className="fas fa-arrow-left me-2"></i>
-                Volver
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline-light px-4"
-                style={{ borderRadius: "10px" }}
+          <div className="card-body p-4">
+            <div className="row g-4">
+              <div className="col-12 col-md-6 col-lg-4">
+                <ImgInput
+                  title="Foto Frontal"
+                  srcUrl={imageUrls.fotoFrontal}
+                  onCharge={(file: File) => handleFileFrontalChange(file)}
+                  error={errors.fotoFrontal}
+                  onBlur={() => validateField("fotoFrontal", fileFotoFrontal)}
+                  fileName={storedFileNames.fotoFrontal}
+                  isLoadedFromStorage={!!storedFileNames.fotoFrontal}
+                />
+              </div>
+
+              <div className="col-12 col-md-6 col-lg-4">
+                <ImgInput
+                  title="Foto Trasera"
+                  srcUrl={imageUrls.fotoTrasera}
+                  onCharge={(file: File) => handleFileTraseraChange(file)}
+                  error={errors.fotoTrasera}
+                  onBlur={() => validateField("fotoTrasera", fileFotoTrasera)}
+                  fileName={storedFileNames.fotoTrasera}
+                  isLoadedFromStorage={!!storedFileNames.fotoTrasera}
+                />
+              </div>
+
+              <div className="col-12 col-md-6 col-lg-4">
+                <ImgInput
+                  title="Foto Lateral 1"
+                  srcUrl={imageUrls.fotoLateral1}
+                  onCharge={(file: File) => handleFileLateral1Change(file)}
+                  error={errors.fotoLateral1}
+                  onBlur={() => validateField("fotoLateral1", fileFotoLateral1)}
+                  fileName={storedFileNames.fotoLateral1}
+                  isLoadedFromStorage={!!storedFileNames.fotoLateral1}
+                />
+              </div>
+
+              <div className="col-12 col-md-6 col-lg-4">
+                <ImgInput
+                  title="Foto Lateral 2"
+                  srcUrl={imageUrls.fotoLateral2}
+                  onCharge={(file: File) => handleFileLateral2Change(file)}
+                  error={errors.fotoLateral2}
+                  onBlur={() => validateField("fotoLateral2", fileFotoLateral2)}
+                  fileName={storedFileNames.fotoLateral2}
+                  isLoadedFromStorage={!!storedFileNames.fotoLateral2}
+                />
+              </div>
+
+              <div className="col-12 col-md-6 col-lg-4">
+                <ImgInput
+                  title="Foto Techo"
+                  srcUrl={imageUrls.fotoTecho}
+                  onCharge={(file: File) => handleFileTechoChange(file)}
+                  error={errors.fotoTecho}
+                  onBlur={() => validateField("fotoTecho", fileFotoTecho)}
+                  fileName={storedFileNames.fotoTecho}
+                  isLoadedFromStorage={!!storedFileNames.fotoTecho}
+                />
+              </div>
+
+              <div className="col-12 col-md-6 col-lg-4">
+                <ImgInput
+                  title="Cédula Verde"
+                  srcUrl={imageUrls.cedulaVerde}
+                  onCharge={(file: File) => handleFileCedulaVerdeChange(file)}
+                  error={errors.cedulaVerde}
+                  onBlur={() => validateField("cedulaVerde", fileCedulaVerde)}
+                  fileName={storedFileNames.cedulaVerde}
+                  isLoadedFromStorage={!!storedFileNames.cedulaVerde}
+                />
+              </div>
+            </div>
+            {/* Botones de acción */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "2rem",
+                paddingTop: "1rem",
+                borderTop: "1px solid #4b5563",
+              }}
+            >
+              <DarkButton
+                text="Cancelar"
                 onClick={handleCancel}
-              >
-                <i className="fas fa-times me-2"></i>
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="btn btn-info px-5"
-                style={{ borderRadius: "10px" }}
+                variant="secondary"
+              />
+              <DarkButton
+                text="Anterior"
+                onClick={handleBack}
+                variant="secondary"
+              />
+              <DarkButton
+                text="Siguiente"
                 onClick={handleSubmit}
-              >
-                <i className="fas fa-arrow-right me-2"></i>
-                Siguiente
-              </button>
+                variant="primary"
+              />
             </div>
-          </div>
+          </div>{" "}
         </div>
       </div>{" "}
     </div>

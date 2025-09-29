@@ -1,23 +1,54 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  configLocalidad: {},
+interface ConfigLocalidadState {
+  configLocalidad: ConfigLocalidad[];
+}
+
+const initialState: ConfigLocalidadState = {
+  configLocalidad: [],
 };
 
 export const confiLocalidadSlice = createSlice({
   name: "configLocalidad",
   initialState,
   reducers: {
-    setConfigLocalidadd: (state, action) => {
+    setConfigsLocalidad: (state, action) => {
       state.configLocalidad = action.payload;
     },
-    clearConfigLocalidad: (state) => {
-      state.configLocalidad = {};
+
+    clearCondigLocalidad: (state) => {
+      state.configLocalidad = [];
+    },
+
+    updateStateConfigLocalidad: (
+      state,
+      action: PayloadAction<{ id: number }>
+    ) => {
+      const { id } = action.payload;
+      state.configLocalidad = state.configLocalidad.map((u) =>
+        u.id === id ? { ...u, activo: false } : u
+      );
+    },
+
+    updateConfigLocalidad: (state, action: PayloadAction<ConfigLocalidad>) => {
+      const updatedDetalle = action.payload;
+      state.configLocalidad = state.configLocalidad.map((u) =>
+        u.id === updatedDetalle.id ? { ...updatedDetalle } : u
+      );
+    },
+
+    createConfigLocalidad: (state, action: PayloadAction<ConfigLocalidad>) => {
+      state.configLocalidad = [...state.configLocalidad, action.payload];
     },
   },
 });
 
-export const { setConfigLocalidadd, clearConfigLocalidad } =
-  confiLocalidadSlice.actions;
+export const {
+  setConfigsLocalidad,
+  clearCondigLocalidad,
+  createConfigLocalidad,
+  updateConfigLocalidad,
+  updateStateConfigLocalidad,
+} = confiLocalidadSlice.actions;
 
 export default confiLocalidadSlice.reducer;

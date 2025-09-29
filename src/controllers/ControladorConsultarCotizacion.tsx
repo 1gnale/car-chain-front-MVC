@@ -5,6 +5,7 @@ import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
 import ConsultarCotizacionPage from "../views/pages/ConsultarCotizacionPage";
 import useGetLinePricingByIdCotizacionHook from "./controllerHooks/Fetchs/useGetLinePricingByIdCotizacionHook";
 import useCreateDocumentacionNPoliza from "./controllerHooks/Mutations/useCreateDocumentacionNPoliza";
+import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 
 const ControladorConsultarCotizacion = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -13,15 +14,19 @@ const ControladorConsultarCotizacion = () => {
   const { loading, error, LinePricing } = useGetLinePricingByIdCotizacionHook(
     String(id)
   );
-  const { savePoliza, loading: loadingPoliza, error: errorPoliza, success: successPoliza } = useCreateDocumentacionNPoliza();
+  const {
+    savePoliza,
+    loading: loadingPoliza,
+    error: errorPoliza,
+    success: successPoliza,
+  } = useCreateDocumentacionNPoliza();
   const { loading: LoadingLine, error: ErrorLine } = useDetallesHook();
   const { loading: LoadingCD, error: ErrorCD } = useCoberturasDetalleHook();
-  if (isLoading || loading || LoadingLine || LoadingCD || loadingPoliza) {
-    return <div>Loading...</div>;
+  if (isLoading || loading || LoadingLine || LoadingCD) {
+    return <Spinner title="Loading..." text="Por favor espere" />;
   }
 
-
-  if (error || ErrorLine || ErrorCD || errorPoliza) {
+  if (error || ErrorLine || ErrorCD) {
     return <div>Error loading pricing information.</div>;
   }
   if (!LinePricing) {
@@ -37,11 +42,24 @@ const ControladorConsultarCotizacion = () => {
     try {
       const result = await savePoliza(poliza);
       console.log("Resultado de guardado de póliza completa:", result);
+      alert("Poliza solicitada, para verificar su estado vea su perfil");
     } catch (error) {
       console.error("Error al procesar la póliza:", error);
     }
     console.log("Póliza confirmada");
   };
+
+  if (loadingPoliza) {
+    return (
+      <Spinner
+        title="Confirmando solicitud de poliza..."
+        text="Por favor espere"
+      />
+    );
+  }
+  if (errorPoliza) {
+    return <div>Error: ha ocurrido un error inesperado</div>;
+  }
 
   return (
     <ConsultarCotizacionPage

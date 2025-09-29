@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import LabelNinfo from "../GeneralComponents/LabelNinfo.tsx";
 import Table from "../GeneralComponents/Table.tsx";
@@ -7,16 +5,28 @@ import GrayButton from "../GeneralComponents/Button.tsx";
 import ImgConfirmation from "../GeneralComponents/ImgDataConfirmation.tsx";
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import { useNavigate } from "react-router-dom";
-
-type ViewName = "PolicyProfile" | "pagarPolizaPorPrimeraVez" | "pagarPoliza";
-
-const PolicyProfile = ({
-  policy,
+import usePoliceByIdHook from "../../../controllers/controllerHooks/Fetchs/usePoliceByIdHook.ts";
+import Spinner from "../GeneralComponents/SpinnerLoader.tsx";
+import Modal from "../GeneralComponents/Modal.tsx";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks.ts";
+import { updatePolizaState } from "../../../redux/policeSlice.ts";
+import { PolizaRepository } from "../../../models/repository/Repositorys/polizaRepository.ts";
+const DataPolicy = ({
+  numberPolicy,
   handleCurrentView,
 }: {
-  policy: Poliza;
-  handleCurrentView: (pass: ViewName) => void;
+  numberPolicy?: number;
+  handleCurrentView: (pass: boolean) => void;
 }) => {
+  // Redux datos y dispatch
+  const dispatch = useAppDispatch();
+  // Repositorio para los ENDPOINTS
+  const polizasRepo = new PolizaRepository(
+    `${import.meta.env.VITE_BASEURL}/api/poliza`
+  );
+
+  const { loading, error, policy } = usePoliceByIdHook(String(numberPolicy));
+
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
@@ -24,6 +34,11 @@ const PolicyProfile = ({
     style: "currency",
     currency: "ARS",
   });
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
 
   const Navigate = useNavigate();
   const [documentationPaths, setDocumentationPaths] = useState<any>({});
@@ -31,12 +46,12 @@ const PolicyProfile = ({
 
   const loadImagesFromSession = () => {
     const images: any = {};
-    images["fotoFrontal"] = policy.documentacion?.fotoFrontal;
-    images["fotoTrasera"] = policy.documentacion?.fotoTrasera;
-    images["fotoLateral1"] = policy.documentacion?.fotoLateral1;
-    images["fotoLateral2"] = policy.documentacion?.fotoLateral2;
-    images["fotoTecho"] = policy.documentacion?.fotoTecho;
-    images["cedulaVerde"] = policy.documentacion?.cedulaVerde;
+    images["fotoFrontal"] = policy?.documentacion?.fotoFrontal;
+    images["fotoTrasera"] = policy?.documentacion?.fotoTrasera;
+    images["fotoLateral1"] = policy?.documentacion?.fotoLateral1;
+    images["fotoLateral2"] = policy?.documentacion?.fotoLateral2;
+    images["fotoTecho"] = policy?.documentacion?.fotoTecho;
+    images["cedulaVerde"] = policy?.documentacion?.cedulaVerde;
 
     setDocumentationImages(images);
   };
@@ -69,7 +84,7 @@ const PolicyProfile = ({
       tableBody: coverage_details
         .filter(
           (covDetail) =>
-            policy.lineaCotizacion?.cobertura?.id === covDetail.cobertura.id &&
+            policy?.lineaCotizacion?.cobertura?.id === covDetail.cobertura.id &&
             covDetail.detalle.activo &&
             covDetail.aplica
         )
@@ -82,13 +97,13 @@ const PolicyProfile = ({
             String(coverDetail.detalle.descripcion),
             (() => {
               const version =
-                policy.lineaCotizacion?.cotizacion?.vehiculo?.version;
+                policy?.lineaCotizacion?.cotizacion?.vehiculo?.version;
               if (!version) return "N/A";
               if (coverDetail.detalle.monto_fijo != 0) {
                 return String(
                   formato.format(coverDetail.detalle.monto_fijo ?? 0)
                 );
-              } else if (policy.lineaCotizacion?.cotizacion?.vehiculo?.gnc) {
+              } else if (policy?.lineaCotizacion?.cotizacion?.vehiculo?.gnc) {
                 return String(formato.format(version?.precio_mercado_gnc || 0));
               } else {
                 return String(formato.format(version?.precio_mercado || 0));
@@ -100,75 +115,79 @@ const PolicyProfile = ({
   };
   const { titles, tableBody, customIcons, showButtom } = handleTable();
 
-  return (
+  // BOTONES APROBAR RECHAZAR ENVIAR A REVISAR
+  async function handleApprovePolicy() {
+    if (window.confirm("¿Estás seguro de que querés aprobar la poliza?")) {
+      try {
+        const response = await polizasRepo.updateStatePoliza(
+          numberPolicy!,
+          "APROBADA"
+        );
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updatePolizaState({ id: numberPolicy!, estado: "APROBADA" }));
+        setShowError(true);
+        setModalMessage("Estado de la Poliza " + numberPolicy + " actualizado");
+        setMessageType("info");
+        setTitleModalMessage("POLIZA APROBADA");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
+  async function handleDeclinePolicy() {
+    if (window.confirm("¿Estás seguro de que querés rechazar la poliza?")) {
+      try {
+        const response = await polizasRepo.updateStatePoliza(
+          numberPolicy!,
+          "RECHAZADA"
+        );
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updatePolizaState({ id: numberPolicy!, estado: "RECHAZADA" }));
+        setShowError(true);
+        setModalMessage("Estado de la Poliza " + numberPolicy + " actualizado");
+        setMessageType("info");
+        setTitleModalMessage("POLIZA RECHAZADA");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
+  return loading ? (
+    <Spinner title="Cargando poliza..." text="Por favor espere" />
+  ) : error ? (
+    <div>Error inesperado </div>
+  ) : (
     <div
-      className="container-fluid"
+      className="container-fluid gap-2"
       style={{
-        backgroundColor: "#1e1e1eff",
+        backgroundColor: "#f8f9faff",
         minHeight: "100vh",
-        color: "#ffffff",
+        color: "#000000",
+        padding: "20px",
       }}
     >
       <div className="row justify-content-center">
         <div className="col-12 col-xl-10">
-          {/* Botones superiores */}
-          <div
-            className="d-grid gap-2 d-md-flex justify-content-md-end"
-            style={{ padding: "10px" }}
-          >
-            <GrayButton
-              text="Cancelar Poliza"
-              style="me-md-2"
-              onClick={() => {}}
-            />
-            <GrayButton
-              text="Reportar Siniestro"
-              style="me-md-2"
-              onClick={() => {}}
-            />
-            <GrayButton
-              text="Historial Vehiculo"
-              style="me-md-2"
-              onClick={() => {}}
-            />
-            <GrayButton
-              text="Historial Pago"
-              style="me-md-2"
-              onClick={() => {}}
-            />
-            <GrayButton
-              text={
-                policy.estadoPoliza === "APROBADA"
-                  ? "Pagar por primera vez"
-                  : policy.estadoPoliza === "IMPAGA"
-                  ? "Pagar Poliza"
-                  : "No disponible"
-              }
-              style="me-md-2"
-              onClick={() => {
-                if (policy.estadoPoliza === "APROBADA") {
-                  handleCurrentView("pagarPolizaPorPrimeraVez");
-                } else if (policy.estadoPoliza === "IMPAGA") {
-                  handleCurrentView("pagarPoliza");
-                }
-              }}
-              disabled={
-                policy.estadoPoliza !== "APROBADA" &&
-                policy.estadoPoliza !== "IMPAGA"
-              }
-            />
-          </div>
-
           {/* Información de la Póliza */}
           <div
-            className="card bg-dark border-info mb-4"
+            className="card bg-light border-dark mb-4"
             style={{
               borderRadius: "16px",
-              border: "1px solid rgba(13, 202, 240, 0.3)",
+              border: "1px solid rgba(0, 0, 0, 0.3)",
             }}
           >
-            <div className="card-header bg-transparent border-info border-bottom">
-              <h5 className="card-title text-info mb-0 d-flex align-items-center">
+            <div className="card-header bg-transparent border-dark border-bottom">
+              <h5 className="card-title text-dark mb-0 d-flex align-items-center">
                 <i className="fas fa-file-contract me-2"></i>
                 Información De La Póliza
               </h5>
@@ -177,24 +196,31 @@ const PolicyProfile = ({
               <div className="row g-3">
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Número de póliza:"
-                    text={String(policy.numero_poliza)}
+                    text={String(policy?.numero_poliza)}
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Fecha de contratación:"
-                    text={policy.fechaContratacion || " -"}
+                    text={policy?.fechaContratacion || " -"}
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Hora de contratación:"
-                    text={policy.horaContratacion || " -"}
+                    text={policy?.horaContratacion || " -"}
                   />
                 </div>
                 <div className="col-md-3">
-                  <LabelNinfo title="Estado:" text={policy.estadoPoliza} />
+                  <LabelNinfo
+                    dark={true}
+                    title="Estado:"
+                    text={policy?.estadoPoliza}
+                  />
                 </div>
               </div>
             </div>
@@ -202,14 +228,14 @@ const PolicyProfile = ({
 
           {/* Información del Cliente */}
           <div
-            className="card bg-dark border-info mb-4"
+            className="card bg-light border-dark mb-4"
             style={{
               borderRadius: "16px",
-              border: "1px solid rgba(13, 202, 240, 0.3)",
+              border: "1px solid rgba(0, 0, 0, 0.3)",
             }}
           >
-            <div className="card-header bg-transparent border-info border-bottom">
-              <h5 className="card-title text-info mb-0 d-flex align-items-center">
+            <div className="card-header bg-transparent border-dark border-bottom">
+              <h5 className="card-title text-dark mb-0 d-flex align-items-center">
                 <i className="fas fa-user me-2"></i>
                 Información del Cliente
               </h5>
@@ -218,99 +244,110 @@ const PolicyProfile = ({
               <div className="row g-3">
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Nombre/s:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.nombres
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Apellido/s:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.apellido
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Sexo:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.sexo
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Fecha de Nacimiento:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.fechaNacimiento
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Tipo de Documento:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.tipoDocumento
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Documento:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.documento
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Teléfono:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.telefono
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Correo:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.correo
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Provincia:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.localidad?.provincia?.descripcion
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Localidad:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.localidad?.descripcion
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Domicilio:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
                         ?.domicilio
                     }
                   />
@@ -321,14 +358,14 @@ const PolicyProfile = ({
 
           {/* Información del Vehículo */}
           <div
-            className="card bg-dark border-info mb-4"
+            className="card bg-light border-dark mb-4"
             style={{
               borderRadius: "16px",
-              border: "1px solid rgba(13, 202, 240, 0.3)",
+              border: "1px solid rgba(0, 0, 0, 0.3)",
             }}
           >
-            <div className="card-header bg-transparent border-info border-bottom">
-              <h5 className="card-title text-info mb-0 d-flex align-items-center">
+            <div className="card-header bg-transparent border-dark border-bottom">
+              <h5 className="card-title text-dark mb-0 d-flex align-items-center">
                 <i className="fas fa-car me-2"></i>
                 Información del Vehículo
               </h5>
@@ -337,31 +374,35 @@ const PolicyProfile = ({
               <div className="row g-3">
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Matrícula:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.matricula
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.matricula
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Chasis:"
-                    text={policy.lineaCotizacion?.cotizacion?.vehiculo?.chasis}
+                    text={policy?.lineaCotizacion?.cotizacion?.vehiculo?.chasis}
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="N° motor:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.numeroMotor
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.numeroMotor
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="GNC:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.gnc
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.gnc
                         ? "Sí"
                         : "No"
                     }
@@ -369,36 +410,40 @@ const PolicyProfile = ({
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Marca:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.version
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.version
                         ?.modelo?.marca?.nombre || ""
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Modelo:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.version
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.version
                         ?.modelo?.nombre || ""
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Versión:"
                     text={
-                      policy.lineaCotizacion?.cotizacion?.vehiculo?.version
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo?.version
                         .nombre
                     }
                   />
                 </div>
                 <div className="col-md-3">
                   <LabelNinfo
+                    dark={true}
                     title="Año:"
                     text={String(
-                      policy.lineaCotizacion?.cotizacion?.vehiculo
+                      policy?.lineaCotizacion?.cotizacion?.vehiculo
                         ?.añoFabricacion
                     )}
                   />
@@ -409,14 +454,14 @@ const PolicyProfile = ({
 
           {/* Documentación */}
           <div
-            className="card bg-dark border-info mb-4"
+            className="card bg-light border-dark mb-4"
             style={{
               borderRadius: "16px",
-              border: "1px solid rgba(13, 202, 240, 0.3)",
+              border: "1px solid rgba(0, 0, 0, 0.3)",
             }}
           >
-            <div className="card-header bg-transparent border-info border-bottom">
-              <h5 className="card-title text-info mb-0 d-flex align-items-center">
+            <div className="card-header bg-transparent border-dark border-bottom">
+              <h5 className="card-title text-dark mb-0 d-flex align-items-center">
                 <i className="fas fa-folder-open me-2"></i>
                 Documentación
               </h5>
@@ -489,14 +534,14 @@ const PolicyProfile = ({
 
           {/* Cobertura Contratada */}
           <div
-            className="card bg-dark border-info mb-4"
+            className="card bg-light border-dark mb-4"
             style={{
               borderRadius: "16px",
-              border: "1px solid rgba(13, 202, 240, 0.3)",
+              border: "1px solid rgba(0, 0, 0, 0.3)",
             }}
           >
-            <div className="card-header bg-transparent border-info border-bottom">
-              <h5 className="card-title text-info mb-0 d-flex align-items-center">
+            <div className="card-header bg-transparent border-dark border-bottom">
+              <h5 className="card-title text-dark mb-0 d-flex align-items-center">
                 <i className="fas fa-shield-alt me-2"></i>
                 Cobertura Contratada
               </h5>
@@ -507,78 +552,19 @@ const PolicyProfile = ({
                   <div className="row g-3">
                     <div className="col-md-6">
                       <LabelNinfo
+                        dark={true}
                         title="Nombre:"
-                        text={policy.lineaCotizacion?.cobertura?.nombre}
+                        text={policy?.lineaCotizacion?.cobertura?.nombre}
                       />
                     </div>
                     <div className="col-md-6">
                       <LabelNinfo
+                        dark={true}
                         title="Precio:"
                         text={String(
-                          formato.format(policy.lineaCotizacion?.monto!)
+                          formato.format(policy?.lineaCotizacion?.monto!)
                         )}
                       />
-                    </div>
-                    <div className="col-md-6">
-                      <LabelNinfo
-                        title="Tipo contratación:"
-                        text={policy.tipoContratacion?.nombre || " -"}
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <LabelNinfo
-                        title="Periodo de pago:"
-                        text={policy.periodoPago?.nombre || "-"}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div
-                    className="card text-center"
-                    style={{
-                      backgroundColor: "#2a3441",
-                      border: "1px solid #00bcd4",
-                    }}
-                  >
-                    <div
-                      className="card-header fw-bold"
-                      style={{
-                        backgroundColor: "#00bcd4",
-                        color: "#0a0f1a",
-                        border: "none",
-                      }}
-                    >
-                      FECHA DE PAGO
-                    </div>
-                    <div
-                      className="card-body p-2"
-                      style={{ backgroundColor: "#2a3441", color: "#ffffff" }}
-                    >
-                      <div className="row">
-                        <div className="col-6">
-                          <div className="text-center">
-                            <span
-                              className="fw-bold"
-                              style={{ color: "#00bcd4" }}
-                            >
-                              {"Inicio: "}
-                            </span>
-                            <span>{policy.fechaContratacion || " -"}</span>
-                          </div>
-                        </div>
-                        <div className="col-6">
-                          <div className="text-center">
-                            <span
-                              className="fw-bold"
-                              style={{ color: "#00bcd4" }}
-                            >
-                              {"Próximo pago: "}
-                            </span>
-                            <span>{policy.fechaDePago || " -"}</span>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -595,23 +581,60 @@ const PolicyProfile = ({
               showButtom={showButtom}
             />
           </div>
+          {/* Botones inferiores */}
+          <div className="d-flex justify-content-between align-items-center">
+            {/* Botón volver */}
+            <div>
+              <button
+                type="button"
+                className="btn btn-outline-secondary px-4"
+                style={{ borderRadius: "10px" }}
+                onClick={() => handleCurrentView(false)}
+              >
+                <i className="fas fa-arrow-left me-2"></i>
+                Volver
+              </button>
+            </div>
 
-          {/* Botón volver */}
-          <div>
-            <button
-              type="button"
-              className="btn btn-outline-secondary px-4"
-              style={{ borderRadius: "10px" }}
-              onClick={() => Navigate(`/perfil`)}
-            >
-              <i className="fas fa-arrow-left me-2"></i>
-              Volver
-            </button>
+            {/* Botones a la derecha */}
+            <div className="d-flex">
+              <GrayButton
+                text="APROBAR POLIZA"
+                style="me-md-2"
+                onClick={handleApprovePolicy}
+              />
+              <GrayButton
+                text="RECHAZAR POLIZA"
+                style="me-md-2"
+                onClick={handleDeclinePolicy}
+              />
+              <GrayButton
+                text="ENVIAR A REVISION"
+                style="me-md-2"
+                onClick={() => {}}
+              />
+            </div>
           </div>
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={
+          messageType == "info"
+            ? () => {
+                setShowError(false);
+                handleCurrentView(false);
+              }
+            : () => {
+                setShowError(false);
+              }
+        }
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 };
 
-export default PolicyProfile;
+export default DataPolicy;

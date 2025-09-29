@@ -1,22 +1,48 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  periodoPago: [],
+interface PeriodoPagoState {
+  periodopago: PeriodoPago[];
+}
+
+const initialState: PeriodoPagoState = {
+  periodopago: [],
 };
 
-export const periodoPagoSlice = createSlice({
+const periodoPagosSlice = createSlice({
   name: "periodoPago",
   initialState,
   reducers: {
     setPeriodoPago: (state, action) => {
-      state.periodoPago = action.payload;
+      state.periodopago = action.payload;
     },
     clearPeriodoPago: (state) => {
-      state.periodoPago = [];
+      state.periodopago = [];
+    },
+    updatePeriodoPagoState: (state, action: PayloadAction<{ id: number }>) => {
+      const { id } = action.payload;
+      state.periodopago = state.periodopago.map((u) =>
+        u.id === id ? { ...u, activo: false } : u
+      );
+    },
+
+    updatePeriodoPago: (state, action: PayloadAction<PeriodoPago>) => {
+      const updatedPeriodoPago = action.payload;
+      state.periodopago = state.periodopago.map((u) =>
+        u.id === updatedPeriodoPago.id ? { ...updatedPeriodoPago } : u
+      );
+    },
+
+    createPaymentPeriod: (state, action: PayloadAction<PeriodoPago>) => {
+      state.periodopago = [...state.periodopago, action.payload];
     },
   },
 });
 
-export const { setPeriodoPago, clearPeriodoPago } = periodoPagoSlice.actions;
-
-export default periodoPagoSlice.reducer;
+export const {
+  setPeriodoPago,
+  clearPeriodoPago,
+  updatePeriodoPago,
+  updatePeriodoPagoState,
+  createPaymentPeriod,
+} = periodoPagosSlice.actions;
+export default periodoPagosSlice.reducer;

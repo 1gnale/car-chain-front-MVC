@@ -1,4 +1,4 @@
-import PageRegistrar from "../views/FuturePages/PageCaso7Registrar";
+import PageRegistrar from "../views/pages/PageRegistrar";
 import useTiposDocumentosHook from "./controllerHooks/Fetchs/useTiposDocumentosHook";
 import useProvinciasHook from "./controllerHooks/Fetchs/useProvinciasHook";
 import useLocalidadesHook from "./controllerHooks/Fetchs/useLocalidadesHook";

@@ -1,24 +1,29 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setcConfigAntiguedad } from "../../../redux/configAntiguedadSlice";
+import { setConfigsAntiguedad } from "../../../redux/configAntiguedadSlice";
 import { useGenericFetch } from "./useGenericFetch";
 
 const useAntiguedadHookByAge = (age?: number) => {
   const dispatch = useDispatch();
-  const apiUrl = age && age > 0 ? `${import.meta.env.VITE_BASEURL}/api/configuracionAntiguedad/byAge/${age}` : undefined;
-  
-  const { data: configAntiguedad, loading, error, refetch } = useGenericFetch<ConfigAntiguedad>(apiUrl);
+  const apiUrl =
+    age && age > 0
+      ? `${
+          import.meta.env.VITE_BASEURL
+        }/api/configuracionAntiguedad/byAge/${age}`
+      : undefined;
 
-  useEffect(() => {
-    if (configAntiguedad) {
-      dispatch(setcConfigAntiguedad(configAntiguedad));
-    }
-  }, [configAntiguedad, dispatch]);
+  const {
+    data: configAntiguedad,
+    loading,
+    error,
+    refetch,
+  } = useGenericFetch<ConfigAntiguedad>(apiUrl);
 
-  return { 
-    loading, 
-    error: !!error, 
-    refetch 
+  return {
+    loading,
+    configAntiguedad,
+    error: !!error,
+    refetch,
   };
 };
 

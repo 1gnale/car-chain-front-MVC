@@ -1,8 +1,12 @@
 import Navbar from "../components/NavBar/Navbar";
 import { useState } from "react";
 import TitleSection from "../components/GeneralComponents/TitleSection";
-import PolicyProfile from "../components/ManagrePolicyData/DataPolicy";
+import PolicyProfile from "../components/ManagePolicyData/DataPolicy";
+
 import PolicyFristPayment from "../components/PaymentViews/FormPolicyPayment";
+import PolicyHistoryData from "../components/ManagePolicyData/PolicyHistory";
+import PaymentHistoryData from "../components/ManagePolicyData/PaymentHistory";
+import ReportAccident from "../components/ManagePolicyData/ReportAccident";
 const ManagePolicyData = ({
   isAuth,
   policy,
@@ -10,9 +14,6 @@ const ManagePolicyData = ({
   isAuth: boolean;
   policy: Poliza;
 }) => {
-  // Definimos las keys válidas
-  type ViewName = "PolicyProfile" | "pagarPolizaPorPrimeraVez" | "pagarPoliza";
-
   const [currentView, setCurrentView] = useState<ViewName>("PolicyProfile");
 
   const handleCurrentView = (viewName: ViewName) => {
@@ -38,6 +39,20 @@ const ManagePolicyData = ({
         isFirstPayment={false}
         handleCurrentView={handleCurrentView}
       />
+    ),
+    historialPoliza: (
+      <PolicyHistoryData handleCurrentView={handleCurrentView} />
+    ),
+    historialPago: (
+      <PaymentHistoryData
+        handleCurrentView={handleCurrentView}
+      ></PaymentHistoryData>
+    ),
+    ReportAccident: (
+      <ReportAccident
+        handleCurrentView={handleCurrentView}
+        idPolicy={policy.numero_poliza!}
+      ></ReportAccident>
     ),
   };
 

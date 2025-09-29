@@ -1,29 +1,34 @@
 import { useState, useMemo } from "react";
-import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
 import Input from "../GeneralComponents/Input.tsx";
-import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../redux/reduxTypedHooks.ts";
 import SelectForm from "../GeneralComponents/SelectForm.tsx";
 import GrayButton from "../GeneralComponents/Button.tsx";
 import { Search } from "react-bootstrap-icons";
-import DateInput from "../GeneralComponents/DateInput.tsx";
+import DateInputDark from "../GeneralComponents/DateInputDark.tsx";
 import IconButton from "../GeneralComponents/IconButton.tsx";
 import useFormValidationUsuarios from "../../../controllers/controllerHooks/Validations/useUsersValidation.ts";
-import { setProvinces } from "../../../redux/provincesSlice.ts";
-import { setDocumentTypes } from "../../../redux/documentTypeSlice.ts";
 import { createUser } from "../../../redux/usuariosSlice.ts";
 import { UsuarioRepository } from "../../../models/repository/Repositorys/UsuariosRepository.ts";
 import Modal from "../GeneralComponents/Modal.tsx";
+import DateInputClear from "../GeneralComponents/DateInput.tsx";
 
 function CrearUsuario({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) {
+  // Repositorio para los ENDPOINTS
   const usuarioRepo = new UsuarioRepository(
     `${import.meta.env.VITE_BASEURL}/api/usuarios`
   );
+
+  // Hook para las validaaciones
   const { errors, validateField, validateForm } = useFormValidationUsuarios();
 
+  // Me traigo del redux los datos necesarios (Tipos de doc, provincias, localidades y una funcion que actualiza el dispach)
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
   );
@@ -34,10 +39,14 @@ function CrearUsuario({
     (state) => state.localidades.localidad
   );
   const dispatch = useAppDispatch();
+
+  // Lista de sexos del select
   const listSex = [
     { id: 1, name: "Femenino" },
     { id: 2, name: "Masculino" },
   ];
+
+  // Lista de tipo de usuarios del select
   const tiposDeUsuario = [
     "ADMINISTRADOR",
     "VENDEDOR",
@@ -45,15 +54,21 @@ function CrearUsuario({
     "GESTOR_DE_SINIESTROS",
   ];
 
+  // states de selects
   const [selectedSex, setSelectedSex] = useState<number>();
   const [selectedRol, setSelectedRol] = useState<number>();
   const [locality, setLocality] = useState<boolean>(false);
   const [selectedProvince, setSelectedProvinces] = useState<number>();
   const [selectedLocality, setSelectedLocality] = useState<number>();
   const [selectedDocumentType, setSelectedDocumentType] = useState<number>();
-  const [showError, setShowError] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // Formulario
   const [formUser, setFormUser] = useState<Usuario>({
     id: 0,
     legajo: 0,
@@ -70,14 +85,7 @@ function CrearUsuario({
     tipoUsuario: "",
   });
 
-  const handleCancel = (): void => {
-    handleCurrentView(false);
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormUser((prev) => ({ ...prev, [field]: value }));
-    validateField(field as keyof typeof errors, value);
-  };
+  // Handles de selects
   const handleProvinces = useMemo(() => {
     const result = provinces.map((provinces) => {
       return { id: provinces.id, name: provinces.descripcion! };
@@ -92,14 +100,6 @@ function CrearUsuario({
 
     return result;
   }, [documentTypes]);
-
-  const handleStateDocumentType = (id: number) => {
-    setSelectedDocumentType(id);
-    // Encontrar el nombre del tipo documento
-    const selectedDocumentType = documentTypes[id - 1] || "";
-    setFormUser((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
-    validateField("tipoDocumento", selectedDocumentType);
-  };
 
   const handleLocality = useMemo(() => {
     const localitysFiltred = localities.filter(
@@ -121,12 +121,25 @@ function CrearUsuario({
     return result;
   }, [tiposDeUsuario]);
 
+  // Handles states para rellenar formulario formulario
+  const handleInputChange = (field: string, value: string) => {
+    setFormUser((prev) => ({ ...prev, [field]: value }));
+    validateField(field as keyof typeof errors, value);
+  };
+
+  const handleStateDocumentType = (id: number) => {
+    setSelectedDocumentType(id);
+    // Encontrar el nombre del tipo documento
+    const selectedDocumentType = documentTypes[id - 1] || "";
+    setFormUser((prev) => ({ ...prev, tipoDocumento: selectedDocumentType }));
+    validateField("tipoDocumento", selectedDocumentType);
+  };
+
   const handleStateRol = (id: number) => {
     setSelectedRol(id);
     // Encontrar el nombre del tipo documento
     const selectedRol = tiposDeUsuario[id - 1] || "";
     setFormUser((prev) => ({ ...prev, tipoUsuario: selectedRol }));
-    //   validateField("tipoDeUsuario", selectedRol);
   };
 
   const handleStateSexo = (id: number) => {
@@ -154,12 +167,30 @@ function CrearUsuario({
     validateField("localidad_id", String(id));
   };
 
+  // FUNCION AUXILIAR
+
+  function formatearFecha(fecha: string) {
+    if (!fecha || fecha.includes("undefined")) {
+      return "";
+    }
+    // Si la fecha ya está en formato MM/DD/YYYY, la dejamos así
+    if (fecha.includes("/")) {
+      return fecha;
+    }
+    // Si la fecha está en formato ISO (YYYY-MM-DD), la convertimos
+    if (fecha.includes("-")) {
+      const [anio, mes, dia] = fecha.split("-");
+      return `${mes}/${dia}/${anio}`;
+    }
+    return fecha;
+  }
+
+  // Handles de botones. Buscar persona, crear usuario y cancelar
   async function handleSearchPerson() {
     if (!formUser.correo) return;
     try {
       const data = await usuarioRepo.getPersonByEmail(formUser.correo!);
       console.log(data);
-
 
       setFormUser(data);
 
@@ -173,27 +204,18 @@ function CrearUsuario({
       setSelectedDocumentType(tipoDocFiltrado + 1);
       setSelectedSex(sexoFiltrado?.id);
 
-      alert(`Persona encontrada: ${data.nombres}`);
+      setShowError(true);
+      setTitleModalMessage("Persona encontrada");
+      setModalMessage(
+        "Pesona encontrada: " + data.apellido + ", " + data.nombres
+      );
+      setMessageType("info");
     } catch (error: any) {
       setShowError(true);
-      setErrorMessage(error.message || "Error desconocido");
+      setTitleModalMessage("ERROR");
+      setModalMessage(error.message || "Error desconocido");
+      setMessageType("error");
     }
-  }
-
-  function formatearFecha(fecha: string) {
-    if (!fecha || fecha.includes('undefined')) {
-      return '';
-    }
-    // Si la fecha ya está en formato MM/DD/YYYY, la dejamos así
-    if (fecha.includes('/')) {
-      return fecha;
-    }
-    // Si la fecha está en formato ISO (YYYY-MM-DD), la convertimos
-    if (fecha.includes('-')) {
-      const [anio, mes, dia] = fecha.split("-");
-      return `${mes}/${dia}/${anio}`;
-    }
-    return fecha;
   }
 
   async function crearUsuario() {
@@ -215,18 +237,21 @@ function CrearUsuario({
     if (validateForm(user)) {
       try {
         const personData = {
-            localidad_id: String(selectedLocality),
-            nombres: formUser.nombres,
-            apellido: formUser.apellido,
-            fechaNacimiento: formatearFecha(formUser.fechaNacimiento!),
-            tipoDocumento: formUser.tipoDocumento,
-            documento: formUser.documento,
-            domicilio: formUser.domicilio,
-            correo: formUser.correo,
-            telefono: formUser.telefono,
-            sexo: formUser.sexo
-          }
-        const response = await usuarioRepo.createUser(personData, formUser.tipoUsuario!);
+          localidad_id: String(selectedLocality),
+          nombres: formUser.nombres,
+          apellido: formUser.apellido,
+          fechaNacimiento: formatearFecha(formUser.fechaNacimiento!),
+          tipoDocumento: formUser.tipoDocumento,
+          documento: formUser.documento,
+          domicilio: formUser.domicilio,
+          correo: formUser.correo,
+          telefono: formUser.telefono,
+          sexo: formUser.sexo,
+        };
+        const response = await usuarioRepo.createUser(
+          personData,
+          formUser.tipoUsuario!
+        );
         console.log("✅ Usuario creado:", response);
 
         // Formateamos el usuario para Redux
@@ -238,21 +263,29 @@ function CrearUsuario({
           documento: response.documento,
           tipoDocumento: response.tipoDocumento,
           activo: true,
-          legajo: response.legajo || response.id
+          legajo: response.legajo || response.id,
         };
 
         // Despachamos al store
         dispatch(createUser(usuarioParaRedux));
         console.log("✅ Usuario creado en Redux:", usuarioParaRedux);
-
-        handleCurrentView(false);
-      } catch (error: any) {
+        setTitleModalMessage("EXITO");
         setShowError(true);
-        setErrorMessage(error.message || "Error desconocido");
+        setModalMessage("Usuario creado con exito");
+        setMessageType("success");
+        setFormUser({});
+      } catch (error: any) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(error.message || "Error desconocido");
+        setMessageType("error");
       }
     } else {
     }
   }
+  const handleCancel = (): void => {
+    handleCurrentView(false);
+  };
 
   return (
     <div className="bg-white p-4 rounded shadow-sm mb-4">
@@ -260,20 +293,29 @@ function CrearUsuario({
         <div className="col-xl-1"></div>
         <div className="col-xl-10">
           {/* Email y sexo */}
-          <div className="row mb-3">
+          <div className="row mb-4">
             <div className="col-md-6">
-              <div className="d-flex align-items-center mb-3">
-                <Input
-                  labelStyle={{ width: "100px" }}
-                  classNameDiv="d-flex align-items-center flex-grow-1 me-2"
-                  title="Email"
-                  onChange={(value) => handleInputChange("correo", value)}
-                  place=""
-                  value={formUser.correo}
-                  error={errors.correo}
-                  onBlur={() => validateField("correo", formUser.correo || "")}
-                />
-                <IconButton icon={Search} onClick={handleSearchPerson} />
+              <div className="d-flex align-items-end mb-3">
+                <div className="flex-grow-1 me-2">
+                  <Input
+                    classNameDiv="w-100"
+                    classNameLabel="form-label mb-2"
+                    title="Email"
+                    onChange={(value) => handleInputChange("correo", value)}
+                    place=""
+                    value={formUser.correo}
+                    error={errors.correo}
+                    onBlur={() =>
+                      validateField("correo", formUser.correo || "")
+                    }
+                  />
+                </div>
+                <div
+                  className="align-self-end"
+                  style={{ marginBottom: errors.correo ? "24px" : "3px" }}
+                >
+                  <IconButton icon={Search} onClick={handleSearchPerson} />
+                </div>
               </div>
             </div>
 
@@ -282,9 +324,9 @@ function CrearUsuario({
                 status={true}
                 value={selectedSex || 0}
                 title="Sexo"
-                classNameDiv="d-flex align-items-center gap-2 mb-3"
-                classNameLabel="me-2"
-                classNameSelect="flex-grow-1"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
+                classNameSelect="form-select"
                 items={listSex}
                 onChange={handleStateSexo}
                 error={errors.sexo}
@@ -294,11 +336,11 @@ function CrearUsuario({
           </div>
 
           {/* Teléfono y Provincia */}
-          <div className="row mb-3">
+          <div className="row mb-4">
             <div className="col-md-6">
               <Input
-                labelStyle={{ width: "100px" }}
-                classNameDiv="d-flex align-items-start mb-3"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
                 title="Teléfono"
                 place=""
                 onChange={(value) => handleInputChange("telefono", value)}
@@ -314,9 +356,9 @@ function CrearUsuario({
                 status={true}
                 value={selectedProvince || 0}
                 title="Provincia"
-                classNameDiv="d-flex align-items-center gap-2 mb-3"
-                classNameLabel="me-2"
-                classNameSelect="flex-grow-1"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
+                classNameSelect="form-select"
                 items={handleProvinces}
                 onChange={handleStateProvinces}
                 error={errors.provincia_id}
@@ -328,11 +370,11 @@ function CrearUsuario({
           </div>
 
           {/* Nombre y Localidad */}
-          <div className="row mb-3">
+          <div className="row mb-4">
             <div className="col-md-6">
               <Input
-                labelStyle={{ width: "100px" }}
-                classNameDiv="d-flex align-items-start mb-3"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
                 title="Nombre/s"
                 place=""
                 onChange={(value) => handleInputChange("nombres", value)}
@@ -346,9 +388,9 @@ function CrearUsuario({
                 status={locality}
                 value={selectedLocality || 0}
                 title="Localidad"
-                classNameDiv="d-flex align-items-center gap-2 mb-3"
-                classNameLabel="me-2"
-                classNameSelect="flex-grow-1"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
+                classNameSelect="form-select"
                 items={handleLocality}
                 onChange={handleStateLocality}
                 error={errors.localidad_id}
@@ -360,11 +402,11 @@ function CrearUsuario({
           </div>
 
           {/* Apellido y Domicilio */}
-          <div className="row mb-3">
+          <div className="row mb-4">
             <div className="col-md-6">
               <Input
-                labelStyle={{ width: "100px" }}
-                classNameDiv="d-flex align-items-start mb-3"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
                 title="Apellido/s"
                 place=""
                 onChange={(value) => handleInputChange("apellido", value)}
@@ -377,8 +419,8 @@ function CrearUsuario({
             </div>
             <div className="col-md-6">
               <Input
-                labelStyle={{ width: "100px" }}
-                classNameDiv="d-flex align-items-start mb-3"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
                 title="Domicilio"
                 place=""
                 onChange={(value) => handleInputChange("domicilio", value)}
@@ -392,16 +434,16 @@ function CrearUsuario({
           </div>
 
           {/* Tipo Documento y Documento */}
-          <div className="row mb-3">
+          <div className="row mb-4">
             <div className="col-md-6">
               <SelectForm
                 status={true}
                 value={selectedDocumentType || 0}
                 title="Tipo Documento"
                 items={handleDocumentType}
-                classNameDiv="d-flex align-items-center gap-2 mb-3"
-                classNameLabel="me-2"
-                classNameSelect="flex-grow-1"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
+                classNameSelect="form-select"
                 onChange={handleStateDocumentType}
                 error={errors.tipoDocumento}
                 onBlur={() =>
@@ -411,8 +453,8 @@ function CrearUsuario({
             </div>
             <div className="col-md-6">
               <Input
-                labelStyle={{ width: "100px" }}
-                classNameDiv="d-flex align-items-start mb-3"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
                 title="Documento"
                 place=""
                 onChange={(value) => handleInputChange("documento", value)}
@@ -426,15 +468,15 @@ function CrearUsuario({
           </div>
 
           {/* Rol y Fecha */}
-          <div className="row mb-3">
+          <div className="row mb-4">
             <div className="col-md-6">
               <SelectForm
                 status={true}
                 value={selectedRol || 0}
                 title="Rol"
-                classNameDiv="d-flex align-items-center gap-2 mb-3"
-                classNameLabel="me-2"
-                classNameSelect="flex-grow-1"
+                classNameDiv="mb-3"
+                classNameLabel="form-label mb-2"
+                classNameSelect="form-select"
                 items={handleRol}
                 onChange={handleStateRol}
                 error={errors.tipoUsuario}
@@ -444,23 +486,26 @@ function CrearUsuario({
               />
             </div>
             <div className="col-md-6">
-              <DateInput
-                title="Fecha de nacimiento"
-                value={formUser.fechaNacimiento || ""}
-                labelClassName="me-2 align-self-center"
-                inputClassName="w-auto d-inline-block"
-                onChange={(value) =>
-                  handleInputChange("fechaNacimiento", value)
-                }
-                error={errors.fechaNacimiento}
-                onBlur={() =>
-                  validateField(
-                    "fechaNacimiento",
-                    formUser.fechaNacimiento || ""
-                  )
-                }
-                showFormat={false}
-              />
+              <div className="mb-3">
+                <DateInputClear
+                  title="Fecha de nacimiento"
+                  value={formUser.fechaNacimiento || ""}
+                  labelClassName="form-label mb-2"
+                  inputClassName="form-control"
+                  className=""
+                  onChange={(value) =>
+                    handleInputChange("fechaNacimiento", value)
+                  }
+                  error={errors.fechaNacimiento}
+                  onBlur={() =>
+                    validateField(
+                      "fechaNacimiento",
+                      formUser.fechaNacimiento || ""
+                    )
+                  }
+                  showFormat={false}
+                />
+              </div>
             </div>
           </div>
 
@@ -475,8 +520,8 @@ function CrearUsuario({
       <Modal
         show={showError}
         onClose={() => setShowError(false)}
-        type="error"
-        title="Error"
+        type={messageType}
+        title={messageTitle}
         message={errorMessage || "Error inesperado intente mas tarde"}
       />
     </div>

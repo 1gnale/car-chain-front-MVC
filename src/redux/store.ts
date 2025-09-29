@@ -31,6 +31,10 @@ import cotizacionReducer from "./cotizacionSlice";
 
 import usuarioReducer from "./usuariosSlice";
 
+import historyPolicyReducer from "./historySlice";
+
+import pagoReducer from "./pagoSlice";
+
 export const store = configureStore({
   reducer: {
     marcas: marcasReducer,
@@ -46,12 +50,15 @@ export const store = configureStore({
     detalles: detallesReducer,
     coberturasDetalles: coberturasDetalleReducer,
     polizas: polizasReducer,
+
     lineasCotizacion: lineaCotizacionReducer,
     periodosPago: periodoPagoReducer,
     tiposContratacion: tipoContratacionReduer,
     cliente: clientReducer,
     cotizacion: cotizacionReducer,
     usuarios: usuarioReducer,
+    historial: historyPolicyReducer,
+    pago: pagoReducer,
   },
 });
 

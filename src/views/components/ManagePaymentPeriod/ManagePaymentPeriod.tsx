@@ -4,6 +4,10 @@ import { PlusSquare, Pencil, Trash } from "react-bootstrap-icons";
 import { useState } from "react";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import CheckForm from "../GeneralComponents/CheckForm";
+import { PeriodosPagoRepository } from "../../../models/repository/Repositorys/periodosPagoRepository";
+import Modal from "../GeneralComponents/Modal";
+import { updatePeriodoPago } from "../../../redux/periodoPagosSlice";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
 
 function ManagePaymentPeriod({
   handleCurrentView,
@@ -12,12 +16,28 @@ function ManagePaymentPeriod({
   handleCurrentView: (pass: boolean) => void;
   setCurrentPeriodoPago: (periodoPago: PeriodoPago) => void;
 }) {
-  const periodosPago: PeriodoPago[] = useAppSelector(
-    (state) => state.periodosPago.periodoPago
+  // Repositorio para los ENDPOINTS
+  const periodoPagoRepo = new PeriodosPagoRepository(
+    `${import.meta.env.VITE_BASEURL}/api/periodoPago`
   );
+
+  // Traer del redux los repositorios para la tabla
+  const periodosPago: PeriodoPago[] = useAppSelector(
+    (state) => state.periodosPago.periodopago
+  );
+  const dispatch = useAppDispatch();
+
+  // States para la busqueda y filtro
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // buscador
   const filteredPeriodosPago = periodosPago.filter((periodoPago) => {
     const matchesSearch = periodoPago.nombre
       ?.toLowerCase()
@@ -32,6 +52,7 @@ function ManagePaymentPeriod({
     return periodoPago.activo && matchesSearch;
   });
 
+  // Botones (alta baja modificacion)
   const handleUpdatePaymentPeriod = (periodoPago: any): void => {
     setCurrentPeriodoPago(periodoPago);
     handleCurrentView(false);
@@ -40,6 +61,34 @@ function ManagePaymentPeriod({
   const handleCreatePaymentPeriod = (): void => {
     handleCurrentView(true);
   };
+
+  async function handleDeletePaymentPeriod(periodoPago: any) {
+    if (
+      window.confirm("¿Estás seguro de que querés eliminar el periodo de pago?")
+    ) {
+      try {
+        const response = await periodoPagoRepo.updateStatePeriodoPago(
+          periodoPago.id
+        );
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updatePeriodoPago({ id: periodoPago.id }));
+        setShowError(true);
+        setModalMessage(
+          "Estado del periodo de pago " + periodoPago.id + " actualizado"
+        );
+        setMessageType("info");
+        setTitleModalMessage("Periodo de pago eliminado");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
+  // Handles de la Tabla
   const handleTable = (): tableContent => {
     return {
       showButtom: true,
@@ -50,6 +99,7 @@ function ManagePaymentPeriod({
         },
         {
           customIcons: Trash,
+          onAction: handleDeletePaymentPeriod,
         },
       ],
       titles: ["ID", "Nombre", "Cantidad de meses", "Descuento (%)", "Estado"],
@@ -120,6 +170,13 @@ function ManagePaymentPeriod({
           />
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </>
   );
 }

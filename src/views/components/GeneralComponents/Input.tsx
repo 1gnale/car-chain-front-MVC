@@ -1,3 +1,5 @@
+import type React from "react";
+
 interface InputProps {
   title: string;
   place: string;
@@ -52,7 +54,7 @@ const Input = ({
         )}
       </div>
 
-      <div className="w-100">
+      <div className="w-100 form-group">
         {as === "textarea" ? (
           <textarea
             className={`form-control ${error ? "is-invalid" : ""} ${style}`}
@@ -76,7 +78,8 @@ const Input = ({
           />
         )}
 
-        {error && <div className="invalid-feedback d-block">{error}</div>}
+        {/* Siempre ocupa espacio, aunque no haya error */}
+        <div className="invalid-feedback">{error || ""}</div>
       </div>
     </div>
   );

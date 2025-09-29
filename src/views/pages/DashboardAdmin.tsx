@@ -26,7 +26,7 @@ import ControladorTipoContratacion from "../../controllers/ControladorTipoContra
 import ControladorConfiguraciones from "../../controllers/ControladorConfiguraciones";
 import ControladorUsuarios from "../../controllers/ControladorUsuarios";
 
-export default function Home() {
+export default function Home({ count, status }: { count: any; status: any }) {
   const { logout } = useAuth0();
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -88,7 +88,12 @@ export default function Home() {
       case "configuraciones":
         return <ControladorConfiguraciones />;
       default:
-        return <PageDashboardDefault></PageDashboardDefault>;
+        return (
+          <PageDashboardDefault
+            count={count}
+            status={status}
+          ></PageDashboardDefault>
+        );
     }
   };
 

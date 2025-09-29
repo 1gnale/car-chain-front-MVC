@@ -28,9 +28,9 @@ const usePayementPeriodsValidation = (): UseFormValidationReturn => {
     nombre: /^.{2,50}$/,
     descripcion: /^.{5,100}$/,
 
-    // Porcentaje en miles: entre 0 y 10 (incluye 0 y 10)
+    // descuento: entre 0 y 10 (incluye 0 y 10)
     descuento: /^(?:10(?:\.0+)?|[0-9](?:\.[0-9]+)?)$/,
-    // Monto fijo: numero grande
+    // cantidadMeses: numero grande
     cantidadMeses: /^\d{1,20}(\.\d{1,2})?$/,
   };
 
@@ -68,10 +68,10 @@ const usePayementPeriodsValidation = (): UseFormValidationReturn => {
       case "cantidadMeses":
         const montoValue = value as string;
         if (!montoValue.trim()) {
-          newErrors.cantidadMeses = "El monto fijo es requerido";
+          newErrors.cantidadMeses = "La catidad de meses es requerido";
         } else if (!patterns.cantidadMeses.test(montoValue.toUpperCase())) {
           newErrors.cantidadMeses =
-            "El monto fijo debe ser un numero mayor a 1";
+            "La catidad de meses debe ser un numero mayor a 0";
         } else {
           delete newErrors.cantidadMeses;
         }

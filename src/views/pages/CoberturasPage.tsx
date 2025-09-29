@@ -2,7 +2,7 @@ import { useState } from "react";
 import ManageCoverage from "../components/ManageCoverage/ManageCoverage";
 import CrearCobertura from "../components/ManageCoverage/CrearCobertura";
 import ModificarCobertura from "../components/ManageCoverage/ModificarCobertura";
-import HeaderSection from "../components/GeneralComponents/headerSection";
+import HeaderSection from "../components/GeneralComponents/HeaderSection";
 const CoberturasPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
   const [currentCoverage, setCurrentCoverage] = useState<Cobertura>({ id: 1 });

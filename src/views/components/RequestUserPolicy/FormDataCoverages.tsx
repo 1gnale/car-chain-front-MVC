@@ -1,7 +1,7 @@
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import CoverageCard from "../GeneralComponents/CoverageCard.tsx";
 import GrayButton from "../GeneralComponents/Button.tsx";
-import { ExclamationCircleFill } from "react-bootstrap-icons";
+import { ExclamationCircle } from "react-bootstrap-icons";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,8 @@ import useLocalidadesHookByLocalityId from "../../../controllers/controllerHooks
 import useEdadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigEdadByAge.ts";
 import useConfigAntiguedadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigAntiguedadByAge.ts";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import Spinner from "../GeneralComponents/SpinnerLoader.tsx";
+import Modal from "../GeneralComponents/Modal.tsx";
 
 const FormDataCoverages = ({
   handleCurrentView,
@@ -21,21 +23,35 @@ const FormDataCoverages = ({
   handleCurrentView: (pass: boolean) => void;
   Auth: boolean;
 }) => {
-  const { loginWithRedirect } = useAuth0();
+  // Navigate para volver a home en caso de guardar la cotizacion
   const navigate = useNavigate();
+
+  // funcion para redirigir en caso de no estar logueado
+  const { loginWithRedirect } = useAuth0();
+
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+  const [oncloseAction, setOncloseAction] = useState<string>("close");
+
+  // Funcion que limpia todo el local storage
   const { clearAllData } = useClearLocalStorage();
+
+  // Funcion para guardar cotizacion y sus lineas
   const {
     saveCotizacion,
     loading: savingCotizacion,
     error: savingError,
     success: savingSuccess,
   } = useCreateCotizacionComplete(); // Cargar las configuraciones necesarias
+
+  // Vehiculo en el local storage
   const vehicleData = useLocalStorageItem<Vehiculo>("VehicleData");
   const localidadId = vehicleData?.cliente?.localidad?.id;
-  console.log("=== DEBUG LOCALIDAD ===");
-  console.log("vehicleData:", vehicleData);
-  console.log("localidadId extraído:", localidadId);
 
+  // Calcular edad en base a la fecha de nacimiento
   const edad = vehicleData?.cliente?.fechaNacimiento
     ? Math.floor(
         (new Date().getTime() -
@@ -43,23 +59,20 @@ const FormDataCoverages = ({
           (1000 * 60 * 60 * 24 * 365.25)
       )
     : undefined;
+
+  // Calcular antiguedad en base al año de fabricacion
   const antiguedad = vehicleData?.añoFabricacion
     ? new Date().getFullYear() - vehicleData.añoFabricacion
     : undefined;
 
-  console.log("=== DEBUG VALORES CALCULADOS ===");
-  console.log("edad calculada:", edad);
-  console.log("antiguedad calculada:", antiguedad);
-  console.log("fechaNacimiento:", vehicleData?.cliente?.fechaNacimiento);
-  console.log("añoFabricacion:", vehicleData?.añoFabricacion);
-
   // Solo llamar a los hooks si tenemos valores válidos
-  const { loading: loadingConfigLocalidad } =
+  const { loading: loadingConfigLocalidad, configLocalidad } =
     useLocalidadesHookByLocalityId(localidadId);
-  const { loading: loadingConfigEdad } = useEdadHookByAge(edad);
-  const { loading: loadingConfigAntiguedad } =
+  const { loading: loadingConfigEdad, configEdad } = useEdadHookByAge(edad);
+  const { loading: loadingConfigAntiguedad, configAntiguedad } =
     useConfigAntiguedadHookByAge(antiguedad);
-  // Estados de la DB - obtener arrays de configuraciones desde los slices correspondientes
+
+  // Cosneguir los datos del redux para calcular los montos
   const coverages: Cobertura[] = useAppSelector(
     (state) => state.coberturas.cobertura
   );
@@ -67,30 +80,23 @@ const FormDataCoverages = ({
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
-
-  // Obtener configuraciones desde Redux (manejar tanto objetos como arrays)
-  const config_antiguedad_data = useAppSelector(
-    (state) => state.configAntiguedades.configAntiguedad
-  );
-  const config_localidad_data = useAppSelector(
-    (state) => state.configLocalidades.configLocalidad
-  );
-  const config_edad_data = useAppSelector(
-    (state) => state.configEdades.configEdad
+  // Filtramos las coberturas a solo las activas
+  const activeCoverages = coverages.filter(
+    (cobertura) => cobertura.activo === true
   );
 
-  //console.log("=== DEBUG CONFIGURACIONES ===");
-  //console.log("config_antiguedad_data:", config_antiguedad_data)
-  //console.log("config_localidad_data:", config_localidad_data)
-  //console.log("config_edad_data:", config_edad_data)
-
+  // Array con las lineas de cotitazaciones
   const [linea_cotization, setLineaCotization] = useState<Linea_Cotizacion[]>(
     []
   );
+
+  // Contador antes de redireccionar
   const [redirectCountdown, setRedirectCountdown] = useState<number | null>(
     null
   );
 
+  /// FUNCIONES AUXILIARES PARA LAS LINEAS DE COBERTURA
+  // Cambia el formato de la fecha a uno manejable
   const formatDate = (date: Date): string => {
     return (
       (date.getMonth() + 1).toString().padStart(2, "0") +
@@ -101,62 +107,7 @@ const FormDataCoverages = ({
     );
   };
 
-  // UseEffect
-  useEffect(() => {
-    const NuevaCotization: Cotizacion = {};
-    const NuevaLinea_cotization: Linea_Cotizacion[] = [];
-
-    const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData");
-    if (vehicleLocalStorage !== null) {
-      //("vehicleLocalStorage:", vehicleLocalStorage);
-
-      const today = new Date();
-      const vencimiento = new Date(today);
-      vencimiento.setDate(vencimiento.getDate() + 7);
-
-      NuevaCotization.vehiculo = vehicleLocalStorage;
-      NuevaCotization.fechaCreacion = formatDate(today);
-      NuevaCotization.fechaVencimiento = formatDate(vencimiento);
-
-      NuevaCotization.ConfigLocalidad = config_localidad_data;
-      NuevaCotization.ConfigEdad = config_edad_data;
-      NuevaCotization.configuracionAntiguedad = config_antiguedad_data;
-
-      //("NuevaCotization creada:", NuevaCotization);
-
-      coverages.forEach((cover) => {
-        const linea: Linea_Cotizacion = {
-          id: 0, //ID will be assigned by the backend
-          cotizacion: NuevaCotization,
-          cobertura: cover,
-          monto: 0,
-        };
-        NuevaLinea_cotization.push(linea);
-
-        setLineaCotization(NuevaLinea_cotization);
-      });
-    }
-  }, [config_localidad_data, config_antiguedad_data, config_edad_data]); // Ejecutar solo cuando las configuraciones hayan cargado
-
-  // Limpiar intervalos al desmontar el componente
-  useEffect(() => {
-    return () => {
-      // Este cleanup se ejecutará cuando el componente se desmonte
-      if (redirectCountdown !== null) {
-        setRedirectCountdown(null);
-      }
-    };
-  }, []);
-
-  // Mostrar loading mientras se cargan las configuraciones
-  if (loadingConfigLocalidad || loadingConfigEdad || loadingConfigAntiguedad) {
-    return (
-      <div className="container my-5 text-center">
-        Cargando configuraciones...
-      </div>
-    );
-  }
-  /// Handles
+  // Handle del monto
   const handleAmount = (LineCoverage: Linea_Cotizacion) => {
     let total = 0;
     let montoVehiculo = 0;
@@ -226,6 +177,66 @@ const FormDataCoverages = ({
     return monto;
   };
 
+  // UseEffect que calcula las lineas de cotizaciones
+  useEffect(() => {
+    // Creamos una cotizacion y sus lineas de cotizaciones vacias
+    const NuevaCotization: Cotizacion = {};
+    const NuevaLinea_cotization: Linea_Cotizacion[] = [];
+
+    // sacamos el vehiculo del local storage
+    const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData");
+    if (vehicleLocalStorage !== null) {
+      //("vehicleLocalStorage:", vehicleLocalStorage);
+
+      // Sacamos las fechas de hoy y calculamos la fecha de vencimiento de la cotizacion
+      const today = new Date();
+      const vencimiento = new Date(today);
+      vencimiento.setDate(vencimiento.getDate() + 7);
+
+      // asignamos el vehiculo y las fechas a la cotizacion
+      NuevaCotization.vehiculo = vehicleLocalStorage;
+      NuevaCotization.fechaCreacion = formatDate(today);
+      NuevaCotization.fechaVencimiento = formatDate(vencimiento);
+
+      // Asignamos las configuraciones calculadas
+      NuevaCotization.ConfigLocalidad = configLocalidad;
+      NuevaCotization.ConfigEdad = configEdad;
+      NuevaCotization.configuracionAntiguedad = configAntiguedad;
+
+      // Por cada cobertura activa en la db creamos una linea de cotizacion
+      activeCoverages.forEach((cover) => {
+        const linea: Linea_Cotizacion = {
+          id: 0, //La id es temporal
+          cotizacion: NuevaCotization,
+          cobertura: cover,
+          monto: 0, // Luego se calculara
+        };
+        // Calculamos el monto de la linea
+        linea.monto = handleAmount(linea);
+
+        // La agregamos al array
+        NuevaLinea_cotization.push(linea);
+      });
+      setLineaCotization(NuevaLinea_cotization);
+    }
+  }, [configAntiguedad, configEdad, configLocalidad]); // Ejecutar solo cuando las configuraciones hayan cargado
+
+  // Limpiar intervalos al desmontar el componente
+  useEffect(() => {
+    return () => {
+      // Este cleanup se ejecutará cuando el componente se desmonte
+      if (redirectCountdown !== null) {
+        setRedirectCountdown(null);
+      }
+    };
+  }, []);
+
+  // Mostrar loading mientras se cargan las configuraciones
+  if (loadingConfigLocalidad || loadingConfigEdad || loadingConfigAntiguedad) {
+    return <Spinner title="Calculando coberturas..." text="Por favor espere" />;
+  }
+
+  /// Handles
   const handleAppliedDetails = (id_cobertura?: number) => {
     return details
       .filter((detalle) => detalle.activo) // 👈 solo deja pasar los activos
@@ -243,6 +254,7 @@ const FormDataCoverages = ({
       });
   };
 
+  // BOTONES (CONTRATAR Y GUARDAR)
   const handleHirePolicy = (linea_cotization: Linea_Cotizacion) => {
     if (Auth) {
       const policy: Poliza = {
@@ -252,33 +264,65 @@ const FormDataCoverages = ({
       localStorage.setItem("PolicyData", JSON.stringify(policy));
       handleCurrentView(true);
     } else {
-      loginWithRedirect();
+      setTitleModalMessage("ERROR");
+      setShowError(true);
+      setModalMessage(
+        "Debe registrarse en el sistema para guardar la cotizacion"
+      );
+      setMessageType("error");
+      setOncloseAction("auth");
+      return;
     }
-    return null;
+    return;
   };
 
   const handleSaveCotizacion = async () => {
     // Verificar que tenemos datos de cotización para guardar
     if (!Auth) {
-      loginWithRedirect();
+      setTitleModalMessage("ERROR");
+      setShowError(true);
+      setModalMessage(
+        "Debe registrarse en el sistema para guardar la cotizacion"
+      );
+      setMessageType("error");
+      setOncloseAction("auth");
       return;
     }
     if (linea_cotization.length === 0) {
-      console.error("No hay cotizaciones para guardar");
+      setTitleModalMessage("ERROR");
+      setShowError(true);
+      setModalMessage(
+        "Sucedio un error inesperado, por favor intentelo nuevamente mas tarde"
+      );
+      setMessageType("error");
+      setOncloseAction("close");
       return;
     }
 
     try {
       // Tomar la primera cotización (asumiendo que todas comparten la misma cotización base)
       const cotizacionToSave = linea_cotization[0]?.cotizacion;
-
       if (!cotizacionToSave) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(
+          "Sucedio un error inesperado, por favor intentelo nuevamente mas tarde"
+        );
+        setMessageType("error");
+        setOncloseAction("close");
         console.error("No se encontró una cotización válida para guardar");
         return;
       }
 
       // Verificar que la cotización tenga todas las configuraciones necesarias
       if (!cotizacionToSave.ConfigLocalidad?.id) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(
+          "Sucedio un error inesperado, por favor intentelo nuevamente mas tarde"
+        );
+        setMessageType("error");
+        setOncloseAction("close");
         console.error(
           "La cotización no tiene configuración de localidad válida"
         );
@@ -319,14 +363,25 @@ const FormDataCoverages = ({
         });
       }, 1000);
     } catch (error) {
-      console.error("Error al guardar la cotización:", error);
-      // Aquí puedes agregar lógica para mostrar un mensaje de error al usuario
+      setTitleModalMessage("ERROR");
+      setShowError(true);
+      setModalMessage(
+        "Error al guardar la cotización:" + error || "Error desconocido"
+      );
+      setMessageType("error");
     }
   };
 
   return (
-    <div className="container my-5">
-      <div className="text-center my-4">
+    <div
+      style={{
+        backgroundColor: "#1f2937",
+        minHeight: "100vh",
+        padding: "2rem 0",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
+    >
+      <div className="text-center my-4 text-white">
         <h2>¡Te ofrecemos estas coberturas!</h2>
       </div>
 
@@ -349,7 +404,7 @@ const FormDataCoverages = ({
               <div className="w-100 d-flex flex-column">
                 <CoverageCard
                   titulo={lineaCot.cobertura?.nombre || ""}
-                  precio={"$ " + handleAmount(lineaCot)}
+                  precio={"$ " + lineaCot.monto}
                   itemsApply={handleAppliedDetails(lineaCot.cobertura?.id)}
                   onContratar={() => {
                     handleHirePolicy(lineaCot);
@@ -397,7 +452,7 @@ const FormDataCoverages = ({
               }
             >
               <span style={{ cursor: "pointer" }}>
-                <ExclamationCircleFill size={22} />
+                <ExclamationCircle size={22} color="#404445ff" />{" "}
               </span>
             </OverlayTrigger>
           </div>
@@ -431,6 +486,21 @@ const FormDataCoverages = ({
           </div>
         )}
       </div>
+      <Modal
+        show={showError}
+        onClose={() => {
+          if (oncloseAction === "auth") {
+            setShowError(false);
+            loginWithRedirect();
+          }
+          if (oncloseAction === "close") {
+            setShowError(false);
+          }
+        }}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 };

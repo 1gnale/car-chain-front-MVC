@@ -4,20 +4,45 @@ import { Search, PlusSquare } from "react-bootstrap-icons";
 import Table from "../GeneralComponents/Table";
 import Input from "../GeneralComponents/Input";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../../redux/reduxTypedHooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import { Square, CheckSquare } from "react-bootstrap-icons";
 import useFormValidationCoverages from "../../../controllers/controllerHooks/Validations/useCoverageValidation";
+import { CoberturasRepository } from "../../../models/repository/Repositorys/coberturasRepository";
+import { createCoverage } from "../../../redux/coberturaSlice";
+import Modal from "../GeneralComponents/Modal";
+import { CoberturasDetalleRepository } from "../../../models/repository/Repositorys/coberturasDetalleRepository";
+import { createCoverageDetalle } from "../../../redux/coberturaDetalleSlice";
 
 function CrearCobertura({
   handleCurrentView,
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) {
+  // Repositorio para los ENDPOINTS
+  const coberturaRepo = new CoberturasRepository(
+    `${import.meta.env.VITE_BASEURL}/api/cobertura`
+  );
+  const coberturaDetalleRepo = new CoberturasDetalleRepository(
+    `${import.meta.env.VITE_BASEURL}/api/coberturaDetalle`
+  );
+  const dispatch = useAppDispatch();
+
+  // Traer del redux los repositorios para la tabla
   const detalles: Detalle[] = useAppSelector((state) => state.detalles.detalle);
+
+  // Hook para las validaaciones
   const { errors, validateField, validateForm } = useFormValidationCoverages();
 
+  // Array de cobertura_detalles
   const [formCoverageDetail, setFormCoverageDetail] = useState<Detalle[]>([]);
-  const [search, setSearch] = useState("");
+
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // Formulario
   const [formCoverage, setFormCoverage] = useState<Cobertura>({
     id: 1,
     nombre: "",
@@ -25,15 +50,8 @@ function CrearCobertura({
     recargoPorAtraso: 0,
   });
 
-  useEffect(() => {
-    //(formCoverageDetail);
-  }, [formCoverageDetail]);
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormCoverage((prev) => ({ ...prev, [field]: value }));
-    validateField(field as keyof typeof errors, value);
-  };
-
+  // buscador
+  const [search, setSearch] = useState("");
   const filteredDetalles = detalles.filter((detalle) => {
     const matchesSearch = detalle.nombre
       ?.toLowerCase()
@@ -42,10 +60,83 @@ function CrearCobertura({
     return detalle.activo && matchesSearch;
   });
 
+  // Handle para rellenar formulario
+  const handleInputChange = (field: string, value: string) => {
+    setFormCoverage((prev) => ({ ...prev, [field]: value }));
+    validateField(field as keyof typeof errors, value);
+  };
+
+  // Handles botones
   const handleCancel = (): void => {
     handleCurrentView(false);
   };
 
+  async function crearCobertura() {
+    const coverage = {
+      nombre: formCoverage.nombre,
+      descripcion: formCoverage.descripcion,
+      recargoPorAtraso: String(formCoverage.recargoPorAtraso || 0),
+    };
+    console.log(coverage);
+    if (validateForm(coverage)) {
+      try {
+        const responseCoverage = await coberturaRepo.createCoverage(
+          formCoverage
+        );
+        // Formateamos el usuario para Redux
+        const coberturaParaRedux: Cobertura = {
+          ...responseCoverage,
+          nombre: responseCoverage.nombre,
+          descripcion: responseCoverage.descripcion,
+          recargoPorAtraso: responseCoverage.recargoPorAtraso,
+        };
+        console.log("✅ cobertura creado:", responseCoverage);
+        console.log(formCoverageDetail);
+        await Promise.all(
+          formCoverageDetail.map((detail: Detalle) =>
+            coberturaDetalleRepo
+              .createCoverageDetail({
+                detalle: detail,
+                cobertura: responseCoverage,
+                aplica: true,
+              })
+              .then((res) => {
+                const coberturaDetalleParaRedux: Cobertura_Detalle = {
+                  ...responseCoverage,
+                  cobertura: responseCoverage,
+                  detalle: res.detalle,
+                  aplica: res.aplica,
+                };
+                dispatch(createCoverageDetalle(coberturaDetalleParaRedux));
+              })
+          )
+        );
+
+        // Despachamos al store
+        dispatch(createCoverage(coberturaParaRedux));
+        console.log(
+          "✅ Coberturas detalles creadas en Redux:",
+          coberturaParaRedux
+        );
+        setShowError(true);
+        setTitleModalMessage("Cobertura creado");
+        setModalMessage(
+          "Cobertura creado con exito: " + responseCoverage.nombre
+        );
+        setMessageType("success");
+
+        setFormCoverage({ id: 0, recargoPorAtraso: 0 });
+      } catch (error: any) {
+        setTitleModalMessage("ERROR");
+        setShowError(true);
+        setModalMessage(error.message || "Error desconocido");
+        setMessageType("error");
+      }
+    } else {
+    }
+  }
+
+  //handles de la tabla
   const handleCreateCoverageDetail = (detalle: any) => {
     setFormCoverageDetail((prev) => {
       const exists = prev.some((d) => d.id === detalle.id);
@@ -133,10 +224,10 @@ function CrearCobertura({
         place=""
         value={String(formCoverage.recargoPorAtraso)}
         onChange={(value) => handleInputChange("recargoPorAtraso", value)}
-        error={errors.recargoPorAtras}
+        error={errors.recargoPorAtraso}
         onBlur={() =>
           validateField(
-            "recargoPorAtras",
+            "recargoPorAtraso",
             String(formCoverage.recargoPorAtraso!)
           )
         }
@@ -163,8 +254,15 @@ function CrearCobertura({
       </div>
       <div className="d-flex justify-content-end gap-3 mt-4">
         <GrayButton text="Cancelar" onClick={handleCancel} />
-        <GrayButton text="Confirmar" onClick={() => {}} />
+        <GrayButton text="Confirmar" onClick={crearCobertura} />
       </div>
+      <Modal
+        show={showError}
+        onClose={() => setShowError(false)}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 }

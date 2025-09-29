@@ -1,16 +1,6 @@
-import {
-  Users,
-  Tag,
-  Car,
-  Shield,
-  User,
-  Calendar,
-  CardSim,
-  Blocks,
-  UserStar,
-} from "lucide-react";
+import { Users, Tag, Shield, CardSim, Blocks, UserStar } from "lucide-react";
 
-function PageDashboardDefault() {
+function PageDashboardDefault({ count, status }: { count: any; status: any }) {
   return (
     <>
       <style>{`
@@ -243,8 +233,7 @@ function PageDashboardDefault() {
             </div>
             <div className="metric-content">
               <h3>Usuarios Activos</h3>
-              <div className="metric-number">1,247</div>
-              <div className="metric-change positive">+12% este mes</div>
+              <div className="metric-number">{count.usuariosActivos}</div>
             </div>
           </div>
 
@@ -254,8 +243,7 @@ function PageDashboardDefault() {
             </div>
             <div className="metric-content">
               <h3>Marcas Registradas</h3>
-              <div className="metric-number">45</div>
-              <div className="metric-change positive">+3 nuevas</div>
+              <div className="metric-number">{count.marcasRegistradas}</div>
             </div>
           </div>
 
@@ -265,7 +253,7 @@ function PageDashboardDefault() {
             </div>
             <div className="metric-content">
               <h3>Coberturas activas</h3>
-              <div className="metric-number">892</div>
+              <div className="metric-number">{count.coberturasActivas}</div>
               <div className="metric-change neutral">Sin cambios</div>
             </div>
           </div>
@@ -278,8 +266,7 @@ function PageDashboardDefault() {
             </div>
             <div className="metric-content">
               <h3>Clientes Registrados</h3>
-              <div className="metric-number">1,247</div>
-              <div className="metric-change positive">+12% este mes</div>
+              <div className="metric-number">{count.clientesRegistrados}</div>
             </div>
           </div>
 
@@ -289,8 +276,7 @@ function PageDashboardDefault() {
             </div>
             <div className="metric-content">
               <h3>Polizas vigentes</h3>
-              <div className="metric-number">45</div>
-              <div className="metric-change positive">+3 nuevas</div>
+              <div className="metric-number">{count.polizasVigentes}</div>
             </div>
           </div>
 
@@ -299,8 +285,8 @@ function PageDashboardDefault() {
               <Blocks size={32} />
             </div>
             <div className="metric-content">
-              <h3>Polizas en blockchain</h3>
-              <div className="metric-number">892</div>
+              <h3>Polizas caneladas</h3>
+              <div className="metric-number">{count.polizasVigentes}</div>
               <div className="metric-change neutral">Sin cambios</div>
             </div>
           </div>
@@ -310,19 +296,31 @@ function PageDashboardDefault() {
             <h3>Estado del Sistema</h3>
             <div className="system-status">
               <div className="status-item">
-                <div className="status-indicator online"></div>
+                <div
+                  className={`status-indicator ${
+                    status.BaseDatos === "Operativo" ? "online" : "bg-danger"
+                  }`}
+                ></div>
                 <span>Base de Datos</span>
-                <span className="status-text">Operativo</span>
+                <span className="status-text">{status.BaseDatos}</span>
               </div>
               <div className="status-item">
-                <div className="status-indicator online"></div>
+                <div
+                  className={`status-indicator ${
+                    status.Blockchain === "Operativo" ? "online" : "bg-danger"
+                  }`}
+                ></div>
                 <span>Nodo blockchain</span>
-                <span className="status-text">Operativo</span>
+                <span className="status-text">{status.Blockchain}</span>
               </div>
               <div className="status-item">
-                <div className="status-indicator warning"></div>
+                <div
+                  className={`status-indicator ${
+                    status.Billetera === "Operativo" ? "online" : "bg-danger"
+                  }`}
+                ></div>
                 <span>Billetera electronica</span>
-                <span className="status-text">Lento</span>
+                <span className="status-text">{status.Billetera}</span>
               </div>
             </div>
           </div>

@@ -4,6 +4,7 @@ import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStora
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import Modal from "../GeneralComponents/Modal.tsx";
 const FormDataConfirmation = ({
   handleCurrentView,
   handleConfirmacionPoliza,
@@ -11,20 +12,34 @@ const FormDataConfirmation = ({
   handleCurrentView: (pass: boolean) => void;
   handleConfirmacionPoliza: (poliza: Poliza) => void;
 }) => {
+  // Navigate para volver a home en caso de guardar la cotizacion
   const navigate = useNavigate();
+
+  // funcion de auth0 para saber quien esta logueado
+  const { user } = useAuth0();
+
+  // State para guardar la poliza y los detalles de cobertura
   const [policy, setPolicy] = useState<Poliza>({});
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
-  const { user } = useAuth0();
+
+  // Constante para ponerle formato a los precios
   const formato = new Intl.NumberFormat("es-AR", {
     style: "currency",
     currency: "ARS",
   });
+
   // Estado para almacenar los paths de documentación
   const [documentationPaths, setDocumentationPaths] = useState<any>({});
   // Estado para almacenar las imágenes como URLs Base64
   const [documentationImages, setDocumentationImages] = useState<any>({});
+
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
 
   // Función para cargar imágenes desde localStorage
   const loadImagesFromStorage = () => {
@@ -51,6 +66,7 @@ const FormDataConfirmation = ({
     }
   };
 
+  // UseEffect para cargar el local storage
   useEffect(() => {
     const policyStorage = useLocalStorageItem<Poliza>("PolicyData");
 
@@ -77,6 +93,7 @@ const FormDataConfirmation = ({
     return documentationImages[imageKey] || "";
   }
 
+  // HANDLE QUE CARGA LA TABLA DE DETALLES
   const handleTable = (): tableContent => {
     //("policy");
     //(policy);
@@ -121,9 +138,8 @@ const FormDataConfirmation = ({
     };
   };
   const { titles, tableBody, customIcons, showButtom } = handleTable();
-  //("BODY DE LA TABLA");
-  //(tableBody);
 
+  // BOTONES
   const handleCancel = () => {
     if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
       localStorage.clear();
@@ -132,12 +148,28 @@ const FormDataConfirmation = ({
     }
   };
   return (
-    <div className="min-vh-100" style={{ backgroundColor: "#1e1e1eff" }}>
+    <div
+      style={{
+        backgroundColor: "#1f2937",
+        minHeight: "100vh",
+        padding: "2rem 0",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
+    >
+      {" "}
       <div className="container-fluid py-4">
         <div className="row justify-content-center">
           <div className="col-xl-11 col-lg-12">
             {/* Header principal */}
-            <div className="mb-5">
+            <div
+              className="card mb-4"
+              style={{
+                backgroundColor: "#374151",
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+                borderRadius: "12px",
+                padding: "2rem",
+              }}
+            >
               <div className="d-flex align-items-center mb-3">
                 <div
                   className="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
@@ -147,7 +179,7 @@ const FormDataConfirmation = ({
                 </div>
                 <div>
                   <h2 className="text-white mb-1">Confirmación de Datos</h2>
-                  <p className="text-info-emphasis mb-0">
+                  <p className="text-info mb-0">
                     Revisa toda la información antes de continuar
                   </p>
                 </div>
@@ -156,10 +188,12 @@ const FormDataConfirmation = ({
 
             {/* Información del Cliente */}
             <div
-              className="card bg-dark border-info mb-4"
+              className="card mb-4"
               style={{
-                borderRadius: "16px",
-                border: "1px solid rgba(13, 202, 240, 0.3)",
+                backgroundColor: "#374151",
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+                borderRadius: "12px",
+                padding: "2rem",
               }}
             >
               <div className="card-header bg-transparent border-info border-bottom">
@@ -297,10 +331,12 @@ const FormDataConfirmation = ({
 
             {/* Información del Vehículo */}
             <div
-              className="card bg-dark border-info mb-4"
+              className="card   mb-4"
               style={{
-                borderRadius: "16px",
-                border: "1px solid rgba(13, 202, 240, 0.3)",
+                backgroundColor: "#374151",
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+                borderRadius: "12px",
+                padding: "2rem",
               }}
             >
               <div className="card-header bg-transparent border-info border-bottom">
@@ -406,10 +442,12 @@ const FormDataConfirmation = ({
 
             {/* Documentación Modernizada */}
             <div
-              className="card bg-dark border-warning mb-4"
+              className="card  mb-4"
               style={{
-                borderRadius: "16px",
-                border: "1px solid rgba(255, 193, 7, 0.3)",
+                backgroundColor: "#374151",
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+                borderRadius: "12px",
+                padding: "2rem",
               }}
             >
               <div className="card-header bg-transparent border-warning border-bottom">
@@ -500,12 +538,12 @@ const FormDataConfirmation = ({
                           </div>
 
                           {/* Título y nombre del archivo */}
-                          <div className="text-center">
+                          <div className="text-center text-warning">
                             <div className="text-warning fw-medium small mb-1">
                               {item.title}
                             </div>
                             <div
-                              className="text-info-emphasis"
+                              className="text-info"
                               style={{ fontSize: "11px" }}
                             >
                               {getFileDisplayName(documentationPaths[item.key])}
@@ -532,14 +570,16 @@ const FormDataConfirmation = ({
 
             {/* Cobertura Contratada */}
             <div
-              className="card bg-dark border-success mb-4"
+              className="card mb-4"
               style={{
-                borderRadius: "16px",
-                border: "1px solid rgba(25, 135, 84, 0.3)",
+                backgroundColor: "#374151",
+                boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+                borderRadius: "12px",
+                padding: "2rem",
               }}
             >
-              <div className="card-header bg-transparent border-success border-bottom">
-                <h5 className="card-title text-success mb-0 d-flex align-items-center">
+              <div className="card-header text-info bg-transparent border-info border-bottom">
+                <h5 className="card-title mb-0 d-flex align-items-center">
                   <i className="fas fa-shield-alt me-2"></i>
                   Cobertura Contratada
                 </h5>
@@ -562,7 +602,7 @@ const FormDataConfirmation = ({
                       <label className="form-label text-info fw-bold small">
                         Precio
                       </label>
-                      <div className="text-success fw-bold fs-5">
+                      <div className="text-light fw-bold fs-5">
                         {policy.lineaCotizacion?.monto
                           ? formato.format(policy.lineaCotizacion.monto)
                           : "No especificado"}
@@ -570,18 +610,17 @@ const FormDataConfirmation = ({
                     </div>
                   </div>
                 </div>
-
-                {/* Tabla de detalles */}
-                <div className="mt-4">
-                  <div className="table-responsive">
-                    <Table
-                      titles={titles}
-                      tableBody={tableBody}
-                      customIcons={customIcons}
-                      showButtom={showButtom}
-                    />
-                  </div>
-                </div>
+              </div>
+            </div>
+            {/* Tabla de detalles */}
+            <div className="mt-4">
+              <div className="table-responsive">
+                <Table
+                  titles={titles}
+                  tableBody={tableBody}
+                  customIcons={customIcons}
+                  showButtom={showButtom}
+                />
               </div>
             </div>
 
@@ -597,7 +636,7 @@ const FormDataConfirmation = ({
                 onClick={() => handleCurrentView(false)}
               >
                 <i className="fas fa-arrow-left me-2"></i>
-                Volver
+                Volviendo
               </button>
 
               <div className="d-flex gap-3">
@@ -624,6 +663,15 @@ const FormDataConfirmation = ({
           </div>
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => {
+          setShowError(false);
+        }}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 };

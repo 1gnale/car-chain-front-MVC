@@ -1,9 +1,10 @@
 import Navbar from "../components/NavBar/Navbar";
 import TitleSection from "../components/GeneralComponents/TitleSection";
-import PageCasoEstudio02 from "../FuturePages/PageCasoEstudio02";
+import ManageMarcas from "../components/ManageBrands/ManageMarcas";
 import { useState } from "react";
-import ModificarMarca from "../FuturePages/PageCasoEstudio02ModificarMarca";
+import ModificarMarca from "../components/ManageBrands/ModificarMarca";
 import HeaderSection from "../components/GeneralComponents/HeaderSection";
+import CrearMarca from "../components/ManageBrands/CrearMarca";
 
 const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
   const [currentView, setCurrentView] = useState<number>(1);
@@ -24,10 +25,11 @@ const MarcasPage = ({ isAuth }: { isAuth: boolean }) => {
       marca={currentBrand}
       handleCurrentView={handleCurrentView}
     />,
-    <PageCasoEstudio02
+    <ManageMarcas
       handleCurrentView={handleCurrentView}
       setCurrentBrand={setCurrentBrand}
     />,
+    <CrearMarca handleCurrentView={handleCurrentView}></CrearMarca>,
   ];
 
   return (

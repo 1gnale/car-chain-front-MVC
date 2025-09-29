@@ -135,8 +135,8 @@ export default function PerfilPage() {
                       onClick={() => setActiveTab(item.id)}
                       className={`btn text-start d-flex align-items-center ${
                         activeTab === item.id
-                          ? "nav-item-active"
-                          : "nav-item-inactive"
+                          ? "nav-item-active  bg-dark"
+                          : "nav-item-inactive  bg-dark"
                       }`}
                     >
                       <Icon className="me-2" size={20} />

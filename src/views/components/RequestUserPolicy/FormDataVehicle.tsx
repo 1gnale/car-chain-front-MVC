@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
-import Input from "../GeneralComponents/Input.tsx";
-import CheckForm from "../GeneralComponents/CheckForm.tsx";
-import SelectForm from "../GeneralComponents/SelectForm.tsx";
-import GrayButton from "../GeneralComponents/Button.tsx";
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
-import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
+import useFormVehicleValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import TitleForm from "../GeneralComponents/TitleForm.tsx";
 import { useNavigate } from "react-router-dom";
+import DarkTitleForm from "../GeneralComponents/DarkTitleForm.tsx";
+import DarkInput from "../GeneralComponents/DarkInput.tsx";
+import DarkSelectForm from "../GeneralComponents/DarkSelect.tsx";
+import DarkCheckForm from "../GeneralComponents/DarkCheckForm.tsx";
+import DarkButton from "../GeneralComponents/DarkButton.tsx";
+
 interface FormVehicleProps {
   matricula: string;
   marca: string;
@@ -25,25 +26,30 @@ const FormDataVehicle = ({
 }: {
   handleCurrentView: (pass: boolean) => void;
 }) => {
+  // Navigate para volver a home en caso de cancel
   const navigate = useNavigate();
-  // States MODELO DATOS
+
+  // Vehiculo en el local storage
+  const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData");
+
+  // Nos traemos los datos del redux para los selects
   const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
   const models: Modelo[] = useAppSelector((state) => state.modelos.modelo);
   const versions: Version[] = useAppSelector(
     (state) => state.versiones.version
   );
 
-  // State de validacion de datos
-  const { errors, validateField, validateForm } = useFormValidation();
+  // Validaciones
+  const { errors, validateField, validateForm } = useFormVehicleValidation();
 
-  // Statates de Selects
+  // State para los selects
   const [model, setModel] = useState<boolean>(false);
   const [version, setVersion] = useState<boolean>(false);
   const [selectedBrand, setSelectedBrand] = useState(0);
   const [selectedModel, setSelectedModel] = useState(0);
   const [selectedVersion, setSelectedVersion] = useState(0);
 
-  // State formulario
+  // formulario
   const [formVehicle, setFormVehicle] = useState<FormVehicleProps>({
     matricula: "",
     marca: "",
@@ -55,26 +61,23 @@ const FormDataVehicle = ({
     anio: "",
   });
 
-  // UseEffect
+  // Useeffect para carga el formulario con el local storage
   useEffect(() => {
-    //localStorage.removeItem("ClientData");
-    //  localStorage.removeItem("VehicleData");
-    const vehicleLocalStorage = useLocalStorageItem<Vehiculo>("VehicleData");
-
     if (vehicleLocalStorage !== null) {
       setModel(true);
       setVersion(true);
-      setSelectedBrand(vehicleLocalStorage.version.modelo!.marca.id);
+      setSelectedBrand(vehicleLocalStorage.version.modelo?.marca!.id || 0);
       setSelectedModel(vehicleLocalStorage.version.modelo!.id);
       setSelectedVersion(vehicleLocalStorage.version.id);
       setFormVehicle(parseFormVehicle(vehicleLocalStorage));
     }
   }, []);
 
+  // Parse para volver el local storage en formato del form
   function parseFormVehicle(vehiculo: Vehiculo): FormVehicleProps {
     return {
       matricula: vehiculo.matricula || "",
-      marca: vehiculo.version.modelo!.marca.nombre || "",
+      marca: vehiculo.version.modelo?.marca?.nombre || "",
       chasis: vehiculo.chasis || "",
       modelo: vehiculo.version.modelo!.nombre || "",
       numeroMotor: vehiculo.numeroMotor || "",
@@ -84,7 +87,7 @@ const FormDataVehicle = ({
     };
   }
 
-  // Handles
+  // HANDLE PARA CARGAR LOS SELECT
   const handleBrand = useMemo(() => {
     const result = brands.map((brand) => {
       return { id: brand.id, name: brand.nombre ?? "" };
@@ -94,7 +97,7 @@ const FormDataVehicle = ({
 
   const handleModel = useMemo(() => {
     const modelosFiltrados = models.filter(
-      (modelo) => modelo.marca.id === selectedBrand
+      (modelo) => modelo.marca?.id === selectedBrand
     );
 
     const result = modelosFiltrados.map((model) => ({
@@ -117,47 +120,7 @@ const FormDataVehicle = ({
     return result;
   }, [versions, selectedModel]);
 
-  const handleCancel = () => {
-    if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
-      localStorage.clear();
-      navigate(`/`);
-    }
-  };
-
-  const handleSubmit = () => {
-    //(formVehicle);
-    try {
-      if (validateForm(formVehicle)) {
-        //("Formulario válido:", formVehicle);
-        try {
-          const versionFiltrada: Version | undefined = versions.find(
-            (version) => version.id === selectedVersion
-          );
-          if (versionFiltrada != undefined) {
-            const vehicle: Vehiculo = {
-              id: 1,
-              matricula: formVehicle.matricula,
-              chasis: formVehicle.chasis,
-              añoFabricacion: Number(formVehicle.anio),
-              numeroMotor: formVehicle.numeroMotor,
-              gnc: formVehicle.gnc,
-              version: versionFiltrada,
-            };
-            localStorage.setItem("VehicleData", JSON.stringify(vehicle));
-          }
-        } catch (error) {
-          //("ERROR");
-        }
-        handleCurrentView(true);
-      } else {
-        //("Formulario inválido:", errors);
-      }
-    } catch (error) {
-      //("Error");
-    }
-  };
-
-  // HandleStates
+  // HANDLES Y HANDLESTATE PARA CARGAR EL FORMULARIO
   const handleInputChange = (field: string, value: string) => {
     setFormVehicle((prev) => ({ ...prev, [field]: value }));
     validateField(field as keyof typeof errors, value);
@@ -177,7 +140,7 @@ const FormDataVehicle = ({
     setFormVehicle((prev) => ({ ...prev, version: "" }));
     setFormVehicle((prev) => ({ ...prev, modeloId: 0 }));
     setFormVehicle((prev) => ({ ...prev, versionId: 0 }));
-    // Encontrar el nombre de la marca seleccionada
+
     const selectedBrandName =
       brands.find((brand) => brand.id === id)?.nombre || "";
 
@@ -190,7 +153,6 @@ const FormDataVehicle = ({
     setVersion(true);
     setSelectedModel(id);
 
-    // Encontrar el nombre del modelo seleccionado
     const selectedModelName =
       models.find((model) => model.id === id)?.nombre || "";
     setFormVehicle((prev) => ({ ...prev, modelo: selectedModelName }));
@@ -203,32 +165,85 @@ const FormDataVehicle = ({
 
     const selectedVersionName =
       versions.find((version) => version.id === id)?.nombre || "";
-    //(selectedVersionName);
     setFormVehicle((prev) => ({ ...prev, version: selectedVersionName }));
     setFormVehicle((prev) => ({ ...prev, versionId: id }));
     validateField("version", selectedVersionName);
   };
+
+  // BOTONES (cancelar y siguiente)
+  const handleCancel = () => {
+    if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
+      localStorage.clear();
+      navigate(`/`);
+    }
+  };
+
+  const handleSubmit = () => {
+    try {
+      if (validateForm(formVehicle)) {
+        try {
+          const versionFiltrada: Version | undefined = versions.find(
+            (version) => version.id === selectedVersion
+          );
+          if (versionFiltrada != undefined) {
+            const vehicle: Vehiculo = {
+              id: 1,
+              matricula: formVehicle.matricula,
+              chasis: formVehicle.chasis,
+              añoFabricacion: Number(formVehicle.anio),
+              numeroMotor: formVehicle.numeroMotor,
+              gnc: formVehicle.gnc,
+              version: versionFiltrada,
+            };
+            localStorage.setItem("VehicleData", JSON.stringify(vehicle));
+          }
+        } catch (error) {
+          // Error handling
+        }
+        handleCurrentView(true);
+      }
+    } catch (error) {
+      // Error handling
+    }
+  };
+
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-xl-1"></div>
-        <div className="col-xl-9">
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="row " style={{ padding: "2px" }}>
-              <TitleForm title="Informacion Del Vehiculo" />
-            </div>
-            <Input
-              title="Matricula"
-              place=""
-              value={formVehicle.matricula}
-              onChange={(value) => {
-                handleInputChange("matricula", value);
+    <div
+      style={{
+        backgroundColor: "#1f2937",
+        minHeight: "100vh",
+        padding: "2rem 0",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem" }}>
+        <div
+          style={{
+            backgroundColor: "#374151",
+            borderRadius: "12px",
+            padding: "2rem",
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          <DarkTitleForm title="Información Del Vehículo" />
+
+          <div style={{ display: "grid", gap: "1.5rem" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
               }}
-              error={errors.matricula}
-              onBlur={() => validateField("matricula", formVehicle.matricula)}
-            />
-            <div className="col">
-              <SelectForm
+            >
+              <DarkInput
+                title="Matrícula"
+                place="Ingrese la matrícula"
+                value={formVehicle.matricula}
+                onChange={(value) => handleInputChange("matricula", value)}
+                error={errors.matricula}
+                onBlur={() => validateField("matricula", formVehicle.matricula)}
+              />
+              <DarkSelectForm
                 status={true}
                 value={selectedBrand}
                 title="Marca"
@@ -238,20 +253,23 @@ const FormDataVehicle = ({
                 onBlur={() => validateField("marca", formVehicle.marca)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col">
-              <Input
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkInput
                 title="Chasis"
-                place=""
+                place="Ingrese el número de chasis"
                 value={formVehicle.chasis}
                 onChange={(value) => handleInputChange("chasis", value)}
                 error={errors.chasis}
                 onBlur={() => validateField("chasis", formVehicle.chasis)}
               />
-            </div>
-            <div className="col">
-              <SelectForm
+              <DarkSelectForm
                 status={model}
                 value={selectedModel}
                 title="Modelo"
@@ -261,12 +279,17 @@ const FormDataVehicle = ({
                 onBlur={() => validateField("modelo", formVehicle.modelo)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col">
-              <Input
-                title="Numero de Motor"
-                place=""
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkInput
+                title="Número de Motor"
+                place="Ingrese el número de motor"
                 value={formVehicle.numeroMotor}
                 onChange={(value) => handleInputChange("numeroMotor", value)}
                 error={errors.numeroMotor}
@@ -274,9 +297,7 @@ const FormDataVehicle = ({
                   validateField("numeroMotor", formVehicle.numeroMotor)
                 }
               />
-            </div>
-            <div className="col">
-              <SelectForm
+              <DarkSelectForm
                 status={version}
                 value={selectedVersion}
                 title="Versiones"
@@ -286,17 +307,20 @@ const FormDataVehicle = ({
                 onBlur={() => validateField("version", formVehicle.version)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col">
-              <CheckForm
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "1rem",
+              }}
+            >
+              <DarkCheckForm
                 text="GNC"
                 checked={formVehicle.gnc}
                 onChange={(value) => handleCheckboxChange("gnc", value)}
               />
-            </div>
-            <div className="col">
-              <Input
+              <DarkInput
                 title="Año"
                 place="XXXX"
                 value={formVehicle.anio}
@@ -305,26 +329,29 @@ const FormDataVehicle = ({
                 onBlur={() => validateField("anio", formVehicle.anio)}
               />
             </div>
-          </div>
-          <div className="row " style={{ padding: "2px" }}>
-            <div className="col"></div>
 
             <div
-              className="d-grid gap-2 d-md-flex justify-content-md-end"
-              style={{ padding: "10px" }}
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "2rem",
+                paddingTop: "1rem",
+                borderTop: "1px solid #4b5563",
+              }}
             >
-              <GrayButton
+              <DarkButton
                 text="Cancelar"
-                style="me-md-2"
                 onClick={handleCancel}
+                variant="secondary"
               />
-              <GrayButton text="Siguiente" onClick={handleSubmit} />
+              <DarkButton
+                text="Siguiente"
+                onClick={handleSubmit}
+                variant="primary"
+              />
             </div>
           </div>
-          <div className="row" style={{ padding: "10px" }}></div>
-          <div className="row" style={{ padding: "10px" }}></div>
         </div>
-        <div className="col-xl-1"></div>
       </div>
     </div>
   );

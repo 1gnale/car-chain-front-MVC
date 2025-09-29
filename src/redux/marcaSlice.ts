@@ -1,6 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+interface MarcaState {
+  marca: Marca[];
+}
+
+const initialState: MarcaState = {
   marca: [],
 };
 
@@ -14,9 +18,33 @@ export const marcaSlice = createSlice({
     clearMarcas: (state) => {
       state.marca = [];
     },
+
+    updateMarcaState: (state, action: PayloadAction<{ id: number }>) => {
+      const { id } = action.payload;
+      state.marca = state.marca.map((u) =>
+        u.id === id ? { ...u, activo: false } : u
+      );
+    },
+
+    updateMarca: (state, action: PayloadAction<Marca>) => {
+      const updatedMarca = action.payload;
+      state.marca = state.marca.map((u) =>
+        u.id === updatedMarca.id ? { ...updatedMarca } : u
+      );
+    },
+
+    createBrand: (state, action: PayloadAction<Marca>) => {
+      state.marca = [...state.marca, action.payload];
+    },
   },
 });
 
-export const { setMarcas, clearMarcas } = marcaSlice.actions;
+export const {
+  setMarcas,
+  clearMarcas,
+  createBrand,
+  updateMarca,
+  updateMarcaState,
+} = marcaSlice.actions;
 
 export default marcaSlice.reducer;

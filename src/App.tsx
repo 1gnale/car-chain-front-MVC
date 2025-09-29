@@ -16,6 +16,7 @@ import ControladorCoberturas from "./controllers/ControladorCobertura.tsx";
 import ContoladorDashboard from "./controllers/ContoladorDashboard.tsx";
 import ControladorRegister from "./controllers/ControladorRegister.tsx";
 import ControladorAdministrarPoliza from "./controllers/ControladorAdministrarPoliza.tsx";
+import ContoladorAprobarPoliza from "./controllers/ContoladorAprobarPoliza.tsx";
 
 function App() {
   return (
@@ -87,6 +88,17 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Caso de uso 11: ConsultarCotizacion */}
+      <Route
+        path="/vendedor"
+        element={
+          <ProtectedRoute>
+            <ContoladorAprobarPoliza />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Caso de uso 18: Administrar Poliza */}
       <Route
         path="/administrarPoliza/:id"

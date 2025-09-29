@@ -17,7 +17,7 @@ interface DateInputProps {
   inputClassName?: string; // 🔹 NUEVO: para el input
 }
 
-const DateInput: React.FC<DateInputProps> = ({
+const DateInputClear: React.FC<DateInputProps> = ({
   title,
   value,
   onChange,
@@ -60,7 +60,7 @@ const DateInput: React.FC<DateInputProps> = ({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isoValue = e.target.value;
     if (!isoValue) {
-      onChange('');
+      onChange("");
       return;
     }
     const displayValue = formatDateForDisplay(isoValue);
@@ -104,4 +104,4 @@ const DateInput: React.FC<DateInputProps> = ({
   );
 };
 
-export default DateInput;
+export default DateInputClear;

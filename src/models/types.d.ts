@@ -57,7 +57,7 @@ interface Modelo {
   id: number;
   nombre?: string;
   descripcion?: string;
-  marca: Marca;
+  marca?: Marca;
   activo?: boolean;
 }
 
@@ -131,7 +131,7 @@ interface Cobertura {
 }
 
 interface Cobertura_Detalle {
-  id: number;
+  id?: number;
   cobertura: Cobertura;
   detalle: Detalle;
   aplica: boolean;
@@ -173,15 +173,14 @@ interface Pago {
   mp_preference_id?: string;
 }
 
-interface Siniesto {
+interface Siniestro {
   id: number;
   fechaSiniestro?: string;
   horaSiniestro?: string;
-  usuario: Usuario;
+  usuario?: Usuario;
   estado?: string;
-  //fotoDenuncia?=
-  //fotoVehiculo?=
-
+  fotoDenuncia?: File;
+  fotoVehiculo?: File;
   activo?: boolean;
 }
 

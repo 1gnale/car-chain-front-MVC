@@ -25,14 +25,16 @@ const SelectForm = ({
   error,
   classNameDiv,
   classNameLabel,
-  classNameSelect, 
-  onBlur, 
+  classNameSelect,
+  onBlur,
 }: SelectFormProps) => {
   return (
-    <div className= {classNameDiv ? classNameDiv: 'col'} >
-      <label className= {classNameLabel} >{title}</label>
+    <div className={classNameDiv ? classNameDiv : "col form-group"}>
+      <label className={classNameLabel}>{title}</label>
       <select
-        className={`form-select ${error ? "is-invalid" : ""} ${classNameSelect}`}
+        className={`form-select ${
+          error ? "is-invalid" : ""
+        } ${classNameSelect}`}
         disabled={!status}
         required
         value={value}
@@ -48,7 +50,9 @@ const SelectForm = ({
           </option>
         ))}
       </select>
-      {error && <div className="invalid-feedback">{error}</div>}
+
+      {/* Siempre ocupa espacio */}
+      <div className="invalid-feedback">{error || ""}</div>
     </div>
   );
 };

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import CheckForm from "../GeneralComponents/CheckForm";
 import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import { updateUsuarioState } from "../../../redux/usuariosSlice";
+import Modal from "../GeneralComponents/Modal";
+import { UsuarioRepository } from "../../../models/repository/Repositorys/UsuariosRepository";
 
 function ManageUsers({
   handleCurrentView,
@@ -13,22 +15,34 @@ function ManageUsers({
   handleCurrentView: (pass: boolean) => void;
   setCurrentUsuario: (usuario: Usuario) => void;
 }) {
+  // Repositorio para los ENDPOINTS
+  const usuarioRepo = new UsuarioRepository(
+    `${import.meta.env.VITE_BASEURL}/api/usuarios`
+  );
 
+  // States para la busqueda y filtro
   const [isTableLoaded, setIsTableLoaded] = useState(false);
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
 
+  // Traer del redux los repositorios para la tabla
   const users = useAppSelector((state) => state.usuarios.usuario);
   const dispatch = useAppDispatch();
 
-  console.log("🔄 Usuarios desde Redux:", users);
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
+  // Buscador
   const filterUsers = () => {
     if (!users) return [];
 
     return users.filter((usuario) => {
       if (!usuario) return false;
 
-      const matchesSearch = (usuario.nombres || '')
+      const matchesSearch = (usuario.nombres || "")
         .toLowerCase()
         .includes(search.toLowerCase());
 
@@ -41,17 +55,16 @@ function ManageUsers({
       return usuario.activo && matchesSearch;
     });
   };
-
   const filteredUsuarios = filterUsers();
 
+  // UseEffect que recarga la tabla al actualizar los datos
   useEffect(() => {
     if (users && users.length > 0) {
       setIsTableLoaded(true);
     }
   }, [users]);
 
-
-
+  // Handles (Botones alta baja y modificacion)
   const handleUpdateUser = (usuario: any): void => {
     setCurrentUsuario(usuario);
     handleCurrentView(false);
@@ -64,36 +77,26 @@ function ManageUsers({
   async function handleDeleteUser(usuario: any) {
     if (window.confirm("¿Estás seguro de que querés eliminar al usuario?")) {
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/usuarios/update-user-state/${usuario.legajo}`,
-          {
-            method: "PUT", // según tu endpoint
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ state: false }),
-          }
-        );
+        const response = await usuarioRepo.updateStateUser(usuario.legajo);
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          console.error("❌ Backend devolvió error:", data);
-          throw new Error(data.message || "Error al actualizar estado");
-        }
-
-        // 🔄 Actualizo Redux en frontend sin volver a pedir la lista
+        //  Actualizo Redux en frontend sin volver a pedir la lista
         dispatch(updateUsuarioState({ legajo: usuario.legajo }));
-
-        console.log("✅ Estado actualizado:", data);
-        return data;
+        setShowError(true);
+        setModalMessage(
+          "Estado del usuario " + usuario.legajo + " actualizado"
+        );
+        setMessageType("info");
+        setTitleModalMessage("Usuario eliminado");
       } catch (error: any) {
-        console.error("❌ Error en la petición:", error.message);
-        alert(`Hubo un error: ${error.message}`);
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
       }
     }
   }
 
+  // Handle que carga la tabla
   const handleTableButton = (): tableContent => {
     return {
       showButtom: true,
@@ -112,16 +115,15 @@ function ManageUsers({
         key: usuario.legajo ? usuario.legajo : 0,
         value: usuario,
         rowContent: [
-          String(usuario.legajo || ''),
-          `${usuario.nombres || ''} ${usuario.apellido || ''}`.trim(),
-          usuario.correo || '',
-          usuario.documento || '',
-          usuario.activo ? "Activo" : "Inactivo"
+          String(usuario.legajo || ""),
+          `${usuario.nombres || ""} ${usuario.apellido || ""}`.trim(),
+          usuario.correo || "",
+          usuario.documento || "",
+          usuario.activo ? "Activo" : "Inactivo",
         ],
       })),
     };
   };
-
   const { titles, tableBody, customIcons, showButtom } = handleTableButton();
 
   return (
@@ -162,7 +164,9 @@ function ManageUsers({
         </div>
         <div className="d-flex my-4" style={{ width: "100%" }}>
           {!users || users.length === 0 ? (
-            <div className="w-100 text-center">No hay usuarios para mostrar</div>
+            <div className="w-100 text-center">
+              No hay usuarios para mostrar
+            </div>
           ) : !isTableLoaded ? (
             <div className="w-100 text-center">Cargando...</div>
           ) : (
@@ -174,6 +178,13 @@ function ManageUsers({
             />
           )}
         </div>
+        <Modal
+          show={showError}
+          onClose={() => setShowError(false)}
+          type={messageType}
+          title={messageTitle}
+          message={errorMessage || "Error inesperado intente mas tarde"}
+        />
       </div>
     </>
   );

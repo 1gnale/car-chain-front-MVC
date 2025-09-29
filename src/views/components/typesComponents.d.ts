@@ -1,8 +1,22 @@
+type ModalType = "success" | "error" | "warning" | "info";
+type ViewName =
+  | "PolicyProfile"
+  | "pagarPolizaPorPrimeraVez"
+  | "pagarPoliza"
+  | "historialPoliza"
+  | "historialPago"
+  | "ReportAccident";
+
 interface tableContent {
   titles: string[];
   tableBody: tableBodys[];
   showButtom: boolean;
   customIcons?: iconsAction[];
+}
+interface ButtonProps {
+  text: string;
+  onClick: () => void;
+  variant?: "primary" | "secondary";
 }
 
 interface iconsAction {
