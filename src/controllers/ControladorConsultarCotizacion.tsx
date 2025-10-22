@@ -6,6 +6,7 @@ import ConsultarCotizacionPage from "../views/pages/ConsultarCotizacionPage";
 import useGetLinePricingByIdCotizacionHook from "./controllerHooks/Fetchs/useGetLinePricingByIdCotizacionHook";
 import useCreateDocumentacionNPoliza from "./controllerHooks/Mutations/useCreateDocumentacionNPoliza";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
+import ErrorPage from "../views/components/GeneralComponents/errorPage";
 
 const ControladorConsultarCotizacion = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -27,10 +28,10 @@ const ControladorConsultarCotizacion = () => {
   }
 
   if (error || ErrorLine || ErrorCD) {
-    return <div>Error loading pricing information.</div>;
+    return <ErrorPage />;
   }
   if (!LinePricing) {
-    return <div>No LinePricing data found.</div>;
+    return <ErrorPage />;
   }
 
   // Handle confirmacion poliza
@@ -58,7 +59,7 @@ const ControladorConsultarCotizacion = () => {
     );
   }
   if (errorPoliza) {
-    return <div>Error: ha ocurrido un error inesperado</div>;
+    return <ErrorPage />;
   }
 
   return (

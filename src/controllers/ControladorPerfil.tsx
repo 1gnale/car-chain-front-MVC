@@ -8,6 +8,7 @@ import useClientByMailHook from "./controllerHooks/Fetchs/useClientByMail";
 import useLocalidadesHook from "./controllerHooks/Fetchs/useLocalidadesHook";
 import useProvinciasHook from "./controllerHooks/Fetchs/useProvinciasHook";
 import useTiposDocumentos from "./controllerHooks/Fetchs/useTiposDocumentosHook";
+import ErrorPage from "../views/components/GeneralComponents/errorPage";
 const ControladorPerfil = () => {
   const { isAuthenticated, user } = useAuth0();
 
@@ -50,7 +51,7 @@ const ControladorPerfil = () => {
     errorProvinces ||
     errorDocumentTypes
   ) {
-    return <div>Error: ha ocurrido un error inesperado</div>;
+    return <ErrorPage />;
   }
 
   return (

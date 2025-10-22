@@ -9,6 +9,7 @@ import useTipoContratacion from "./controllerHooks/Fetchs/useTipoContratacion";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 import usePolicyHistoryByIdHook from "./controllerHooks/Fetchs/usePolicyHistory";
 import usePagosHook from "./controllerHooks/Fetchs/usePagosHook";
+import ErrorPage from "../views/components/GeneralComponents/errorPage";
 
 const ControladorAdministrarPoliza = () => {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -51,10 +52,10 @@ const ControladorAdministrarPoliza = () => {
     ErrorLineHist ||
     ErrorPago
   ) {
-    return <div>Error loading pricing information.</div>;
+    return <ErrorPage />;
   }
   if (!policy) {
-    return <div>No pricing data found.</div>;
+    return <ErrorPage />;
   }
 
   return <ManagePolicyData policy={policy} isAuth={isAuthenticated} />;
