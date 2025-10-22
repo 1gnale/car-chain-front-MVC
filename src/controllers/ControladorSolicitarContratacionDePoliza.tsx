@@ -11,6 +11,7 @@ import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
 import { useAuth0 } from "@auth0/auth0-react";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 import useCreatePolizaCompleta from "./controllerHooks/Mutations/useCreatePolizaCompleteHook";
+import ErrorPage from "../views/components/GeneralComponents/errorPage";
 
 const ControladorSolicitarContratacionDePoliza = () => {
   const {
@@ -57,6 +58,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
         lineasCotizacion.push(lineaCotizacion!);
 
         const resultado = await savePoliza(cotizacion!, lineasCotizacion);
+        localStorage.clear();
         alert(
           "Poliza solicitada con exito, para consultar su estado revise su perfil."
         );
@@ -93,7 +95,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
     errorDet ||
     errorPoliza
   ) {
-    return <div>Error: ha ocurrido un error inesperado</div>;
+    return <ErrorPage />;
   }
 
   if (loadingPoliza) {
@@ -105,7 +107,7 @@ const ControladorSolicitarContratacionDePoliza = () => {
     );
   }
   if (errorPoliza) {
-    return <div>Error: ha ocurrido un error inesperado</div>;
+    return <ErrorPage />;
   }
 
   return (

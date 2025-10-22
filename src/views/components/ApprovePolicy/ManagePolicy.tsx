@@ -52,7 +52,7 @@ const ManagePolizas = ({
     }
 
     // Si checkbox no está activado => mostrar solo activas
-    return poliza.estadoPoliza === "EN_REVISIÓN" && matchesSearch;
+    return poliza.estadoPoliza === "PENDIENTE" && matchesSearch;
   });
 
   // Botones (Alta baja modificaion)

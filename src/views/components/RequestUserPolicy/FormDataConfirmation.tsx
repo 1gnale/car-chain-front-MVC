@@ -14,7 +14,6 @@ const FormDataConfirmation = ({
 }) => {
   // Navigate para volver a home en caso de guardar la cotizacion
   const navigate = useNavigate();
-
   // funcion de auth0 para saber quien esta logueado
   const { user } = useAuth0();
 

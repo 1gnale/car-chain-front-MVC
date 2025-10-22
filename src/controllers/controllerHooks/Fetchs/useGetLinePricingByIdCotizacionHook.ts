@@ -15,6 +15,7 @@ const useGetLinePricingByIdCotizacionHook = (idCotizacion: string) => {
   } = useGenericFetch<Linea_Cotizacion>(apiUrl);
 
   useEffect(() => {
+    console.log(lineaCotizacion);
     if (lineaCotizacion) {
       setPricing(lineaCotizacion);
     }

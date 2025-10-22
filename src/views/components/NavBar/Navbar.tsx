@@ -1,12 +1,21 @@
 import CarChainLogo from "../../assets/Carchain.png";
 import UserPicture from "./UserPicture";
 import AuthUser from "./AuthUser";
+import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = ({ isAuth }: { isAuth: boolean }) => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth0();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
-        <a className="navbar-brand me-2" href="/">
+        <div
+          className="navbar-brand me-2"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        >
           <img
             src={CarChainLogo}
             height="30"
@@ -14,7 +23,7 @@ const Navbar = ({ isAuth }: { isAuth: boolean }) => {
             loading="lazy"
             style={{ marginTop: "-1px" }}
           />
-        </a>
+        </div>
         <button
           type="button"
           className="navbar-toggler"
@@ -35,7 +44,7 @@ const Navbar = ({ isAuth }: { isAuth: boolean }) => {
               Ayuda
             </a>
           </div>
-          {isAuth ? <UserPicture /> : <AuthUser />}
+          {isAuthenticated ? <UserPicture /> : <AuthUser />}
         </div>
       </div>
     </nav>
