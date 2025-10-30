@@ -4,10 +4,8 @@ import Input from "../components/GeneralComponents/Input";
 import SelectForm from "../components/GeneralComponents/SelectForm";
 import useFormValidation from "../../controllers/controllerHooks/Validations/useFormClientValidation";
 import getFromLocalStorage from "../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
-import DateInputDark from "../components/GeneralComponents/DateInputDark";
 import { createClient } from "../../models/fetchs/fetchCreateClient";
 import { useAuth0 } from "@auth0/auth0-react";
-import { redirect } from "react-router-dom";
 import DateInputClear from "../components/GeneralComponents/DateInput";
 import CarChainRegisterLogo from "../assets/CarChainRegisterLogo.jpg";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +52,11 @@ const PageRegistrar = () => {
   );
   const localities: Localidad[] = useAppSelector(
     (state) => state.localidades.localidad
+  );
+
+  // Lista de sexos para el select
+  const sexoOptions: GenericList[] = useAppSelector(
+    (state) => state.sexo.sexosList
   );
 
   // Efecto para cargar datos del localStorage al montar el componente
@@ -115,11 +118,6 @@ const PageRegistrar = () => {
             }
           }
 
-          const sexoOptions = [
-            { id: 1, name: "Masculino" },
-            { id: 2, name: "Femenino" },
-          ];
-
           if (clientData.tipoDocumento && documentTypes.length > 0) {
             const sexoFiltrado = sexoOptions.find(
               (sex) => sex.name === clientData?.sexo
@@ -180,12 +178,6 @@ const PageRegistrar = () => {
     validateField("localidad", selectedLocalityName);
   };
 
-  // Opciones para los selects
-  const sexoOptions = [
-    { id: 1, name: "Masculino" },
-    { id: 2, name: "Femenino" },
-  ];
-
   // Mapeo de IDs a valores string
   const sexoMap: { [key: number]: string } = {
     1: "Masculino",
@@ -244,7 +236,11 @@ const PageRegistrar = () => {
         });
 
         alert("Persona registrada exitosamente");
-        localStorage.clear();
+        Object.keys(localStorage).forEach((key) => {
+          if (!key.startsWith("@@auth0") && !key.includes("auth0")) {
+            localStorage.removeItem(key);
+          }
+        });
         navigate(`/`);
       } catch (error) {
         console.error("Error en createClient:", error);

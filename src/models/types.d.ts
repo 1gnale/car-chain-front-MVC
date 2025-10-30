@@ -227,3 +227,8 @@ interface Poliza {
   periodoPago?: PeriodoPago;
   tipoContratacion?: TipoContratacion;
 }
+
+interface GenericList {
+  id: number;
+  name: string;
+}

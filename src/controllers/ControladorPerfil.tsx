@@ -8,7 +8,8 @@ import useClientByMailHook from "./controllerHooks/Fetchs/useClientByMail";
 import useLocalidadesHook from "./controllerHooks/Fetchs/useLocalidadesHook";
 import useProvinciasHook from "./controllerHooks/Fetchs/useProvinciasHook";
 import useTiposDocumentos from "./controllerHooks/Fetchs/useTiposDocumentosHook";
-import ErrorPage from "../views/components/GeneralComponents/errorPage";
+import ErrorPage from "../views/components/GeneralComponents/ErrorPage";
+import useListSex from "./controllerHooks/Fetchs/useListSexHook";
 const ControladorPerfil = () => {
   const { isAuthenticated, user } = useAuth0();
 
@@ -30,15 +31,17 @@ const ControladorPerfil = () => {
 
   const { loading: loadingPriciring, error: errorPriciring } =
     useCotizacionHook({ mail: user?.email || "" });
+  // Hook que trae todos los sexos
+  const { loading: loadingSexos, error: errorSexos } = useListSex();
 
-  // Hook que trae todas las versiones
   if (
     loadingPolice ||
     loadingPriciring ||
     loadingClient ||
     loadingLocalities ||
     loadingProvinces ||
-    loadingDocumentTypes
+    loadingDocumentTypes ||
+    loadingSexos
   ) {
     return <Spinner title="Loading..." text="Por favor espere" />;
   }
@@ -49,7 +52,8 @@ const ControladorPerfil = () => {
     errorClient ||
     errorLocalities ||
     errorProvinces ||
-    errorDocumentTypes
+    errorDocumentTypes ||
+    errorSexos
   ) {
     return <ErrorPage />;
   }

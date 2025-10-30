@@ -27,7 +27,8 @@ function CrearModelo({
 
   // Redux datos y dispatch
   const dispatch = useAppDispatch();
-  const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
+  const brandsTotals: Marca[] = useAppSelector((state) => state.marcas.marca);
+  const brands = brandsTotals.filter((m: any) => m.activo === true);
 
   // UseState para el select
   const [selectedBrand, setSelectedBrand] = useState(0);

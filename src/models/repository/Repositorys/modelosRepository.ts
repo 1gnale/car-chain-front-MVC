@@ -33,9 +33,10 @@ export class ModeloRepository
     const body = {
       nombre: ModeloData.nombre,
       descripcion: ModeloData.descripcion,
-      marca: ModeloData.marca,
+      marca_id: ModeloData.marca?.id,
       activo: ModeloData.activo,
     };
+    console.log("body");
     console.log(body);
     const updatedModels = await this.putData(`/update/${ModeloData.id}`, body);
     this.data = this.data.map((Models) =>

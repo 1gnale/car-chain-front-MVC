@@ -40,19 +40,15 @@ function CrearUsuario({
   );
   const dispatch = useAppDispatch();
 
-  // Lista de sexos del select
-  const listSex = [
-    { id: 1, name: "Femenino" },
-    { id: 2, name: "Masculino" },
-  ];
+  // Lista de sexos para el select
+  const listSex: GenericList[] = useAppSelector(
+    (state) => state.sexo.sexosList
+  );
 
   // Lista de tipo de usuarios del select
-  const tiposDeUsuario = [
-    "ADMINISTRADOR",
-    "VENDEDOR",
-    "PERITO",
-    "GESTOR_DE_SINIESTROS",
-  ];
+  const tiposDeUsuario = useAppSelector(
+    (state) => state.tipoUsuario.tiposUsuario
+  );
 
   // states de selects
   const [selectedSex, setSelectedSex] = useState<number>();

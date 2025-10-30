@@ -109,73 +109,72 @@ const PolicyProfile = ({
     >
       <div className="row justify-content-center">
         <div className="col-12 col-xl-10">
-          {/* Botones superiores */}
-          <div
-            className="d-flex justify-content-between align-items-center"
-            style={{ padding: "10px" }}
-          >
-            {/* Botón volver */}
-            <div>
-              <button
-                type="button"
-                className="btn btn-outline-secondary px-4"
-                style={{ borderRadius: "10px" }}
-                onClick={() => Navigate(`/perfil`)}
-              >
-                <i className="fas fa-arrow-left me-2"></i>
-                Volver
-              </button>
+          <div className="container-fluid px-3 py-2">
+            {/* Fila 1: Botón Volver */}
+            <div className="row mb-2">
+              <div className="col-12 col-md-auto">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary px-4 w-100 w-md-auto"
+                  style={{ borderRadius: "10px" }}
+                  onClick={() => Navigate(`/perfil`)}
+                >
+                  <i className="fas fa-arrow-left me-2"></i>
+                  Volver
+                </button>
+              </div>
             </div>
 
-            {/* Botones a la derecha */}
-            <div className="d-flex gap-2">
-              <GrayButton
-                text="Cancelar Poliza"
-                style="me-md-2"
-                onClick={() => {}}
-              />
-              <GrayButton
-                text="Reportar Siniestro"
-                style="me-md-2"
-                onClick={() => {
-                  handleCurrentView("ReportAccident");
-                }}
-              />
-              <GrayButton
-                text="Historial Vehiculo"
-                style="me-md-2"
-                onClick={() => {
-                  handleCurrentView("historialPoliza");
-                }}
-              />
-              <GrayButton
-                text="Historial Pago"
-                style="me-md-2"
-                onClick={() => {
-                  handleCurrentView("historialPago");
-                }}
-              />
-              <GrayButton
-                text={
-                  policy.estadoPoliza === "APROBADA"
-                    ? "Pagar por primera vez"
-                    : policy.estadoPoliza === "IMPAGA"
-                    ? "Pagar Poliza"
-                    : "No disponible"
-                }
-                style="me-md-2"
-                onClick={() => {
-                  if (policy.estadoPoliza === "APROBADA") {
-                    handleCurrentView("pagarPolizaPorPrimeraVez");
-                  } else if (policy.estadoPoliza === "IMPAGA") {
-                    handleCurrentView("pagarPoliza");
+            {/* Fila 2: Botones de acciones */}
+            <div className="row">
+              <div className="col-12 d-flex flex-wrap gap-2 justify-content-start justify-content-md-start">
+                <GrayButton
+                  text="Cancelar Poliza"
+                  style="flex-grow-1 flex-md-grow-0"
+                  onClick={() => {}}
+                />
+                <GrayButton
+                  text="Ver Poliza en Blockchain"
+                  style="flex-grow-1 flex-md-grow-0"
+                  onClick={() => handleCurrentView("PolicyBlockchain")}
+                />
+                <GrayButton
+                  text="Reportar Siniestro"
+                  style="flex-grow-1 flex-md-grow-0"
+                  onClick={() => handleCurrentView("ReportAccident")}
+                />
+                <GrayButton
+                  text="Historial Vehiculo"
+                  style="flex-grow-1 flex-md-grow-0"
+                  onClick={() => handleCurrentView("historialPoliza")}
+                />
+                <GrayButton
+                  text="Historial Pago"
+                  style="flex-grow-1 flex-md-grow-0"
+                  onClick={() => handleCurrentView("historialPago")}
+                />
+                <GrayButton
+                  text={
+                    policy.estadoPoliza === "APROBADA"
+                      ? "Pagar por primera vez"
+                      : policy.estadoPoliza === "IMPAGA"
+                      ? "Pagar Poliza"
+                      : "No disponible"
                   }
-                }}
-                disabled={
-                  policy.estadoPoliza !== "APROBADA" &&
-                  policy.estadoPoliza !== "IMPAGA"
-                }
-              />
+                  style="flex-grow-1 flex-md-grow-0"
+                  onClick={() => {
+                    if (policy.estadoPoliza === "APROBADA") {
+                      handleCurrentView("pagarPolizaPorPrimeraVez");
+                    } else if (policy.estadoPoliza === "IMPAGA") {
+                      handleCurrentView("pagarPoliza");
+                    }
+                  }}
+                  disabled={
+                    policy.estadoPoliza !== "APROBADA" &&
+                    policy.estadoPoliza !== "IMPAGA"
+                  }
+                />
+              </div>
             </div>
           </div>
 
@@ -195,25 +194,25 @@ const PolicyProfile = ({
             </div>
             <div className="card-body">
               <div className="row g-3">
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Número de póliza:"
                     text={String(policy.numero_poliza)}
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Fecha de contratación:"
                     text={policy.fechaContratacion || " -"}
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Hora de contratación:"
                     text={policy.horaContratacion || " -"}
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo title="Estado:" text={policy.estadoPoliza} />
                 </div>
               </div>
@@ -236,7 +235,7 @@ const PolicyProfile = ({
             </div>
             <div className="card-body">
               <div className="row g-3">
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Nombre/s:"
                     text={
@@ -245,7 +244,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Apellido/s:"
                     text={
@@ -254,7 +253,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Sexo:"
                     text={
@@ -263,7 +262,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Fecha de Nacimiento:"
                     text={
@@ -272,7 +271,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Tipo de Documento:"
                     text={
@@ -281,7 +280,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Documento:"
                     text={
@@ -290,7 +289,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Teléfono:"
                     text={
@@ -299,7 +298,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Correo:"
                     text={
@@ -308,7 +307,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Provincia:"
                     text={
@@ -317,7 +316,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Localidad:"
                     text={
@@ -326,7 +325,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Domicilio:"
                     text={
@@ -355,7 +354,7 @@ const PolicyProfile = ({
             </div>
             <div className="card-body">
               <div className="row g-3">
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Matrícula:"
                     text={
@@ -363,13 +362,13 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Chasis:"
                     text={policy.lineaCotizacion?.cotizacion?.vehiculo?.chasis}
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="N° motor:"
                     text={
@@ -377,7 +376,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="GNC:"
                     text={
@@ -387,7 +386,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Marca:"
                     text={
@@ -396,7 +395,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Modelo:"
                     text={
@@ -405,7 +404,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Versión:"
                     text={
@@ -414,7 +413,7 @@ const PolicyProfile = ({
                     }
                   />
                 </div>
-                <div className="col-md-3">
+                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo
                     title="Año:"
                     text={String(
@@ -443,7 +442,7 @@ const PolicyProfile = ({
             </div>
             <div className="card-body">
               <div className="row g-3">
-                <div className="col-md-2">
+                <div className="col-6 col-sm-4 col-md-2">
                   <ImgConfirmation
                     src={getImageUrl("fotoFrontal")}
                     alt="Foto Frontal"
@@ -453,7 +452,7 @@ const PolicyProfile = ({
                     {getFileDisplayName(documentationPaths.fotoFrontal)}
                   </small>
                 </div>
-                <div className="col-md-2">
+                <div className="col-6 col-sm-4 col-md-2">
                   <ImgConfirmation
                     src={getImageUrl("fotoTrasera")}
                     alt="Foto Trasera"
@@ -463,7 +462,7 @@ const PolicyProfile = ({
                     {getFileDisplayName(documentationPaths.fotoTrasera)}
                   </small>
                 </div>
-                <div className="col-md-2">
+                <div className="col-6 col-sm-4 col-md-2">
                   <ImgConfirmation
                     src={getImageUrl("fotoLateral1")}
                     alt="Foto Lateral 1"
@@ -473,7 +472,7 @@ const PolicyProfile = ({
                     {getFileDisplayName(documentationPaths.fotoLateral1)}
                   </small>
                 </div>
-                <div className="col-md-2">
+                <div className="col-6 col-sm-4 col-md-2">
                   <ImgConfirmation
                     src={getImageUrl("fotoLateral2")}
                     alt="Foto Lateral 2"
@@ -483,7 +482,7 @@ const PolicyProfile = ({
                     {getFileDisplayName(documentationPaths.fotoLateral2)}
                   </small>
                 </div>
-                <div className="col-md-2">
+                <div className="col-6 col-sm-4 col-md-2">
                   <ImgConfirmation
                     src={getImageUrl("fotoTecho")}
                     alt="Foto Techo"
@@ -493,7 +492,7 @@ const PolicyProfile = ({
                     {getFileDisplayName(documentationPaths.fotoTecho)}
                   </small>
                 </div>
-                <div className="col-md-2">
+                <div className="col-6 col-sm-4 col-md-2">
                   <ImgConfirmation
                     src={getImageUrl("cedulaVerde")}
                     alt="Cédula Verde"
@@ -523,15 +522,15 @@ const PolicyProfile = ({
             </div>
             <div className="card-body">
               <div className="row align-items-start">
-                <div className="col-md-6">
+                <div className="col-12 col-lg-6 mb-3 mb-lg-0">
                   <div className="row g-3">
-                    <div className="col-md-6">
+                    <div className="col-12 col-sm-6">
                       <LabelNinfo
                         title="Nombre:"
                         text={policy.lineaCotizacion?.cobertura?.nombre}
                       />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12 col-sm-6">
                       <LabelNinfo
                         title="Precio:"
                         text={String(
@@ -539,13 +538,13 @@ const PolicyProfile = ({
                         )}
                       />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12 col-sm-6">
                       <LabelNinfo
                         title="Tipo contratación:"
                         text={policy.tipoContratacion?.nombre || " -"}
                       />
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-12 col-sm-6">
                       <LabelNinfo
                         title="Periodo de pago:"
                         text={policy.periodoPago?.nombre || "-"}
@@ -553,7 +552,7 @@ const PolicyProfile = ({
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-12 col-lg-6">
                   <div
                     className="card text-center"
                     style={{
@@ -575,8 +574,8 @@ const PolicyProfile = ({
                       className="card-body p-2"
                       style={{ backgroundColor: "#2a3441", color: "#ffffff" }}
                     >
-                      <div className="row">
-                        <div className="col-6">
+                      <div className="row g-2">
+                        <div className="col-12 col-sm-6">
                           <div className="text-center">
                             <span
                               className="fw-bold"
@@ -587,7 +586,7 @@ const PolicyProfile = ({
                             <span>{policy.fechaContratacion || " -"}</span>
                           </div>
                         </div>
-                        <div className="col-6">
+                        <div className="col-12 col-sm-6">
                           <div className="text-center">
                             <span
                               className="fw-bold"
@@ -606,8 +605,7 @@ const PolicyProfile = ({
             </div>
           </div>
 
-          {/* Tabla de detalles */}
-          <div className="d-flex my-4" style={{ width: "-20px" }}>
+          <div className="d-flex my-4 overflow-auto" style={{ width: "100%" }}>
             <Table
               titles={titles}
               tableBody={tableBody}

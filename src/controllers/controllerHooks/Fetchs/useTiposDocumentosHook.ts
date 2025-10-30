@@ -5,20 +5,26 @@ import { useGenericFetch } from "./useGenericFetch";
 
 const useTiposDocumentos = () => {
   const dispatch = useDispatch();
-  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/tipos-documento/values`;
+  const apiUrl = `${import.meta.env.VITE_BASEURL}/api/enums/tipoDocumento`;
 
-  const { data: tiposDocumento, loading, error, refetch } = useGenericFetch<string[]>(apiUrl);
+  const {
+    data: tiposDocumento,
+    loading,
+    error,
+    refetch,
+  } = useGenericFetch<string[]>(apiUrl);
 
   useEffect(() => {
+    console.log("Tipos de Documento fetched:", tiposDocumento);
     if (tiposDocumento.length > 0) {
       dispatch(setTipoDocumento(tiposDocumento));
     }
   }, [tiposDocumento, dispatch]);
 
-  return { 
-    loading, 
-    error: !!error, 
-    refetch 
+  return {
+    loading,
+    error: !!error,
+    refetch,
   };
 };
 

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SelectForm from "../GeneralComponents/SelectForm";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 
@@ -11,23 +11,48 @@ function PolicyPayment({
   isFirstPayment: boolean;
   handleCurrentView: (pass: ViewName) => void;
 }) {
+  // Cargar datos para los select
   const tiposContratacion: TipoContratacion[] = useAppSelector(
     (state) => state.tiposContratacion.tipoContratacion
   );
   const periodosPago: PeriodoPago[] = useAppSelector(
     (state) => state.periodosPago.periodopago
   );
+  console.log("tiposContratacion", tiposContratacion);
+  console.log("periodosPago", periodosPago);
 
-  console.log("poliza en pagar poliza", poliza.lineaCotizacion?.monto);
-
-  //states
+  //states de los select seleccionados
   const [selectedContratType, setSelectedContratType] = useState(0);
   const [selectedPaymentPeriod, setSelectedPaymentPeriod] = useState(0);
-  //handles
-  const handleTiposContratacion = useMemo(() => {
+  const [totalAmount, setTotalAmount] = useState(0);
+  // errores de validación
+  const [errors, setErrors] = useState<{
+    contratType?: string;
+    paymentPeriod?: string;
+    total?: string;
+  }>({});
+  //filtered data
+  const [tiposContratacionFilt, setTiposContratacionFilt] = useState<
+    TipoContratacion[]
+  >([]);
+  const [periodosPagoFilt, setPeriodosPagoFilt] = useState<PeriodoPago[]>([]);
+  useEffect(() => {
     const tiposContratacionFilt = tiposContratacion.filter(
       (line) => line.activo === true
     );
+    setTiposContratacionFilt(tiposContratacionFilt);
+    const periodosPagoFilt = periodosPago.filter(
+      (line) =>
+        line.activo === true &&
+        line.cantidadMeses! <=
+          handleTiposContratacion.find((e) => e.id === selectedContratType)
+            ?.cantidadMeses!
+    );
+    setPeriodosPagoFilt(periodosPagoFilt);
+  }, [periodosPago, tiposContratacion, selectedContratType]);
+
+  //handles
+  const handleTiposContratacion = useMemo(() => {
     const result = tiposContratacionFilt.map((tipoContratacion) => {
       return {
         id: tipoContratacion.id,
@@ -36,17 +61,9 @@ function PolicyPayment({
       };
     });
     return result;
-  }, [tiposContratacion]);
+  }, [tiposContratacionFilt]);
 
   const handlePeriodoPago = useMemo(() => {
-    const periodosPagoFilt = periodosPago.filter(
-      (line) =>
-        line.activo === true &&
-        line.cantidadMeses! <=
-          handleTiposContratacion.find((e) => e.id === selectedContratType)
-            ?.cantidadMeses!
-    );
-
     const result = periodosPagoFilt.map((periodoPago) => {
       return {
         id: periodoPago.id,
@@ -56,23 +73,27 @@ function PolicyPayment({
       };
     });
     return result;
-  }, [periodosPago, handleTiposContratacion, selectedContratType]);
+  }, [periodosPagoFilt, handleTiposContratacion, selectedContratType]);
 
-  const handleTotalAmount = useMemo(() => {
-    const total =
-      poliza.lineaCotizacion?.monto! *
-      handlePeriodoPago.find((e) => e.id === selectedPaymentPeriod)
-        ?.cantidadMeses!;
-    const descuento =
-      total *
-      handlePeriodoPago.find((e) => e.id === selectedPaymentPeriod)?.descuento!;
-    return total - descuento;
-  }, [
-    handleTiposContratacion,
-    selectedContratType,
-    handlePeriodoPago,
-    selectedPaymentPeriod,
-  ]);
+  // Recalcular total cuando cambian periodo/selecciones
+  useEffect(() => {
+    const periodo = handlePeriodoPago.find(
+      (e) => e.id === selectedPaymentPeriod
+    );
+    const meses = periodo?.cantidadMeses ?? 0;
+    const descuento = periodo?.descuento ?? 0;
+    const base = poliza.lineaCotizacion?.monto ?? 0;
+    const total = base * meses;
+    const totalConDescuento = total - total * (descuento || 0);
+    setTotalAmount(totalConDescuento);
+
+    // Validación en tiempo real: monto
+    setErrors((prev) => ({
+      ...prev,
+      total: totalConDescuento > 0 ? undefined : "El monto debe ser mayor a 0",
+    }));
+  }, [handlePeriodoPago, selectedPaymentPeriod, poliza.lineaCotizacion?.monto]);
+
   const handleSubmit = async () => {
     const endPoint = `${import.meta.env.VITE_BASEURL}/api/pago/${
       isFirstPayment ? "crearPrimerPago" : "crearPago"
@@ -86,7 +107,7 @@ function PolicyPayment({
         },
         body: JSON.stringify({
           poliza_numero: poliza.numero_poliza,
-          total: poliza.precioPolizaActual || handleTotalAmount,
+          total: poliza.precioPolizaActual || totalAmount,
           descripcion: poliza.lineaCotizacion?.cobertura?.nombre,
           payer_email:
             poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.correo,
@@ -104,8 +125,8 @@ function PolicyPayment({
             //   pending: "https://4bb0c22b9817.ngrok-free.app/pending",
           },
           external_reference: "REF-12345",
-          idTipoContratacion: 1,
-          idPeriodoPago: 1,
+          idTipoContratacion: selectedContratType || 1,
+          idPeriodoPago: selectedPaymentPeriod || 1,
         }),
       });
 
@@ -130,6 +151,13 @@ function PolicyPayment({
       console.error("Error iniciando pago:", error);
     }
   };
+
+  const isFormValid =
+    tiposContratacionFilt.length > 0 &&
+    periodosPagoFilt.length > 0 &&
+    tiposContratacionFilt.some((t) => t.id === selectedContratType) &&
+    periodosPagoFilt.some((p) => p.id === selectedPaymentPeriod) &&
+    totalAmount > 0;
 
   return (
     <>
@@ -314,8 +342,23 @@ function PolicyPayment({
                   classNameLabel="me-2"
                   classNameSelect="flex-grow-1"
                   items={handleTiposContratacion}
-                  onChange={setSelectedContratType}
+                  onChange={(e) => {
+                    setSelectedContratType(e);
+                    setSelectedPaymentPeriod(0);
+                  }}
+                  error={errors.contratType}
                 />
+                {errors.contratType && (
+                  <small
+                    style={{
+                      color: "#ff6b6b",
+                      display: "block",
+                      marginTop: "6px",
+                    }}
+                  >
+                    {errors.contratType}
+                  </small>
+                )}
 
                 <SelectForm
                   status={true}
@@ -325,19 +368,38 @@ function PolicyPayment({
                   classNameLabel="me-2"
                   classNameSelect="flex-grow-1"
                   items={handlePeriodoPago}
-                  onChange={setSelectedPaymentPeriod}
+                  onChange={(e) => {
+                    setSelectedPaymentPeriod(e);
+                  }}
                 />
+                {errors.paymentPeriod && (
+                  <small
+                    style={{
+                      color: "#ff6b6b",
+                      display: "block",
+                      marginTop: "6px",
+                    }}
+                  >
+                    {errors.paymentPeriod}
+                  </small>
+                )}
               </div>
             )}
 
             <div className="total-section">
               <div className="total-label">TOTAL A PAGAR</div>
-              <h3 className="total-amount">
-                $
-                {selectedPaymentPeriod && selectedContratType
-                  ? handleTotalAmount
-                  : poliza.montoAsegurado || poliza.lineaCotizacion?.monto}
-              </h3>
+              <h3 className="total-amount">${totalAmount || 0}</h3>
+              {errors.total && (
+                <small
+                  style={{
+                    color: "#ff6b6b",
+                    display: "block",
+                    marginTop: "6px",
+                  }}
+                >
+                  {errors.total}
+                </small>
+              )}
             </div>
 
             <div className="button-group">
@@ -347,7 +409,16 @@ function PolicyPayment({
               >
                 Cancelar
               </button>
-              <button className="btn btn-confirm" onClick={handleSubmit}>
+              <button
+                className="btn btn-confirm"
+                onClick={handleSubmit}
+                disabled={!isFormValid}
+                title={
+                  !isFormValid
+                    ? "Complete los campos obligatorios y asegure que el monto sea mayor a 0"
+                    : ""
+                }
+              >
                 Pagar
               </button>
             </div>

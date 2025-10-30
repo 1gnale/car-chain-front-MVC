@@ -34,8 +34,13 @@ function ModificarVersion({
 
   // Redux datos y dispatch
   const dispatch = useAppDispatch();
-  const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
-  const models: Modelo[] = useAppSelector((state) => state.modelos.modelo);
+  const modelsTotals: Modelo[] = useAppSelector(
+    (state) => state.modelos.modelo
+  );
+  const brandsTotals: Marca[] = useAppSelector((state) => state.marcas.marca);
+
+  const brands = brandsTotals.filter((m: any) => m.activo === true);
+  const models = modelsTotals.filter((m: any) => m.activo === true);
 
   // validacion
   const { errors, validateField, validateForm } = useFormValidationVersion();

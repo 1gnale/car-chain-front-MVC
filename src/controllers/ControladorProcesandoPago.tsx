@@ -1,22 +1,19 @@
+import { useState } from "react";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
-import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffectOnce } from "react-use";
+import ErrorPage from "../views/components/GeneralComponents/errorPage";
 
 const ControladorProcesandoPago = () => {
+  const [error, setError] = useState(false);
   const { numero_poliza, pagoId } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    const { signal } = controller;
-    let isFetching = false;
+  useEffectOnce(() => {
     const fetchData = async () => {
-      if (isFetching) return;
-      isFetching = true;
       try {
         const response = await fetch(
-          `http://localhost:3000/api/pago/sucessPago/${numero_poliza}/${pagoId}`,
-          { signal }
+          `http://localhost:3000/api/pago/sucessPago/${numero_poliza}/${pagoId}`
         );
 
         if (!response.ok)
@@ -24,8 +21,7 @@ const ControladorProcesandoPago = () => {
         const data = await response.json();
 
         const responsePoliza = await fetch(
-          `http://localhost:3000/api/poliza/getPolizaById/${numero_poliza}`,
-          { signal }
+          `http://localhost:3000/api/poliza/getPolizaById/${numero_poliza}`
         );
 
         if (!responsePoliza.ok)
@@ -69,16 +65,16 @@ const ControladorProcesandoPago = () => {
         });
       } catch (error) {
         console.error(error);
-      } finally {
-        isFetching = false;
+        setError(true);
       }
     };
 
     fetchData();
+  });
 
-    // Cleanup: si el componente se desmonta o cambia alguna dep, aborta
-    return () => controller.abort();
-  }, [numero_poliza, pagoId, navigate]);
+  if (error) {
+    return <ErrorPage></ErrorPage>;
+  }
 
   return (
     <Spinner

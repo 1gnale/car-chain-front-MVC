@@ -173,7 +173,11 @@ const FormDataVehicle = ({
   // BOTONES (cancelar y siguiente)
   const handleCancel = () => {
     if (window.confirm("¿Estás seguro de que querés cancelar la solicitud?")) {
-      localStorage.clear();
+      Object.keys(localStorage).forEach((key) => {
+        if (!key.startsWith("@@auth0") && !key.includes("auth0")) {
+          localStorage.removeItem(key);
+        }
+      });
       navigate(`/`);
     }
   };

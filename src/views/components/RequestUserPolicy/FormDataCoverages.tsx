@@ -180,7 +180,7 @@ const FormDataCoverages = ({
   // UseEffect que calcula las lineas de cotizaciones
   useEffect(() => {
     // Creamos una cotizacion y sus lineas de cotizaciones vacias
-    const NuevaCotization: Cotizacion = {};
+    const NuevaCotization: Cotizacion = { activo: true }; // La id es temporal
     const NuevaLinea_cotization: Linea_Cotizacion[] = [];
 
     // sacamos el vehiculo del local storage

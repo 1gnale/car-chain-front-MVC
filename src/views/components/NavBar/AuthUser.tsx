@@ -4,10 +4,10 @@ const AuthUser = () => {
   const { loginWithRedirect, logout } = useAuth0();
 
   return (
-    <div className="navbar-nav ms-auto">
+    <div className="navbar-nav ms-auto flex-column flex-lg-row">
       <button
         type="button"
-        className="btn btn-link px-3 me-2"
+        className="btn btn-link px-3 me-lg-2 mb-2 mb-lg-0"
         style={{ color: "white" }}
         onClick={() => loginWithRedirect()}
       >
@@ -15,9 +15,15 @@ const AuthUser = () => {
       </button>
       <button
         type="button"
-        className="btn btn-primary me-3"
+        className="btn btn-primary me-lg-3 mb-2 mb-lg-0"
         style={{ backgroundColor: "black", borderColor: "white" }}
-        onClick={() => logout()}
+        onClick={() =>
+          loginWithRedirect({
+            authorizationParams: {
+              screen_hint: "signup",
+            },
+          })
+        }
       >
         Registrarse
       </button>

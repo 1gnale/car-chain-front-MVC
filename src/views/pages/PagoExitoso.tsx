@@ -1,5 +1,4 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface ContratoData {
   numero_poliza?: string;
@@ -24,48 +23,34 @@ interface ContratoData {
   };
 }
 
-const PagoExitoso: React.FC = () => {
+export default function PagoExitoso() {
   const navigate = useNavigate();
   const location = useLocation();
 
   // Los datos pueden venir del state de la navegación o ser hardcodeados para demo
   const contratoData: ContratoData = location.state?.contratoData || {
-    numero_poliza: "POL-2025-001234",
-    hash_transaccion:
-      "0xf4d2b1a8c7e9f3d2b1a8c7e9f3d2b1a8c7e9f3d2b1a8c7e9f3d2b1a8c7e9f3d2",
-    direccion_contrato: "0xa1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0",
-    fecha_despliegue: new Date().toLocaleDateString("es-AR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
-    fecha_vencimiento: new Date().toLocaleDateString("es-AR", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
-    estado: "Activo",
+    numero_poliza: "",
+    hash_transaccion: "",
+    direccion_contrato: "",
+    fecha_despliegue: "",
+    fecha_vencimiento: "",
+    estado: "",
 
-    cobertura: "Cobertura Total Premium",
+    cobertura: "-",
     cliente: {
-      nombre: "Juan Pérez",
-      email: "juan.perez@email.com",
-      documento: "123456789",
+      nombre: "-",
+      email: "-",
+      documento: "-",
     },
     vehiculo: {
-      marca: "Toyota",
-      modelo: "Corolla",
-      monto: 25000,
-      patente: "ABC-123",
+      marca: "-",
+      modelo: "-",
+      monto: 0,
+      patente: "-",
     },
   };
 
   const handleViewInBlockchain = () => {
-    // Abrir en explorador de blockchain
     window.open(
       `https://amoy.polygonscan.com/tx/${contratoData.hash_transaccion}`,
       "_blank"
@@ -73,23 +58,32 @@ const PagoExitoso: React.FC = () => {
   };
 
   return (
-    <div className="container-fluid bg-light min-vh-100 py-5">
+    <div
+      className="container-fluid min-vh-100 py-5"
+      style={{ backgroundColor: "#1a2332" }}
+    >
       <div className="container">
         {/* Header de éxito */}
         <div className="row justify-content-center mb-4">
           <div className="col-md-8 text-center">
-            <div className="card shadow-lg border-0 mb-4">
+            <div
+              className="card shadow-lg border-0 mb-4"
+              style={{ backgroundColor: "#2d3748" }}
+            >
               <div className="card-body py-5">
                 <div className="mb-4">
                   <i
-                    className="bi bi-check-circle-fill text-success"
-                    style={{ fontSize: "4rem" }}
+                    className="bi bi-check-circle-fill"
+                    style={{ fontSize: "4rem", color: "#22d3ee" }}
                   ></i>
                 </div>
-                <h1 className="display-4 text-success fw-bold mb-3">
+                <h1
+                  className="display-4 fw-bold mb-3"
+                  style={{ color: "#22d3ee" }}
+                >
                   ¡Contrato Desplegado Exitosamente!
                 </h1>
-                <p className="lead text-muted">
+                <p className="lead" style={{ color: "#a0aec0" }}>
                   Su póliza ha sido registrada en la blockchain de forma segura
                   e inmutable
                 </p>
@@ -104,8 +98,14 @@ const PagoExitoso: React.FC = () => {
             <div className="row g-4">
               {/* Datos principales del contrato */}
               <div className="col-md-6">
-                <div className="card shadow border-0 h-100">
-                  <div className="card-header bg-primary text-white">
+                <div
+                  className="card shadow border-0 h-100"
+                  style={{ backgroundColor: "#2d3748" }}
+                >
+                  <div
+                    className="card-header text-white"
+                    style={{ backgroundColor: "#22d3ee" }}
+                  >
                     <h5 className="mb-0">
                       <i className="bi bi-file-earmark-text me-2"></i>
                       Datos del Contrato
@@ -114,41 +114,75 @@ const PagoExitoso: React.FC = () => {
                   <div className="card-body">
                     <div className="row g-3">
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <span className="text-muted">N° Póliza:</span>
-                          <span className="fw-bold text-primary">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>N° Póliza:</span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#22d3ee" }}
+                          >
                             {contratoData.numero_poliza}
                           </span>
                         </div>
                       </div>
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <span className="text-muted">Estado:</span>
-                          <span className="badge bg-success">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>Estado:</span>
+                          <span
+                            className="badge"
+                            style={{
+                              backgroundColor: "#22d3ee",
+                              color: "#1a2332",
+                            }}
+                          >
                             {contratoData.estado}
                           </span>
                         </div>
                       </div>
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <span className="text-muted">Fecha Despliegue:</span>
-                          <span className="fw-bold">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>
+                            Fecha Despliegue:
+                          </span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.fecha_despliegue}
                           </span>
                         </div>
                       </div>
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <span className="text-muted">Fecha Vencimiento:</span>
-                          <span className="fw-bold">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>
+                            Fecha Vencimiento:
+                          </span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.fecha_vencimiento}
                           </span>
                         </div>
                       </div>
                       <div className="col-12">
                         <div className="d-flex justify-content-between align-items-center">
-                          <span className="text-muted">Cobertura:</span>
-                          <span className="fw-bold">
+                          <span style={{ color: "#a0aec0" }}>Cobertura:</span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.cobertura}
                           </span>
                         </div>
@@ -160,8 +194,14 @@ const PagoExitoso: React.FC = () => {
 
               {/* Información Blockchain */}
               <div className="col-md-6">
-                <div className="card shadow border-0 h-100">
-                  <div className="card-header bg-info text-white">
+                <div
+                  className="card shadow border-0 h-100"
+                  style={{ backgroundColor: "#2d3748" }}
+                >
+                  <div
+                    className="card-header text-white"
+                    style={{ backgroundColor: "#22d3ee" }}
+                  >
                     <h5 className="mb-0">
                       <i className="bi bi-diagram-3 me-2"></i>
                       Información Blockchain
@@ -170,7 +210,7 @@ const PagoExitoso: React.FC = () => {
                   <div className="card-body">
                     <div className="row g-3">
                       <div className="col-12">
-                        <label className="text-muted small">
+                        <label className="small" style={{ color: "#a0aec0" }}>
                           Hash de Transacción:
                         </label>
                         <div className="input-group">
@@ -179,6 +219,11 @@ const PagoExitoso: React.FC = () => {
                             className="form-control form-control-sm font-monospace"
                             value={contratoData.hash_transaccion}
                             readOnly
+                            style={{
+                              backgroundColor: "#1a2332",
+                              color: "#e2e8f0",
+                              borderColor: "#4a5568",
+                            }}
                           />
                           <button
                             className="btn btn-outline-secondary btn-sm"
@@ -187,13 +232,14 @@ const PagoExitoso: React.FC = () => {
                                 contratoData.hash_transaccion || ""
                               )
                             }
+                            style={{ borderColor: "#4a5568", color: "#22d3ee" }}
                           >
                             <i className="bi bi-clipboard"></i>
                           </button>
                         </div>
                       </div>
                       <div className="col-12">
-                        <label className="text-muted small">
+                        <label className="small" style={{ color: "#a0aec0" }}>
                           Dirección del Contrato:
                         </label>
                         <div className="input-group">
@@ -202,6 +248,11 @@ const PagoExitoso: React.FC = () => {
                             className="form-control form-control-sm font-monospace"
                             value={contratoData.direccion_contrato}
                             readOnly
+                            style={{
+                              backgroundColor: "#1a2332",
+                              color: "#e2e8f0",
+                              borderColor: "#4a5568",
+                            }}
                           />
                           <button
                             className="btn btn-outline-secondary btn-sm"
@@ -210,6 +261,7 @@ const PagoExitoso: React.FC = () => {
                                 contratoData.direccion_contrato || ""
                               )
                             }
+                            style={{ borderColor: "#4a5568", color: "#22d3ee" }}
                           >
                             <i className="bi bi-clipboard"></i>
                           </button>
@@ -217,7 +269,7 @@ const PagoExitoso: React.FC = () => {
                       </div>
                       {contratoData.firma_digital && (
                         <div className="col-12">
-                          <label className="text-muted small">
+                          <label className="small" style={{ color: "#a0aec0" }}>
                             Firma digital:
                           </label>
                           <div className="input-group">
@@ -226,6 +278,11 @@ const PagoExitoso: React.FC = () => {
                               className="form-control form-control-sm font-monospace"
                               value={contratoData.direccion_contrato}
                               readOnly
+                              style={{
+                                backgroundColor: "#1a2332",
+                                color: "#e2e8f0",
+                                borderColor: "#4a5568",
+                              }}
                             />
                             <button
                               className="btn btn-outline-secondary btn-sm"
@@ -234,6 +291,10 @@ const PagoExitoso: React.FC = () => {
                                   contratoData.firma_digital || ""
                                 )
                               }
+                              style={{
+                                borderColor: "#4a5568",
+                                color: "#22d3ee",
+                              }}
                             >
                               <i className="bi bi-clipboard"></i>
                             </button>
@@ -243,8 +304,13 @@ const PagoExitoso: React.FC = () => {
 
                       <div className="col-12">
                         <button
-                          className="btn btn-info w-100"
+                          className="btn w-100"
                           onClick={handleViewInBlockchain}
+                          style={{
+                            backgroundColor: "#22d3ee",
+                            color: "#1a2332",
+                            fontWeight: "bold",
+                          }}
                         >
                           <i className="bi bi-box-arrow-up-right me-2"></i>
                           Ver en Explorador de Blockchain
@@ -257,8 +323,14 @@ const PagoExitoso: React.FC = () => {
 
               {/* Información del Cliente y Vehículo */}
               <div className="col-md-6">
-                <div className="card shadow border-0 h-100">
-                  <div className="card-header bg-secondary text-white">
+                <div
+                  className="card shadow border-0 h-100"
+                  style={{ backgroundColor: "#2d3748" }}
+                >
+                  <div
+                    className="card-header text-white"
+                    style={{ backgroundColor: "#22d3ee" }}
+                  >
                     <h5 className="mb-0">
                       <i className="bi bi-person me-2"></i>
                       Cliente
@@ -267,25 +339,40 @@ const PagoExitoso: React.FC = () => {
                   <div className="card-body">
                     <div className="row g-3">
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <span className="text-muted">Nombre:</span>
-                          <span className="fw-bold">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>Nombre:</span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.cliente?.nombre}
                           </span>
                         </div>
                       </div>
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <span className="text-muted">Email:</span>
-                          <span className="fw-bold">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>Email:</span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.cliente?.email}
                           </span>
                         </div>
                       </div>
                       <div className="col-12">
                         <div className="d-flex justify-content-between align-items-center">
-                          <span className="text-muted">Documento:</span>
-                          <span className="fw-bold">
+                          <span style={{ color: "#a0aec0" }}>Documento:</span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.cliente?.documento}
                           </span>
                         </div>
@@ -296,8 +383,14 @@ const PagoExitoso: React.FC = () => {
               </div>
 
               <div className="col-md-6">
-                <div className="card shadow border-0 h-100">
-                  <div className="card-header bg-warning text-dark">
+                <div
+                  className="card shadow border-0 h-100"
+                  style={{ backgroundColor: "#2d3748" }}
+                >
+                  <div
+                    className="card-header"
+                    style={{ backgroundColor: "#22d3ee", color: "#1a2332" }}
+                  >
                     <h5 className="mb-0">
                       <i className="bi bi-car-front me-2"></i>
                       Vehículo Asegurado
@@ -306,18 +399,32 @@ const PagoExitoso: React.FC = () => {
                   <div className="card-body">
                     <div className="row g-3">
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <span className="text-muted">Vehículo:</span>
-                          <span className="fw-bold">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>Vehículo:</span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.vehiculo?.marca}{" "}
                             {contratoData.vehiculo?.modelo}
                           </span>
                         </div>
                       </div>
                       <div className="col-12">
-                        <div className="d-flex justify-content-between align-items-center border-bottom pb-2">
-                          <span className="text-muted">Monto asegurado:</span>
-                          <span className="fw-bold text-success">
+                        <div
+                          className="d-flex justify-content-between align-items-center border-bottom pb-2"
+                          style={{ borderColor: "#4a5568 !important" }}
+                        >
+                          <span style={{ color: "#a0aec0" }}>
+                            Monto asegurado:
+                          </span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#22d3ee" }}
+                          >
                             $
                             {contratoData.vehiculo?.monto?.toLocaleString(
                               "es-AR"
@@ -327,8 +434,11 @@ const PagoExitoso: React.FC = () => {
                       </div>
                       <div className="col-12">
                         <div className="d-flex justify-content-between align-items-center">
-                          <span className="text-muted">Patente:</span>
-                          <span className="fw-bold">
+                          <span style={{ color: "#a0aec0" }}>Patente:</span>
+                          <span
+                            className="fw-bold"
+                            style={{ color: "#e2e8f0" }}
+                          >
                             {contratoData.vehiculo?.patente}
                           </span>
                         </div>
@@ -344,14 +454,29 @@ const PagoExitoso: React.FC = () => {
         {/* Botones de acción */}
         <div className="row justify-content-center mt-5">
           <div className="col-md-8">
-            <div className="card shadow border-0">
+            <div
+              className="card shadow border-0"
+              style={{ backgroundColor: "#2d3748" }}
+            >
               <div className="card-body text-center py-4">
-                <h5 className="mb-4">¿Qué desea hacer ahora?</h5>
+                <h5 className="mb-4" style={{ color: "#e2e8f0" }}>
+                  ¿Qué desea hacer ahora?
+                </h5>
                 <div className="row g-3">
                   <div className="col-md-6">
                     <button
-                      className="btn btn-outline-primary btn-lg w-100"
-                      onClick={() => navigate("/mis-polizas")}
+                      className="btn btn-lg w-100"
+                      onClick={() =>
+                        navigate(
+                          `/administrarPoliza/${contratoData.numero_poliza}`
+                        )
+                      }
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "2px solid #22d3ee",
+                        color: "#22d3ee",
+                        fontWeight: "bold",
+                      }}
                     >
                       <i className="bi bi-list-ul me-2"></i>
                       Ver Mi Póliza
@@ -359,8 +484,14 @@ const PagoExitoso: React.FC = () => {
                   </div>
                   <div className="col-md-6">
                     <button
-                      className="btn btn-outline-secondary btn-lg w-100"
+                      className="btn btn-lg w-100"
                       onClick={() => navigate("/")}
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "2px solid #a0aec0",
+                        color: "#a0aec0",
+                        fontWeight: "bold",
+                      }}
                     >
                       <i className="bi bi-house me-2"></i>
                       Ir al Inicio
@@ -374,6 +505,4 @@ const PagoExitoso: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default PagoExitoso;
+}
