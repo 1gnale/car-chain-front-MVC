@@ -1,6 +1,47 @@
+import { useState } from "react";
+import Modal from "../components/GeneralComponents/Modal";
 import Navbar from "../components/NavBar/Navbar";
 
 export default function ContactanosPage() {
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+  const [oncloseAction, setOncloseAction] = useState<string>("close");
+
+  const handleSubmit = () => {
+    setShowError(true);
+    setTitleModalMessage("Mensaje enviado, " + formMail.nombre);
+    setModalMessage(
+      "Mail enviado con exito: Desde " +
+        formMail.email +
+        "- Mensaje: " +
+        formMail.mensaje
+    );
+    setMessageType("success");
+
+    setFormMail({
+      nombre: "",
+      email: "",
+      telefono: "",
+      asunto: "",
+      mensaje: "",
+    });
+  };
+
+  // Formulario
+  const [formMail, setFormMail] = useState({
+    nombre: "",
+    email: "",
+    telefono: "",
+    asunto: "",
+    mensaje: "",
+  });
+  const handleInputChange = (field: string, value: string) => {
+    setFormMail((prev) => ({ ...prev, [field]: value }));
+  };
+
   return (
     <div style={{ backgroundColor: "#1a2332", minHeight: "100vh" }}>
       {/* Hero Section */}
@@ -162,6 +203,10 @@ export default function ContactanosPage() {
                         color: "#fff",
                       }}
                       placeholder="Tu nombre"
+                      value={formMail.nombre}
+                      onChange={(e) =>
+                        handleInputChange("nombre", e.target.value)
+                      }
                     />
                   </div>
                   <div className="col-md-6">
@@ -175,6 +220,10 @@ export default function ContactanosPage() {
                         color: "#fff",
                       }}
                       placeholder="tu@email.com"
+                      value={formMail.email}
+                      onChange={(e) =>
+                        handleInputChange("email", e.target.value)
+                      }
                     />
                   </div>
                   <div className="col-12">
@@ -188,6 +237,10 @@ export default function ContactanosPage() {
                         color: "#fff",
                       }}
                       placeholder="+34 600 000 000"
+                      value={formMail.telefono}
+                      onChange={(e) =>
+                        handleInputChange("telefono", e.target.value)
+                      }
                     />
                   </div>
                   <div className="col-12">
@@ -201,6 +254,10 @@ export default function ContactanosPage() {
                         color: "#fff",
                       }}
                       placeholder="¿En qué podemos ayudarte?"
+                      value={formMail.asunto}
+                      onChange={(e) =>
+                        handleInputChange("asunto", e.target.value)
+                      }
                     />
                   </div>
                   <div className="col-12">
@@ -214,11 +271,16 @@ export default function ContactanosPage() {
                         color: "#fff",
                       }}
                       placeholder="Escribe tu mensaje aquí..."
+                      value={formMail.mensaje}
+                      onChange={(e) =>
+                        handleInputChange("mensaje", e.target.value)
+                      }
                     />
                   </div>
                   <div className="col-12">
                     <button
                       type="submit"
+                      onClick={handleSubmit}
                       className="btn btn-lg w-100 fw-semibold"
                       style={{
                         backgroundColor: "#22d3ee",
@@ -235,6 +297,15 @@ export default function ContactanosPage() {
           </div>
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={() => {
+          setShowError(false);
+        }}
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 }
