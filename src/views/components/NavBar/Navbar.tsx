@@ -17,7 +17,7 @@ const Navbar = ({ isAuth }: { isAuth: boolean }) => {
           style={{ cursor: "pointer" }}
         >
           <img
-            src={CarChainLogo}
+            src={CarChainLogo || "/placeholder.svg"}
             height="30"
             alt="Car-Chain"
             loading="lazy"
@@ -33,14 +33,27 @@ const Navbar = ({ isAuth }: { isAuth: boolean }) => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
-          <div className="navbar-nav">
-            <a href="#" className="nav-item nav-link active">
+          <div className="navbar-nav flex-column flex-lg-row">
+            <a
+              href="#"
+              className="nav-item nav-link active"
+              onClick={() => navigate("/quienesSomos")}
+            >
               ¿Quienes somos?
             </a>
-            <a href="#/quienesSomos" className="nav-item nav-link active">
+            <a
+              href="#"
+              className="nav-item nav-link active"
+              onClick={() => navigate("/contactanos")}
+            >
               Contactanos
             </a>
-            <a href="#" className="nav-item nav-link active" tabIndex={-1}>
+            <a
+              href="#"
+              className="nav-item nav-link active"
+              tabIndex={-1}
+              onClick={() => navigate("/ayuda")}
+            >
               Ayuda
             </a>
           </div>

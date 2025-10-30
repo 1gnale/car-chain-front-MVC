@@ -30,7 +30,8 @@ function ModificarModelo({
 
   // Redux datos y dispatch
   const dispatch = useAppDispatch();
-  const brands: Marca[] = useAppSelector((state) => state.marcas.marca);
+  const brandsTotals: Marca[] = useAppSelector((state) => state.marcas.marca);
+  const brands = brandsTotals.filter((m: any) => m.activo === true);
 
   // useState para el select marca
   const [selectedBrand, setSelectedBrand] = useState<number>(

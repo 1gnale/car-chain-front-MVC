@@ -281,62 +281,33 @@ const ReportAccident = ({
             }}
           >
             <div style={{ display: "flex", gap: "12px" }}>
-              <button
-                type="button"
-                style={{
-                  backgroundColor: "#4b5563",
-                  color: "#e5e7eb",
-                  padding: "12px 24px",
-                  border: "1px solid #6b7280",
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                }}
-                onClick={() => handleCurrentView("PolicyProfile")}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "#00bcd4";
-                  e.currentTarget.style.color = "#00bcd4";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor =
-                    "rgba(255, 255, 255, 0.3)";
-                  e.currentTarget.style.color = "#ffffff";
-                }}
-              >
-                <i
-                  className="fas fa-arrow-left"
-                  style={{ marginRight: "8px" }}
-                ></i>
-                Volver
-              </button>
-              <button
-                type="button"
-                style={{
-                  backgroundColor: "#00bcd4",
-                  border: "1px solid #00bcd4",
-                  color: "#ffffff",
-                  padding: "12px 32px",
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  fontWeight: "500",
-                }}
-                onClick={handleSubmit}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#00acc1";
-                  e.currentTarget.style.transform = "translateY(-1px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#00bcd4";
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
-                <i
-                  className="fas fa-arrow-right"
-                  style={{ marginRight: "8px" }}
-                ></i>
-                Confirmar
-              </button>
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary px-4"
+                  style={{ borderRadius: "10px" }}
+                  onClick={() => handleCurrentView("PolicyProfile")}
+                >
+                  <i className="fas fa-arrow-left me-2"></i>
+                  Volver
+                </button>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="btn"
+                  style={{
+                    backgroundColor: "#22d3ee",
+                    color: "#1a2332",
+                    border: "none",
+                    fontWeight: "500",
+                  }}
+                  onClick={handleSubmit}
+                >
+                  <i className="fas fa-arrow-left me-2"></i>
+                  Reportar Siniestro
+                </button>
+              </div>
             </div>
           </div>
         </div>

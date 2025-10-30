@@ -7,6 +7,7 @@ import PolicyFristPayment from "../components/PaymentViews/FormPolicyPayment";
 import PolicyHistoryData from "../components/ManagePolicyData/PolicyHistory";
 import PaymentHistoryData from "../components/ManagePolicyData/PaymentHistory";
 import ReportAccident from "../components/ManagePolicyData/ReportAccident";
+import PolicyBlockchain from "../components/ManagePolicyData/policyBlockchain";
 const ManagePolicyData = ({
   isAuth,
   policy,
@@ -53,6 +54,12 @@ const ManagePolicyData = ({
         handleCurrentView={handleCurrentView}
         idPolicy={policy.numero_poliza!}
       ></ReportAccident>
+    ),
+    PolicyBlockchain: (
+      <PolicyBlockchain
+        handleCurrentView={handleCurrentView}
+        policyId={policy.numero_poliza!}
+      ></PolicyBlockchain>
     ),
   };
 

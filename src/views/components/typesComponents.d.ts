@@ -5,7 +5,8 @@ type ViewName =
   | "pagarPoliza"
   | "historialPoliza"
   | "historialPago"
-  | "ReportAccident";
+  | "ReportAccident"
+  | "PolicyBlockchain";
 
 interface tableContent {
   titles: string[];

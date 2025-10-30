@@ -17,6 +17,9 @@ import ContoladorDashboard from "./controllers/ContoladorDashboard.tsx";
 import ControladorRegister from "./controllers/ControladorRegister.tsx";
 import ControladorAdministrarPoliza from "./controllers/ControladorAdministrarPoliza.tsx";
 import ContoladorAprobarPoliza from "./controllers/ContoladorAprobarPoliza.tsx";
+import QuienesSomos from "./views/pages/quienesSomosPage.tsx";
+import ContactanosPage from "./views/pages/contactanosPage.tsx";
+import AyudaPage from "./views/pages/ayudaPage.tsx";
 
 function App() {
   return (
@@ -150,6 +153,11 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Links del Navbar */}
+      <Route path="/quienesSomos" element={<QuienesSomos />} />
+      <Route path="/contactanos" element={<ContactanosPage />} />
+      <Route path="/ayuda" element={<AyudaPage />} />
     </Routes>
   );
 }

@@ -1,10 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Input from "../GeneralComponents/Input";
-import TitleForm from "../GeneralComponents/TitleForm";
-import GrayButton from "../GeneralComponents/Button";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation";
-import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
 import SelectForm from "../GeneralComponents/SelectForm";
 import { User, Shield, MapPin } from "lucide-react";
 const AccountDataInputs = ({ user }: { user: Cliente }) => {
@@ -35,18 +32,17 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     },
   });
 
-  console.log(formClient);
-
   const documentTypes: string[] = useAppSelector(
     (state) => state.tipoDocumentos.tipoDocumento
   );
   const provinces: Provincia[] = useAppSelector(
     (state) => state.provincias.provincia
   );
-  const listSex = [
-    { id: 1, name: "Femenino" },
-    { id: 2, name: "Masculino" },
-  ];
+
+  // Lista de sexos para el select
+  const listSex: GenericList[] = useAppSelector(
+    (state) => state.sexo.sexosList
+  );
 
   const handleDocumentType = useMemo(() => {
     const result = documentTypes.map((documentTypes, idx) => {

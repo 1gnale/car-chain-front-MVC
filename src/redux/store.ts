@@ -35,6 +35,10 @@ import historyPolicyReducer from "./historySlice";
 
 import pagoReducer from "./pagoSlice";
 
+import sexoReducer from "./sexosSlice";
+
+import tipoUsuarioReducer from "./tipoUsuarioSlice";
+
 export const store = configureStore({
   reducer: {
     marcas: marcasReducer,
@@ -59,6 +63,8 @@ export const store = configureStore({
     usuarios: usuarioReducer,
     historial: historyPolicyReducer,
     pago: pagoReducer,
+    sexo: sexoReducer,
+    tipoUsuario: tipoUsuarioReducer,
   },
 });
 

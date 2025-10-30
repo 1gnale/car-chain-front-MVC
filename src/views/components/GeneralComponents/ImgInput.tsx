@@ -4,8 +4,8 @@ interface exampleInputEmail1 {
   onCharge: (file: File) => void;
   onBlur?: () => void;
   error?: string;
-  fileName?: string; // Nombre del archivo cargado desde localStorage
-  isLoadedFromStorage?: boolean; // Indica si se cargó desde localStorage
+  fileName?: string;
+  isLoadedFromStorage?: boolean;
 }
 
 export default function ImgInput(props: exampleInputEmail1) {
@@ -45,7 +45,7 @@ export default function ImgInput(props: exampleInputEmail1) {
           lang="es"
         />
 
-        {/* Botón personalizado que activa el input file */}
+        {/* Botón personalizado */}
         <label
           htmlFor={inputId}
           className={`btn w-100 d-flex align-items-center justify-content-center position-relative ${
@@ -144,7 +144,7 @@ export default function ImgInput(props: exampleInputEmail1) {
           </div>
         )}
 
-        {/* Previsualización mejorada */}
+        {/* Vista previa (achicada) */}
         {srcUrl && (
           <div className="mt-4">
             <div className="position-relative">
@@ -164,7 +164,7 @@ export default function ImgInput(props: exampleInputEmail1) {
                   className="rounded shadow"
                   style={{
                     maxWidth: "100%",
-                    maxHeight: "280px",
+                    maxHeight: "180px", // 👈 achicado de 280px a 180px
                     border: "3px solid rgba(13, 202, 240, 0.4)",
                     borderRadius: "12px",
                     objectFit: "cover",
