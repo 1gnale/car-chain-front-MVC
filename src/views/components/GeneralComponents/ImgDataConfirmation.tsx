@@ -1,5 +1,5 @@
 interface imgconfirmationprop {
-  src?: string;
+  src?: string | File;
   alt?: string;
   text: string;
 }
@@ -20,7 +20,7 @@ function ImgConfirmation({ src, alt = "Imagen", text }: imgconfirmationprop) {
       }}
     >
       <img
-        src={src}
+        src={src instanceof File ? URL.createObjectURL(src) : src}
         alt={alt}
         style={{
           width: "100%",
