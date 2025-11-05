@@ -1,4 +1,4 @@
-// frontend/components/CheckoutButton.tsx
+// frontend/components/CheckoutButton
 
 const ControladorPruebaPago = () => {
   return <CheckoutButton />;

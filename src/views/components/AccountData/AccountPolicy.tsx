@@ -1,5 +1,5 @@
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
-import ProfileCard from "../GeneralComponents/ProfileCard.tsx";
+import ProfileCard from "../GeneralComponents/ProfileCard";
 import { Shield } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
-import CoverageCard from "../GeneralComponents/CoverageCard.tsx";
-import GrayButton from "../GeneralComponents/Button.tsx";
+import CoverageCard from "../GeneralComponents/CoverageCard";
+import GrayButton from "../GeneralComponents/Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 

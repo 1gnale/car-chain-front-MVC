@@ -1,4 +1,4 @@
-import GrayButton from "../GeneralComponents/Button.tsx";
+import GrayButton from "../GeneralComponents/Button";
 import {
   useAppDispatch,
   useAppSelector,
@@ -6,15 +6,15 @@ import {
 import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
-import SelectForm from "../GeneralComponents/SelectForm.tsx";
+import SelectForm from "../GeneralComponents/SelectForm";
 import { useLocalStorage } from "../../../controllers/controllerHooks/LocalStorage/useLocalStorage.ts";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import Input from "../GeneralComponents/Input.tsx";
-import CheckForm from "../GeneralComponents/CheckForm.tsx";
+import Input from "../GeneralComponents/Input";
+import CheckForm from "../GeneralComponents/CheckForm";
 import useUpdateVersion from "../../../controllers/controllerHooks/Mutations/useUpdateVersionHook.ts";
 import useFormValidationVersion from "../../../controllers/controllerHooks/Validations/useFormVersionsValidation.ts";
 import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository.ts";
-import Modal from "../GeneralComponents/Modal.tsx";
+import Modal from "../GeneralComponents/Modal";
 import {
   updateVersion,
   updateVersionState,
