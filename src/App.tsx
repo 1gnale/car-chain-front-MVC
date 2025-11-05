@@ -20,6 +20,7 @@ import ContoladorAprobarPoliza from "./controllers/ContoladorAprobarPoliza.tsx";
 import QuienesSomos from "./views/pages/quienesSomosPage.tsx";
 import ContactanosPage from "./views/pages/contactanosPage.tsx";
 import AyudaPage from "./views/pages/ayudaPage.tsx";
+import ContoladorAprobarRevision from "./controllers/ControladorAprobarRevision.tsx";
 
 function App() {
   return (
@@ -98,6 +99,16 @@ function App() {
         element={
           <ProtectedRoute>
             <ContoladorAprobarPoliza />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Caso de uso 12: ConsultarCotizacion */}
+      <Route
+        path="/perito"
+        element={
+          <ProtectedRoute>
+            <ContoladorAprobarRevision />
           </ProtectedRoute>
         }
       />

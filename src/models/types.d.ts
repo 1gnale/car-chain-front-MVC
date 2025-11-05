@@ -189,8 +189,8 @@ interface Revision {
   fecha?: string;
   hora?: string;
   estado?: string;
-  usuario: Usuario;
-  poliza: Poliza;
+  usuario?: Usuario;
+  poliza?: Poliza;
 
   activo?: boolean;
 }

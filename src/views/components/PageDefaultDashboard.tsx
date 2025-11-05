@@ -285,7 +285,7 @@ function PageDashboardDefault({ count, status }: { count: any; status: any }) {
               <Blocks size={32} />
             </div>
             <div className="metric-content">
-              <h3>Polizas caneladas</h3>
+              <h3>Polizas canceladas</h3>
               <div className="metric-number">{count.polizasVigentes}</div>
               <div className="metric-change neutral">Sin cambios</div>
             </div>

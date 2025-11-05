@@ -2,7 +2,7 @@ import { useState } from "react";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffectOnce } from "react-use";
-import ErrorPage from "../views/components/GeneralComponents/errorPage";
+import ErrorPage from "../views/components/GeneralComponents/ErrorPage";
 
 const ControladorProcesandoPago = () => {
   const [error, setError] = useState(false);

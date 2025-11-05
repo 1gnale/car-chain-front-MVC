@@ -11,6 +11,7 @@ import Modal from "../GeneralComponents/Modal.tsx";
 import { useAppDispatch } from "../../../redux/reduxTypedHooks.ts";
 import { updatePolizaState } from "../../../redux/policeSlice.ts";
 import { PolizaRepository } from "../../../models/repository/Repositorys/polizaRepository.ts";
+import { RevisionRepository } from "../../../models/repository/Repositorys/RevisionRepository.ts";
 const DataPolicy = ({
   numberPolicy,
   handleCurrentView,
@@ -22,6 +23,9 @@ const DataPolicy = ({
   const dispatch = useAppDispatch();
   // Repositorio para los ENDPOINTS
   const polizasRepo = new PolizaRepository(
+    `${import.meta.env.VITE_BASEURL}/api/poliza`
+  );
+  const revisionRepo = new RevisionRepository(
     `${import.meta.env.VITE_BASEURL}/api/poliza`
   );
 
@@ -118,6 +122,16 @@ const DataPolicy = ({
   // BOTONES APROBAR RECHAZAR ENVIAR A REVISAR
   async function handleApprovePolicy() {
     if (window.confirm("¿Estás seguro de que querés aprobar la poliza?")) {
+      if (
+        policy?.estadoPoliza != "PENDIENTE" &&
+        policy?.estadoPoliza != "EN_REVISIÓN"
+      ) {
+        setShowError(true);
+        setModalMessage("Error en la petición, la poliza no es modificable");
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+        return;
+      }
       try {
         const response = await polizasRepo.updateStatePoliza(
           numberPolicy!,
@@ -139,8 +153,56 @@ const DataPolicy = ({
     }
   }
 
+  async function handleReviewPolicy() {
+    if (
+      window.confirm("¿Estás seguro de que querés enviar a revisar la poliza?")
+    ) {
+      if (
+        policy?.estadoPoliza != "PENDIENTE" &&
+        policy?.estadoPoliza != "EN_REVISIÓN"
+      ) {
+        setShowError(true);
+        setModalMessage("Error en la petición, la poliza no es modificable");
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+        return;
+      }
+      try {
+        const revision: Revision = {
+          id: 0,
+          poliza: policy,
+        };
+        const response = await revisionRepo.createReview(revision);
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(
+          updatePolizaState({ id: numberPolicy!, estado: "EN_REVISION" })
+        );
+        setShowError(true);
+        setModalMessage("Estado de la Poliza " + numberPolicy + " actualizado");
+        setMessageType("info");
+        setTitleModalMessage("POLIZA ENVIADA A REVISION");
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
   async function handleDeclinePolicy() {
     if (window.confirm("¿Estás seguro de que querés rechazar la poliza?")) {
+      if (
+        policy?.estadoPoliza != "PENDIENTE" &&
+        policy?.estadoPoliza != "EN_REVISIÓN"
+      ) {
+        setShowError(true);
+        setModalMessage("Error en la petición, la poliza no es modificable");
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+        return;
+      }
       try {
         const response = await polizasRepo.updateStatePoliza(
           numberPolicy!,
@@ -160,6 +222,22 @@ const DataPolicy = ({
         setTitleModalMessage("ERROR");
       }
     }
+  }
+  // FUNCIONES OPCIONALES
+  function getFechaHoy(): string {
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoy.getDate()).padStart(2, "0");
+    return `${año}-${mes}-${dia}`;
+  }
+
+  function getHoraActual(): string {
+    const ahora = new Date();
+    const horas = String(ahora.getHours()).padStart(2, "0");
+    const minutos = String(ahora.getMinutes()).padStart(2, "0");
+    const segundos = String(ahora.getSeconds()).padStart(2, "0");
+    return `${horas}:${minutos}:${segundos}`;
   }
 
   return loading ? (
@@ -608,11 +686,15 @@ const DataPolicy = ({
                 style="me-md-2"
                 onClick={handleDeclinePolicy}
               />
-              <GrayButton
-                text="ENVIAR A REVISION"
-                style="me-md-2"
-                onClick={() => {}}
-              />
+              {policy?.estadoPoliza !== "EN_REVISIÓN" ? (
+                <GrayButton
+                  text="ENVIAR A REVISION"
+                  style="me-md-2"
+                  onClick={handleReviewPolicy}
+                />
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>
