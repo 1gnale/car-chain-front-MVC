@@ -1,4 +1,4 @@
-// useFormValidationMarca.ts
+// useFormValidationMarca
 import { useState, useEffect } from "react";
 
 interface ErrorMarca {

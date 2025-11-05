@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import CoverageCard from "../GeneralComponents/CoverageCard";
 import GrayButton from "../GeneralComponents/Button";
 import { useAuth0 } from "@auth0/auth0-react";

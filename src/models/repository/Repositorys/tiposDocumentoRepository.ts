@@ -1,4 +1,4 @@
-import type ITiposDocumentoRepository from "../Irepositorys/ITiposDocumentoRepository.ts";
+import type ITiposDocumentoRepository from "../Irepositorys/ITiposDocumentoRepository";
 import { BaseRepository } from "./BaseRepository";
 
 export class tiposDocumentoRepository

@@ -1,24 +1,18 @@
 import GrayButton from "../GeneralComponents/Button";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../redux/reduxTypedHooks.ts";
-import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
+import useFormValidation from "../../../controllers/controllerHooks/Validations/useFormValidation";
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
 import SelectForm from "../GeneralComponents/SelectForm";
-import { useLocalStorage } from "../../../controllers/controllerHooks/LocalStorage/useLocalStorage.ts";
-import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import { useLocalStorage } from "../../../controllers/controllerHooks/LocalStorage/useLocalStorage";
+import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
 import Input from "../GeneralComponents/Input";
 import CheckForm from "../GeneralComponents/CheckForm";
-import useUpdateVersion from "../../../controllers/controllerHooks/Mutations/useUpdateVersionHook.ts";
-import useFormValidationVersion from "../../../controllers/controllerHooks/Validations/useFormVersionsValidation.ts";
-import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository.ts";
+import useUpdateVersion from "../../../controllers/controllerHooks/Mutations/useUpdateVersionHook";
+import useFormValidationVersion from "../../../controllers/controllerHooks/Validations/useFormVersionsValidation";
+import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository";
 import Modal from "../GeneralComponents/Modal";
-import {
-  updateVersion,
-  updateVersionState,
-} from "../../../redux/versionSlice.ts";
+import { updateVersion, updateVersionState } from "../../../redux/versionSlice";
 
 function ModificarVersion({
   version,

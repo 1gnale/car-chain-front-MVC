@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Table from "../GeneralComponents/Table";
-import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import Modal from "../GeneralComponents/Modal";

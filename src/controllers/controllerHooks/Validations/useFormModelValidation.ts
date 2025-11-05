@@ -1,4 +1,4 @@
-// useFormValidationModelo.ts
+// useFormValidationModelo
 import { useState, useEffect } from "react";
 
 interface ErrorModelo {

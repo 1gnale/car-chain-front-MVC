@@ -4,7 +4,7 @@ import TitleForm from "./GeneralComponents/TitleForm";
 import Table from "./GeneralComponents/Table";
 import GrayButton from "./GeneralComponents/Button";
 import ImgConfirmation from "./GeneralComponents/ImgDataConfirmation";
-import { useAppSelector } from "../../redux/reduxTypedHooks.ts";
+import { useAppSelector } from "../../redux/reduxTypedHooks";
 
 function FormPolizas() {
   const [policy, setPolicy] = useState<Poliza>({});

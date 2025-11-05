@@ -1,17 +1,14 @@
 import GrayButton from "../GeneralComponents/Button";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../redux/reduxTypedHooks.ts";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useState } from "react";
 import { useMemo } from "react";
 import SelectForm from "../GeneralComponents/SelectForm";
 import Input from "../GeneralComponents/Input";
-import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository.ts";
-import { setModelo } from "../../../redux/modeloSlice.ts";
+import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository";
+import { setModelo } from "../../../redux/modeloSlice";
 import Modal from "../GeneralComponents/Modal";
-import useFormValidationVersion from "../../../controllers/controllerHooks/Validations/useFormVersionsValidation.ts";
-import { createVersion } from "../../../redux/versionSlice.ts";
+import useFormValidationVersion from "../../../controllers/controllerHooks/Validations/useFormVersionsValidation";
+import { createVersion } from "../../../redux/versionSlice";
 
 function CrearVersion({
   handleCurrentView,
