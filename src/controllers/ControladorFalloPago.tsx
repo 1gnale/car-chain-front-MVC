@@ -13,7 +13,7 @@ const ControladorFalloPago = () => {
   useEffectOnce(() => {
     const fetchData = async () => {
       try {
-        const baseUrl = import.meta.env.BASE_URL;
+        const baseUrl = import.meta.env.VITE_BASEURL;
 
         const response = await fetch(
           `${baseUrl}/api/pago/failedPago/${pagoId}`

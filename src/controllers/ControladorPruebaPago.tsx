@@ -7,7 +7,7 @@ const ControladorPruebaPago = () => {
 export default ControladorPruebaPago;
 
 const CheckoutButton = () => {
-  const baseURL = import.meta.env.BASE_URL;
+  const baseURL = import.meta.env.VITE_BASEURL;
   const handleBuy = async () => {
     try {
       const res = await fetch(`${baseURL}/api/pago/crearPrimerPago`, {

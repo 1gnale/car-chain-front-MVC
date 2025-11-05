@@ -21,6 +21,7 @@ import QuienesSomos from "./views/pages/quienesSomosPage";
 import ContactanosPage from "./views/pages/contactanosPage";
 import AyudaPage from "./views/pages/ayudaPage";
 import ContoladorAprobarRevision from "./controllers/ControladorAprobarRevision";
+import ControladorFalloPago from "./controllers/ControladorFalloPago";
 
 function App() {
   return (
@@ -134,6 +135,8 @@ function App() {
       />
 
       <Route path="/pago-exitoso" element={<PagoExitoso />} />
+
+      <Route path="/pago-fallido/:pagoId" element={<ControladorFalloPago />} />
 
       <Route path="/prueba-proceso-pago" element={<ControladorPruebaPago />} />
 
