@@ -1,16 +1,16 @@
-import GrayButton from "../GeneralComponents/Button.tsx";
+import GrayButton from "../GeneralComponents/Button";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../redux/reduxTypedHooks.ts";
 import { useState } from "react";
 import { useMemo } from "react";
-import SelectForm from "../GeneralComponents/SelectForm.tsx";
-import Input from "../GeneralComponents/Input.tsx";
+import SelectForm from "../GeneralComponents/SelectForm";
+import Input from "../GeneralComponents/Input";
 import { ModeloRepository } from "../../../models/repository/Repositorys/modelosRepository.ts";
 import useFormValidationModelo from "../../../controllers/controllerHooks/Validations/useFormModelValidation.ts";
 import { createModel } from "../../../redux/modeloSlice.ts";
-import Modal from "../GeneralComponents/Modal.tsx";
+import Modal from "../GeneralComponents/Modal";
 
 function CrearModelo({
   handleCurrentView,

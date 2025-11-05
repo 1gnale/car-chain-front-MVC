@@ -1,6 +1,6 @@
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
-import CoverageCard from "../GeneralComponents/CoverageCard.tsx";
-import GrayButton from "../GeneralComponents/Button.tsx";
+import CoverageCard from "../GeneralComponents/CoverageCard";
+import GrayButton from "../GeneralComponents/Button";
 import { ExclamationCircle } from "react-bootstrap-icons";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -13,8 +13,8 @@ import useLocalidadesHookByLocalityId from "../../../controllers/controllerHooks
 import useEdadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigEdadByAge.ts";
 import useConfigAntiguedadHookByAge from "../../../controllers/controllerHooks/Fetchs/useConfigAntiguedadByAge.ts";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import Spinner from "../GeneralComponents/SpinnerLoader.tsx";
-import Modal from "../GeneralComponents/Modal.tsx";
+import Spinner from "../GeneralComponents/SpinnerLoader";
+import Modal from "../GeneralComponents/Modal";
 
 const FormDataCoverages = ({
   handleCurrentView,

@@ -4,10 +4,10 @@ import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { ClienteRepository } from "../../../models/repository/Repositorys/clienteRepository.ts";
 import { useNavigate } from "react-router-dom";
-import DarkTitleForm from "../GeneralComponents/DarkTitleForm.tsx";
-import DarkInput from "../GeneralComponents/DarkInput.tsx";
-import DarkSelectForm from "../GeneralComponents/DarkSelect.tsx";
-import DarkButton from "../GeneralComponents/DarkButton.tsx";
+import DarkTitleForm from "../GeneralComponents/DarkTitleForm";
+import DarkInput from "../GeneralComponents/DarkInput";
+import DarkSelectForm from "../GeneralComponents/DarkSelect";
+import DarkButton from "../GeneralComponents/DarkButton";
 
 const FormDataClient = ({
   handleCurrentView,

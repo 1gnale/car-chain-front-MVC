@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
 import Spinner from "../GeneralComponents/SpinnerLoader";
-import ErrorPage from "../GeneralComponents/errorPage";
+import ErrorPage from "../GeneralComponents/ErrorPage";
 
 interface Datos {
   nombre: string;

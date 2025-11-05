@@ -4,11 +4,11 @@ import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import useFormVehicleValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
 import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
 import { useNavigate } from "react-router-dom";
-import DarkTitleForm from "../GeneralComponents/DarkTitleForm.tsx";
-import DarkInput from "../GeneralComponents/DarkInput.tsx";
-import DarkSelectForm from "../GeneralComponents/DarkSelect.tsx";
-import DarkCheckForm from "../GeneralComponents/DarkCheckForm.tsx";
-import DarkButton from "../GeneralComponents/DarkButton.tsx";
+import DarkTitleForm from "../GeneralComponents/DarkTitleForm";
+import DarkInput from "../GeneralComponents/DarkInput";
+import DarkSelectForm from "../GeneralComponents/DarkSelect";
+import DarkCheckForm from "../GeneralComponents/DarkCheckForm";
+import DarkButton from "../GeneralComponents/DarkButton";
 
 interface FormVehicleProps {
   matricula: string;

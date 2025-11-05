@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import LabelNinfo from "../GeneralComponents/LabelNinfo.tsx";
-import Table from "../GeneralComponents/Table.tsx";
-import GrayButton from "../GeneralComponents/Button.tsx";
-import ImgConfirmation from "../GeneralComponents/ImgDataConfirmation.tsx";
+import LabelNinfo from "../GeneralComponents/LabelNinfo";
+import Table from "../GeneralComponents/Table";
+import GrayButton from "../GeneralComponents/Button";
+import ImgConfirmation from "../GeneralComponents/ImgDataConfirmation";
 import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
 import { useNavigate } from "react-router-dom";
 

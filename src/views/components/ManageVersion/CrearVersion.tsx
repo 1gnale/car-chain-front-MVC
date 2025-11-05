@@ -1,15 +1,15 @@
-import GrayButton from "../GeneralComponents/Button.tsx";
+import GrayButton from "../GeneralComponents/Button";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../../redux/reduxTypedHooks.ts";
 import { useState } from "react";
 import { useMemo } from "react";
-import SelectForm from "../GeneralComponents/SelectForm.tsx";
-import Input from "../GeneralComponents/Input.tsx";
+import SelectForm from "../GeneralComponents/SelectForm";
+import Input from "../GeneralComponents/Input";
 import { VersionRepository } from "../../../models/repository/Repositorys/versionRepository.ts";
 import { setModelo } from "../../../redux/modeloSlice.ts";
-import Modal from "../GeneralComponents/Modal.tsx";
+import Modal from "../GeneralComponents/Modal";
 import useFormValidationVersion from "../../../controllers/controllerHooks/Validations/useFormVersionsValidation.ts";
 import { createVersion } from "../../../redux/versionSlice.ts";
 
