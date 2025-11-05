@@ -165,7 +165,7 @@ const useFormValidation = (): UseFormValidationReturn => {
     setErrors({});
   };
 
-  const clearFieldError = (fieldName: keyof Documentacion): void => {
+  const clearFieldError = (fieldName: keyof ValidationErrors): void => {
     const newErrors = { ...errors };
     delete newErrors[fieldName];
     setErrors(newErrors);
