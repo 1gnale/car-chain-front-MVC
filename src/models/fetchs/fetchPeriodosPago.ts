@@ -1,4 +1,4 @@
-import type IPeriodosPagoRepository from "../repository/Irepositorys/IPeriodosPagoRepository.ts";
+import type IPeriodosPagoRepository from "../repository/Irepositorys/IPeriodosPagoRepository";
 
 const fetchPeriodosPago = async (
   periodoPagoRepo: IPeriodosPagoRepository

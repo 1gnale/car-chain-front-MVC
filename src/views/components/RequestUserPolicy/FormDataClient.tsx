@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
-import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
-import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
-import { ClienteRepository } from "../../../models/repository/Repositorys/clienteRepository.ts";
+import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
+import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
+import { ClienteRepository } from "../../../models/repository/Repositorys/clienteRepository";
 import { useNavigate } from "react-router-dom";
 import DarkTitleForm from "../GeneralComponents/DarkTitleForm";
 import DarkInput from "../GeneralComponents/DarkInput";

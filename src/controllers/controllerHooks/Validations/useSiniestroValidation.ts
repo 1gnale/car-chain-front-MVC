@@ -1,4 +1,4 @@
-// useFormValidationSiniestro.ts
+// useFormValidationSiniestro
 import { useState, useEffect } from "react";
 
 interface ValidationErrorsSiniestro {

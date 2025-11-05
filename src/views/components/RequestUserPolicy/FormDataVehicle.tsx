@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useMemo } from "react";
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
-import useFormVehicleValidation from "../../../controllers/controllerHooks/Validations/useFormValidation.ts";
-import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook.ts";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
+import useFormVehicleValidation from "../../../controllers/controllerHooks/Validations/useFormValidation";
+import useLocalStorageItem from "../../../controllers/controllerHooks/LocalStorage/getFromLocalStorageHook";
 import { useNavigate } from "react-router-dom";
 import DarkTitleForm from "../GeneralComponents/DarkTitleForm";
 import DarkInput from "../GeneralComponents/DarkInput";

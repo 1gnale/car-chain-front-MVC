@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import ProfileCard from "../GeneralComponents/ProfileCard";
 import { Shield } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";

@@ -3,15 +3,15 @@ import LabelNinfo from "../GeneralComponents/LabelNinfo";
 import Table from "../GeneralComponents/Table";
 import GrayButton from "../GeneralComponents/Button";
 import ImgConfirmation from "../GeneralComponents/ImgDataConfirmation";
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useNavigate } from "react-router-dom";
-import usePoliceByIdHook from "../../../controllers/controllerHooks/Fetchs/usePoliceByIdHook.ts";
+import usePoliceByIdHook from "../../../controllers/controllerHooks/Fetchs/usePoliceByIdHook";
 import Spinner from "../GeneralComponents/SpinnerLoader";
 import Modal from "../GeneralComponents/Modal";
-import { useAppDispatch } from "../../../redux/reduxTypedHooks.ts";
-import { updatePolizaState } from "../../../redux/policeSlice.ts";
-import { PolizaRepository } from "../../../models/repository/Repositorys/polizaRepository.ts";
-import { RevisionRepository } from "../../../models/repository/Repositorys/RevisionRepository.ts";
+import { useAppDispatch } from "../../../redux/reduxTypedHooks";
+import { updatePolizaState } from "../../../redux/policeSlice";
+import { PolizaRepository } from "../../../models/repository/Repositorys/polizaRepository";
+import { RevisionRepository } from "../../../models/repository/Repositorys/RevisionRepository";
 const DataPolicy = ({
   numberPolicy,
   handleCurrentView,

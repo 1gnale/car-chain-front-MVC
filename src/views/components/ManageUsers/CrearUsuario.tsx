@@ -1,17 +1,14 @@
 import { useState, useMemo } from "react";
 import Input from "../GeneralComponents/Input";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../redux/reduxTypedHooks.ts";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import SelectForm from "../GeneralComponents/SelectForm";
 import GrayButton from "../GeneralComponents/Button";
 import { Search } from "react-bootstrap-icons";
 import DateInputDark from "../GeneralComponents/DateInputDark";
 import IconButton from "../GeneralComponents/IconButton";
-import useFormValidationUsuarios from "../../../controllers/controllerHooks/Validations/useUsersValidation.ts";
-import { createUser } from "../../../redux/usuariosSlice.ts";
-import { UsuarioRepository } from "../../../models/repository/Repositorys/UsuariosRepository.ts";
+import useFormValidationUsuarios from "../../../controllers/controllerHooks/Validations/useUsersValidation";
+import { createUser } from "../../../redux/usuariosSlice";
+import { UsuarioRepository } from "../../../models/repository/Repositorys/UsuariosRepository";
 import Modal from "../GeneralComponents/Modal";
 import DateInputClear from "../GeneralComponents/DateInput";
 

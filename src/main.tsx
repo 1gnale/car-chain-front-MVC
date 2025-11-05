@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "./redux/store.ts";
+import { store } from "./redux/store";
 import { Auth0Provider } from "@auth0/auth0-react";
 
 import "bootstrap/dist/css/bootstrap.min.css";

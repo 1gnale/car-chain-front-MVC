@@ -5,7 +5,7 @@ import LabelNinfo from "../GeneralComponents/LabelNinfo";
 import Table from "../GeneralComponents/Table";
 import GrayButton from "../GeneralComponents/Button";
 import ImgConfirmation from "../GeneralComponents/ImgDataConfirmation";
-import { useAppSelector } from "../../../redux/reduxTypedHooks.ts";
+import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useNavigate } from "react-router-dom";
 
 const PolicyProfile = ({

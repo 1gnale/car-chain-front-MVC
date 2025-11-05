@@ -1,18 +1,15 @@
 import { useState, useMemo } from "react";
-import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation.ts";
+import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation";
 import Input from "../GeneralComponents/Input";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../../redux/reduxTypedHooks.ts";
+import { useAppDispatch, useAppSelector } from "../../../redux/reduxTypedHooks";
 import SelectForm from "../GeneralComponents/SelectForm";
 import GrayButton from "../GeneralComponents/Button";
 import DateInputDark from "../GeneralComponents/DateInputDark";
 import Modal from "../GeneralComponents/Modal";
 import CheckForm from "../GeneralComponents/CheckForm";
-import useFormValidationUsuarios from "../../../controllers/controllerHooks/Validations/useUsersValidation.ts";
-import { UsuarioRepository } from "../../../models/repository/Repositorys/UsuariosRepository.ts";
-import { updateUsuario } from "../../../redux/usuariosSlice.ts";
+import useFormValidationUsuarios from "../../../controllers/controllerHooks/Validations/useUsersValidation";
+import { UsuarioRepository } from "../../../models/repository/Repositorys/UsuariosRepository";
+import { updateUsuario } from "../../../redux/usuariosSlice";
 import DateInputClear from "../GeneralComponents/DateInput";
 
 function ModificarUsuario({
