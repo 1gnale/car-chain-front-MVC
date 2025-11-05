@@ -11,7 +11,7 @@ const ControladorProcesandoPago = () => {
 
   useEffectOnce(() => {
     const fetchData = async () => {
-      const baseUrl = import.meta.env.BASE_URL;
+      const baseUrl = import.meta.env.VITE_BASEURL;
       try {
         const response = await fetch(
           `${baseUrl}/api/pago/sucessPago/${numero_poliza}/${pagoId}`
