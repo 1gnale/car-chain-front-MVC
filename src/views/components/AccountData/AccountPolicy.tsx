@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const statesPolizaTooltip: Record<string, string> = {
   PENDIENTE:
     "La poliza se esta revisando, en los proximos dias se aprobara, rechazara o se asignara a revision",
-  EN_REVISION:
+  EN_REVISIÓN:
     "Su poliza esta en revision, en breves enviaremos un tecnico para que verifique el estado",
   RECHAZADA: "Su poliza se considero inadecuada y fue rechazada",
   APROBADA:
