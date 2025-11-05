@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import usePoliceByIdHook from "./controllerHooks/Fetchs/usePoliceByIdHook";
 import useDetallesHook from "./controllerHooks/Fetchs/useDetallesHook";
 import useCoberturasDetalleHook from "./controllerHooks/Fetchs/useCoberturaDetalleHook";
-import PeritoPage from "../views/pages/peritoPage";
+import PeritoPage from "../views/pages/PeritoPage";
 
 const ContoladorAprobarRevision = () => {
   const { isAuthenticated, isLoading } = useAuth0();

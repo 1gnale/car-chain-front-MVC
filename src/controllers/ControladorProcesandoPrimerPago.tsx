@@ -13,9 +13,10 @@ const ControladorProcesandoPrimerPago = () => {
 
   useEffectOnce(() => {
     const fetchData = async () => {
+      const baseUrl = import.meta.env.BASE_URL;
       try {
         const response = await fetch(
-          `http://localhost:3000/api/pago/sucessPrimerPago/${numero_poliza}/${pagoId}/${idTipoContratacion}/${idPeriodoPago}`
+          `${baseUrl}/api/pago/sucessPrimerPago/${numero_poliza}/${pagoId}/${idTipoContratacion}/${idPeriodoPago}`
         );
 
         if (!response.ok)
@@ -23,7 +24,7 @@ const ControladorProcesandoPrimerPago = () => {
         const data = await response.json();
 
         const responsePoliza = await fetch(
-          `http://localhost:3000/api/poliza/getPolizaById/${numero_poliza}`
+          `${baseUrl}/api/poliza/getPolizaById/${numero_poliza}`
         );
 
         if (!responsePoliza.ok)

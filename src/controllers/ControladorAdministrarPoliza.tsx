@@ -9,7 +9,7 @@ import useTipoContratacion from "./controllerHooks/Fetchs/useTipoContratacion";
 import Spinner from "../views/components/GeneralComponents/SpinnerLoader";
 import usePolicyHistoryByIdHook from "./controllerHooks/Fetchs/usePolicyHistory";
 import usePagosHook from "./controllerHooks/Fetchs/usePagosHook";
-import ErrorPage from "../views/components/GeneralComponents/errorPage";
+import ErrorPage from "../views/components/GeneralComponents/ErrorPage";
 
 const ControladorAdministrarPoliza = () => {
   const { isAuthenticated, isLoading } = useAuth0();

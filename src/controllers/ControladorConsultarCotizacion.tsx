@@ -57,7 +57,8 @@ const ControladorConsultarCotizacion = () => {
         //const resultado = await savePoliza(cotizacion!, lineasCotizacion);
 
         // 2. CONFIGURACIÓN DEL FETCH
-        const url = "http://localhost:3000/api/poliza/createParcialPoliza"; // <- ¡Confirma que esta sea tu ruta!
+        const baseUrl = import.meta.env.BASE_URL;
+        const url = `${baseUrl}/api/poliza/createParcialPoliza`; // <- ¡Confirma que esta sea tu ruta!
 
         console.log("Enviando payload:", JSON.stringify(poliza, null, 2));
 

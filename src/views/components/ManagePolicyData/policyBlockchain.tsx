@@ -27,10 +27,11 @@ export default function PolicyBlockchain({
   const [error, setError] = useState(false);
 
   async function getPolicyData(): Promise<Datos> {
+    const baseUrl = import.meta.env.BASE_URL;
     try {
       setLoading(true); // 👈 activa el estado de carga
       const response = await fetch(
-        `http://localhost:3000/api/pago/getPolizaBlockchainById/${policyId}`
+        `${baseUrl}/api/pago/getPolizaBlockchainById/${policyId}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
