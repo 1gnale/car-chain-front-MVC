@@ -23,7 +23,7 @@ import AyudaPage from "./views/pages/ayudaPage";
 import ContoladorAprobarRevision from "./controllers/ControladorAprobarRevision";
 import RedirectByRole from "./controllers/RedirectedByRole";
 import ContoladorValidarSiniestro from "./controllers/ControladorValidarSiniestro";
-
+import ControladorFalloPago from "./controllers/ControladorFalloPago";
 
 function App() {
   return (
@@ -138,8 +138,6 @@ function App() {
         element={<ControladorProcesandoPago />}
       />
       <Route path="/pago-exitoso" element={<PagoExitoso />} />
-      <Route path="/pago-fallido/:pagoId" element={<ControladorFalloPago />} />
-
       <Route path="/pago-fallido/:pagoId" element={<ControladorFalloPago />} />
 
       <Route path="/prueba-proceso-pago" element={<ControladorPruebaPago />} />
