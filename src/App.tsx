@@ -23,6 +23,7 @@ import AyudaPage from "./views/pages/ayudaPage";
 import ContoladorAprobarRevision from "./controllers/ControladorAprobarRevision";
 import RedirectByRole from "./controllers/RedirectedByRole";
 import ContoladorValidarSiniestro from "./controllers/ControladorValidarSiniestro";
+import ControladorFalloPago from "./controllers/ControladorFalloPago";
 
 function App() {
   return (
@@ -38,6 +39,16 @@ function App() {
       />
 
       {/* Centro de mando de admin. */}
+      {/* Caso de uso 02: Gestionar Marcas */}
+      {/* Caso de uso 03: Gestionar Modelos */}
+      {/* Caso de uso 04: Gestionar Versiones */}
+      {/* Caso de uso 05: Gestionar Detalles */}
+      {/* Caso de uso 06: Gestionar Coberturas */}
+      {/* Caso de uso 13: Gestionar Configuracion de edad */}
+      {/* Caso de uso 14: Gestionar Configuracion de antiguedad */}
+      {/* Caso de uso 15: Gestionar Configuracion de localidad */}
+      {/* Caso de uso 16: Gestionar periodos de pago */}
+      {/* Caso de uso 17: Gestionar tipo de contratacion */}
       <Route
         path="/administrador"
         element={
@@ -47,60 +58,25 @@ function App() {
         }
       />
 
-      {/* Caso de uso 02: Gestionar Marcas */}
-      <Route
-        path="/marcas"
-        element={
-          <ProtectedRoute>
-            <ControladorMarcas />
-          </ProtectedRoute>
-        }
-      />
-      {/* Caso de uso 03: Gestionar Modelos */}
-      <Route
-        path="/modelos"
-        element={
-          <ProtectedRoute>
-            <ControladorModelos />
-          </ProtectedRoute>
-        }
-      />
-      {/* Caso de uso 04: Gestionar Versiones */}
-      <Route
-        path="/versiones"
-        element={
-          <ProtectedRoute>
-            <ControladorVersiones />
-          </ProtectedRoute>
-        }
-      />
-      {/* Caso de uso 05: Gestionar Detalles */}
-      <Route
-        path="/detalles"
-        element={
-          <ProtectedRoute>
-            <ControladorDetalles />
-          </ProtectedRoute>
-        }
-      />
-      {/* Caso de uso 06: Gestionar Coberturas */}
-      <Route
-        path="/coberturas"
-        element={
-          <ProtectedRoute>
-            <ControladorCoberturas />
-          </ProtectedRoute>
-        }
-      />
       {/* Caso de uso 07: Registrar Cliente */}
       <Route path="/registrar" element={<ControladorRegister />} />
+
+      {/* ACCESO A TODO EL PERFIL */}
+      {/* Caso de uso 08: Modificar cuenta de cliente */}
+      <Route
+        path="/perfil"
+        element={
+          <ProtectedRoute>
+            <ControladorPerfil />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Caso de uso 09: Solicitar Contratación de Póliza */}
       <Route
         path="/solicitar-cotizacion"
         element={<ControladorSolicitarCotizacionDePoliza />}
       />
-      <Route path="/" element={<ControladorIndex />} />
 
       {/* Caso de uso 10: Consultar Cotizacion */}
       <Route
@@ -157,25 +133,14 @@ function App() {
         path="/procesando-primerPago/:numero_poliza/:pagoId/:idTipoContratacion/:idPeriodoPago"
         element={<ControladorProcesandoPrimerPago />}
       />
-
       <Route
         path="/procesando-pago/:numero_poliza/:pagoId"
         element={<ControladorProcesandoPago />}
       />
-
       <Route path="/pago-exitoso" element={<PagoExitoso />} />
+      <Route path="/pago-fallido/:pagoId" element={<ControladorFalloPago />} />
 
       <Route path="/prueba-proceso-pago" element={<ControladorPruebaPago />} />
-
-      {/* ACCESO A TODO EL PERFIL */}
-      <Route
-        path="/perfil"
-        element={
-          <ProtectedRoute>
-            <ControladorPerfil />
-          </ProtectedRoute>
-        }
-      />
 
       {/* Ver una poliza en particular */}
       <Route
