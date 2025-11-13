@@ -237,7 +237,11 @@ const PageRegistrar = () => {
 
         alert("Persona registrada exitosamente");
         Object.keys(localStorage).forEach((key) => {
-          if (!key.startsWith("@@auth0") && !key.includes("auth0")) {
+          if (
+            !key.startsWith("@@auth0") &&
+            !key.includes("auth0") &&
+            !key.includes("VehicleData")
+          ) {
             localStorage.removeItem(key);
           }
         });
