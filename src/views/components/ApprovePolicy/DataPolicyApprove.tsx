@@ -12,11 +12,15 @@ import { useAppDispatch } from "../../../redux/reduxTypedHooks";
 import { updatePolizaState } from "../../../redux/policeSlice";
 import { PolizaRepository } from "../../../models/repository/Repositorys/polizaRepository";
 import { RevisionRepository } from "../../../models/repository/Repositorys/RevisionRepository";
+import { SiniestroRepository } from "../../../models/repository/Repositorys/SiniestroRepository";
+import { updateSiniestroState } from "../../../redux/siniestroSlice";
 const DataPolicy = ({
   numberPolicy,
+  currentSiniestro,
   handleCurrentView,
 }: {
   numberPolicy?: number;
+  currentSiniestro?: Siniestro;
   handleCurrentView: (pass: boolean) => void;
 }) => {
   // Redux datos y dispatch
@@ -26,6 +30,10 @@ const DataPolicy = ({
     `${import.meta.env.VITE_BASEURL}/api/poliza`
   );
   const revisionRepo = new RevisionRepository(
+    `${import.meta.env.VITE_BASEURL}/api/poliza`
+  );
+
+  const siniestroRepo = new SiniestroRepository(
     `${import.meta.env.VITE_BASEURL}/api/poliza`
   );
 
@@ -190,7 +198,6 @@ const DataPolicy = ({
       }
     }
   }
-
   async function handleDeclinePolicy() {
     if (window.confirm("¿Estás seguro de que querés rechazar la poliza?")) {
       if (
@@ -223,6 +230,47 @@ const DataPolicy = ({
       }
     }
   }
+
+  async function handleApproveSiniestro(aprobar: boolean) {
+    if (
+      window.confirm("¿Estás seguro de que querés enviar a revisar la poliza?")
+    ) {
+      if (policy?.estadoPoliza != "VIGENTE") {
+        setShowError(true);
+        setModalMessage("Error solo se evaluan polizas vigentes");
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+        return;
+      }
+      try {
+        let estado = "";
+        if (aprobar) {
+          estado = "APROBADA";
+        } else {
+          estado = "RECHAZADA";
+        }
+        const response = await siniestroRepo.updateStateSiniestro(
+          currentSiniestro?.id || 0,
+          estado
+        );
+
+        //  Actualizo Redux en frontend sin volver a pedir la lista
+        dispatch(updateSiniestroState({ id: currentSiniestro?.id!, estado }));
+        setShowError(true);
+        setModalMessage(
+          "Estado del siniestro " + currentSiniestro?.id + " actualizado"
+        );
+        setMessageType("info");
+        setTitleModalMessage("SINIESTRO " + estado);
+      } catch (error: any) {
+        setShowError(true);
+        setModalMessage("Error en la petición" + error.message);
+        setMessageType("error");
+        setTitleModalMessage("ERROR");
+      }
+    }
+  }
+
   // FUNCIONES OPCIONALES
   function getFechaHoy(): string {
     const hoy = new Date();
@@ -256,6 +304,76 @@ const DataPolicy = ({
     >
       <div className="row justify-content-center">
         <div className="col-12 col-xl-10">
+          {/* Información del siniestro */}
+          {!currentSiniestro ? null : (
+            <div
+              className="card bg-light border-dark mb-4"
+              style={{
+                borderRadius: "16px",
+                border: "1px solid rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              <div className="card-header bg-transparent border-dark border-bottom">
+                <h5 className="card-title text-dark mb-0 d-flex align-items-center">
+                  <i className="fas fa-file-contract me-2"></i>
+                  Información del siniestro
+                </h5>
+              </div>
+              <div className="card-body">
+                <div className="row g-3">
+                  <div className="col-md-3">
+                    <LabelNinfo
+                      dark={true}
+                      title="Número de póliza:"
+                      text={String(currentSiniestro?.poliza?.numero_poliza)}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <LabelNinfo
+                      dark={true}
+                      title="Estado siniestro:"
+                      text={currentSiniestro.estado || " -"}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <LabelNinfo
+                      dark={true}
+                      title="Fecha contratacion:"
+                      text={currentSiniestro.fechaSiniestro || " -"}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <LabelNinfo
+                      dark={true}
+                      title="Hora contratacion"
+                      text={currentSiniestro.horaSiniestro}
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <ImgConfirmation
+                      src={currentSiniestro.fotoDenuncia}
+                      alt="Foto Denuncia"
+                      text="Foto Denuncia"
+                    />
+                    <small className="text-muted d-block mt-1">
+                      {getFileDisplayName(documentationPaths.fotoFrontal)}
+                    </small>
+                  </div>
+                  <div className="col-md-2">
+                    <ImgConfirmation
+                      src={currentSiniestro.fotoVehiculo}
+                      alt="Foto Vehiculo"
+                      text="Foto Vehiculo"
+                    />
+                    <small className="text-muted d-block mt-1">
+                      {getFileDisplayName(documentationPaths.fotoFrontal)}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Información de la Póliza */}
           <div
             className="card bg-light border-dark mb-4"
@@ -675,27 +793,42 @@ const DataPolicy = ({
             </div>
 
             {/* Botones a la derecha */}
-            <div className="d-flex">
-              <GrayButton
-                text="APROBAR POLIZA"
-                style="me-md-2"
-                onClick={handleApprovePolicy}
-              />
-              <GrayButton
-                text="RECHAZAR POLIZA"
-                style="me-md-2"
-                onClick={handleDeclinePolicy}
-              />
-              {policy?.estadoPoliza !== "EN_REVISIÓN" ? (
+            {!currentSiniestro ? (
+              <div className="d-flex">
                 <GrayButton
-                  text="ENVIAR A REVISION"
+                  text="APROBAR POLIZA"
                   style="me-md-2"
-                  onClick={handleReviewPolicy}
+                  onClick={handleApprovePolicy}
                 />
-              ) : (
-                <></>
-              )}
-            </div>
+                <GrayButton
+                  text="RECHAZAR POLIZA"
+                  style="me-md-2"
+                  onClick={handleDeclinePolicy}
+                />
+                {policy?.estadoPoliza !== "EN_REVISIÓN" ? (
+                  <GrayButton
+                    text="ENVIAR A REVISION"
+                    style="me-md-2"
+                    onClick={handleReviewPolicy}
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+            ) : (
+              <div className="d-flex">
+                <GrayButton
+                  text="APROBAR SINIESTRO"
+                  style="me-md-2"
+                  onClick={() => handleApproveSiniestro(true)}
+                />
+                <GrayButton
+                  text="RECHAZAR SINIESTRO"
+                  style="me-md-2"
+                  onClick={() => handleApproveSiniestro(false)}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>

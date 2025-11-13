@@ -76,7 +76,6 @@ const ControladorSolicitarContratacionDePoliza = () => {
         // 2. CONFIGURACIÓN DEL FETCH
         const baseUrl = import.meta.env.VITE_BASEURL;
         const url = `${baseUrl}/api/poliza/createCompletePoliza`;
-
         console.log("Enviando payload:", JSON.stringify(poliza, null, 2));
 
         // Obtener datos de documentación desde localStorage

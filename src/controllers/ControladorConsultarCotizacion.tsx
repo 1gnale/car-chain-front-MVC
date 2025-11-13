@@ -60,6 +60,7 @@ const ControladorConsultarCotizacion = () => {
         const baseUrl = import.meta.env.VITE_BASEURL;
         const url = `${baseUrl}/api/poliza/createParcialPoliza`; // <- ¡Confirma que esta sea tu ruta!
 
+
         console.log("Enviando payload:", JSON.stringify(poliza, null, 2));
 
         // Obtener datos de documentación desde localStorage
@@ -83,6 +84,7 @@ const ControladorConsultarCotizacion = () => {
           poliza: poliza,
           documentacion: documentacionPayload,
         };
+        console.log("BODYYYYYYYYYYYYYY:  " + JSON.stringify(body));
         try {
           const respuesta = await fetch(url, {
             method: "POST",
