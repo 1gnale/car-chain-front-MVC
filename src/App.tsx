@@ -21,12 +21,31 @@ import QuienesSomos from "./views/pages/quienesSomosPage";
 import ContactanosPage from "./views/pages/contactanosPage";
 import AyudaPage from "./views/pages/ayudaPage";
 import ContoladorAprobarRevision from "./controllers/ControladorAprobarRevision";
+import RedirectByRole from "./controllers/RedirectedByRole";
+import ContoladorValidarSiniestro from "./controllers/ControladorValidarSiniestro";
 
 function App() {
   return (
     <Routes>
       {/* Inicio */}
-      <Route path="/" element={<ControladorIndex />} />
+      <Route
+        path="/"
+        element={
+          <RedirectByRole>
+            <ControladorIndex />
+          </RedirectByRole>
+        }
+      />
+
+      {/* Centro de mando de admin. */}
+      <Route
+        path="/administrador"
+        element={
+          <ProtectedRoute allowedRoles={["ADMINISTRADOR"]}>
+            <ContoladorDashboard />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Caso de uso 02: Gestionar Marcas */}
       <Route
@@ -75,15 +94,15 @@ function App() {
       />
       {/* Caso de uso 07: Registrar Cliente */}
       <Route path="/registrar" element={<ControladorRegister />} />
-      {/* Caso de uso 09: Solicitar Contratación de Póliza */}
 
+      {/* Caso de uso 09: Solicitar Contratación de Póliza */}
       <Route
         path="/solicitar-cotizacion"
         element={<ControladorSolicitarCotizacionDePoliza />}
       />
       <Route path="/" element={<ControladorIndex />} />
 
-      {/* Caso de uso 10: ConsultarCotizacion */}
+      {/* Caso de uso 10: Consultar Cotizacion */}
       <Route
         path="/cotizacion/:id"
         element={
@@ -93,21 +112,21 @@ function App() {
         }
       />
 
-      {/* Caso de uso 11: ConsultarCotizacion */}
+      {/* Caso de uso 11: Aprobar poliza */}
       <Route
         path="/vendedor"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["VENDEDOR"]}>
             <ContoladorAprobarPoliza />
           </ProtectedRoute>
         }
       />
 
-      {/* Caso de uso 12: ConsultarCotizacion */}
+      {/* Caso de uso 12: Aprobar revision */}
       <Route
         path="/perito"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["PERITO"]}>
             <ContoladorAprobarRevision />
           </ProtectedRoute>
         }
@@ -122,6 +141,17 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Caso de uso 19: Validar reporte siniestro */}
+      <Route
+        path="/gestor_de_siniestros"
+        element={
+          <ProtectedRoute allowedRoles={["GESTOR_DE_SINIESTROS"]}>
+            <ContoladorValidarSiniestro />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Caso de Uso 20: Pagar Póliza */}
       <Route
         path="/procesando-primerPago/:numero_poliza/:pagoId/:idTipoContratacion/:idPeriodoPago"
@@ -146,15 +176,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-      {/* Centro de mando de admin */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <ContoladorDashboard />
-          </ProtectedRoute>
-        }
-      />
+
       {/* Ver una poliza en particular */}
       <Route
         path="/administrarPoliza/:idPoliza"

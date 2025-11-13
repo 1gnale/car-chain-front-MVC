@@ -57,8 +57,9 @@ const ControladorConsultarCotizacion = () => {
         //const resultado = await savePoliza(cotizacion!, lineasCotizacion);
 
         // 2. CONFIGURACIÓN DEL FETCH
-        const baseUrl = import.meta.env.BASE_URL;
-        const url = `${baseUrl}/api/poliza/createParcialPoliza`; // <- ¡Confirma que esta sea tu ruta!
+        const baseUrl = import.meta.env.VITE_BASEURL;
+        const url = `${baseUrl}/api/poliza/createParcialPoliza`;
+        console.log(url);
 
         console.log("Enviando payload:", JSON.stringify(poliza, null, 2));
 
@@ -83,6 +84,7 @@ const ControladorConsultarCotizacion = () => {
           poliza: poliza,
           documentacion: documentacionPayload,
         };
+        console.log("BODYYYYYYYYYYYYYY:  " + JSON.stringify(body));
         try {
           const respuesta = await fetch(url, {
             method: "POST",

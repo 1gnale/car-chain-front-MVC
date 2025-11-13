@@ -39,6 +39,8 @@ import sexoReducer from "./sexosSlice";
 
 import tipoUsuarioReducer from "./tipoUsuarioSlice";
 
+import siniestroReducer from "./siniestroSlice";
+
 export const store = configureStore({
   reducer: {
     marcas: marcasReducer,
@@ -65,6 +67,7 @@ export const store = configureStore({
     pago: pagoReducer,
     sexo: sexoReducer,
     tipoUsuario: tipoUsuarioReducer,
+    siniestros: siniestroReducer,
   },
 });
 

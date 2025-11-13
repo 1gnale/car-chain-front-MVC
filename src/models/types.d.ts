@@ -182,6 +182,7 @@ interface Siniestro {
   fotoDenuncia?: File;
   fotoVehiculo?: File;
   activo?: boolean;
+  poliza?: Poliza;
 }
 
 interface Revision {

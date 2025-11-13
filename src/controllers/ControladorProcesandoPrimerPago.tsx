@@ -13,7 +13,7 @@ const ControladorProcesandoPrimerPago = () => {
 
   useEffectOnce(() => {
     const fetchData = async () => {
-      const baseUrl = import.meta.env.BASE_URL;
+      const baseUrl = import.meta.env.VITE_BASEURL;
       try {
         const response = await fetch(
           `${baseUrl}/api/pago/sucessPrimerPago/${numero_poliza}/${pagoId}/${idTipoContratacion}/${idPeriodoPago}`

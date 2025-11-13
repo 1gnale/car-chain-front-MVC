@@ -12,7 +12,8 @@ import { useState } from "react";
 import { PolizaRepository } from "../../../models/repository/Repositorys/polizaRepository";
 import Modal from "../GeneralComponents/Modal";
 import { updatePolizaState } from "../../../redux/policeSlice";
-
+import { useAuth0 } from "@auth0/auth0-react";
+import { LogOut } from "lucide-react";
 const ManagePolizas = ({
   handleCurrentView,
   setCurrentPolicy,
@@ -20,6 +21,8 @@ const ManagePolizas = ({
   handleCurrentView: (pass: boolean) => void;
   setCurrentPolicy: (numberPoliza: number) => void;
 }) => {
+  const { logout } = useAuth0();
+
   // Repositorio para los ENDPOINTS
   const polizasRepo = new PolizaRepository(
     `${import.meta.env.VITE_BASEURL}/api/poliza`
@@ -63,6 +66,12 @@ const ManagePolizas = ({
   const handleUpdateStatePolicy = (poliza: any): void => {
     setCurrentPolicy(poliza.numero_poliza);
     handleCurrentView(true);
+  };
+
+  const logOut = () => {
+    if (window.confirm("¿Estás seguro de que querés cerrar sesión?")) {
+      logout();
+    }
   };
   // HANDLE TABLA
   const handleTable = (): tableContent => {
@@ -126,10 +135,6 @@ const ManagePolizas = ({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <IconButton
-              icon={PlusSquare}
-              onClick={handleCreatePolicysetCurrentPolicy}
-            />
           </div>
 
           {/* Checkbox controlado */}
@@ -148,6 +153,13 @@ const ManagePolizas = ({
             showButtom={showButtom}
           />
         </div>
+        <button
+          className="btn btn-logout text-start d-flex align-items-center mt-3"
+          onClick={logOut}
+        >
+          <LogOut className="me-2" size={20} />
+          Cerrar Sesión
+        </button>
         <Modal
           show={showError}
           onClose={() => setShowError(false)}

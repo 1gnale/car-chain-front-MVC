@@ -4,7 +4,14 @@ import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import useFormClientValidation from "../../../controllers/controllerHooks/Validations/useFormClientValidation";
 import SelectForm from "../GeneralComponents/SelectForm";
 import { User, Shield, MapPin } from "lucide-react";
+import Modal from "../GeneralComponents/Modal";
 const AccountDataInputs = ({ user }: { user: Cliente }) => {
+  // States del modal
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
   const [disabled, setDisabled] = useState<boolean>(true);
   const [selectedDocumentType, setSelectedDocumentType] = useState(0);
 
@@ -95,9 +102,64 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
     return result;
   }, [localities, selectedProvince]);
 
-  const handleStateDisabled = () => {
+  const handleStateDisabled = async () => {
+    // Agregamos 'async' porque usamos 'await' dentro del bloque 'else'
     setDisabled(!disabled);
     setLocality(false);
+
+    if (disabled) {
+      setShowError(true);
+      setModalMessage(
+        "Por seguridad, el documento, fecha nacimiento y mail no son modificables"
+      );
+      setMessageType("info");
+      setTitleModalMessage("MODIFICA TUS DATOS");
+    } else {
+      if (
+        window.confirm("¿Estas seguro de confirmar la solicitud de poliza?")
+      ) {
+        const baseUrl = import.meta.env.VITE_BASEURL;
+        const url = `${baseUrl}/api/clientes/update-cliente/${formClient.correo}`;
+        const body = {
+          personaData: {
+            nombres: formClient.nombres || "",
+            apellido: formClient.apellido || "",
+            fechaNacimiento: formClient.fechaNacimiento || "",
+            tipoDocumento: formClient.tipoDocumento || "",
+            documento: formClient.documento || "",
+            domicilio: formClient.domicilio || "",
+            correo: formClient.correo || "",
+            telefono: formClient.telefono || "",
+            sexo: formClient.sexo || "",
+            contraseña: "",
+            localidad: selectedLocality,
+          },
+        };
+        console.log(body);
+
+        try {
+          const respuesta = await fetch(url, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body), // Convertimos el objeto a un string JSON
+          });
+          const datosRespuesta = await respuesta.json();
+          if (respuesta.ok) {
+            setShowError(true);
+            setModalMessage("Sus datos han sido modificados");
+            setMessageType("success");
+            setTitleModalMessage("Datos modificados");
+          }
+        } catch (error) {
+          setShowError(true);
+          setModalMessage("Error al modificar los datos: " + error);
+          setMessageType("error");
+          setTitleModalMessage("ERROR");
+        }
+      }
+    }
   };
 
   // HANDLE STATE
@@ -360,6 +422,22 @@ const AccountDataInputs = ({ user }: { user: Cliente }) => {
           {disabled ? "Modificar" : "Guardar"}
         </button>
       </div>
+      <Modal
+        show={showError}
+        onClose={
+          messageType == "success"
+            ? () => {
+                setShowError(false);
+                window.location.reload();
+              }
+            : () => {
+                setShowError(false);
+              }
+        }
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 };

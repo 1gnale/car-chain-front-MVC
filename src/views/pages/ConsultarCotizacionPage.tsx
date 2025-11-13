@@ -3,7 +3,6 @@ import ViewPricings from "../components/AccountData/viewPricing";
 import FormDocumentation from "../components/RequestUserPolicy/FormDocumentation";
 import FormDataConfirmation from "../components/RequestUserPolicy/FormDataConfirmation";
 import TitleSection from "../components/GeneralComponents/TitleSection";
-import BreadCrumbNav from "../components/GeneralComponents/BreadCrumbNav";
 import Navbar from "../components/NavBar/Navbar";
 const ConsultarCotizacionPage = ({
   isAuth,

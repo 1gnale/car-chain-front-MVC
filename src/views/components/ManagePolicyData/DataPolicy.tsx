@@ -7,6 +7,7 @@ import GrayButton from "../GeneralComponents/Button";
 import ImgConfirmation from "../GeneralComponents/ImgDataConfirmation";
 import { useAppSelector } from "../../../redux/reduxTypedHooks";
 import { useNavigate } from "react-router-dom";
+import Modal from "../GeneralComponents/Modal";
 
 const PolicyProfile = ({
   policy,
@@ -15,6 +16,11 @@ const PolicyProfile = ({
   policy: Poliza;
   handleCurrentView: (pass: ViewName) => void;
 }) => {
+  const [showError, setShowError] = useState<boolean>(false);
+  const [errorMessage, setModalMessage] = useState<string>("");
+  const [messageType, setMessageType] = useState<ModalType>();
+  const [messageTitle, setTitleModalMessage] = useState<string>();
+
   const coverage_details: Cobertura_Detalle[] = useAppSelector(
     (state) => state.coberturasDetalles.coberturaDetalle
   );
@@ -59,6 +65,49 @@ const PolicyProfile = ({
   function getImageUrl(imageKey: string): string {
     return documentationImages[imageKey] || "";
   }
+
+  const handleCancelPolicy = async () => {
+    if (policy.estadoPoliza == "VIGENTE") {
+      if (
+        window.confirm(
+          "¿Estas seguro de querer cancelar la poliza? Una vez hecho perdera todo beneficio."
+        )
+      ) {
+        const baseUrl = import.meta.env.VITE_BASEURL;
+        const url = `${baseUrl}/api/poliza/updateState/${policy.numero_poliza}`;
+        const body = {
+          estadoPoliza: "CANCELADA",
+        };
+
+        try {
+          const respuesta = await fetch(url, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body), // Convertimos el objeto a un string JSON
+          });
+          const datosRespuesta = await respuesta.json();
+          if (respuesta.ok) {
+            setShowError(true);
+            setModalMessage("Su poliza ha sido cancelada");
+            setMessageType("info");
+            setTitleModalMessage("Poliza actualizada");
+          }
+        } catch (error) {
+          setShowError(true);
+          setModalMessage("Error al modificar los datos: " + error);
+          setMessageType("error");
+          setTitleModalMessage("ERROR");
+        }
+      }
+    } else {
+      setShowError(true);
+      setModalMessage("Solo se pueden cancelar polizas vigentes ");
+      setMessageType("error");
+      setTitleModalMessage("Error al cancelar poliza");
+    }
+  };
 
   const handleTable = (): tableContent => {
     return {
@@ -131,12 +180,23 @@ const PolicyProfile = ({
                 <GrayButton
                   text="Cancelar Poliza"
                   style="flex-grow-1 flex-md-grow-0"
-                  onClick={() => {}}
+                  onClick={handleCancelPolicy}
                 />
                 <GrayButton
                   text="Ver Poliza en Blockchain"
                   style="flex-grow-1 flex-md-grow-0"
-                  onClick={() => handleCurrentView("PolicyBlockchain")}
+                  onClick={
+                    policy.estadoPoliza == "VIGENTE"
+                      ? () => handleCurrentView("PolicyBlockchain")
+                      : () => {
+                          setShowError(true);
+                          setModalMessage(
+                            "Solo se pueden ver las polizas vigentes en blockchain"
+                          );
+                          setMessageType("error");
+                          setTitleModalMessage("Error");
+                        }
+                  }
                 />
                 <GrayButton
                   text="Reportar Siniestro"
@@ -615,6 +675,22 @@ const PolicyProfile = ({
           </div>
         </div>
       </div>
+      <Modal
+        show={showError}
+        onClose={
+          messageType == "info"
+            ? () => {
+                setShowError(false);
+                Navigate("/");
+              }
+            : () => {
+                setShowError(false);
+              }
+        }
+        type={messageType}
+        title={messageTitle}
+        message={errorMessage || "Error inesperado intente mas tarde"}
+      />
     </div>
   );
 };

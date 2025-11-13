@@ -27,7 +27,7 @@ export default function PolicyBlockchain({
   const [error, setError] = useState(false);
 
   async function getPolicyData(): Promise<Datos> {
-    const baseUrl = import.meta.env.BASE_URL;
+    const baseUrl = import.meta.env.VITE_BASEURL;
     try {
       setLoading(true); // 👈 activa el estado de carga
       const response = await fetch(
