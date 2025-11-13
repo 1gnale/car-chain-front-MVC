@@ -24,6 +24,7 @@ import ContoladorAprobarRevision from "./controllers/ControladorAprobarRevision"
 import RedirectByRole from "./controllers/RedirectedByRole";
 import ContoladorValidarSiniestro from "./controllers/ControladorValidarSiniestro";
 
+
 function App() {
   return (
     <Routes>
@@ -164,6 +165,8 @@ function App() {
       />
 
       <Route path="/pago-exitoso" element={<PagoExitoso />} />
+
+      <Route path="/pago-fallido/:pagoId" element={<ControladorFalloPago />} />
 
       <Route path="/prueba-proceso-pago" element={<ControladorPruebaPago />} />
 
