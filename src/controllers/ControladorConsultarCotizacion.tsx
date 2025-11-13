@@ -83,6 +83,7 @@ const ControladorConsultarCotizacion = () => {
           poliza: poliza,
           documentacion: documentacionPayload,
         };
+        console.log("BODYYYYYYYYYYYYYY:  " + JSON.stringify(body));
         try {
           const respuesta = await fetch(url, {
             method: "POST",

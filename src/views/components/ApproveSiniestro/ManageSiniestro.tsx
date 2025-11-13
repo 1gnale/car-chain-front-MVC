@@ -14,24 +14,30 @@ import Modal from "../GeneralComponents/Modal";
 import { updatePolizaState } from "../../../redux/policeSlice";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogOut } from "lucide-react";
-const ManageReview = ({
+import { SiniestroRepository } from "../../../models/repository/Repositorys/SiniestroRepository";
+const ManageSiniestro = ({
   handleCurrentView,
   setCurrentPolicy,
+  setCurrentSiniestro,
 }: {
   handleCurrentView: (pass: boolean) => void;
   setCurrentPolicy: (numberPoliza: number) => void;
+  setCurrentSiniestro: (siniestro: Siniestro) => void;
 }) => {
   const { logout } = useAuth0();
 
   // Repositorio para los ENDPOINTS
-  const polizasRepo = new PolizaRepository(
+  const siniestrosRepo = new SiniestroRepository(
     `${import.meta.env.VITE_BASEURL}/api/poliza`
   );
 
   // Redux datos y dispatch
   const dispatch = useAppDispatch();
-  const polizas: Poliza[] = useAppSelector((state) => state.polizas.poliza);
-  console.log(polizas);
+  const siniestros: Siniestro[] = useAppSelector(
+    (state) => state.siniestros.siniestro
+  );
+
+  console.log(siniestros);
   // States para la busqueda y filtro
   const [checkbox, setCheckbox] = useState<boolean>(false);
   const [search, setSearch] = useState("");
@@ -43,19 +49,23 @@ const ManageReview = ({
   const [messageTitle, setTitleModalMessage] = useState<string>();
 
   // Filtrado por búsqueda y por estado (activo/inactivo)
-  const filteredPolizas = polizas.filter((poliza) => {
+  const filteredSiniestros = siniestros.filter((siniestro) => {
     const matchesSearch =
-      poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.nombres
+      siniestro.poliza?.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.nombres
         ?.toLowerCase()
         .includes(search.toLowerCase());
 
     // Si checkbox está activado => mostrar solo inactivas
     if (checkbox) {
-      return poliza && matchesSearch;
+      return siniestro && matchesSearch;
     }
 
     // Si checkbox no está activado => mostrar solo activas
-    return poliza.estadoPoliza === "EN_REVISIÓN" && matchesSearch;
+    return (
+      siniestro.estado === "PENDIENTE" &&
+      siniestro.poliza?.estadoPoliza == "VIGENTE" &&
+      matchesSearch
+    );
   });
 
   // Botones (Alta baja modificaion)
@@ -63,8 +73,9 @@ const ManageReview = ({
     handleCurrentView(true);
   };
 
-  const handleUpdateStateReview = (poliza: any): void => {
-    setCurrentPolicy(poliza.numero_poliza);
+  const handleUpdateStateSiniestro = (siniestro: Siniestro): void => {
+    setCurrentPolicy(siniestro.poliza?.numero_poliza || 0);
+    setCurrentSiniestro(siniestro);
     handleCurrentView(true);
   };
 
@@ -80,20 +91,32 @@ const ManageReview = ({
       customIcons: [
         {
           customIcons: Eye,
-          onAction: handleUpdateStateReview,
+          onAction: handleUpdateStateSiniestro,
         },
       ],
 
-      titles: ["Numero poliza", "Cobertura", "Titular", "Vehiculo", "Estado"],
-      tableBody: filteredPolizas.map((poliza) => ({
-        key: poliza.numero_poliza || 0,
-        value: poliza,
+      titles: [
+        "Numero poliza",
+        "Cobertura",
+        "Titular",
+        "Vehiculo",
+        "Estado",
+        "Fecha Siniestro",
+        "Estado Siniestro",
+      ],
+      tableBody: filteredSiniestros.map((siniestro) => ({
+        key: siniestro.poliza?.numero_poliza || 0,
+        value: siniestro,
         rowContent: [
-          String(poliza.numero_poliza) || "",
-          poliza.lineaCotizacion?.cobertura?.nombre ?? "",
-          poliza.lineaCotizacion?.cotizacion?.vehiculo?.cliente?.nombres ?? "",
-          poliza.lineaCotizacion?.cotizacion?.vehiculo?.version.nombre ?? "",
-          poliza.estadoPoliza ?? "",
+          String(siniestro.poliza?.numero_poliza) || "",
+          siniestro.poliza?.lineaCotizacion?.cobertura?.nombre ?? "",
+          siniestro.poliza?.lineaCotizacion?.cotizacion?.vehiculo?.cliente
+            ?.nombres ?? "",
+          siniestro.poliza?.lineaCotizacion?.cotizacion?.vehiculo?.version
+            .nombre ?? "",
+          siniestro.poliza?.estadoPoliza ?? "",
+          siniestro.fechaSiniestro ?? "",
+          siniestro.estado ?? "",
         ],
       })),
     };
@@ -164,4 +187,4 @@ const ManageReview = ({
   );
 };
 
-export default ManageReview;
+export default ManageSiniestro;

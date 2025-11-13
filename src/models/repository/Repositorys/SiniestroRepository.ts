@@ -36,4 +36,20 @@ export class SiniestroRepository
     this.data.push(newSiniestro);
     return newSiniestro;
   }
+
+  async updateStateSiniestro(
+    idSiniestro: Number,
+    estado: string
+  ): Promise<Siniestro> {
+    const body = {
+      estado: estado,
+    };
+
+    const updatedRecreateReview = await this.putData(
+      `/updateStateSiniestro/${idSiniestro}`,
+      body
+    );
+
+    return updatedRecreateReview;
+  }
 }
