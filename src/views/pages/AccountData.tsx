@@ -19,6 +19,7 @@ export default function PerfilPage() {
   const logOut = () => {
     if (window.confirm("¿Estás seguro de que querés cerrar sesión?")) {
       logout();
+      localStorage.clear();
     }
   };
   const client = useAppSelector((state) => state.cliente.client) as Cliente;

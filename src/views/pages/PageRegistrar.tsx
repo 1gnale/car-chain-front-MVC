@@ -9,6 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import DateInputClear from "../components/GeneralComponents/DateInput";
 import CarChainRegisterLogo from "../assets/CarChainRegisterLogo.jpg";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/GeneralComponents/SpinnerLoader";
 const PageRegistrar = () => {
   // Hook de validación
   const {
@@ -29,6 +30,7 @@ const PageRegistrar = () => {
   const [selectedSex, setSelectedSex] = useState(0);
   const [selectedDocumentType, setSelectedDocumentType] = useState(0);
   const { user } = useAuth0();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Estado adaptado para trabajar con el hook de validación
   const [formData, setFormData] = useState({
@@ -219,6 +221,8 @@ const PageRegistrar = () => {
 
   const handleSubmit = async () => {
     if (validateForm(formData)) {
+      setIsLoading(true);
+
       try {
         const client = await createClient({
           personaData: {
@@ -235,6 +239,11 @@ const PageRegistrar = () => {
           },
         });
 
+        if (!client.success) {
+          console.log("Error:", client.message);
+          return;
+        }
+
         alert("Persona registrada exitosamente");
         Object.keys(localStorage).forEach((key) => {
           if (
@@ -245,10 +254,13 @@ const PageRegistrar = () => {
             localStorage.removeItem(key);
           }
         });
+
         navigate(`/`);
       } catch (error) {
         console.error("Error en createClient:", error);
         alert("ERROR: " + error);
+      } finally {
+        setIsLoading(false); // ⬅️ Ocultar cartel
       }
     }
   };
@@ -277,10 +289,15 @@ const PageRegistrar = () => {
       setSelectedLocality(0);
 
       // Cerrar Auth0
-      navigate(`/`);
       logout();
+      localStorage.clear();
+      navigate(`/`);
     }
   };
+
+  if (isLoading) {
+    return <Spinner title="Cargando datos..." text="Por favor espere" />;
+  }
 
   return (
     <div

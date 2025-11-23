@@ -3,11 +3,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 const useCheckFirstLogin = () => {
-  const { user, isLoading } = useAuth0();
+  const { user, isLoading, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
   const checkFirstLogin = async () => {
-    if (isLoading || !user) return;
+    if (isLoading || !user || !isAuthenticated) return;
 
     try {
       const response = await fetch(

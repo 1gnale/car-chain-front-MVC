@@ -5,14 +5,23 @@ const AuthUser = () => {
 
   return (
     <div className="navbar-nav ms-auto flex-column flex-lg-row">
+      {/* LOGIN */}
       <button
         type="button"
         className="btn btn-link px-3 me-lg-2 mb-2 mb-lg-0"
         style={{ color: "white" }}
-        onClick={() => loginWithRedirect()}
+        onClick={() =>
+          loginWithRedirect({
+            authorizationParams: {
+              prompt: "select_account", // 👈 fuerza selector de Google
+            },
+          })
+        }
       >
         Iniciar Sesión
       </button>
+
+      {/* REGISTER */}
       <button
         type="button"
         className="btn btn-primary me-lg-3 mb-2 mb-lg-0"
@@ -21,6 +30,7 @@ const AuthUser = () => {
           loginWithRedirect({
             authorizationParams: {
               screen_hint: "signup",
+              prompt: "select_account", // 👈 también en signup
             },
           })
         }
