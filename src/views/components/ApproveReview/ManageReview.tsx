@@ -71,6 +71,7 @@ const ManageReview = ({
   const logOut = () => {
     if (window.confirm("¿Estás seguro de que querés cerrar sesión?")) {
       logout();
+      localStorage.clear();
     }
   };
   // HANDLE TABLA

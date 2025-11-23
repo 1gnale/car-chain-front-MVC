@@ -44,11 +44,14 @@ const useFormValidation = (): UseFormValidationReturn => {
 
   // Patrones de validación
   const patterns = {
-    nombre: /^[A-Z]{2,50}$/,
-    apellido: /^[A-Z]{2,50}$/,
+    nombre:
+      /^(?=(?:.*[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.]){2,50})[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.\s]+$/,
+    apellido:
+      /^(?=(?:.*[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.]){2,50})[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.\s]+$/,
     documento: /^[A-Z0-9]{7,20}$/,
     telefono: /^\d{8,20}$/,
-    domicilio: /^[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.\s]{5,100}$/,
+    domicilio:
+      /^(?=(?:.*[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.]){2,50})[A-Za-zÁÉÍÓÚÑáéíóúñ0-9°#.\s]+$/,
     fechaNacimiento: /^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
   };
 
