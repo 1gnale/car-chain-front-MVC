@@ -267,12 +267,6 @@ const PolicyProfile = ({
                   />
                 </div>
                 <div className="col-12 col-sm-6 col-md-3">
-                  <LabelNinfo
-                    title="Hora de contratación:"
-                    text={policy.horaContratacion || " -"}
-                  />
-                </div>
-                <div className="col-12 col-sm-6 col-md-3">
                   <LabelNinfo title="Estado:" text={policy.estadoPoliza} />
                 </div>
               </div>
